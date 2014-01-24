@@ -1,0 +1,184 @@
+DEPENDENCIES.txt
+----------------
+This file is part of HGamer3D (A project to enable 3D game development in Haskell).
+For the latest info, see http://www.althainz.de/HGamer3D.html
+(c) 2012 Peter Althainz
+
+This text explains the dependencies to 3rd party software and assets and 
+it serves the following purposes:
+
+- It lists all dependencies and used versions, to enable users, to 
+  recreate the dependencies themselfes, if needed.
+  
+- It shows, where the licenses can be found, which are distributed 
+  with this software. You obliged, to fulfill those licenses, if you
+  use the software.
+  
+Ogre
+----
+
+Original files: 
+	OgreSDK_vc10_v1-8-1.exe
+	
+Description and Version: 
+	Current release
+	SDK of Ogre, Visual Studio 10, Version 1.8.1, including pre-build dlls.
+
+Obtained from: 
+	http://www.ogre3d.org/download/sdk
+	https://sourceforge.net/projects/ogre/files/ogre/1.8/1.8.1/OgreSDK_vc10_v1-8-1.exe/download
+	
+Date: 10. September, 2012
+
+Used Parts/Usage: 
+	Binary Dlls and Include folder used, they go into Dep-Ogre folder.
+	Dll's for the redistribution and installers.
+	Comments in headers reused for build Haskell wrappers.
+	No modified source code used for Dll's. Source code only
+	used for building the wrapper (include files).
+	Ogre mesh is used in examples.
+	
+
+Distribution:
+	Dlls are distributed in HGamer3D installer.
+	
+License Source:
+	Included in downloaded zip file. See folder "Ogre" in licenses.
+
+Remarks to License (you still need to fulfill the complete license):
+	Ogre is licensed under MIT license.
+	Further 3rd Party Components used from Ogre, see also in folder
+	Dep-Licenses/Ogre.
+
+
+SFML:
+-----
+
+Original files:
+	SFML-2.0-rc.zip
+	
+Description and Version:
+	SFML SDK, 2.0, release candidate
+	
+Obtained from: 
+	http://www.sfml-dev.org
+	
+Date:
+	June 2012
+
+Used Parts/Usage:
+	Binary Dlls and Include folder used, they go into Dep-SFML folder.
+	Dll's for the redistribution and installers.
+	Comments in headers reused for build Haskell wrappers.
+	No modified source code used for Dll's. Source code only
+	used for building the wrapper (include files).
+
+Distribution:
+	Dlls are distributed in HGamer3D installer.
+
+License Source:
+	Included in downloaded files. See folder "SFML" in licenses.
+	Further 3rd Party Components used from SFML, see also there.
+	
+Remarks to License (you still need to fulfill the complete license):
+	MIT style license.
+	
+
+CEGUI:
+------
+
+Original files: 
+	CEGUI-0.7.7.zip
+	CEGUI-DEPS-0.7.x-r3-vc10.zip
+
+Description and Version: 
+	Source code of SDK of CEGUI, Version 0.7.7,
+	prebuild dependencies of CEGUI
+
+Obtained from: 
+	http://www.cegui.org.uk/wiki/index.php/Downloads
+	
+Date: 10. September, 2012
+
+Used Parts/Usage: 
+	Source compiled with Visual Studio Express 2010.
+	Binary dlls and Include folder for the pre-build dependencies used.
+	Comments in headers reused for build Haskell wrappers.
+	Dll's for the redistribution and installers.
+	Comments in headers reused for build Haskell wrappers.
+
+Distribution:
+	Dlls are distributed in installer and can be redistributed.
+	No modified source code used for Dll's. Source code 
+	used for building the wrapper (include files).
+	
+License Source:
+	Included in downloaded files, see folder "CEGUI" in licenses.
+	
+Remarks to License (you still need to fulfill the complete license):
+	CEGUI is licensed under MIT license.
+	Further 3rd Party Components used from this software, see folder.
+
+	
+Bullet Physics:
+---------------
+
+Original files:
+	bullet-2.81-rev2613.tgz
+	
+Description and Version:
+	 Bullet 2.81 Physics SDK SP1 (Unix line endings, svn r2613) 
+	
+Obtained from:
+	http://code.google.com/p/bullet/downloads/list
+	
+Date: 6. December, 2012
+
+Used Parts/Usage:
+	Source compiled with Visual Studio Express. Included directly 
+	in HGamer3DBullet dll.
+	Comments in headers reused for build Haskell wrappers.
+	
+Distribution:
+	Build HGamer3D Dll can be distributed. 
+	No modified source code used for Dll's. Source code 
+	used for building the wrapper (include files).
+
+License Source:
+	Included in downloaded files, see folder "Bullet" in licenses.
+	Also website contains link to ZLib license.
+	http://opensource.org/licenses/zlib-license.php
+	
+Remarks to License (you still need to fulfill the complete license):
+	Bullet is licensed under ZLib license.
+	ZLib licecense for all source files in src.
+
+
+enet
+----
+
+Original files:
+	enet-1.3.6.tar.gz
+		
+Description and Version:
+	enet source distribution, Version 1.3.6
+	
+Obtained from:
+	http://enet.bespin.org/SourceDistro.html
+
+Date: 17. December 2012
+
+Used Parts/Usage:
+	Source compiled directly into the HGamer3DEnet dll. No modified 
+	source code used, but addition of C++ wrapper.
+	
+Distribution:
+	Build HGamer3D Dll can be distributed. 
+	No modified source code used for Dll's. Source code 
+	used for building the wrapper (include files).
+
+License Source:
+	Included in downloaded files, see folder "enet" in licenses.
+	
+Remarks to License (you still need to fulfill the complete license):
+	MIT style license. Copyright (c) 2002-2012 Lee Salzman.

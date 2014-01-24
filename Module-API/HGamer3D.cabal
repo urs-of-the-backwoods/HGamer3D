@@ -1,0 +1,34 @@
+Name:                HGamer3D
+Version:             0.2.1
+Synopsis:            Windows Game Engine for the Haskell Programmer
+Description:         
+	HGamer3D is a game engine for developing 3D games in the programming 
+	language Haskell. The game engine uses available libraries for 3D graphics, 
+	sound, input device handling, gui programming and other areas and make
+	those functions available for the Haskell programmer by providing  
+	a Haskell API on top of that. HGamer3D is available on Windows only.
+	
+License:             OtherLicense
+License-file:        LICENSE
+Author:              Peter Althainz
+Maintainer:          althainz@gmail.com
+Build-Type:          Simple
+Cabal-Version:       >=1.4
+Homepage:            http://www.hgamer3d.org
+Category:            Game Engine
+Extra-source-files:  Setup.hs 
+
+Library
+  Build-Depends:     base >= 3 && < 5, containers, text, directory == 1.1.0.2, Win32, mtl, FindBin, monad-loops, split, netwire == 4.0.7, HGamer3D-Data >= 0.2.0, HGamer3D-Ogre-Binding == 0.2.1, HGamer3D-SFML-Binding == 0.2.0, HGamer3D-CEGUI-Binding == 0.2.1, HGamer3D-Bullet-Binding == 0.2.1, HGamer3D-Enet-Binding == 0.2.0
+
+  Exposed-modules:   HGamer3D.APIs.Base.Engine.Types,HGamer3D.APIs.Base.Graphics3D.Basic3D,HGamer3D.APIs.Base.Graphics3D.EngineHelper,HGamer3D.APIs.Base.Graphics3D.Light,HGamer3D.APIs.Base.Graphics3D.Object3D,HGamer3D.APIs.Base.Graphics3D.PlatonObjects,HGamer3D.APIs.Base.GUI.BasicGUI,HGamer3D.APIs.Base.GUI.EngineHelper,HGamer3D.APIs.Base.Engine.Engine,HGamer3D.APIs.Base.Audio.Audio,HGamer3D.APIs.Base.InputSystem.InputSystem,HGamer3D.APIs.Base,HGamer3D.APIs.Base.Network.EngineHelper,HGamer3D.APIs.Base.Network.Network,HGamer3D.APIs.Base.Physics.EngineHelper,HGamer3D.APIs.Base.Physics.Physics, HGamer3D.APIs.FRP.GUI, HGamer3D.APIs.FRP.Graphics3D,HGamer3D.APIs.FRP.InputSystem,HGamer3D.APIs.FRP.Network,HGamer3D.APIs.FRP.Types,HGamer3D.APIs.FRP
+  Other-modules:     
+
+  c-sources:         
+  
+  ghc-options:       
+  cc-options:        -Wno-attributes 
+  hs-source-dirs:    .
+  Include-dirs:      . 
+  build-depends:     
+  extra-libraries:   

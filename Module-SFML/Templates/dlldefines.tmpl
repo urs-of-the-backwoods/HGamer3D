@@ -1,0 +1,27 @@
+<license>
+
+// <module>DllDefines.h
+
+#ifndef _<libname>_DLLDEFINES_H_
+#define _<libname>_DLLDEFINES_H_
+
+/* Cmake will define <libname>_EXPORTS on Windows when it
+configures to build a shared library. If you are going to use
+another build system on windows or create the visual studio
+projects by hand you need to define MyLibrary_EXPORTS when
+building a DLL on windows.
+*/
+
+// We are using the Visual Studio Compiler and building Shared libraries
+
+#if (defined (_WIN32)) && !(defined (__GNUC__)) 
+  #if defined(<libname>_EXPORTS)
+    #define  <module>_LIB_EXPORT __declspec(dllexport)
+  #else
+    #define  <module>_LIB_EXPORT __declspec(dllimport)
+  #endif /* <libname>_EXPORTS */
+#else /* defined (_WIN32) */
+ #define <module>_LIB_EXPORT
+#endif
+
+#endif /* _<libname>_DLLDEFINES_H_ */

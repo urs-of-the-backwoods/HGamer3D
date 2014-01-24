@@ -1,0 +1,19 @@
+<license>
+
+cmake_minimum_required (VERSION 2.6)
+project (<project-name>)
+# The version number.
+set (<project-name>_VERSION_MAJOR <version-major>)
+set (<project-name>_VERSION_MINOR <version-minor>)
+ 
+link_directories(<lib-dirs>)
+include_directories (<include-dirs>) 
+
+add_library(<library-name> SHARED <c-files>)
+target_link_libraries (<library-name> <add-dlls>)
+
+build_command(BUILD_COMMAND_VARIABLE)
+configure_file("build_cmd.template" "build.bat")
+
+
+
