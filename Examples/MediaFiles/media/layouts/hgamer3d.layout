@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+    <Window Type="WindowsLook/StaticImage" Name="HGamer3DText/logo" >
+        <Property Name="Image" Value="set:HGamer3DLogo image:HG3DLogo" />
+        <Property Name="FrameEnabled" Value="False" />
+        <Property Name="UnifiedMaxSize" Value="{{0.15,0},{0.20,0}}" />
+        <Property Name="UnifiedAreaRect" Value="{{0.01,0},{0.015,0},{1.00586,0},{1.73065,0}}" />
+        <Property Name="BackgroundEnabled" Value="False" />
+        <Property Name="Alpha" Value="0.7" />
+    </Window>
+</GUILayout>

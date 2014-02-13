@@ -1,0 +1,52 @@
+# (c) 2011-2014 Peter Althainz
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# 
+
+
+# scons file to build HGamer3DSFML library, version 0.3.0
+
+from os.path import expanduser, exists
+home = expanduser("~")
+import os, sys 
+
+# settings
+home = expanduser("~")
+libpath = home + "/.HGamer3D/lib"
+
+# environment
+env = Environment() 
+if env["PLATFORM"] == "win32":
+   env = Environment(TARGET_ARCH="x86", MSVC_VERSION="10.0") 
+   env.MergeFlags({"CCFLAGS" : "/DWIN32 /D_WIN32 /DHGamer3DSFML030_EXPORTS /EHsc /MD"})
+
+# env["ENV"]["PATH"] = os.environ.get("PATH")
+
+# include path, libpath
+
+if env["PLATFORM"] == "win32":
+
+   env.Append(CPPPATH=["include","../Deps/include","../Deps/include"])
+   env.Append(LIBPATH=["lib","../Deps/lib","../Deps/lib"])
+   env.SharedLibrary("hg3dsfml030", ["ClassMusic.cpp","ClassSoundSource.cpp","ClassSoundStream.cpp","ClassSound.cpp","ClassListener.cpp","ClassSoundBuffer.cpp","ClassJoystick.cpp","ClassMouseHG3D.cpp","ClassKeyboard.cpp","ClassMouse.cpp","ClassPtr.cpp"], LIBS = ["sfml-audio.lib","sfml-system.lib","sfml-window.lib"])
+   env.Alias('install', libpath)
+   env.Install(libpath, "hg3dsfml030.dll")
+
+else:
+   env.Append(CPPPATH=["include","../Deps/include","../Deps/include"])
+   env.Append(LIBPATH=["lib","../Deps/lib","../Deps/lib"])
+   env.SharedLibrary("hg3dsfml030", ["ClassMusic.cpp","ClassSoundSource.cpp","ClassSoundStream.cpp","ClassSound.cpp","ClassListener.cpp","ClassSoundBuffer.cpp","ClassJoystick.cpp","ClassMouseHG3D.cpp","ClassKeyboard.cpp","ClassMouse.cpp","ClassPtr.cpp"], LIBS = [":libsfml-audio.so.2",":libsfml-system.so.2",":libsfml-window.so.2"])
+   env.Alias('install', libpath)
+   env.Install(libpath, "libhg3dsfml030.so")
+
+

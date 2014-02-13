@@ -1,0 +1,46 @@
+# download, build and install Enet from source
+# mainly, to get the correct Enet version included
+
+from os.path import expanduser, exists
+import os
+
+home = expanduser("~")
+env = Environment() 
+env["ENV"]["PATH"] = os.environ.get("PATH")
+Alias('install', home + "/.HGamer3D/lib")
+
+# gather files
+files = []
+for n in ("callbacks compress host list packet peer protocol unix win32".split(" ")):
+    files = files + ["enet-1.3.7/" + n + ".c"]
+
+# download and extract sources
+if (not exists("enet-1.3.7.tgz")):
+   env.Command("enet-1.3.7.tgz", "", "wget -O enet-1.3.7.tgz http://enet.bespin.org/download/enet-1.3.7.tar.gz")
+env.Command(files, "enet-1.3.7.tgz", "tar -xzf enet-1.3.7.tgz")
+
+print (env["PLATFORM"])
+
+# windows specific
+if env["PLATFORM"] == "win32":
+        # link include folder
+	env.Command("include", files, "ln -s enet-1.3.7/include include")
+        env2 = Environment(TARGET_ARCH="x86", MSVC_VERSION="10.0") 
+	env2.MergeFlags({"CCFLAGS" : "/DWIN32 /D_WIN32 /DHGamer3DEnet022_EXPORTS /EHsc /MD"})
+	env2.Append(CPPPATH=["enet-1.3.7/include"])
+	env2.Library("lib/enet137", files)
+
+# linux specific "posix"
+elif env["PLATFORM"] == "posix":
+	# build from source
+	env.Command("enet-1.3.7/Makefile", files, "cd enet-1.3.7 && ./configure")
+	env.Command("enet-1.3.7/.libs/libenet.so.2", "enet-1.3.7/Makefile", "cd enet-1.3.7 && make")
+	# link lib to deps/lib to make easier command for linking against it
+	env.Command("lib", "enet-1.3.7/.libs/libenet.so.2", "ln -s enet-1.3.7/.libs lib")
+	env.Command("include", "enet-1.3.7/include", "ln -s enet-1.3.7/include include")
+	# install runtime
+	installCmd = env.Install(home + "/.HGamer3D/lib", "enet-1.3.7/.libs/libenet.so.2.2.0")
+	AddPostAction(installCmd, "ldconfig -n " + home + "/.HGamer3D/lib")
+
+else:
+	print("platform " + env["PLATFORM"] + " not supported!")

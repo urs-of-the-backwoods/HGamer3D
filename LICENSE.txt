@@ -1,7 +1,7 @@
 LICENSE
 -------
 
-(c) 2011-2013 Peter Althainz
+(c) 2011-2014 Peter Althainz
 
 
 HGamer3D (http://www.hgamer3d.org)
@@ -16,20 +16,11 @@ Unless required by applicable law or agreed to in writing, software distributed 
 
 Source Code
 -----------
-You can obtain the latest version of the source code under http://www.hgamer3d.org
+You can obtain the latest version of the source code under http://www.bitbucket.org/althainz/HGamer3D
 
 
-3rd Party Contributions
------------------------
- 
-This software uses the following 3rd party software:
+Open Source Software Used
+-------------------------
+HGamer3D uses a number of open source software libraries. You are responsible to comply to the licenses of those packages and the licenses of software used by those packages if you use HGamer3D. Details can be found in the LICENSE documents of the single HGamer3D modules.
 
-	Ogre (http://www.ogre3d.org)
-	CEGUI (http://www.cegui.org.uk)
-	SFML (http://www.sfml-dev.org)
-	Bullet Physics (http://bulletphysics.org)
-	enet (http://enet.bespin.org)
-	
-Those components are licensed under MIT, ZLib or MIT/ZLib style licenses. For details, see the folder Third-Party-Licenses and DEPENDENCIES.txt therein.
 
-Portions of this software are copyright © 2006-2011 The FreeType Project (www.freetype.org).  All rights reserved.

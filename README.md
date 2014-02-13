@@ -9,5 +9,4 @@ Documentation is on: http://www.hgamer3d.org
 
 News
 ----
-- release-0.3.0 contains the release candidate for Version 0.3.0
-- The version 0.2.1 is outdated a new version 0.3 will be published shortly.
+- Version 0.3.0 published on master

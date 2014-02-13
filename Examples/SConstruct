@@ -1,0 +1,29 @@
+# configure, build, install the examples
+
+import os
+env = Environment() 
+env["ENV"]["PATH"] = os.environ.get("PATH")
+env["ENV"]["HOME"] = os.environ.get("HOME")
+
+# the output directory
+env.Command("build", "", Mkdir("build"))
+
+# the binaries
+for (p, s) in [
+    ("Audio", "Audio"),
+    ("Graphics3D", "BlueCube"),
+    ("GUI", "GUI-Widgets"),
+    ("InputSystem", "Joystick"),
+    ("InputSystem", "Keyboard"),
+    ("InputSystem", "Mouse"),
+    ("Network", "Network-Chat"),
+    ("WinEvent", "WinEvent"),
+    ("Games", "Cuboid2")
+]:
+    env.Command("build/" + s, p + "/" + s + ".hs", "ghc --make -odir build -hidir build -i" + p + " -o build/" + s + " " + p + "/" + s)
+
+# the media files need to be copied to .HGamer3D
+env.Command("build/.HGamer3D", "MediaFiles", [
+			       Mkdir("build/.HGamer3D"),
+			       "cp -r MediaFiles/* build/.HGamer3D"
+			       ])

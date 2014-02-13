@@ -1,0 +1,38 @@
+Name:                HGamer3D-SFML-Binding
+Version:             0.3.0
+Synopsis:            SFML Binding for HGamer3D
+Description:         
+   HGamer3D is a game engine for developing 3D games in the programming 
+   language Haskell. This package provides the SFML binding. 
+   HGamer3D-SFML-Binding is available on Windows and Linux. 
+   This binding does not claim to have full coverage of SFML 
+   functionality, but only to support what is needed for the
+   HGamer3D-Audio and HGamer3D-InputSystem packages.
+
+	
+License:             OtherLicense
+License-file:        LICENSE
+Author:              Peter Althainz
+Maintainer:          althainz@gmail.com
+Build-Type:          Simple
+Cabal-Version:       >=1.4
+Homepage:            http://www.hgamer3d.org
+Category:            Game Engine, Audio, Graphics
+Extra-source-files:  Setup.hs, include/vector2istruct.h, include/vector2fstruct.h, include/MouseHG3D.h, include/vector3istruct.h, include/hg3dstruct.h, include/vector3fstruct.h
+
+Library
+  Build-Depends:     base >= 3 && < 5, HGamer3D-Data >= 0.3.0
+
+  Exposed-modules:   HGamer3D.Bindings.SFML.Utils, HGamer3D.Bindings.SFML.StructHG3DClass, HGamer3D.Bindings.SFML.ClassPtr, HGamer3D.Bindings.SFML.EnumJoystickAxis, HGamer3D.Bindings.SFML.EnumKey, HGamer3D.Bindings.SFML.EnumSoundSourceStatus, HGamer3D.Bindings.SFML.EnumMouseButton, HGamer3D.Bindings.SFML.StructVec3, HGamer3D.Bindings.SFML.ClassListener, HGamer3D.Bindings.SFML.ClassJoystick, HGamer3D.Bindings.SFML.ClassMouseHG3D, HGamer3D.Bindings.SFML.ClassSoundStream, HGamer3D.Bindings.SFML.ClassSoundBuffer, HGamer3D.Bindings.SFML.ClassSoundSource, HGamer3D.Bindings.SFML.ClassKeyboard, HGamer3D.Bindings.SFML.ClassMouse, HGamer3D.Bindings.SFML.ClassSound, HGamer3D.Bindings.SFML.ClassMusic
+  Other-modules:     
+
+  ghc-options:       
+  cc-options:        -Wno-attributes 
+  hs-source-dirs:    .
+  Include-dirs:      include
+  Build-tools:       
+  build-depends:     
+  if os(windows)
+     extra-libraries:   hg3dsfml030
+  else
+     extra-libraries:   hg3dsfml030,:libsfml-audio.so.2,:libsfml-system.so.2,:libsfml-window.so.2

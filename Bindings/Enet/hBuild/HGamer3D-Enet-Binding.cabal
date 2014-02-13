@@ -1,0 +1,39 @@
+Name:                HGamer3D-Enet-Binding
+Version:             0.3.0
+Synopsis:            Enet Binding for HGamer3D
+Description:         
+   HGamer3D is a game engine for developing 3D games in the programming 
+   language Haskell. This package provides the Enet binding. 
+   HGamer3D-Enet-Binding is available on Windows and Linux. 
+   This binding does not claim to have full coverage of Enet 
+   functionality, but only to support what is needed for the
+   HGamer3D-Network package.
+   
+
+	
+License:             OtherLicense
+License-file:        LICENSE
+Author:              Peter Althainz
+Maintainer:          althainz@gmail.com
+Build-Type:          Simple
+Cabal-Version:       >=1.4
+Homepage:            http://www.hgamer3d.org
+Category:            Game Engine, Network
+Extra-source-files:  Setup.hs, include/hg3dstruct.h
+
+Library
+  Build-Depends:     base >= 3 && < 5, HGamer3D-Data >= 0.3.0
+
+  Exposed-modules:   HGamer3D.Bindings.Enet.Utils, HGamer3D.Bindings.Enet.StructHG3DClass, HGamer3D.Bindings.Enet.ClassPtr, HGamer3D.Bindings.Enet.ClassEnetServer, HGamer3D.Bindings.Enet.ClassEnetClient, HGamer3D.Bindings.Enet.ClassEnetPacket, HGamer3D.Bindings.Enet.ClassEnet
+  Other-modules:     
+
+  ghc-options:       
+  cc-options:        -Wno-attributes 
+  hs-source-dirs:    .
+  Include-dirs:      include
+  Build-tools:       
+  build-depends:     
+  if os(windows)
+     extra-libraries:   hg3denet030
+  else
+     extra-libraries:   hg3denet030,:libenet.so.2

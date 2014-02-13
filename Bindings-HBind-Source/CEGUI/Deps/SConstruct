@@ -1,0 +1,110 @@
+# download, and build CEGUI from pre-build binaries
+
+from os.path import expanduser, exists
+import os
+
+home = expanduser("~")
+env = Environment() 
+env["ENV"]["PATH"] = os.environ.get("PATH")
+libpath = home + "/.HGamer3D/lib"
+Alias('install', libpath)
+
+
+# EXTRACT - LINUX SECTION
+#########################
+
+if env["PLATFORM"] == "posix":
+
+
+   # download and extract sources
+   if (not exists("cegui-0.7.7.tar.gz")):
+      env.Command("cegui-0.7.7.tar.gz", "", "wget -O cegui-0.7.7.tar.gz http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-0.7.7.tar.gz")
+   env.Command("CEGUI-0.7.7/cegui/include", "cegui-0.7.7.tar.gz", "tar xzf cegui-0.7.7.tar.gz")
+
+
+
+# EXTRACT - WINDOWS SECTION
+###########################
+else:
+
+   # download and extract sources
+   if (not exists("CEGUI-0.7.7.zip")):
+      env.Command("CEGUI-0.7.7.zip", "", "wget -O CEGUI-0.7.7.zip http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-0.7.7.zip")
+   env.Command("CEGUI-0.7.7/cegui/include", "CEGUI-0.7.7.zip", "unzip cegui-0.7.7.zip")
+
+   # download and extract pre-build dependencies
+   if (not exists("CEGUI-DEPS-0.7.x-r3-vc10.zip")):
+      env.Command("CEGUI-DEPS-0.7.x-r3-vc10.zip", "", "wget -O CEGUI-DEPS-0.7.x-r3-vc10.zip http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-DEPS-0.7.x-r3-vc10.zip")
+   env.Command("CEGUI-0.7.7/dependencies", "CEGUI-DEPS-0.7.x-r3-vc10.zip", "cd CEGUI-0.7.7 && unzip ../CEGUI-DEPS-0.7.x-r3-vc10.zip")
+
+
+
+# LINK INCLUDE FOLDER
+#####################
+
+# link include folder
+env.Command("include/CEGUI", "CEGUI-0.7.7/cegui/include", [
+								Delete("include"),
+								Mkdir("include"),
+								"cd include && ln -s ../CEGUI-0.7.7/cegui/include CEGUI"
+							  ])
+
+
+# BUILD - LINUX
+###############
+
+if env["PLATFORM"] == "posix":
+
+   env.Command("CEGUI-0.7.7/lib", "include", "cd CEGUI-0.7.7 && ./configure && make")
+   # link lib to deps/lib to make easier command for linking against it
+   env.Command("lib", "CEGUI-0.7.7/lib", [
+		   Mkdir("lib"),
+		   "cp --no-dereference `find . -name *.so` lib"
+		   ])
+
+		  
+   # install runtime
+   installCmd = env.Install(home + "/.HGamer3D/lib", Glob("lib/*.so"))
+   AddPostAction(installCmd, "ldconfig -n " + home + "/.HGamer3D/lib")
+
+# BUILD - WINDOWS
+#################
+
+else:
+
+   compile_msg = '''
+   ATTENTION
+   ---------
+   Here is a manual step needed, please doublecklick the file CEGUI.sln in the next
+   window, which pops up, convert to VS2010 and compile with "F7".
+
+   '''
+   
+   def manual_compile(target, source, env):
+       print compile_msg
+       raw_input("Press enter now, to open up the explorer window!")
+       os.system("explorer CEGUI-0.7.7\\projects\\premake")
+       raw_input("Press enter, when compilation successfully done!")
+       return 0
+   
+   def patch_config(target, source, env):
+       os.system("patch -N -r- CEGUI-0.7.7/projects/premake/config.lua config-lua.patch")
+       return 0
+
+   env.Command("CEGUI-0.7.7/lib", "include", [
+    				  patch_config,
+   				  "cd CEGUI-0.7.7/projects/premake && premake --file cegui.lua --target vs2008",
+				  manual_compile
+				  ])
+   env.Command("lib", "CEGUI-0.7.7/lib", [
+		   Mkdir("lib"),
+		   "bash -c \"cp  `find  CEGUI-0.7.7/bin -name *.dll` lib\"",
+		   "bash -c \"cp  `find  CEGUI-0.7.7/lib -name *.lib` lib\""
+		   ])
+
+   # install runtime
+   installCmd = env.Install(home + "/.HGamer3D/lib", Glob("lib/*.dll"))
+
+
+
+

@@ -1,0 +1,36 @@
+Name:                HGamer3D
+Version:             0.3.0
+Synopsis:            A Game Engine for the Haskell Programmer
+Description:         
+	HGamer3D is a game engine for developing 3D games in the programming 
+	language Haskell. The game engine uses available libraries for 3D graphics, 
+	sound, input device handling, gui programming and other areas and make
+	those functions available for the Haskell programmer by providing  
+	a Haskell API on top of that. HGamer3D is available on Windows and Linux.
+	This package is a wrapper for the main modules and does not contain additional 
+	functionality.
+	
+License:             OtherLicense
+License-file:        LICENSE
+Author:              Peter Althainz
+Maintainer:          althainz@gmail.com
+Build-Type:          Simple
+Cabal-Version:       >=1.4
+Homepage:            http://www.hgamer3d.org
+Category:            Game Engine
+Extra-source-files:  Setup.hs 
+
+Library
+  Build-Depends:     base >= 3 && < 5, HGamer3D-Data >= 0.3.0 && < 0.4.0, HGamer3D-Audio >= 0.3.0 && < 0.4.0, HGamer3D-Network >= 0.3.0 && < 0.4.0, HGamer3D-InputSystem >= 0.3.0 && < 0.4.0, HGamer3D-Graphics3D >= 0.3.0 && < 0.4.0, HGamer3D-WinEvent >= 0.3.0 && < 0.4.0, HGamer3D-GUI >= 0.3.0 && < 0.4.0 
+
+  Exposed-modules:   HGamer3D
+  Other-modules:     
+
+  c-sources:         
+  
+  ghc-options:       
+  cc-options:        -Wno-attributes 
+  hs-source-dirs:    .
+  Include-dirs:      . 
+  build-depends:     
+  extra-libraries:   

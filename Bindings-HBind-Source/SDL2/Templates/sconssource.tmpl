@@ -1,0 +1,29 @@
+# SConstruct file to build Haskell packages
+# #########################################
+
+# set environment
+#################
+from os.path import expanduser
+import os
+home = expanduser("~")
+env = Environment() 
+env["ENV"]["PATH"] = os.environ.get("PATH")
+
+# Gather main dependencies
+##########################
+
+dependsOn = [
+	  Glob("HGamer3D/*"),
+	  Glob("*.cabal"),
+	  "LICENSE"
+]
+
+target = [ "dist/setup-config", Glob("dist/HGamer3D-*.tar.gz")]
+
+env.Command(target, dependsOn, [
+"cabal configure --user",
+"cabal build",
+"cabal haddock",
+"cabal install --user --force-reinstalls --extra-lib-dirs=" + home + "/.HGamer3D/lib",
+"cabal sdist"
+])

@@ -1,0 +1,42 @@
+# download, and SFML from pre-build binaries
+
+from os.path import expanduser, exists
+import os
+
+home = expanduser("~")
+env = Environment() 
+env["ENV"]["PATH"] = os.environ.get("PATH")
+libpath = home + "/.HGamer3D/lib"
+Alias('install', libpath)
+
+# download pre-build binaries or source and extract
+if env["PLATFORM"] == "win32":
+   # download and extract pre-build binaries
+   if (not exists("sfml-2.1.zip")):
+      env.Command("sfml-2.1.zip", "", "wget -O sfml-2.1.zip http://www.sfml-dev.org/download/sfml/2.1/SFML-2.1-windows-vc10-32bits.zip")
+else:
+   # download and extract sources
+   if (not exists("sfml-2.1.zip")):
+      env.Command("sfml-2.1.zip", "", "wget -O sfml-2.1.zip http://www.sfml-dev.org/download/sfml/2.1/SFML-2.1-sources.zip")
+env.Command("SFML-2.1/include", "sfml-2.1.zip", "unzip sfml-2.1.zip")
+
+# link include folder
+env.Command("include", "SFML-2.1/include", "ln -s SFML-2.1/include include")
+
+# when linux, then build from source
+if env["PLATFORM"] == "posix":
+   # build
+   env.Command("SFML-2.1/lib/libsfml-system.so.2.1", "include", "cd SFML-2.1 && cmake -G \"Unix Makefiles\" && make")
+   # link lib to deps/lib to make easier command for linking against it
+   env.Command("lib", "SFML-2.1/lib/libsfml-system.so.2.1", "ln -s SFML-2.1/lib lib")
+   # install runtime
+   installCmd = env.Install(home + "/.HGamer3D/lib", Glob("SFML-2.1/lib/*.so.2.1"))
+   AddPostAction(installCmd, "ldconfig -n " + home + "/.HGamer3D/lib")
+
+# when windows, just copy dll's
+else:
+   env.Command("lib", "SFML-2.1/lib/sfml-system.lib", "ln -s SFML-2.1/lib lib")  # we will link against dll's, so bin -> lib is correct
+   # copy dll to output directory
+   env.Install(libpath, Glob("SFML-2.1/bin/*.dll"))
+
+

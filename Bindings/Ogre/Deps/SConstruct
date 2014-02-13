@@ -1,0 +1,48 @@
+# download, and build Ogre from pre-build binaries or source
+
+from os.path import expanduser, exists
+import os
+
+home = expanduser("~")
+env = Environment() 
+env["ENV"]["PATH"] = os.environ.get("PATH")
+libpath = home + "/.HGamer3D/lib"
+Alias('install', libpath)
+
+# download pre-build binaries or source and extract
+if env["PLATFORM"] == "win32":
+   # download and extract pre-build binaries
+   if (not exists("ogre-1.8.1.exe")):
+      env.Command("ogre-1.8.1.exe", "", "wget -O ogre-1.8.1.exe http://sourceforge.net/projects/ogre/files/ogre/1.8/1.8.1/OgreSDK_vc10_v1-8-1.exe")
+   env.Command("OgreSDK_vc10_v1-8-1/include", "ogre-1.8.1.exe", "ogre-1.8.1.exe")
+   env.Command("lib", "OgreSDK_vc10_v1-8-1/include", "ln -s OgreSDK_vc10_v1-8-1/lib/release lib")  
+   env.Command("include", "OgreSDK_vc10_v1-8-1/include", "mkdir include && cd include && ln -s ../OgreSDK_vc10_v1-8-1/include/OGRE OgreMain && ln -s ../OgreSDK_vc10_v1-8-1/boost boost")  
+   # copy dll to output directory
+   env.Install(libpath, Glob("OgreSDK_vc10_v1-8-1/bin/release/*.dll"))
+
+else:
+   # download and extract sources
+   if (not exists("ogre-1.8.1.tar.bz2")):
+      env.Command("ogre-1.8.1.tar.bz2", "", "wget -O ogre-1.8.1.tar.bz2 http://sourceforge.net/projects/ogre/files/ogre/1.8/1.8.1/ogre_src_v1-8-1.tar.bz2")
+   env.Command("ogre_src_v1-8-1/OgreMain/include", "ogre-1.8.1.tar.bz2", "tar xjf ogre-1.8.1.tar.bz2")
+   # link include folder
+   env.Command("include", "ogre_src_v1-8-1/OgreMain/include", "mkdir include && cd include && ln -s ../ogre_src_v1-8-1/OgreMain/include OgreMain && ln -s ../ogre_src_v1-8-1/include BuildConfig")  
+   # build
+   env.Command("ogre_src_v1-8-1/lib/libOgreMain.so.1.8.1", "include", "cd ogre_src_v1-8-1 && cmake -G \"Unix Makefiles\" && make")
+   # link lib to deps/lib to make easier command for linking against it
+   env.Command("lib", "ogre_src_v1-8-1/lib/libOgreMain.so.1.8.1", "ln -s ogre_src_v1-8-1/lib lib")
+   # install runtime
+   installCmd = env.Install(home + "/.HGamer3D/lib", Glob("ogre_src_v1-8-1/lib/*.so.1.8.1"))
+   AddPostAction(installCmd, [
+   			     "ldconfig -n " + home + "/.HGamer3D/lib",
+			     "cd " + home + "/.HGamer3D/lib && ln -s -f Plugin_BSPSceneManager.so.1.8.1 Plugin_BSPSceneManager.so",
+			     "cd " + home + "/.HGamer3D/lib && ln -s -f Plugin_CgProgramManager.so.1.8.1 Plugin_CgProgramManager.so",
+			     "cd " + home + "/.HGamer3D/lib && ln -s -f Plugin_OctreeSceneManager.so.1.8.1 Plugin_OctreeSceneManager.so",
+			     "cd " + home + "/.HGamer3D/lib && ln -s -f Plugin_ParticleFX.so.1.8.1 Plugin_ParticleFX.so",
+			     "cd " + home + "/.HGamer3D/lib && ln -s -f Plugin_OctreeZone.so.1.8.1 Plugin_OctreeZone.so",
+			     "cd " + home + "/.HGamer3D/lib && ln -s -f Plugin_PCZSceneManager.so.1.8.1 Plugin_PCZSceneManager.so",
+			     "cd " + home + "/.HGamer3D/lib && ln -s -f RenderSystem_GL.so.1.8.1 RenderSystem_GL.so"
+                             ] )
+
+
+

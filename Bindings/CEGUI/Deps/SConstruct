@@ -1,0 +1,47 @@
+# download, and build CEGUI from pre-build binaries
+
+from os.path import expanduser, exists
+import os
+
+home = expanduser("~")
+env = Environment() 
+env["ENV"]["PATH"] = os.environ.get("PATH")
+libpath = home + "/.HGamer3D/lib"
+Alias('install', libpath)
+
+# download and extract sources
+if (not exists("cegui-0.7.7.tar.gz")):
+   env.Command("cegui-0.7.7.tar.gz", "", "wget -O cegui-0.7.7.tar.gz http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-0.7.7.tar.gz")
+
+# extract folder
+env.Command("CEGUI-0.7.7/cegui/include", "cegui-0.7.7.tar.gz", "tar xzf cegui-0.7.7.tar.gz")
+
+# link include folder
+env.Command("include/CEGUI", "CEGUI-0.7.7/cegui/include", [
+								Delete("include"),
+								Mkdir("include"),
+								"cd include && ln -s ../CEGUI-0.7.7/cegui/include CEGUI"
+							  ])
+
+# when linux, then build from source
+if env["PLATFORM"] == "posix":
+   # build
+   env.Command("CEGUI-0.7.7/lib", "include", "cd CEGUI-0.7.7 && ./configure && make")
+   # link lib to deps/lib to make easier command for linking against it
+   env.Command("lib", "CEGUI-0.7.7/lib", "mkdir lib & cp --no-dereference `find . -name *.so` lib")
+   # install runtime
+   installCmd = env.Install(home + "/.HGamer3D/lib", Glob("lib/*.so"))
+   AddPostAction(installCmd, "ldconfig -n " + home + "/.HGamer3D/lib")
+
+# when windows, do the same
+else:
+   pass
+   # build
+#   env.Command("cegui-0.8.2/lib", "include", "cd cegui-0.8.2 && cmake -G \"Visual Studio 10\" && make")
+   # link lib to deps/lib to make easier command for linking against it
+#   env.Command("lib", "cegui-0.8.2/lib", "ln -s cegui-0.8.2/lib lib")
+   # install runtime
+#   installCmd = env.Install(home + "/.HGamer3D/lib", Glob("cegui-0.8.2/lib/*.so"))
+#   AddPostAction(installCmd, "ldconfig -n " + home + "/.HGamer3D/lib")
+
+

@@ -1,0 +1,90 @@
+material Examples/Flare
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend add
+			depth_write off
+			diffuse vertexcolour
+
+			texture_unit
+			{
+				texture flare.png
+			}
+		}
+	}
+}
+
+material Examples/PlatonMaterial
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.4 0.15 0.15 
+			diffuse 0.8 0.3 0.3
+			specular 0.5 0.3 0.3 1.0
+			emissive 0.0 0.0 0.0 1
+			
+			texture_unit
+			{
+				texture flare.png
+				colour_op_ex blend_manual src_texture src_current 0.5
+				env_map spherical
+			}
+		}
+	}
+}
+    
+material Examples/Red
+{
+   technique
+   {
+      pass
+      {
+         lighting on
+ 
+         ambient 0.3 0.1 0.1 1
+         diffuse 0.8 0.1 0.1 1
+         emissive 0 0 0 1
+      }
+   }
+}
+ 
+ 
+material Examples/Blue
+{
+   technique
+   {
+      pass
+      {
+         lighting on
+ 
+         ambient 0.1 0.1 0.3 1
+         diffuse 0.1 0.1 0.8 1
+         emissive 0 0 0 1
+      }
+   }
+}
+ 
+material Examples/Green
+{
+   technique
+   {
+      pass
+      {
+         lighting on
+ 
+         ambient 0.3 0.1 0.1 1
+         diffuse 0.8 0.1 0.1 1
+         emissive 0 0 0 1
+
+         ambient 0.1 0.3 0.1 1
+         diffuse 0.1 0.8 0.1 1
+         emissive 0.0 0.4 0.0 1
+      }
+   }
+}
+
