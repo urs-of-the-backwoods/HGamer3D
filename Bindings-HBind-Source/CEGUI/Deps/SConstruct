@@ -1,14 +1,21 @@
 # download, and build CEGUI from pre-build binaries
 
+
+# set environment
+#################
 from os.path import expanduser, exists
 import os
-
 home = expanduser("~")
 env = Environment() 
 env["ENV"]["PATH"] = os.environ.get("PATH")
+env["ENV"]["HOME"] = os.environ.get("HOME")
+
 libpath = home + "/.HGamer3D/lib"
 Alias('install', libpath)
 
+def linkSO(target, source, env):
+    cmd = "ln -s " + str(target[0]) + " " + str(target[0])[:-9] + ".so"
+    os.system(cmd)
 
 # EXTRACT - LINUX SECTION
 #########################
@@ -64,8 +71,8 @@ if env["PLATFORM"] == "posix":
 
 		  
    # install runtime
-   installCmd = env.Install(home + "/.HGamer3D/lib", Glob("lib/*.so"))
-   AddPostAction(installCmd, "ldconfig -n " + home + "/.HGamer3D/lib")
+   installCmd = env.Install(home + "/.HGamer3D/lib", Glob("lib/*0.7.7.so"))
+   AddPostAction(installCmd, linkSO)
 
 # BUILD - WINDOWS
 #################

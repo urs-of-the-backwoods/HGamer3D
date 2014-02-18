@@ -54,3 +54,7 @@ import HGamer3D.Data.Angle
 {#fun ogre_hg3dutl_checkQuitReceived as checkQuitReceived 
 { alloca- `Int' peekIntConv*} -> `()'  #}
 
+{- function buildTangentVectors -}
+{#fun ogre_hg3dutl_buildTangentVectors as buildTangentVectors 
+{ withHG3DClass* `HG3DClass' } -> `()'  #}
+

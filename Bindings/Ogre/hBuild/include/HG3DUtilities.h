@@ -26,5 +26,6 @@ class HG3DUtilities
      static unsigned int getWindowHandle(Ogre::RenderWindow *window);
      static void setupCloseEventHandler(Ogre::RenderWindow *window);
      static int checkQuitReceived();
+     static void buildTangentVectors(Ogre::Entity *entity);
 };
 

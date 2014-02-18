@@ -1,11 +1,15 @@
 # download, and build SDL2 from source
 
+# set environment
+#################
 from os.path import expanduser, exists
-import os
-
+import os, sys
 home = expanduser("~")
 env = Environment() 
 env["ENV"]["PATH"] = os.environ.get("PATH")
+env["ENV"]["HOME"] = os.environ.get("HOME")
+
+
 libpath = home + "/.HGamer3D/lib"
 Alias('install', libpath)
 

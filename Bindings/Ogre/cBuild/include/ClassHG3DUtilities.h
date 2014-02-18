@@ -26,6 +26,7 @@
 
 #include "ClassPtr.h"
 #include "ClassRenderWindow.h"
+#include "ClassEntity.h"
 
 
 // 
@@ -36,5 +37,8 @@ void ogre_hg3dutl_setupCloseEventHandler(struct hg3dclass_struct * window_c);
 
 // 
 void ogre_hg3dutl_checkQuitReceived(int * result_c);
+
+// 
+void ogre_hg3dutl_buildTangentVectors(struct hg3dclass_struct * entity_c);
 
 #endif 

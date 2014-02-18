@@ -1,6 +1,10 @@
 # configure, build, install the examples
 
+# set environment
+#################
+from os.path import expanduser
 import os
+home = expanduser("~")
 env = Environment() 
 env["ENV"]["PATH"] = os.environ.get("PATH")
 env["ENV"]["HOME"] = os.environ.get("HOME")
@@ -12,6 +16,7 @@ env.Command("build", "", Mkdir("build"))
 for (p, s) in [
     ("Audio", "Audio"),
     ("Graphics3D", "BlueCube"),
+    ("Graphics3D", "BumpMappingCube"),
     ("GUI", "GUI-Widgets"),
     ("InputSystem", "Joystick"),
     ("InputSystem", "Keyboard"),
@@ -20,7 +25,7 @@ for (p, s) in [
     ("WinEvent", "WinEvent"),
     ("Games", "Cuboid2")
 ]:
-    env.Command("build/" + s, p + "/" + s + ".hs", "ghc --make -odir build -hidir build -i" + p + " -o build/" + s + " " + p + "/" + s)
+    env.Command("build/" + s, p + "/" + s + ".hs", "rm build/*.o;" + "ghc --make -odir build -hidir build -i" + p + " -o build/" + s + " " + p + "/" + s)
 
 # the media files need to be copied to .HGamer3D
 env.Command("build/.HGamer3D", "MediaFiles", [

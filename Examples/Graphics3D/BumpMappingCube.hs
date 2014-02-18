@@ -31,24 +31,23 @@ renderLoop cube g3ds = do
 main :: IO ()
 main = do
   
-        (g3ds, camera, viewport) <- initHGamer3D "HGamer3D - BlueCube Example" "DefaultSceneManager" True True
+        (g3ds, camera, viewport) <- initHGamer3D "HGamer3D - BumpMapping Example" "DefaultSceneManager" True True
         
 	-- camera position
-	let pos = Vec3 5.0 5.0 80.0
+	let pos = Vec3 5.0 5.0 400.0
         positionTo3D camera pos
 	let at = Vec3 0.0 0.0 (-300.0)
         cameraLookAt camera at
 	
 	-- define light
             
-	setAmbientLight g3ds white
-	pointLight g3ds white (Vec3 10.0 10.0 20.0)
-        let cube = cubeMesh
-        cube <- object3DFromMesh g3ds cube (Just (ResourceMaterial "Colours/Blue") ) False
+	setAmbientLight g3ds (Colour 0.3 0.3 0.3 1.0)
+	spotLight g3ds (Colour 0.3 0.3 0.3 1.0) (Vec3 20.0 20.0 20.0)
+	spotLight g3ds (Colour 0.3 0.3 0.3 1.0) (Vec3 20.0 (-20.0) 20.0)
+        let cube = resourceMesh "knot.mesh"
+        cube <- object3DFromMesh g3ds cube (Just (ResourceMaterial "BumpMapping/RustedMetal") ) True
 
-	-- create a shiny blue cube
         positionTo3D cube (Vec3 0.0 0.0 0.0)
-        scaleTo3D cube (Vec3 0.2 0.2 0.2)
         
 	-- start render loop
 	renderLoop cube g3ds 

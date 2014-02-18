@@ -1,5 +1,5 @@
 Name:                HGamer3D-Ogre-Binding
-Version:             0.3.0
+Version:             0.3.1
 Synopsis:            Ogre Binding for HGamer3D
 Description:         
    HGamer3D is a game engine for developing 3D games in the programming 
@@ -33,6 +33,6 @@ Library
   Build-tools:       
   build-depends:     
   if os(windows)
-     extra-libraries:   hg3dogre030
+     extra-libraries:   hg3dogre031
   else
-     extra-libraries:   hg3dogre030,OgreMain,OgrePaging,OgreProperty,OgreRTShaderSystem,OgreTerrain
+     extra-libraries:   hg3dogre031,OgreMain,OgrePaging,OgreProperty,OgreRTShaderSystem,OgreTerrain

@@ -78,6 +78,7 @@ import HGamer3D.Bindings.Ogre.ClassAnimationState as AnimationState
 import HGamer3D.Bindings.Ogre.ClassEntity as Entity
 import HGamer3D.Bindings.Ogre.ClassControllerManager as ControllerManager
 import HGamer3D.Bindings.Ogre.ClassWindowEventUtilities as WindowEventUtilities
+import HGamer3D.Bindings.Ogre.ClassHG3DUtilities as HG3DUtils
 
 import HGamer3D.Bindings.Ogre.ClassManualObject as ManualObject
 import HGamer3D.Bindings.Ogre.EnumRenderOperationOperationType
@@ -127,8 +128,9 @@ resourceMesh resourceName = ResourceMesh resourceName
 object3DFromMesh :: Graphics3DSystem -- ^ the Graphics3D system object, returned by initGraphics3D
                           -> Mesh -- ^ mesh used for creation
                           -> Maybe Material -- ^ a material to be applied, if needed
+                          -> Bool -- ^ flag, build tangent vectors, if set
                           -> IO Object3D -- ^ created 3d object
-object3DFromMesh g3ds mesh mbMaterial = do
+object3DFromMesh g3ds mesh mbMaterial buildTV = do
 	let (SceneManager scm) = (g3dsSceneManager g3ds)
         -- create the entity from the mesh
         entity <- case mesh of
@@ -137,6 +139,11 @@ object3DFromMesh g3ds mesh mbMaterial = do
           PlaneMesh -> SceneManager.createEntity6 scm PT_PLANE
           ResourceMesh resourceName -> SceneManager.createEntity3 scm resourceName
           ManualMesh meshName -> SceneManager.createEntity3 scm meshName
+        -- create tangent vectors
+        if buildTV then 
+          HG3DUtils.buildTangentVectors entity
+          else
+            return ()
         -- apply material, if needed, wanted
         case mbMaterial of
           Just material -> _setMaterial entity material
