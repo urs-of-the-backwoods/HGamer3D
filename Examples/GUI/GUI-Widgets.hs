@@ -114,9 +114,9 @@ main = do
 	-- define light
             
 	setAmbientLight g3ds white
-	pointlight g3ds white (Vec3 10.0 10.0 20.0)
+	pointLight g3ds white (Vec3 10.0 10.0 20.0)
         let cube = cubeMesh
-        cube <- object3DFromMesh g3ds cube (Just (ResourceMaterial "Examples/Blue") )
+        cube <- object3DFromMesh g3ds cube (Just (ResourceMaterial "Colours/Blue") ) False
         
 	-- create a shiny blue cube
         positionTo3D cube (Vec3 0.0 0.0 0.0)

@@ -1,11 +1,14 @@
 # download, and build Newton Dynamics from pre-build binaries or source
 
+# set environment
+#################
 from os.path import expanduser, exists
 import os
-
 home = expanduser("~")
 env = Environment() 
 env["ENV"]["PATH"] = os.environ.get("PATH")
+env["ENV"]["HOME"] = os.environ.get("HOME")
+
 libpath = home + "/.HGamer3D/lib"
 Alias('install', libpath)
 

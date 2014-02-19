@@ -85,9 +85,9 @@ cameraPosC = Vec3 5.0 5.0 80.0
 cameraLookAtC =  Vec3 0.0 (5.0) 0.0
 vcreate = Vec3 100.0 0.0 0.0
 
-materialBlue = ResourceMaterial "Examples/Blue"
-materialRed = ResourceMaterial "Examples/Red"
-materialGreen = ResourceMaterial "Examples/Green"
+materialBlue = ResourceMaterial "Colours/Blue"
+materialRed = ResourceMaterial "Colours/Red"
+materialGreen = ResourceMaterial "Colours/Green"
 
 createMeshes = let 
   redMesh = sphereMesh
@@ -96,14 +96,14 @@ createMeshes = let
   in (redMesh, greenMesh, blueMesh)
 
 createElement g3ds mesh material pos size = do
-          elem3d <- object3DFromMesh g3ds mesh (Just material)
+          elem3d <- object3DFromMesh g3ds mesh (Just material) False
           positionTo3D elem3d pos
           scaleTo3D elem3d (Vec3 size size size)
           return elem3d
           
 _createLine g3ds a b colour = do
   m <- colouredLineMesh g3ds a b colour
-  elem3d <- object3DFromMesh g3ds m Nothing
+  elem3d <- object3DFromMesh g3ds m Nothing False
   return elem3d
           
 create3dLines g3ds cubo = do
@@ -270,7 +270,7 @@ main = do
   cameraLookAt camera cameraLookAtC
   let white = Colour 1.0 1.0 1.0 1.0
   setAmbientLight g3ds white
-  light <- pointlight g3ds white (Vec3 10.0 10.0 20.0)
+  light <- pointLight g3ds white (Vec3 10.0 10.0 20.0)
   loadGuiScheme guis "hg3d.scheme"
   cuboLayout <- loadGuiLayoutFromFile guis "cuboid2.layout" ""
   addGuiElToDisplay guis cuboLayout

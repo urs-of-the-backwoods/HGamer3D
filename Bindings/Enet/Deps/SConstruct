@@ -1,12 +1,15 @@
 # download, build and install Enet from source
 # mainly, to get the correct Enet version included
 
+# set environment
+#################
 from os.path import expanduser, exists
 import os
-
 home = expanduser("~")
 env = Environment() 
 env["ENV"]["PATH"] = os.environ.get("PATH")
+env["ENV"]["HOME"] = os.environ.get("HOME")
+
 Alias('install', home + "/.HGamer3D/lib")
 
 # gather files

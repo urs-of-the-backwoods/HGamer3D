@@ -2,12 +2,16 @@
 
 # scons file to build <project-name> library, version <version>
 
+# set environment
+#################
 from os.path import expanduser, exists
+import os, sys
 home = expanduser("~")
-import os, sys 
+env = Environment() 
+env["ENV"]["PATH"] = os.environ.get("PATH")
+env["ENV"]["HOME"] = os.environ.get("HOME")
 
-# settings
-home = expanduser("~")
+
 libpath = home + "/.HGamer3D/lib"
 
 # environment

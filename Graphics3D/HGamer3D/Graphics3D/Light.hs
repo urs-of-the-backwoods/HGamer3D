@@ -30,9 +30,9 @@ module HGamer3D.Graphics3D.Light (
         
     -- * create and modify light sources
 	HGamer3D.Graphics3D.Light.setAmbientLight,
-	pointlight,
-	spotlight,
-	setSpotlightAngle,
+	pointLight,
+	spotLight,
+	setSpotLightAngle,
 	directionalLight
 ) 
 
@@ -126,12 +126,12 @@ setAmbientLight g3ds colour = do
 	
 
 -- | creates a point light at a specific location
-pointlight :: Graphics3DSystem -- ^ the Graphics3D system object, returned by initGraphics3D
+pointLight :: Graphics3DSystem -- ^ the Graphics3D system object, returned by initGraphics3D
                     -> Colour -- ^ Color of the light
                     -> Vec3 -- ^ Position, where light is created
                     -> IO (Light) -- ^ The light object
 		
-pointlight g3ds (Colour t r g b) (Vec3 x y z) = do
+pointLight g3ds (Colour r g b al) (Vec3 x y z) = do
 	let (SceneManager scm) = (g3dsSceneManager g3ds)
 	lightName <- nextUniqueName (g3dsUniqueName g3ds)
 	
@@ -144,11 +144,11 @@ pointlight g3ds (Colour t r g b) (Vec3 x y z) = do
 	return eo
 
 -- | creates a spot light at a specific location
-spotlight :: Graphics3DSystem -- ^ the Graphics3D system object, returned by initGraphics3D
+spotLight :: Graphics3DSystem -- ^ the Graphics3D system object, returned by initGraphics3D
                     -> Colour -- ^ Color of the light
                     -> Vec3 -- ^ Position, where light is created
                     -> IO Light -- ^ The light object
-spotlight g3ds (Colour t r g b) (Vec3 x y z) = do
+spotLight g3ds (Colour r g b al) (Vec3 x y z) = do
 	let (SceneManager scm) = (g3dsSceneManager g3ds)
 	lightName <- nextUniqueName (g3dsUniqueName g3ds)
 	
@@ -161,10 +161,10 @@ spotlight g3ds (Colour t r g b) (Vec3 x y z) = do
 	return eo
 
 -- | set the angle of a spotlight
-setSpotlightAngle :: Light -- ^ spotlight
+setSpotLightAngle :: Light -- ^ spotlight
 					-> Angle -- ^ angle of the light cone, should be between 5 and 355 degree
 					-> IO ()
-setSpotlightAngle (Light light) a = do
+setSpotLightAngle (Light light) a = do
 	if (a >= (Deg 5)) && (a <= (Deg 355))
 		then do
 			let innerAngle = fromAngle $ a `subA` (Deg 4.5)
@@ -182,7 +182,7 @@ directionalLight :: Graphics3DSystem -- ^ the Graphics3D system object, returned
                     -> Vec3 -- ^ Position, where light is created
                     -> IO (Light) -- ^ The light object
 		
-directionalLight g3ds (Colour t r g b) (Vec3 x y z) = do
+directionalLight g3ds (Colour r g b al) (Vec3 x y z) = do
 	let (SceneManager scm) = (g3dsSceneManager g3ds)
 	lightName <- nextUniqueName (g3dsUniqueName g3ds)
 	

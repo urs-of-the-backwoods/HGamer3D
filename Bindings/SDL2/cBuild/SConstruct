@@ -16,12 +16,16 @@
 
 # scons file to build HGamer3DSDL2 library, version 0.3.0
 
-from os.path import expanduser, exists
-home = expanduser("~")
-import os, sys 
 
-# settings
+# set environment
+#################
+from os.path import expanduser, exists
+import os, sys
 home = expanduser("~")
+env = Environment() 
+env["ENV"]["PATH"] = os.environ.get("PATH")
+env["ENV"]["HOME"] = os.environ.get("HOME")
+
 libpath = home + "/.HGamer3D/lib"
 
 # environment

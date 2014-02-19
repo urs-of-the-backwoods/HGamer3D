@@ -1,0 +1,46 @@
+material Colours/Red
+{
+   technique
+   {
+      pass
+      {
+         lighting on
+ 
+         ambient 0.3 0.1 0.1 1
+         diffuse 0.8 0.1 0.1 1
+         emissive 0 0 0 1
+      }
+   }
+}
+ 
+ 
+material Colours/Blue
+{
+   technique
+   {
+      pass
+      {
+         lighting on
+ 
+         ambient 0.1 0.1 0.3 1
+         diffuse 0.1 0.1 0.8 1
+         emissive 0 0 0 1
+      }
+   }
+}
+ 
+material Colours/Green
+{
+   technique
+   {
+      pass
+      {
+         lighting on
+ 
+         ambient 0.1 0.3 0.1 1
+         diffuse 0.1 0.8 0.1 1
+         emissive 0.0 0.0 0.0 1
+      }
+   }
+}
+

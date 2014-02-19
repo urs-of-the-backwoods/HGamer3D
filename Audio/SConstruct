@@ -8,6 +8,8 @@ import os
 home = expanduser("~")
 env = Environment() 
 env["ENV"]["PATH"] = os.environ.get("PATH")
+env["ENV"]["HOME"] = os.environ.get("HOME")
+
 
 # Gather main dependencies
 ##########################

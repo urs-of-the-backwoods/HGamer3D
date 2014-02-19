@@ -19,6 +19,8 @@ limitations under the License.
 */
 
 #include "Ogre.h"
+#include "OgreMesh.h"
+#include "OgreHardwareVertexBuffer.h"
 #include "HG3DUtilities.h"
 
 static int quitReceived = 0;
@@ -69,3 +71,17 @@ int HG3DUtilities::checkQuitReceived()
   return rval;
 }
 
+// VES_TEXTURE_COORDINATES ?
+
+void HG3DUtilities::buildTangentVectors(Ogre::Entity *entity)
+{
+  const Ogre::MeshPtr mesh = entity->getMesh();
+  // build tangent vectors for our mesh
+  unsigned short src, dest;
+  if (!mesh->suggestTangentVectorBuildParams(Ogre::VES_TANGENT, src, dest))
+  {
+    mesh->buildTangentVectors(Ogre::VES_TANGENT, src, dest, true, true);
+				// this version cleans mirrored and rotated UVs but requires quality models
+				// mesh->buildTangentVectors(VES_TANGENT, src, dest, true, true);
+  };
+}

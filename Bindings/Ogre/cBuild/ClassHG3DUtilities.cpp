@@ -64,3 +64,10 @@ extern "C" Ogre_LIB_EXPORT void ogre_hg3dutl_checkQuitReceived(int * result_c)
   *result_c = (int)result_cpp;
 };
 
+// 
+extern "C" Ogre_LIB_EXPORT void ogre_hg3dutl_buildTangentVectors(struct hg3dclass_struct * entity_c)
+{
+  Ogre::Entity * entity_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*entity_c, "Ogre::Entity"));
+  (HG3DUtilities::buildTangentVectors(entity_cpp));
+};
+
