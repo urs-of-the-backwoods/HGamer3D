@@ -16,10 +16,10 @@
 
 // SDL2DllDefines.h
 
-#ifndef _HGamer3DSDL2030_DLLDEFINES_H_
-#define _HGamer3DSDL2030_DLLDEFINES_H_
+#ifndef _HGamer3DSDL2031_DLLDEFINES_H_
+#define _HGamer3DSDL2031_DLLDEFINES_H_
 
-/* Cmake will define HGamer3DSDL2030_EXPORTS on Windows when it
+/* Cmake will define HGamer3DSDL2031_EXPORTS on Windows when it
 configures to build a shared library. If you are going to use
 another build system on windows or create the visual studio
 projects by hand you need to define MyLibrary_EXPORTS when
@@ -29,13 +29,13 @@ building a DLL on windows.
 // We are using the Visual Studio Compiler and building Shared libraries
 
 #if (defined (_WIN32)) && !(defined (__GNUC__)) 
-  #if defined(HGamer3DSDL2030_EXPORTS)
+  #if defined(HGamer3DSDL2031_EXPORTS)
     #define  SDL2_LIB_EXPORT __declspec(dllexport)
   #else
     #define  SDL2_LIB_EXPORT __declspec(dllimport)
-  #endif /* HGamer3DSDL2030_EXPORTS */
+  #endif /* HGamer3DSDL2031_EXPORTS */
 #else /* defined (_WIN32) */
  #define SDL2_LIB_EXPORT
 #endif
 
-#endif /* _HGamer3DSDL2030_DLLDEFINES_H_ */
+#endif /* _HGamer3DSDL2031_DLLDEFINES_H_ */
