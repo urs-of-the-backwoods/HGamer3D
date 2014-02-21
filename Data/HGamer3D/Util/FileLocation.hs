@@ -42,6 +42,7 @@ module HGamer3D.Util.FileLocation
 where
 
 import Control.Monad
+import Control.Exception
 import System.Directory
 import System.FilePath
 import System.Environment.FindBin
@@ -62,8 +63,11 @@ getAppConfigDirectory  = _getHG3DDirectory "config"
 getAppLibDirectory = _getHG3DDirectory "lib"
   
 _getBinDir subdir = do
-  bdir <- getProgPath
-  let ndir = bdir ++ [pathSeparator] ++ ".HGamer3D" ++ [pathSeparator] ++ subdir
+  bdir <- try getProgPath :: IO (Either SomeException FilePath)
+  let bdir' = case bdir of
+        Left _ -> "."
+        Right path -> path
+  let ndir = bdir' ++ [pathSeparator] ++ ".HGamer3D" ++ [pathSeparator] ++ subdir
   return ndir
 
 -- | path of media, relative to executable
