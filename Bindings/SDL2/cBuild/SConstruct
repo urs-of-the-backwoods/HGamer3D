@@ -14,7 +14,7 @@
 # 
 
 
-# scons file to build HGamer3DSDL2 library, version 0.3.0
+# scons file to build HGamer3DSDL2 library, version 0.3.1
 
 
 # set environment
@@ -32,7 +32,7 @@ libpath = home + "/.HGamer3D/lib"
 env = Environment() 
 if env["PLATFORM"] == "win32":
    env = Environment(TARGET_ARCH="x86", MSVC_VERSION="10.0") 
-   env.MergeFlags({"CCFLAGS" : "/DWIN32 /D_WIN32 /DHGamer3DSDL2030_EXPORTS /EHsc /MD"})
+   env.MergeFlags({"CCFLAGS" : "/DWIN32 /D_WIN32 /DHGamer3DSDL2031_EXPORTS /EHsc /MD"})
 
 # env["ENV"]["PATH"] = os.environ.get("PATH")
 
@@ -42,15 +42,15 @@ if env["PLATFORM"] == "win32":
 
    env.Append(CPPPATH=["include","../Deps/include","../Deps/include","../Deps/lib/include"])
    env.Append(LIBPATH=["lib","../Deps/lib","../Deps/lib"])
-   env.SharedLibrary("hg3dsdl2030", ["HeaderSDL.cpp","ClassHG3DUtilities.cpp","HeaderSDLEvents.cpp","HeaderSDLKeyboard.cpp","HeaderSDLMouse.cpp","HeaderSDLVideo.cpp","ClassPtr.cpp","HG3DUtilities.cpp"], LIBS = ["SDL2.lib"])
+   env.SharedLibrary("hg3dsdl2031", ["HeaderSDL.cpp","ClassHG3DUtilities.cpp","HeaderSDLEvents.cpp","HeaderSDLKeyboard.cpp","HeaderSDLMouse.cpp","HeaderSDLVideo.cpp","ClassPtr.cpp","HG3DUtilities.cpp"], LIBS = ["SDL2.lib"])
    env.Alias('install', libpath)
-   env.Install(libpath, "hg3dsdl2030.dll")
+   env.Install(libpath, "hg3dsdl2031.dll")
 
 else:
    env.Append(CPPPATH=["include","../Deps/include","../Deps/include","../Deps/lib/include"])
    env.Append(LIBPATH=["lib","../Deps/lib","../Deps/lib"])
-   env.SharedLibrary("hg3dsdl2030", ["HeaderSDL.cpp","ClassHG3DUtilities.cpp","HeaderSDLEvents.cpp","HeaderSDLKeyboard.cpp","HeaderSDLMouse.cpp","HeaderSDLVideo.cpp","ClassPtr.cpp","HG3DUtilities.cpp"], LIBS = [":libSDL2-2.0.so.1","X11"])
+   env.SharedLibrary("hg3dsdl2031", ["HeaderSDL.cpp","ClassHG3DUtilities.cpp","HeaderSDLEvents.cpp","HeaderSDLKeyboard.cpp","HeaderSDLMouse.cpp","HeaderSDLVideo.cpp","ClassPtr.cpp","HG3DUtilities.cpp"], LIBS = ["X11","SDL2-2.0"])
    env.Alias('install', libpath)
-   env.Install(libpath, "libhg3dsdl2030.so")
+   env.Install(libpath, "libhg3dsdl2031.so")
 
 

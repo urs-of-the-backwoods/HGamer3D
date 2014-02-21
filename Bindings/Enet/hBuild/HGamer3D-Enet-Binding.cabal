@@ -1,5 +1,5 @@
 Name:                HGamer3D-Enet-Binding
-Version:             0.3.0
+Version:             0.3.1
 Synopsis:            Enet Binding for HGamer3D
 Description:         
    HGamer3D is a game engine for developing 3D games in the programming 
@@ -34,6 +34,6 @@ Library
   Build-tools:       
   build-depends:     
   if os(windows)
-     extra-libraries:   hg3denet030
+     extra-libraries:   hg3denet031
   else
-     extra-libraries:   hg3denet030,:libenet.so.2
+     extra-libraries:   hg3denet031,enet

@@ -1,5 +1,5 @@
 Name:                HGamer3D-SDL2-Binding
-Version:             0.3.0
+Version:             0.3.1
 Synopsis:            SDL2 Binding for HGamer3D
 Description:         
    HGamer3D is a game engine for developing 3D games in the programming 
@@ -33,6 +33,6 @@ Library
   Build-tools:       
   build-depends:     
   if os(windows)
-     extra-libraries:   hg3dsdl2030
+     extra-libraries:   hg3dsdl2031
   else
-     extra-libraries:   hg3dsdl2030,:libSDL2-2.0.so.1,X11
+     extra-libraries:   hg3dsdl2031,X11,SDL2-2.0
