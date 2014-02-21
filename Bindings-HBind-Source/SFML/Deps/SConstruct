@@ -12,6 +12,21 @@ env["ENV"]["HOME"] = os.environ.get("HOME")
 libpath = home + "/.HGamer3D/lib"
 Alias('install', libpath)
 
+sfmlLibs = [
+	 "libsfml-audio",
+	 "libsfml-graphics",
+	 "libsfml-network",
+	 "libsfml-system",
+	 "libsfml-window"  ]
+
+buildTargets = []
+for lib in sfmlLibs:
+    buildTargets.append("lib/" + lib + ".so.2.1")
+
+def linkSO(target, source, env):
+    cmd = "rm -rf " + str(target[0])[:-2] + " && ln -s " + str(target[0]) + " " + str(target[0])[:-2] + " && ln -s " + str(target[0]) + " " + str(target[0])[:-4] 
+    os.system(cmd)
+
 # download pre-build binaries or source and extract
 if env["PLATFORM"] == "win32":
    # download and extract pre-build binaries
@@ -29,12 +44,12 @@ env.Command("include", "SFML-2.1/include", "ln -s SFML-2.1/include include")
 # when linux, then build from source
 if env["PLATFORM"] == "posix":
    # build
-   env.Command("SFML-2.1/lib/libsfml-system.so.2.1", "include", "cd SFML-2.1 && cmake -G \"Unix Makefiles\" && make")
+   env.Command(buildTargets, "include", "cd SFML-2.1 && cmake -G \"Unix Makefiles\" && make")
    # link lib to deps/lib to make easier command for linking against it
-   env.Command("lib", "SFML-2.1/lib/libsfml-system.so.2.1", "ln -s SFML-2.1/lib lib")
+   env.Command("lib", buildTargets, "rm -rf lib && ln -s SFML-2.1/lib lib")
    # install runtime
-   installCmd = env.Install(home + "/.HGamer3D/lib", Glob("SFML-2.1/lib/*.so.2.1"))
-   AddPostAction(installCmd, "ldconfig -n " + home + "/.HGamer3D/lib")
+   installCmd = env.Install(home + "/.HGamer3D/lib", buildTargets)
+   AddPostAction(installCmd, linkSO)
 
 # when windows, just copy dll's
 else:

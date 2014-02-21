@@ -13,24 +13,28 @@ libpath = home + "/.HGamer3D/lib"
 Alias('install', libpath)
 
 ogreDlls = [
-	 "lib/libOgreMain.so.1.8.1",
-	 "lib/libOgrePaging.so.1.8.1",
-	 "lib/libOgreProperty.so.1.8.1",
-	 "lib/libOgreRTShaderSystem.so.1.8.1",
-	 "lib/libOgreTerrain.so.1.8.1"
+	 "libOgreMain.so.1.8.1",
+	 "libOgrePaging.so.1.8.1",
+	 "libOgreProperty.so.1.8.1",
+	 "libOgreRTShaderSystem.so.1.8.1",
+	 "libOgreTerrain.so.1.8.1"
 ]
 ogrePlugins = [
-	 "lib/Plugin_BSPSceneManager.so.1.8.1",
-	 "lib/Plugin_CgProgramManager.so.1.8.1",
-	 "lib/Plugin_OctreeSceneManager.so.1.8.1",
-	 "lib/Plugin_OctreeZone.so.1.8.1",
-	 "lib/Plugin_ParticleFX.so.1.8.1",
-	 "lib/Plugin_PCZSceneManager.so.1.8.1",
-	 "lib/RenderSystem_GL.so.1.8.1"
+	 "Plugin_BSPSceneManager.so.1.8.1",
+	 "Plugin_CgProgramManager.so.1.8.1",
+	 "Plugin_OctreeSceneManager.so.1.8.1",
+	 "Plugin_OctreeZone.so.1.8.1",
+	 "Plugin_ParticleFX.so.1.8.1",
+	 "Plugin_PCZSceneManager.so.1.8.1",
+	 "RenderSystem_GL.so.1.8.1"
 ]
 
+buildTargets = []
+for lib in (ogreDlls + ogrePlugins):
+    buildTargets.append("ogre_src_v1-8-1/lib/" + lib)
+
 def linkSO(target, source, env):
-    cmd = "ln -s " + str(target[0]) + " " + str(target[0])[:-6]
+    cmd = "rm -rf " + str(target[0])[:-6] + " && ln -s " + str(target[0]) + " " + str(target[0])[:-6]
     os.system(cmd)
 
 
@@ -49,29 +53,36 @@ if env["PLATFORM"] == "win32":
    env.Install(libpath, Glob("OgreSDK_vc10_v1-8-1/bin/release/*.dll"))
 
 else:
-   # download and extract sources
+   # target: ogre-1.8.1.tar.bz2 => if not exits, download
    if (not exists("ogre-1.8.1.tar.bz2")):
       env.Command("ogre-1.8.1.tar.bz2", "", "wget -O ogre-1.8.1.tar.bz2 http://sourceforge.net/projects/ogre/files/ogre/1.8/1.8.1/ogre_src_v1-8-1.tar.bz2")
-   env.Command("ogre_src_v1-8-1/OgreMain/include", "ogre-1.8.1.tar.bz2", "tar xjf ogre-1.8.1.tar.bz2")
-   # link include folder
-   env.Command("include", "ogre_src_v1-8-1/OgreMain/include", "mkdir include && cd include && ln -s ../ogre_src_v1-8-1/OgreMain/include OgreMain && ln -s ../ogre_src_v1-8-1/include BuildConfig")  
-   # build
-   env.Command("ogre_src_v1-8-1/lib/libOgreMain.so.1.8.1", "include", "cd ogre_src_v1-8-1 && cmake -G \"Unix Makefiles\" && make")
-   # link lib to deps/lib to make easier command for linking against it
-   env.Command("lib", "ogre_src_v1-8-1/lib/libOgreMain.so.1.8.1", "ln -s ogre_src_v1-8-1/lib lib")
-   # install runtime
-   installCmd = env.Install(libpath, ogreDlls + ogrePlugins)
+
+   # target: ogre_src_v1-8-1/OgreMain/src => extract, if not exist
+   env.Command("ogre_src_v1-8-1/OgreMain/src", "ogre-1.8.1.tar.bz2", "tar xjf ogre-1.8.1.tar.bz2")
+
+   # target: all dynamic libs in ogre_src_v1-8-1/OgreMain/lib => run make
+   env.Command(buildTargets, "ogre_src_v1-8-1/OgreMain/src", [
+			     "cd ogre_src_v1-8-1 && cmake -G \"Unix Makefiles\"",
+			     "cd ogre_src_v1-8-1 && make"]
+			     )
+
+   # target: all dynamic libs in libpach => intall in libpath
+   installCmd = env.Install(libpath, buildTargets)
    AddPostAction(installCmd, linkSO)
-#   AddPostAction(installCmd, [
-#   			     "ldconfig -n " + home + "/.HGamer3D/lib",
-#			     "cd " + home + "/.HGamer3D/lib && ln -s Plugin_BSPSceneManager.so.1.8.1 Plugin_BSPSceneManager.so",
-#			     "cd " + home + "/.HGamer3D/lib && ln -s Plugin_CgProgramManager.so.1.8.1 Plugin_CgProgramManager.so",
-#			     "cd " + home + "/.HGamer3D/lib && ln -s Plugin_OctreeSceneManager.so.1.8.1 Plugin_OctreeSceneManager.so",#
-#			     "cd " + home + "/.HGamer3D/lib && ln -s Plugin_ParticleFX.so.1.8.1 Plugin_ParticleFX.so",
-#			     "cd " + home + "/.HGamer3D/lib && ln -s Plugin_OctreeZone.so.1.8.1 Plugin_OctreeZone.so",
-#			     "cd " + home + "/.HGamer3D/lib && ln -s Plugin_PCZSceneManager.so.1.8.1 Plugin_PCZSceneManager.so",
-#			     "cd " + home + "/.HGamer3D/lib && ln -s RenderSystem_GL.so.1.8.1 RenderSystem_GL.so"
-#                             ] )
+
+   # target: include => link include folder
+   env.Command("include", "ogre_src_v1-8-1/OgreMain/src", [
+   			  "rm -rf include",
+   			  "mkdir include",
+			  "cd include && ln -s ../ogre_src_v1-8-1/OgreMain/include OgreMain",
+			  "cd include && ln -s ../ogre_src_v1-8-1/include BuildConfig"]
+			  )  
+
+   # link lib to deps/lib to make easier command for linking against it
+   env.Command("lib", "ogre_src_v1-8-1/OgreMain/src", [
+   		      "rm -rf lib",
+		      "ln -s ogre_src_v1-8-1/lib lib"])
+
 
 
 

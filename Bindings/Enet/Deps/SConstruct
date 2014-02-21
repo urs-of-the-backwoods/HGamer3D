@@ -39,11 +39,14 @@ elif env["PLATFORM"] == "posix":
 	env.Command("enet-1.3.7/Makefile", files, "cd enet-1.3.7 && ./configure")
 	env.Command("enet-1.3.7/.libs/libenet.so.2", "enet-1.3.7/Makefile", "cd enet-1.3.7 && make")
 	# link lib to deps/lib to make easier command for linking against it
-	env.Command("lib", "enet-1.3.7/.libs/libenet.so.2", "ln -s enet-1.3.7/.libs lib")
-	env.Command("include", "enet-1.3.7/include", "ln -s enet-1.3.7/include include")
+	env.Command("lib", "enet-1.3.7/.libs/libenet.so.2", "rm -rf lib && ln -s enet-1.3.7/.libs lib")
+	env.Command("include", "enet-1.3.7/include", "rm -rf include && ln -s enet-1.3.7/include include")
 	# install runtime
 	installCmd = env.Install(home + "/.HGamer3D/lib", "enet-1.3.7/.libs/libenet.so.2.2.0")
-	AddPostAction(installCmd, "ldconfig -n " + home + "/.HGamer3D/lib")
+	AddPostAction(installCmd, [
+				  "ldconfig -n " + home + "/.HGamer3D/lib",
+				  "cd " + home + "/.HGamer3D/lib && ln -s libenet.so.2.2.0 libenet.so"
+				  ])
 
 else:
 	print("platform " + env["PLATFORM"] + " not supported!")

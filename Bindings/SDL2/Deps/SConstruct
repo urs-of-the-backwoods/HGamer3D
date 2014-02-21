@@ -26,9 +26,12 @@ if env["PLATFORM"] == "posix":
    # link include folder
    env.Command("include", "SDL2-2.0.1/include", "ln -s SDL2-2.0.1/include include")
 
-   env.Command("lib/libSDL2-2.0.so.1", "include", "cd lib && cmake -G \"Unix Makefiles\" ../SDL2-2.0.1 && make")
-   installCmd = env.Install(home + "/.HGamer3D/lib", Glob("lib/*.so.1.?.?"))
-   AddPostAction(installCmd, "ldconfig -n " + home + "/.HGamer3D/lib")
+   env.Command("lib/libSDL2-2.0.so.1.0.1", "include", "cd lib && cmake -G \"Unix Makefiles\" ../SDL2-2.0.1 && make")
+   installCmd = env.Install(home + "/.HGamer3D/lib", "lib/libSDL2-2.0.so.1.0.1")
+   AddPostAction(installCmd, [
+   			     "ldconfig -n " + home + "/.HGamer3D/lib",
+			     "cd " + home + "/.HGamer3D/lib && ln -s libSDL2-2.0.so.1.0.1 libSDL2-2.0.so"
+			     ])
 
 # ON WINDOWS - DOWNLOAD LIB AND INSTALL
 #######################################
