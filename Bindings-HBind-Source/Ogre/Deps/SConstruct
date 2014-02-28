@@ -15,13 +15,13 @@ Alias('install', libpath)
 ogreDlls = [
 	 "libOgreMain.so.1.8.1",
 	 "libOgrePaging.so.1.8.1",
-	 "libOgreProperty.so.1.8.1",
+#	 "libOgreProperty.so.1.8.1",
 	 "libOgreRTShaderSystem.so.1.8.1",
 	 "libOgreTerrain.so.1.8.1"
 ]
 ogrePlugins = [
 	 "Plugin_BSPSceneManager.so.1.8.1",
-	 "Plugin_CgProgramManager.so.1.8.1",
+#	 "Plugin_CgProgramManager.so.1.8.1",
 	 "Plugin_OctreeSceneManager.so.1.8.1",
 	 "Plugin_OctreeZone.so.1.8.1",
 	 "Plugin_ParticleFX.so.1.8.1",
@@ -34,7 +34,7 @@ for lib in (ogreDlls + ogrePlugins):
     buildTargets.append("ogre_src_v1-8-1/lib/" + lib)
 
 def linkSO(target, source, env):
-    cmd = "rm -rf " + str(target[0])[:-6] + " && ln -s " + str(target[0]) + " " + str(target[0])[:-6]
+    cmd = "rm -f " + str(target[0])[:-6] + " && ln -s " + os.path.basename(str(target[0])) + " " + str(target[0])[:-6]
     os.system(cmd)
 
 
@@ -42,7 +42,10 @@ def linkSO(target, source, env):
 if env["PLATFORM"] == "win32":
    # download and extract pre-build binaries
    if (not exists("ogre-1.8.1.exe")):
-      env.Command("ogre-1.8.1.exe", "", "wget -O ogre-1.8.1.exe http://sourceforge.net/projects/ogre/files/ogre/1.8/1.8.1/OgreSDK_vc10_v1-8-1.exe")
+      env.Command("ogre-1.8.1.exe", "", [
+         "wget -O ogre-1.8.1.exe http://sourceforge.net/projects/ogre/files/ogre/1.8/1.8.1/OgreSDK_vc10_v1-8-1.exe || (rm -f ogre-1.8.1.exe && exit 1)",
+         "md5sum -c md5-ogre-win || (rm -f ogre-1.8.1.exe && exit 1)"
+	 ])
    env.Command("OgreSDK_vc10_v1-8-1/include", "ogre-1.8.1.exe", "ogre-1.8.1.exe")
    env.Command("lib", "OgreSDK_vc10_v1-8-1/include", "ln -s OgreSDK_vc10_v1-8-1/lib/release lib")  
    env.Command("lib/libboost_thread-vc100-mt-1_49.lib", "OgreSDK_vc10_v1-8-1/include", "cp OgreSDK_vc10_v1-8-1/boost/lib/libboost_thread-vc100-mt-1_49.lib lib")
@@ -53,22 +56,24 @@ if env["PLATFORM"] == "win32":
    env.Install(libpath, Glob("OgreSDK_vc10_v1-8-1/bin/release/*.dll"))
 
 else:
-   # target: ogre-1.8.1.tar.bz2 => if not exits, download
+   # download source distribution if not existing
    if (not exists("ogre-1.8.1.tar.bz2")):
-      env.Command("ogre-1.8.1.tar.bz2", "", "wget -O ogre-1.8.1.tar.bz2 http://sourceforge.net/projects/ogre/files/ogre/1.8/1.8.1/ogre_src_v1-8-1.tar.bz2")
-
-   # target: ogre_src_v1-8-1/OgreMain/src => extract, if not exist
+      env.Command("ogre-1.8.1.tar.bz2", "", [
+         "wget -O ogre-1.8.1.tar.bz2 http://sourceforge.net/projects/ogre/files/ogre/1.8/1.8.1/ogre_src_v1-8-1.tar.bz2 || (rm -f ogre-1.8.1.tar.bz2 && exit 1)",
+	 "md5sum -c md5-ogre || (rm -f ogre-1.8.1.tar.bz2 && exit 1)"
+	 ])
+   # extract all files
    env.Command("ogre_src_v1-8-1/OgreMain/src", "ogre-1.8.1.tar.bz2", "tar xjf ogre-1.8.1.tar.bz2")
 
-   # target: all dynamic libs in ogre_src_v1-8-1/OgreMain/lib => run make
-   env.Command(buildTargets, "ogre_src_v1-8-1/OgreMain/src", [
-			     "cd ogre_src_v1-8-1 && cmake -G \"Unix Makefiles\"",
-			     "cd ogre_src_v1-8-1 && make"]
-			     )
+   # configure and create Makefile
+   env.Command("ogre_src_v1-8-1/Makefile", "ogre_src_v1-8-1/OgreMain/src", [
+			     "cd ogre_src_v1-8-1 && cmake -G \"Unix Makefiles\""
+			     ])
 
-   # target: all dynamic libs in libpach => intall in libpath
-   installCmd = env.Install(libpath, buildTargets)
-   AddPostAction(installCmd, linkSO)
+   # build libraries
+   env.Command(buildTargets, "ogre_src_v1-8-1/Makefile", [
+			     "cd ogre_src_v1-8-1 && make"
+			     ])
 
    # target: include => link include folder
    env.Command("include", "ogre_src_v1-8-1/OgreMain/src", [
@@ -78,10 +83,13 @@ else:
 			  "cd include && ln -s ../ogre_src_v1-8-1/include BuildConfig"]
 			  )  
 
-   # link lib to deps/lib to make easier command for linking against it
-   env.Command("lib", "ogre_src_v1-8-1/OgreMain/src", [
-   		      "rm -rf lib",
-		      "ln -s ogre_src_v1-8-1/lib lib"])
+   # copy libs
+   copyCmd = env.Install("lib", buildTargets)
+   AddPostAction(copyCmd, linkSO)
+
+   # target: all dynamic libs in libpath => intall in libpath
+   installCmd = env.Install(libpath, buildTargets)
+   AddPostAction(installCmd, linkSO)
 
 
 
