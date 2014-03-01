@@ -41,11 +41,11 @@ main = do
 	
 	-- define light
             
-	setAmbientLight g3ds (Colour 0.3 0.3 0.3 1.0)
-	spotLight g3ds (Colour 0.3 0.3 0.3 1.0) (Vec3 20.0 20.0 20.0)
-	spotLight g3ds (Colour 0.3 0.3 0.3 1.0) (Vec3 20.0 (-20.0) 20.0)
+	setAmbientLight g3ds (Colour 1.0 1.0 1.0 1.0)
+	pointLight g3ds (Colour 0.3 0.3 1.0 1.0) (Vec3 (-100.0) 10.0 0.0)
+	pointLight g3ds (Colour 1.0 0.3 0.3 1.0) (Vec3 100.0 10.0 0.0)
         let cube = resourceMesh "knot.mesh"
-        cube <- object3DFromMesh g3ds cube (Just (ResourceMaterial "BumpMapping/RustedMetal") ) True
+        cube <- object3DFromMesh g3ds cube (Just (ResourceMaterial "OffsetMapping/IntegratedShadows") ) True
 
         positionTo3D cube (Vec3 0.0 0.0 0.0)
         

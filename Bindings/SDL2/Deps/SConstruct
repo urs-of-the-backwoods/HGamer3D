@@ -13,25 +13,47 @@ env["ENV"]["HOME"] = os.environ.get("HOME")
 libpath = home + "/.HGamer3D/lib"
 Alias('install', libpath)
 
+def linkSO(target, source, env):
+    cmd = "rm -f " + str(target[0])[:-6]
+    cmd2 = "rm -f " + str(target[0])[:-4]
+    cmd3 = "ln -s " + os.path.basename(str(target[0])) + " " + str(target[0])[:-6]
+    cmd4 = "ln -s " + os.path.basename(str(target[0])) + " " + str(target[0])[:-4]
+    for c in [cmd, cmd2, cmd3, cmd4]:
+        os.system(c)
+
 # ON LINUX - DOWNLOAD AND COMPILE
 #################################
 if env["PLATFORM"] == "posix":
 
    # download source and extract
    if (not exists("SDL2-2.0.1.tar.gz")):
-      env.Command("SDL2-2.0.1.tar.gz", "", "wget -O SDL2-2.0.1.tar.gz http://www.libsdl.org/release/SDL2-2.0.1.tar.gz")
+      env.Command("SDL2-2.0.1.tar.gz", "", [
+         "wget -O SDL2-2.0.1.tar.gz http://www.libsdl.org/release/SDL2-2.0.1.tar.gz || (rm -f SDL2-2.0.1.tar.gz && exit 1)",
+      	 "md5sum -c md5-sdl2 || (rm -f SDL2-2.0.1.tar.gz && exit 1)"
+	 ])
    extractCmd = env.Command("SDL2-2.0.1/include", "SDL2-2.0.1.tar.gz", "tar xzf SDL2-2.0.1.tar.gz")
    AddPostAction(extractCmd, "patch SDL2-2.0.1/src/video/x11/SDL_x11window.c sdl2_x11_windowinput.patch -N -r-")
 
    # link include folder
    env.Command("include", "SDL2-2.0.1/include", "ln -s SDL2-2.0.1/include include")
+   
+   # configure command, create Makefile
+   # change to configure/make to hand in enable-sdl-dlopen=no, this is important, otherwise SDL2 will
+   # not contain X11 dependencies and GHC build chain gets confused!
+   # CMAKE version of the same parameter does not work! (or I did not got it to work)
+   env.Command("SDL2-2.0.1/Makefile", "include", "cd SDL2-2.0.1 && ./configure --enable-sdl-dlopen=no")
 
-   env.Command("lib/libSDL2-2.0.so.1.0.1", "include", "cd lib && cmake -G \"Unix Makefiles\" ../SDL2-2.0.1 && make")
-   installCmd = env.Install(home + "/.HGamer3D/lib", "lib/libSDL2-2.0.so.1.0.1")
-   AddPostAction(installCmd, [
-   			     "ldconfig -n " + home + "/.HGamer3D/lib",
-			     "cd " + home + "/.HGamer3D/lib && ln -s libSDL2-2.0.so.1.0.1 libSDL2-2.0.so"
-			     ])
+   # build command, create Libraries
+   env.Command("SDL2-2.0.1/build/.libs/libSDL2-2.0.so.0.1.0", "SDL2-2.0.1/Makefile", "cd SDL2-2.0.1 && make")
+
+   # install libraries in lib directory
+   copyCmd = env.Install("lib", "SDL2-2.0.1/build/.libs/libSDL2-2.0.so.0.1.0")
+   AddPostAction(copyCmd, linkSO)
+
+   # install libraries in output directory
+   installCmd = env.Install(home + "/.HGamer3D/lib", "SDL2-2.0.1/build/.libs/libSDL2-2.0.so.0.1.0")
+   AddPostAction(installCmd, linkSO)
+   
 
 # ON WINDOWS - DOWNLOAD LIB AND INSTALL
 #######################################

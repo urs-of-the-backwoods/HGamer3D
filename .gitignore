@@ -72,6 +72,7 @@ Bindings/*/.parsedinfo
 Bindings/*/.include
 Bindings/*/Deps/*
 !Bindings/*/Deps/SConstruct
+!Bindings/*/Deps/md5-*
 !Bindings/*/Deps/*.patch
 
 # Example build dir

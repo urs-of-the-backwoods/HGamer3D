@@ -23,7 +23,7 @@
 module HGamer3D 
 
 (
-  Event (..),
+  HG3DEvent (..),
   
   module HGamer3D.Graphics3D,
   module HGamer3D.WinEvent,
@@ -40,13 +40,13 @@ module HGamer3D
   import HGamer3D.GUI
   import qualified System.Info as SI
 
-  data Event = EventWindow SDLEvent | EventGUI [GUIEvent]
+  data HG3DEvent = EventWindow SDLEvent | EventGUI [GUIEvent]
 
   exitHGamer3D :: Graphics3DSystem -> GUISystem -> IO ()
   exitHGamer3D g3ds guis = do 
      exitGraphics3D g3ds
 
-  loopHGamer3D :: Graphics3DSystem -> GUISystem -> IO (Maybe Event, Bool)
+  loopHGamer3D :: Graphics3DSystem -> GUISystem -> IO (Maybe HG3DEvent, Bool)
   loopHGamer3D g3ds guis = do
 
         renderOneFrame g3ds

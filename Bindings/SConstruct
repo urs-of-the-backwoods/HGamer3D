@@ -1,0 +1,142 @@
+# build bindings
+
+# set environment
+#################
+from os.path import expanduser, exists
+import os, sys
+home = expanduser("~")
+env = Environment() 
+env["ENV"]["PATH"] = os.environ.get("PATH")
+env["ENV"]["HOME"] = os.environ.get("HOME")
+
+# Default target is empty, need to choose between options
+#########################################################
+Default(None)
+
+
+# Build the library file dependencies
+#####################################
+
+def buildFileDeps(dir, files):
+   list = []
+   for f in files.split():
+       list.append(dir + "/Deps/lib/" + f)
+   env.Command(list, None, "cd " + dir + "/Deps && scons") 
+   return list
+
+# Enet Files
+enetFiles = buildFileDeps("Enet", """
+libenet.so
+libenet.so.2
+libenet.so.2.2.0
+""")
+
+# CEGUI Files
+ceguiFiles = buildFileDeps("CEGUI", """
+libCEGUIBase-0.7.7.so
+libCEGUIBase.so
+libCEGUIExpatParser-0.7.7.so
+libCEGUIExpatParser.so
+libCEGUIFalagardWRBase-0.7.7.so
+libCEGUIFalagardWRBase.so
+libCEGUIFreeImageImageCodec-0.7.7.so
+libCEGUIFreeImageImageCodec.so
+libCEGUIOgreRenderer-0.7.7.so
+libCEGUIOgreRenderer.so
+libCEGUIOpenGLRenderer-0.7.7.so
+libCEGUIOpenGLRenderer.so
+libCEGUISTBImageCodec-0.7.7.so
+libCEGUISTBImageCodec.so
+libCEGUITGAImageCodec-0.7.7.so
+libCEGUITGAImageCodec.so
+libCEGUITinyXMLParser-0.7.7.so
+libCEGUITinyXMLParser.so
+""")
+
+# Ogre Files
+ogreFiles = buildFileDeps("Ogre", """
+libOgreMain.so
+libOgreMain.so.1.8.1
+libOgrePaging.so
+libOgrePaging.so.1.8.1
+libOgreRTShaderSystem.so
+libOgreRTShaderSystem.so.1.8.1
+libOgreTerrain.so
+libOgreTerrain.so.1.8.1
+Plugin_BSPSceneManager.so
+Plugin_BSPSceneManager.so.1.8.1
+Plugin_OctreeSceneManager.so
+Plugin_OctreeSceneManager.so.1.8.1
+Plugin_OctreeZone.so
+Plugin_OctreeZone.so.1.8.1
+Plugin_ParticleFX.so
+Plugin_ParticleFX.so.1.8.1
+Plugin_PCZSceneManager.so
+Plugin_PCZSceneManager.so.1.8.1
+RenderSystem_GL.so
+RenderSystem_GL.so.1.8.1
+""")
+
+# SDL2 Files
+sdl2Files = buildFileDeps("SDL2", """
+libSDL2-2.0.so
+libSDL2-2.0.so.0
+libSDL2-2.0.so.0.1.0
+""")
+
+# SFML Files
+sfmlFiles = buildFileDeps("SFML", """
+libsfml-audio.so
+libsfml-audio.so.2
+libsfml-audio.so.2.1
+libsfml-graphics.so
+libsfml-graphics.so.2
+libsfml-graphics.so.2.1
+libsfml-network.so
+libsfml-network.so.2
+libsfml-network.so.2.1
+libsfml-system.so
+libsfml-system.so.2
+libsfml-system.so.2.1
+libsfml-window.so
+libsfml-window.so.2
+libsfml-window.so.2.1
+""")
+
+ogreHG3DLib = env.Command("Ogre/cBuild/libhg3dogre031.so", "", "cd Ogre/cBuild && scons")
+enetHG3DLib = env.Command("Enet/cBuild/libhg3denet031.so", "", "cd Enet/cBuild && scons")
+ceguiHG3DLib = env.Command("CEGUI/cBuild/libhg3dcegui030.so", "", "cd CEGUI/cBuild && scons")
+sdl2HG3DLib = env.Command("SDL2/cBuild/libhg3dsdl2031.so", "", "cd SDL2/cBuild && scons")
+sfmlHG3DLib = env.Command("SFML/cBuild/libhg3dsfml031.so", "", "cd SFML/cBuild && scons")
+
+# a couple of aliases, who define the build targets
+###################################################
+
+libpath = home + "/.HGamer3D/lib"
+def libFiles(inList):
+    outList = []
+    for fSource in inList:
+    	fTarget = libpath + "/" + os.path.basename(fSource)
+    	outList.append(fTarget)
+	env.Command(fTarget, fSource, "cp -r $SOURCE $TARGET")
+    return outList
+
+# Graphics3D
+graphics3DFiles = ogreFiles + ["Ogre/cBuild/libhg3dogre031.so"]
+graphics3D = libFiles(graphics3DFiles)
+Alias('Graphics3D', graphics3D)
+
+# GUI
+guiFiles = sdl2Files + ["SDL2/cBuild/libhg3dsdl2031.so"] + ceguiFiles + ["CEGUI/cBuild/libhg3dcegui030.so"]
+gui = libFiles(guiFiles)
+Alias('GUI', gui)
+
+# Aux
+auxFiles = sfmlFiles + ["SFML/cBuild/libhg3dsfml031.so"] + enetFiles + ["Enet/cBuild/libhg3denet031.so"]
+aux = libFiles(auxFiles)
+Alias('Aux', aux)
+
+# all
+allFiles = graphics3D + gui + aux
+Alias('all', allFiles)
+
