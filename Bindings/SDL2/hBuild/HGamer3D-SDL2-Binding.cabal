@@ -35,4 +35,4 @@ Library
   if os(windows)
      extra-libraries:   hg3dsdl2031
   else
-     extra-libraries:   hg3dsdl2031,X11,SDL2-2.0
+     extra-libraries:   hg3dsdl2031,SDL2-2.0,X11

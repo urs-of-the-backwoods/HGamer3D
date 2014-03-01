@@ -80,8 +80,8 @@ RenderSystem_GL.so.1.8.1
 # SDL2 Files
 sdl2Files = buildFileDeps("SDL2", """
 libSDL2-2.0.so
-libSDL2-2.0.so.1
-libSDL2-2.0.so.1.0.1
+libSDL2-2.0.so.0
+libSDL2-2.0.so.0.1.0
 """)
 
 # SFML Files

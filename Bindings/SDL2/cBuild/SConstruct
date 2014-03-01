@@ -49,7 +49,7 @@ if env["PLATFORM"] == "win32":
 else:
    env.Append(CPPPATH=["include","../Deps/include","../Deps/include","../Deps/lib/include"])
    env.Append(LIBPATH=["lib","../Deps/lib","../Deps/lib"])
-   env.SharedLibrary("hg3dsdl2031", ["HeaderSDL.cpp","ClassHG3DUtilities.cpp","HeaderSDLEvents.cpp","HeaderSDLKeyboard.cpp","HeaderSDLMouse.cpp","HeaderSDLVideo.cpp","ClassPtr.cpp","HG3DUtilities.cpp"], LIBS = ["X11","SDL2-2.0"])
+   env.SharedLibrary("hg3dsdl2031", ["HeaderSDL.cpp","ClassHG3DUtilities.cpp","HeaderSDLEvents.cpp","HeaderSDLKeyboard.cpp","HeaderSDLMouse.cpp","HeaderSDLVideo.cpp","ClassPtr.cpp","HG3DUtilities.cpp"], LIBS = ["SDL2-2.0","X11"])
    env.Alias('install', libpath)
    env.Install(libpath, "libhg3dsdl2031.so")
 

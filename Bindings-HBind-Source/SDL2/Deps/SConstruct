@@ -38,13 +38,20 @@ if env["PLATFORM"] == "posix":
    env.Command("include", "SDL2-2.0.1/include", "ln -s SDL2-2.0.1/include include")
    
    # configure command, create Makefile
-   env.Command("lib/Makefile", "include", "cd lib && cmake -G \"Unix Makefiles\" ../SDL2-2.0.1")
+   # change to configure/make to hand in enable-sdl-dlopen=no, this is important, otherwise SDL2 will
+   # not contain X11 dependencies and GHC build chain gets confused!
+   # CMAKE version of the same parameter does not work! (or I did not got it to work)
+   env.Command("SDL2-2.0.1/Makefile", "include", "cd SDL2-2.0.1 && ./configure --enable-sdl-dlopen=no")
 
    # build command, create Libraries
-   env.Command("lib/libSDL2-2.0.so.1.0.1", "lib/Makefile", "cd lib && make")
+   env.Command("SDL2-2.0.1/build/.libs/libSDL2-2.0.so.0.1.0", "SDL2-2.0.1/Makefile", "cd SDL2-2.0.1 && make")
+
+   # install libraries in lib directory
+   copyCmd = env.Install("lib", "SDL2-2.0.1/build/.libs/libSDL2-2.0.so.0.1.0")
+   AddPostAction(copyCmd, linkSO)
 
    # install libraries in output directory
-   installCmd = env.Install(home + "/.HGamer3D/lib", "lib/libSDL2-2.0.so.1.0.1")
+   installCmd = env.Install(home + "/.HGamer3D/lib", "SDL2-2.0.1/build/.libs/libSDL2-2.0.so.0.1.0")
    AddPostAction(installCmd, linkSO)
    
 
