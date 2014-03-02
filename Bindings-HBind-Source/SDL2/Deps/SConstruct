@@ -61,7 +61,11 @@ if env["PLATFORM"] == "posix":
 else:
    # download source and extract
    if (not exists("SDL2-devel-2.0.1-VC.zip")):
-      env.Command("SDL2-devel-2.0.1-VC.zip", "", "wget -O SDL2-devel-2.0.1-VC.zipo http://www.libsdl.org/release/SDL2-devel-2.0.1-VC.zip")
+      env.Command("SDL2-devel-2.0.1-VC.zip", "", 
+      	[
+	   "wget -O SDL2-devel-2.0.1-VC.zip http://www.libsdl.org/release/SDL2-devel-2.0.1-VC.zip || (rm -f SDL2-devel-2.0.1-VC.zip && exit 1)",
+      	   "md5sum -c md5-sdl2-win || (rm -f SDL2-devel-2.0.1-VC.zip && exit 1)"
+	])
    extractCmd = env.Command("SDL2-2.0.1/include", "SDL2-devel-2.0.1-VC.zip", "unzip SDL2-devel-2.0.1-VC")
 
    # link include and lib

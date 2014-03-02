@@ -56,14 +56,18 @@ else:
    # download and extract sources
    if (not exists("CEGUI-0.7.7.zip")):
       env.Command("CEGUI-0.7.7.zip", "", [
-         "wget -O CEGUI-0.7.7.zip http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-0.7.7.zip || (rm -f CEGUI-0.7.7.zip && exit 1)",
-	 "md5sum -c md5-cegui-win || (rm -f CEGUI-0.7.7.zip && exit 1)"
+         "wget -O CEGUI-0.7.7.zip http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-0.7.7.zip || (rm -f CEGUI-0.7.7.zip && exit 1)"
+         , "md5sum -c md5-cegui-win || (rm -f CEGUI-0.7.7.zip && exit 1)"
 	 ])
    env.Command("CEGUI-0.7.7/cegui/include", "CEGUI-0.7.7.zip", "unzip cegui-0.7.7.zip")
 
    # download and extract pre-build dependencies
    if (not exists("CEGUI-DEPS-0.7.x-r3-vc10.zip")):
-      env.Command("CEGUI-DEPS-0.7.x-r3-vc10.zip", "", "wget -O CEGUI-DEPS-0.7.x-r3-vc10.zip http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-DEPS-0.7.x-r3-vc10.zip")
+      env.Command("CEGUI-DEPS-0.7.x-r3-vc10.zip", "", [
+         "wget -O CEGUI-DEPS-0.7.x-r3-vc10.zip http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-DEPS-0.7.x-r3-vc10.zip || (rm -f CEGUI-DEPS-0.7.x-r3-vc10.zip && exit 1)"
+         , "md5sum -c md5-cegui-deps || (rm -f CEGUI-DEPS-0.7.x-r3-vc10.zip && exit 1)"
+         ])
+
    env.Command("CEGUI-0.7.7/dependencies", "CEGUI-DEPS-0.7.x-r3-vc10.zip", "cd CEGUI-0.7.7 && unzip ../CEGUI-DEPS-0.7.x-r3-vc10.zip")
 
 

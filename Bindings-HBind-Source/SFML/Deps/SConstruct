@@ -36,8 +36,8 @@ if env["PLATFORM"] == "win32":
    # download and extract pre-build binaries
    if (not exists("sfml-2.1.zip")):
       env.Command("sfml-2.1.zip", "", [
-         "wget -O sfml-2.1.zip http://www.sfml-dev.org/download/sfml/2.1/SFML-2.1-windows-vc10-32bits.zip || (rm -f sfml-2.1.zip && exit 1)",
-	 "md5sum -c md5-sfml-win || (rm -f sfml-2.1.zip && exit 1)"
+         "wget -O sfml-2.1.zip http://www.sfml-dev.org/download/sfml/2.1/SFML-2.1-windows-vc10-32bits.zip || (rm -f sfml-2.1.zip && exit 1)"
+         , "md5sum -c md5-sfml-win || (rm -f sfml-2.1.zip && exit 1)"
 	 ])
 else:
    # download and extract sources

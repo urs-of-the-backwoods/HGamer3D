@@ -9,6 +9,11 @@ env = Environment()
 env["ENV"]["PATH"] = os.environ.get("PATH")
 env["ENV"]["HOME"] = os.environ.get("HOME")
 
+if env["PLATFORM"] == "win32":
+   print "works currently only for Linux"
+   sys.exit(1)
+
+
 # Default target is empty, need to choose between options
 #########################################################
 Default(None)
