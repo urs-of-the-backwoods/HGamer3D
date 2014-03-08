@@ -18,8 +18,8 @@
 
 module EntityComponentSystem where
 
-import Control.Wire as W
-import Control.Wire.Unsafe.Event as U
+import Control.Wire
+import Control.Wire.Unsafe.Event
 
 import Prelude hiding ((.), id)
 import Data.List
@@ -30,7 +30,7 @@ import HGamer3D
 
 import GameWire
 
-type CommandWire = GameWire (W.Event Command) (W.Event Command)
+type CommandWire = GameWire (Event Command) (Event Command)
 
 -- Commands
 -----------
@@ -50,11 +50,11 @@ cmdFifo :: CommandWire
 cmdFifo = fifo_ [] where
   fifo_ list = mkPureN (\cmdIn -> let
                           newList = case cmdIn of
-                            (U.Event (CmdArr addList)) -> list ++ addList
+                            (Event (CmdArr addList)) -> list ++ addList
                             _ -> list    -- do not add single command here, intentionally, this will create an infinite loop in a chain
                           (evtOut, listOut) = case newList of
-                            [] -> (U.NoEvent,[])
-                            (e:es) -> (U.Event e, es)
+                            [] -> (NoEvent,[])
+                            (e:es) -> (Event e, es)
                           in (Right evtOut, fifo_ listOut) )
     
 -- Entity Component System
@@ -84,8 +84,8 @@ createSystem sdata  = let
   
   (SystemData initD addE remE runAction) = sdata
   dOut dIn evt = case evt of
-    (U.Event (CmdAddEntity ent)) -> (addE ent dIn)
-    (U.Event (CmdRemEntity oid)) -> (remE oid dIn)
+    (Event (CmdAddEntity ent)) -> (addE ent dIn)
+    (Event (CmdRemEntity oid)) -> (remE oid dIn)
     _ -> dIn
   wire dIn = mkGen (\s evt -> do 
                        let out = dOut dIn evt
@@ -145,9 +145,9 @@ locationSystem = let
 
 
 -- move position of Entity by a vector (per second)
-move :: Entity -> Vec3 -> GameWire (W.Event a) (W.Event a)
+move :: Entity -> Vec3 -> GameWire (Event a) (Event a)
 move e vec = mkGen $ \s evt -> case evt of
-    U.Event _ -> do
+    Event _ -> do
       let t = realToFrac (dtime s) 
       setLocation e (\pos -> pos &+ (vec &* t))
       return $ (Right evt, move e vec)
@@ -187,9 +187,9 @@ orientationSystem = let
     return ()
   in (SystemData fInit fAdd fRem runAction)
 
-rotate :: Entity -> Vec3 -> Float -> GameWire (W.Event a) (W.Event a)
+rotate :: Entity -> Vec3 -> Float -> GameWire (Event a) (Event a)
 rotate e rv a = mkGen $ \s evt -> case (evt, (e `gC` orientation)) of
-  (U.Event _, Just (Orientation r)) -> do
+  (Event _, Just (Orientation r)) -> do
     let t = realToFrac (dtime s) 
     modifyIORef' r (\ori -> ori .*. (rotU rv (a*t))) 
     return $ (Right evt, rotate e rv a)  
@@ -232,9 +232,9 @@ velocitySystem = let
     return ()
   in (SystemData fInit fAdd fRem runAction)
 
-accelerate :: Entity -> Vec3 -> GameWire (W.Event a) (W.Event a)
+accelerate :: Entity -> Vec3 -> GameWire (Event a) (Event a)
 accelerate e vec = mkGen_ $ \evt -> case (evt, (e `gC` velocity)) of
-  (U.Event _, Just (Velocity r)) -> do
+  (Event _, Just (Velocity r)) -> do
     modifyIORef' r (\vel -> vel &+ vec) 
     return $ (Right evt)  
   _ -> return $ (Right evt)

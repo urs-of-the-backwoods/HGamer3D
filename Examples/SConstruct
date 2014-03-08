@@ -18,12 +18,14 @@ for (p, s) in [
     ("Graphics3D", "BlueCube"),
     ("Graphics3D", "BumpMappingCube"),
     ("GUI", "GUI-Widgets"),
+    ("GUI", "GUI-Wire"),
     ("InputSystem", "Joystick"),
     ("InputSystem", "Keyboard"),
     ("InputSystem", "Mouse"),
     ("Network", "Network-Chat"),
     ("WinEvent", "WinEvent"),
-    ("Games", "Cuboid2")
+    ("Games", "Cuboid2"),
+    ("Games", "YWing-Flight")
 ]:
     env.Command("build/" + s, p + "/" + s + ".hs", "rm -f build/*.o && " + "ghc --make -odir build -hidir build -i" + p + " -o build/" + s + " " + p + "/" + s)
 

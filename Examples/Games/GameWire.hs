@@ -1,6 +1,6 @@
 {-# LANGUAGE Arrows #-}
 
--- Cuboid2, a 3D puzzle game, thanks to Pedro Martins for game idea (https://github.com/pedromartins/cuboid)
+-- Some useful wires for game programming
 --
 -- (c) 2014 Peter Althainz
 --
@@ -31,9 +31,6 @@ import HGamer3D.InputSystem
 type Time = Double
 type RunState = (Timed NominalDiffTime ())
 type GameWire = Wire RunState () IO
-
-
-
 
 
 -- USEFUL WIRES
@@ -81,4 +78,36 @@ printEvt = mkGen_ (\evt -> do case evt of
                                              print x
                                              return (Right evt)
                                 _ -> return (Right evt))
+
+
+-- generic switch, in event is two-fold, left side creates new wire of a -> b
+-- right side is a output is b, runs sequentially, first do new wire switched in, then restart switch logic
+
+-- different types of switching logic, eases up game programming
+----------------------------------------------------------------
+
+-- this wire creates a wire from a function which creates a wire from an input status
+-- the resulting wire switches into the created wire, runs this until it inihibits and then
+-- switches back to the switchIntoAndRun semantics
+
+-- useful for providing game states, which run for a certain amount of time and then wait for a new
+-- initializer, during running the created wire additional state input is ignored
+
+switchIntoAndRunW :: (gst -> GameWire (Event a) (Event b)) -> GameWire (Event gst, Event a) (Event b)
+switchIntoAndRunW inWireF = switch $ mkPure_ (\(gsEvt, aEvt) -> case gsEvt of
+              Event gs -> let
+                newWire = (inWireF gs) . mkPure_ (\(a, b) -> Right b) --> switchIntoAndRunW inWireF
+                in Right (NoEvent, Event (newWire))
+              _ -> Right (NoEvent, NoEvent) )
+
+-- same logic, but does not need to process events during run phase
+-- usefule if something needs to happen, but no input processing
+switchIntoAndRunW' :: (gst -> GameWire () (Event b)) -> GameWire (Event gst) (Event b)
+switchIntoAndRunW' inWireF = switch $ mkPure_ (\gsEvt -> case gsEvt of
+              Event gs -> let
+                newWire = (inWireF gs) . pure () --> switchIntoAndRunW' inWireF
+                in Right (NoEvent, Event (newWire))
+              _ -> Right (NoEvent, NoEvent) )
+                             
+  
 

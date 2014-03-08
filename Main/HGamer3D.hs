@@ -46,16 +46,18 @@ module HGamer3D
   exitHGamer3D g3ds guis = do 
      exitGraphics3D g3ds
 
+
+  -- the game loops works in a way, that window events are much faster processed then 
+  -- update of rendering -> all events needs to be cleared, then next renderOneFrame is processed
+
   loopHGamer3D :: Graphics3DSystem -> GUISystem -> IO (Maybe HG3DEvent, Bool)
   loopHGamer3D g3ds guis = do
-
-        renderOneFrame g3ds
 
         -- this one is quite tricky, on Linux we need to call the message loop in addition to WinEvent!
         if SI.os /= "mingw32" then graphics3DPumpWindowMessages else return ()
         i <- checkQuitReceived
+
         evt <- pollWinEvent
-        
         case evt of
            Just sdlEvt -> do
                              injectWinEventToGUI guis sdlEvt  -- inject event into gui
@@ -64,7 +66,8 @@ module HGamer3D
                   gevts <- pollGUIEvents guis
                   if length gevts > 0 then
                      return (Just (EventGUI gevts), (i == 1) )
-                     else
+                     else do
+                        renderOneFrame g3ds
                         return (Nothing, (i == 1) )
 
 

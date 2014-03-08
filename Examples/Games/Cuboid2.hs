@@ -18,8 +18,8 @@
 
 module Main where
 
-import Control.Wire as W
-import Control.Wire.Unsafe.Event as U
+import Control.Wire
+import Control.Wire.Unsafe.Event
 import Prelude hiding ((.), id)
 import Data.Maybe
 import Data.Dynamic
@@ -148,31 +148,17 @@ createSounds = do
 -- most game command wires are made up of a switch, which generates a new wire, once a command of specific type is received
 -- most of the logic is sending and receiving events of specific types
 
--- generic switch, in event is two-fold, left side creates new wire of a -> b
--- right side is a output is b, runs sequentially, first do new wire switched in, then restart switch logic
-gameSwitch :: (gst -> GameWire (W.Event a) (W.Event b)) -> GameWire (W.Event gst, W.Event a) (W.Event b)
-gameSwitch inWireF = switch $ mkPure_ (\(gsEvt, aEvt) -> case gsEvt of
-              U.Event gs -> let
-                newWire = (inWireF gs) . mkPure_ (\(a, b) -> Right b) --> (gameSwitch inWireF)
-                in Right (U.NoEvent, U.Event (newWire))
-              _ -> Right (U.NoEvent, U.NoEvent) )
-
--- helper wire, runs a switch in case only one input provided
-runWithOneEvtW :: GameWire (W.Event a) (W.Event a, W.Event b)
-runWithOneEvtW = (mkPure_ (\evtC -> Right (evtC, U.NoEvent)))
-
-
 -- runLevelW - receives two event, one left, one right
 -- left event switches into new cycle of cuboids (this is one level)
 -- right event simply gets the next cuboid from the current level
-runLevelW :: GameWire (W.Event Level, W.Event a) (W.Event Cuboid)
-runLevelW = gameSwitch (\level -> cycleW level)
-                                             
+runLevelW :: GameWire (Event Level, Event a) (Event Cuboid)
+runLevelW = switchIntoAndRunW (\level -> cycleW level)
+                                              
 -- this wire receives a new cube and then removes all the participants into the right places
 -- after all is finalized, it sends the new cube to the instance handling the keypresses
 -- 
-buildCuboidW :: Entity -> Entity -> [Entity] -> GameWire (W.Event Cuboid, W.Event a) (W.Event Cuboid)
-buildCuboidW redSphere greenSphere blueCubes = gameSwitch (\cubo -> wireMove cubo redSphere greenSphere blueCubes) where
+buildCuboidW :: Entity -> Entity -> [Entity] -> GameWire (Event Cuboid) (Event Cuboid)
+buildCuboidW redSphere greenSphere blueCubes = switchIntoAndRunW' (\cubo -> wireMove cubo redSphere greenSphere blueCubes) where
   
   wireMove cubo redSphere greenSphere blueCubes = let 
     
@@ -182,10 +168,10 @@ buildCuboidW redSphere greenSphere blueCubes = gameSwitch (\cubo -> wireMove cub
                                 (zip blueCubes (fmap (cuboFieldToPos cubo) (cbField cubo))))
     moveSpheres = moveTo redSphere (cuboFieldToPos cubo (cbStart cubo)) 0.5 --> 
                   moveTo greenSphere (cuboFieldToPos cubo (cbGoal cubo)) 0.5 
-    in pure (U.NoEvent) . moveCubesOut --> pure (U.NoEvent) . moveSpheres --> pure (U.NoEvent) . moveCubesIn 
+    in pure (NoEvent) . moveCubesOut --> pure (NoEvent) . moveSpheres --> pure (NoEvent) . moveCubesIn 
        --> sendOnce . now . pure cubo
  
-getStepsFromKeyW :: Entity -> GameWire () (W.Event FieldVec)
+getStepsFromKeyW :: Entity -> GameWire () (Event FieldVec)
 getStepsFromKeyW combobj = (proc _ -> do
                                q <- mkGen_ (\e -> do u <- getOrientation e; return $ Right (fromJust u)) -< combobj
                                let v = q `actU` (Vec3 0.0 0.0 1.0)
@@ -202,10 +188,10 @@ getStepsFromKeyW combobj = (proc _ -> do
                                       keyW KeyPageUp . pure "q" <& keyW KeyPageDown . pure "a" -< ()
                                       
                                let dir'' = case dir of
-                                               U.Event dir' -> U.Event $ fromJust $ lookup dir' 
+                                               Event dir' -> Event $ fromJust $ lookup dir' 
                                                                [("l",(-1, 0, 0)), ("r",(1, 0, 0)), ("u",upFv'), 
                                                                 ("d",downFv'), ("q",qFv'), ("a",aFv')] 
-                                               U.NoEvent -> U.NoEvent
+                                               NoEvent -> NoEvent
                            
                                returnA -< dir'')
                            
@@ -213,20 +199,20 @@ getStepsFromKeyW combobj = (proc _ -> do
 -- A state is modified by a function, until a predicate is met.
 -- In between each step a wire with the old and new state is run.
 
-stateStepperW :: a -> (a -> b -> a) -> (a -> Bool) -> (a -> a -> (GameWire (W.Event b) (W.Event ())) ) -> GameWire (W.Event b) (W.Event ())
+stateStepperW :: a -> (a -> b -> a) -> (a -> Bool) -> (a -> a -> (GameWire (Event b) (Event ())) ) -> GameWire (Event b) (Event ())
 stateStepperW startState stateF pred wire = switch $ mkPure_ (\evtB -> case evtB of
-                          U.Event val -> let
+                          Event val -> let
                                          nextState = stateF startState val
                                          finish = pred nextState
                                          nextWire = if finish then sendOnce . now . pure () else stateStepperW nextState stateF pred wire
-                                         in Right (U.NoEvent, U.Event (wire startState nextState --> nextWire))
-                          U.NoEvent -> Right (U.NoEvent, U.NoEvent))
+                                         in Right (NoEvent, Event (wire startState nextState --> nextWire))
+                          NoEvent -> Right (NoEvent, NoEvent))
 
 
 
 -- this wire runs one cuboid and upon completion, it sends an anonymous event
-runCuboidW :: [AudioSource] -> Entity -> GameWire (W.Event Cuboid, W.Event FieldVec) (W.Event ())
-runCuboidW sounds redSphere = gameSwitch (\cuboid -> processCuboW cuboid ) where
+runCuboidW :: [AudioSource] -> Entity -> GameWire (Event Cuboid, Event FieldVec) (Event ())
+runCuboidW sounds redSphere = switchIntoAndRunW (\cuboid -> processCuboW cuboid ) where
   
   processCuboW cubo = stateStepperW startState stateF pred wire where
     
@@ -246,8 +232,8 @@ runCuboidW sounds redSphere = gameSwitch (\cuboid -> processCuboW cuboid ) where
                       moveToEnd = if endRes == CursorOutOfBounds then 
                                      moveTo redSphere (cuboFieldToPos cubo (cbStart cubo)) 1.0
                                   else mkEmpty
-                      in playSoundW sounds startSound --> pure (U.NoEvent) . moveToPos --> 
-                         playSoundW sounds stopSound --> pure (U.NoEvent) . moveToEnd --> mkEmpty
+                      in playSoundW sounds startSound --> pure (NoEvent) . moveToPos --> 
+                         playSoundW sounds stopSound --> pure (NoEvent) . moveToEnd --> mkEmpty
 
 
 playSoundW sounds i = mkEmpty . soundW (sounds !! i) . now . pure ()
@@ -258,8 +244,8 @@ renderLoop g3ds guis s w cmd = do
   (ds, s') <- stepSession s
   (cmd', w') <- stepWire w ds (Right cmd)
   let cmd'' = case cmd' of
-        (Right (U.Event cmd''')) -> (U.Event cmd''')
-        _ -> U.Event CmdNoOp
+        (Right (Event cmd''')) -> (Event cmd''')
+        _ -> Event CmdNoOp
   (evt, qFlag) <- loopHGamer3D g3ds guis
   if qFlag then return () else renderLoop g3ds guis s' w' cmd''
   
@@ -299,11 +285,21 @@ main = do
   -- create game logic wire
   let gameWire re ge ce = proc inCmd -> do
         rec
-          evtMove <- getStepsFromKeyW ce -< ()
+          -- run Level
+
+          -- currently, we only have one level, inject this in the beginning
           evtNewLevel <- now -< oneAndOnlyLevel
-          evtNextLevel' <- delay (U.Event ()) -< evtNextLevel
-          evtCuboid <- buildCuboidW rE gE cbsE . runWithOneEvtW . runLevelW -< (evtNewLevel, evtNextLevel')
-          evtNextLevel <- runCuboidW sounds re -< (evtCuboid, evtMove)
+          -- get first next cuboid event
+          evtNextCuboid' <- delay (Event ()) -< evtNextCuboid
+          -- on next cuboid event, get a new cuboid from level
+          evtCuboid <- buildCuboidW rE gE cbsE . runLevelW -< (evtNewLevel, evtNextCuboid')
+                           
+          -- run one cuboid
+                            
+          -- create a movement event, which moves the red sphere from a key
+          evtMove <- getStepsFromKeyW ce -< ()
+          evtNextCuboid <- runCuboidW sounds re -< (evtCuboid, evtMove)
+          
                           
         (rotate ce x 1.0) . keyW KeyW -< inCmd             
         (rotate ce x (-1.0)) . keyW KeyS -< inCmd          
@@ -318,7 +314,7 @@ main = do
         (CmdArr (map CmdAddEntity cbsE))
         ]
     
-  renderLoop g3ds guis clockSession_ (gameWire rE gE cE) (U.Event startCmd)
+  renderLoop g3ds guis clockSession_ (gameWire rE gE cE) (Event startCmd)
   exitHGamer3D g3ds guis
   return ()
 

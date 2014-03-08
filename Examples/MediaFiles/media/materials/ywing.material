@@ -1,0 +1,447 @@
+
+material ywing/YW_MAIN_DARK
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0431373 0.00392157 0.00392157 1
+			diffuse 0.129412 0.129412 0.137255 1
+		}
+
+	}
+
+}
+
+material ywing/YW_MAIN_STUFF
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0431373 0.00392157 0.00392157 1
+			diffuse 0.74902 0.74902 0.756863 1
+		}
+
+	}
+
+}
+
+material ywing/YW_MAIN
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0431373 0.00392157 0.00392157 1
+			diffuse 0.74902 0.74902 0.756863 1
+		}
+
+	}
+
+}
+
+material ywing/YW_CANOPY_TOP
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0431373 0.00392157 0.00392157 1
+			diffuse 0.74902 0.74902 0.756863 1
+
+			texture_unit
+			{
+				texture_alias 0
+				texture YW_CAB_T.JPG
+			}
+		}
+
+	}
+
+}
+
+material ywing/YW_GLASS
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0117647 0.0117647 0.0117647 1
+			diffuse 0.172549 0.215686 0.290196 0.4
+			scene_blend alpha_blend
+			depth_write off
+			cull_hardware none
+		}
+
+	}
+
+}
+
+material ywing/YW_COCK_BLUE
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0117647 0.0117647 0.0117647 1
+			diffuse 1 0.670588 0.0509804 1
+		}
+
+	}
+
+}
+
+material ywing/YW_ENG_COCK
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0431373 0.00392157 0.00392157 1
+			diffuse 0.74902 0.74902 0.756863 1
+		}
+
+	}
+
+}
+
+material ywing/YW_RUB3
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0431373 0.00392157 0.00392157 1
+			diffuse 0.74902 0.74902 0.756863 1
+		}
+
+	}
+
+}
+
+material ywing/YW_ENG_DECO
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0431373 0.00392157 0.00392157 1
+			diffuse 0.74902 0.74902 0.756863 1
+		}
+
+	}
+
+}
+
+material ywing/YW_ENGINE
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0431373 0.00392157 0.00392157 1
+			diffuse 0.74902 0.74902 0.756863 1
+		}
+
+	}
+
+}
+
+material ywing/YW_ENG_GLOW
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0117647 0.0117647 0.0117647 1
+			diffuse 1 0 0.258824 1
+		}
+
+	}
+
+}
+
+material ywing/YW_ENG_DARK
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0117647 0.0117647 0.0117647 1
+			diffuse 0.109804 0.109804 0.109804 1
+		}
+
+	}
+
+}
+
+material ywing/YW_RUB
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0431373 0.00392157 0.00392157 1
+			diffuse 0.74902 0.74902 0.756863 1
+		}
+
+	}
+
+}
+
+material ywing/YW_EXHAUST_IN
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0117647 0.0117647 0.0117647 1
+			diffuse 1 0 0 1
+		}
+
+	}
+
+}
+
+material ywing/YW_EXHAUST
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0431373 0.00392157 0.00392157 1
+			diffuse 0.290196 0.282353 0.321569 1
+
+			texture_unit
+			{
+				texture_alias 0
+				texture YW_EXHAU.JPG
+			}
+		}
+
+	}
+
+}
+
+material ywing/A_SHIP_WHITE
+{
+	technique
+	{
+		pass
+		{
+		}
+
+	}
+
+}
+
+material ywing/WHITE_GENERAL
+{
+	technique
+	{
+		pass
+		{
+		}
+
+	}
+
+}
+
+material ywing/BLACK_THRONE
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+		}
+
+	}
+
+}
+
+material ywing/R2D2_M_LIGHT
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0.760784 0.760784 0.760784 1
+		}
+
+	}
+
+}
+
+material ywing/BROWN_RAILING
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0980392 0.027451 0.00392157 1
+			diffuse 0.0980392 0.027451 0.00392157 1
+		}
+
+	}
+
+}
+
+material ywing/R2D2_Blue
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0.141176 1
+			diffuse 0.0196078 0.00784314 0.184314 1
+		}
+
+	}
+
+}
+
+material ywing/GREY_ALUMINUM
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.137255 0.129412 0.172549 1
+			diffuse 0.72549 0.72549 0.72549 1
+		}
+
+	}
+
+}
+
+material ywing/WHITE_GLOW
+{
+	technique
+	{
+		pass
+		{
+		}
+
+	}
+
+}
+
+material ywing/BLACK_LENS
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+		}
+
+	}
+
+}
+
+material ywing/YW_CAB_TOP
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0431373 0.00392157 0.00392157 1
+			diffuse 0.513726 0.505882 0.572549 1
+
+			texture_unit
+			{
+				texture_alias 0
+				texture YW_CAB_T.JPG
+			}
+		}
+
+	}
+
+}
+
+material ywing/YW_CAB_SIDE
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0117647 0.0117647 0.0117647 1
+			diffuse 0.713726 0.698039 0.756863 1
+
+			texture_unit
+			{
+				texture_alias 0
+				texture YW_CAB_S.JPG
+			}
+		}
+
+	}
+
+}
+
+material ywing/YW_CAB_BOTTOM
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0117647 0.0117647 0.0117647 1
+			diffuse 0.301961 0.282353 0.490196 1
+		}
+
+	}
+
+}
+
+material ywing/YW_BACK_RING
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0431373 0.00392157 0.00392157 1
+			diffuse 0.74902 0.74902 0.756863 1
+
+			texture_unit
+			{
+				texture_alias 0
+				texture YW_BACK_.JPG
+			}
+		}
+
+	}
+
+}
+
+material ywing/YW_MAIN_DECO
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0431373 0.00392157 0.00392157 1
+			diffuse 0.74902 0.74902 0.756863 1
+		}
+
+	}
+
+}
+
+material ywing/YW_RUB2
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0431373 0.00392157 0.00392157 1
+			diffuse 0.74902 0.74902 0.756863 1
+		}
+
+	}
+
+}

@@ -1,0 +1,33 @@
+Name:                HGamer3D-Wire
+Version:             0.3.0
+Synopsis:            Wire Functionality for HGamer3D
+Description:         
+	HGamer3D is a game engine for developing 3D games in the programming 
+	language Haskell. This package provides wiring functionality, 
+	based on the package HGamer3D and netwire. HGamer3D-Wire
+	is available on Windows and Linux.
+	
+License:             OtherLicense
+License-file:        LICENSE
+Author:              Peter Althainz
+Maintainer:          althainz@gmail.com
+Build-Type:          Simple
+Cabal-Version:       >=1.4
+Homepage:            http://www.hgamer3d.org
+Category:            Game Engine
+Extra-source-files:  Setup.hs 
+
+Library
+  Build-Depends:     base >= 3 && < 5, netwire >= 5, containers, transformers, mtl, HGamer3D-Data >= 0.3.0 && < 0.4.0, HGamer3D >= 0.3.0 && < 0.4.0, HGamer3D-GUI >= 0.3.0 && < 0.4.0, HGamer3D-InputSystem >= 0.3.0 && < 0.4.0, HGamer3D-Audio >= 0.3.0 && < 0.4.0,  HGamer3D-WinEvent >= 0.3.0 && < 0.4.0
+
+  Exposed-modules:   HGamer3D.Wire.Types,HGamer3D.Wire.EntityComponentSystem,HGamer3D.Wire.ECSWire,HGamer3D.Wire.GUI,HGamer3D.Wire
+  Other-modules:     
+
+  c-sources:         
+  
+  ghc-options:       
+  cc-options:        -Wno-attributes 
+  hs-source-dirs:    .
+  Include-dirs:      . 
+  build-depends:     
+  extra-libraries:   

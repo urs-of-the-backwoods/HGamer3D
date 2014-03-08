@@ -62,6 +62,8 @@ module HGamer3D.GUI
 	listboxAddText,
 	listboxGetSelectedText,
 	listboxRemoveAllText,
+        listboxInitialize,
+        listboxStatus,
 	comboboxAddText,
 	comboboxRemoveAllText,
         
@@ -307,6 +309,34 @@ _getTextListOfItem reallistbox item list = do
     else do
       return list
  
+listboxInitialize :: GUIElement -- ^ GUI element, needs to be a listbox
+                         -> [(String, Bool)] -- ^ list of entry, selected pairs
+                         -> IO ()
+listboxInitialize (GUIElement window) pairs = do
+	reallistbox <- WindowSF.castWindowToListbox window
+	Listbox.resetList reallistbox
+        mapM ( \((entry, selected), ind) -> do
+                  	ListboxSF.listboxAddItem reallistbox entry
+                        item <- Listbox.getListboxItemFromIndex reallistbox ind
+                        ListboxItem.setSelected item selected
+                        return ()
+                  ) (zip pairs [0..])
+        return ()
+  
+listboxStatus :: GUIElement -- ^ GUI element, needs to be a listbox
+                         -> IO [(String, Bool)] -- ^ list of entry, selected pairs
+listboxStatus (GUIElement window) = do
+	reallistbox <- WindowSF.castWindowToListbox window
+        count <- Listbox.getItemCount reallistbox
+        outlist <- mapM ( \ind -> do
+                        item <- Listbox.getListboxItemFromIndex reallistbox ind
+                        sel <- ListboxItem.isSelected item
+                        txt <- ListboxItem.getText item
+                        return (txt, sel)
+                  ) [0..(count-1)]
+        return outlist
+  
+
 -- | return the selected items as an array of strings
 listboxGetSelectedText :: GUIElement -- ^ the GUI element, needs to be a listbox
                           -> IO [String] -- ^ the selected items as an array of strings
@@ -323,6 +353,9 @@ listboxRemoveAllText (GUIElement window) = do
 	reallistbox <- WindowSF.castWindowToListbox window
 	Listbox.resetList reallistbox
 	
+
+
+
 -- | initialize the GUI system, used internally
 initGUI :: Bool  -- ^ logging flag
            -> Bool -- ^ show graphics cursor flag
