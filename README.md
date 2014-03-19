@@ -9,4 +9,4 @@ Documentation is on: http://www.hgamer3d.org
 
 News
 ----
-- Version 0.3.0 published on master
+- Version 0.3.x published on master, changes keep 0.3.x compatibility

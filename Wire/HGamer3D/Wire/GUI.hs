@@ -26,6 +26,8 @@ module HGamer3D.Wire.GUI
         -- * fundamental and simple Wires
         guiEventW,
         guiPropertyW,
+        guiSetPropertyW,
+        guiGetPropertyW,
         
         buttonW,
 	staticTextW,
@@ -77,7 +79,11 @@ _popGUIEvent ref = do
 			writeIORef ref xs
 			return $ Event x
 
-guiEventW :: WireSystem -> String -> String -> IO (GameWire a (Event a))
+-- | A wire, which which delivers the input value as an event, when GUI event occurs
+guiEventW :: WireSystem -- ^ the Wiresystem
+             -> String -- ^ name of widget
+             -> String -- ^ name of event
+             -> IO (GameWire a (Event a))  -- ^ resulting wire
 guiEventW ws widgetname eventname = do
   let guis = wsGui ws
   let un = wsUniqueName ws
@@ -93,17 +99,19 @@ guiEventW ws widgetname eventname = do
                           NoEvent -> return (Right NoEvent) )
   return wire
 
-buttonW :: WireSystem
-           -> String -- ^ GUI element (which should be a button)
-           -> IO (GameWire a (Event a)) -- ^ event wire
+-- | A wire, which delivers input value as event on button click
+buttonW :: WireSystem -- ^ the Wiresystem
+           -> String -- ^ name of widget
+           -> IO (GameWire a (Event a)) -- ^ resulting wire
 buttonW ws widgetname = do
   wire <- guiEventW ws widgetname "Clicked" 
   return wire
 
-guiPropertyW :: WireSystem
-                -> String
-                -> String  -- ^ property name
-                -> IO (GameWire (Event a, Event String) (Event String))
+-- | A property wire, you can set a property and query a property with this wire
+guiPropertyW :: WireSystem -- ^ the Wiresystem
+                -> String -- ^ name of widget
+                -> String  -- ^ name of property
+                -> IO (GameWire (Event a, Event String) (Event String)) -- ^ resulting wire, input of left event queries property, right event sets the property
 guiPropertyW ws widgetname propname = do
   widget <- getGuiWidget ws widgetname
   let wire = mkGen_ (\(evtL, evtR) -> do
@@ -123,128 +131,163 @@ guiPropertyW ws widgetname propname = do
                                                  r <- rVal
                                                  return r)
   return wire
-
-_createGUIValueW :: WireSystem -> String -> String -> String -> IO (GameWire (Event a, Event String) (Event String))
-_createGUIValueW ws widgetname propname eventchangename = do
-  widget <- getGuiWidget ws widgetname
+  
+-- | A wire, which sets a property upon event
+guiSetPropertyW :: WireSystem -- ^ the Wiresystem
+                -> String -- ^ name of widget
+                -> String  -- ^ name of property
+                -> IO (GameWire (Event String) (Event String)) -- ^ resulting wire, input sets property and is routed through unchanged
+guiSetPropertyW ws widgetname propname = do
+  wire <- guiPropertyW ws widgetname propname
+  let wire' = proc inval -> do
+        wire . (never &&& id) -< inval
+        returnA -< inval
+  return wire'
+  
+-- | A wire, which queries a property upon event
+guiGetPropertyW :: WireSystem -- ^ the Wiresystem
+                -> String -- ^ name of widget
+                -> String  -- ^ name of property
+                -> IO (GameWire (Event a) (Event String)) -- ^ resulting wire, gets current value of property upon in-event
+guiGetPropertyW ws widgetname propname = do
+  wire <- guiPropertyW ws widgetname propname
+  let wire' = proc inval -> do
+        outval <- wire . (id &&& never) -< inval
+        returnA -< outval
+  return wire'
+  
+_createGUIValueW :: WireSystem -> String -> String -> String -> String -> IO (GameWire (Event String) (Event String, String))
+_createGUIValueW ws widgetname propname eventchangename startv = do
   propW <- guiPropertyW ws widgetname propname
   eventW <- guiEventW ws widgetname eventchangename
-  let wire = proc (evtL, evtR) -> do
-        changeEvent <- eventW -< ()
-        let evtLN = fmap (\x -> ()) evtL
-        inhibitFlag <- pure False . holdFor 0.5 <|> pure True -< evtR
-        evtL' <- arr (\(l, c, p) -> mergeL l (if p then c else NoEvent) ) -< (evtLN, changeEvent, inhibitFlag)
-        rVal <- propW -< (evtL', evtR)
-        returnA -< rVal
+  let wire = proc setE -> do
+        changeE <- eventW -< ()
+        setE' <- id &> now . pure startv -< setE
+        changeE' <- propW -< (changeE, setE')
+        value <- hold -< setE' `mergeL` changeE'
+        inhibitFlag <- (pure False . holdFor 0.5) <|> (pure True) -< setE
+        changeE'' <- arr (\(c, p) -> if p then c else NoEvent) -< (changeE', inhibitFlag)
+        returnA -< (changeE'', value)
   return wire
     
--- | Constructor for two wires, which in combination provide the functionality of an editable box GUI element.
-editBoxW :: WireSystem 
-            -> String -- ^ GUI element (should be an editbox)
-            -> IO (GameWire (Event a, Event String) (Event String) )
-editBoxW ws widgetname = _createGUIValueW ws widgetname "Text" "TextChanged" 
+-- | An edit box wire, editable text element
+editBoxW :: WireSystem -- ^ the Wiresystem
+            -> String -- ^ name of widget
+            -> String -- ^ start value
+            -> IO (GameWire (Event String) (Event String, String) ) -- ^ resulting wire
+editBoxW ws widgetname startv = _createGUIValueW ws widgetname "Text" "TextChanged" startv
 
-_strtd :: Double -> GameWire (Event String) (Event Double)
-_strtd def = (arr . fmap) (\str -> case (reads str)::[(Double, String)] of
-                          [(a, str)] -> a
+                                                     
+_strtd :: Double -> GameWire (Event String, String) (Event Double, Double)
+_strtd def = let
+  convert = (\str -> case (reads str)::[(Double, String)] of
+                          [(a, _)] -> a
                           _ -> def)
+  in arr (\(evt, val) ->  (fmap convert evt, convert val))
 _dtstr :: GameWire (Event Double) (Event String)
 _dtstr = (arr . fmap) (\d -> show d)
 
-doubleBoxW :: WireSystem 
-            -> String -- ^ GUI element (should be an editbox)
-            -> Double -- ^ Default double in case instring does not produce a value
-            -> IO (GameWire (Event a, Event Double) (Event Double) )
+-- | A wire, which provides an editable double value
+doubleBoxW :: WireSystem -- ^ the Wiresystem
+            -> String -- ^ name of widget
+            -> Double -- ^ start and default value, in case string does not translate to a double value
+            -> IO (GameWire (Event Double) (Event Double, Double) ) -- ^ resulting wire
 doubleBoxW ws widgetname def = do
-  wire <- editBoxW ws widgetname
-  let wire' = _strtd def . wire . (second _dtstr)
+  wire <- editBoxW ws widgetname (show def)
+  let wire' = _strtd def . wire . _dtstr
   return wire'
 	
--- | Constructur for a wire, which can change a static text GUI element (a setter).
-staticTextW :: WireSystem 
-               -> String -- ^ GUI element (should be a static text, or any widget with a "Text" property.
-               -> IO (GameWire (Event a, Event String) (Event String)) -- ^ the returned wire
-staticTextW ws widgetname = guiPropertyW ws widgetname "Text"
+-- | A wire, which simply displays a text
+staticTextW :: WireSystem -- ^ the Wiresystem
+               -> String -- ^ name of widget
+               -> IO (GameWire (Event String) (Event String)) -- ^ resulting wire
+staticTextW ws widgetname = guiSetPropertyW ws widgetname "Text"
 
 _bst = arr (\val -> fmap (\b -> if b then "True" else "False") val)
-_stb = arr (\val -> fmap (\st -> if st == "True" then True else False) val)
+_stb = let convert = (\st -> if st == "True" then True else False)
+       in arr (\(evt, val) -> (fmap convert evt, convert val))
 
--- | Consructor for two wires, which deliver the checkbox GUI element functionality.
-checkBoxW :: WireSystem
-             -> String -- ^ GUI element (should be a checkbox)
-             -> IO (GameWire (Event a, Event Bool) (Event Bool) )
-checkBoxW ws widgetname = do
-  wire <- _createGUIValueW ws widgetname "Selected" "CheckStateChanged" 
-  return $ _stb . wire . second _bst
+-- | A checkbox wire
+checkBoxW :: WireSystem -- ^ the Wiresystem
+             -> String -- ^ name of widget
+             -> Bool -- ^ start value
+             -> IO (GameWire (Event Bool) (Event Bool, Bool) ) -- ^ resulting wire
+checkBoxW ws widgetname startv = do
+  wire <- _createGUIValueW ws widgetname "Selected" "CheckStateChanged" (show startv)
+  return $ _stb . wire . _bst
   
--- | Constructor for two wires, which deliver the radiobuttion GUI element functionality.
-radioButtonW :: WireSystem
-                -> String -- ^ GUI element (should be a checkbox)
-                -> IO (GameWire (Event a, Event Bool) (Event Bool) )
-radioButtonW  ws widgetname = do
-  wire <- _createGUIValueW ws widgetname "Selected" "SelectStateChanged"
-  return $ _stb . wire . second _bst
+-- | A radiobutton wire
+radioButtonW :: WireSystem -- ^ the Wiresystem
+                -> String -- ^ name of widget
+                -> Bool -- ^ start value
+                -> IO (GameWire (Event Bool) (Event Bool, Bool) ) -- ^ resulting wire
+radioButtonW  ws widgetname startv  = do
+  wire <- _createGUIValueW ws widgetname "Selected" "SelectStateChanged" (show startv)
+  return $ _stb . wire . _bst
   
--- | Constructor for two wires, which deliver the slider GUI element functionality.
-sliderW :: WireSystem
-           -> String -- ^ GUI element (should be a slider)
-           -> Double -- ^ Default Double
-           -> IO (GameWire (Event a, Event Double) (Event Double)) -- ^ the returned wires, a value changed wire and a setter wire
+-- | A slider wire
+sliderW :: WireSystem -- ^ the Wiresystem
+           -> String -- ^ name of widget
+           -> Double -- ^ start value
+           -> IO (GameWire (Event Double) (Event Double, Double)) -- ^ resulting wire
 sliderW ws widgetname def = do
-  wire <- _createGUIValueW ws widgetname "CurrentValue" "ValueChanged"
-  return $ _strtd def . wire . second _dtstr
+  wire <- _createGUIValueW ws widgetname "CurrentValue" "ValueChanged" (show def)
+  return $ _strtd def . wire . _dtstr
 
--- | Constructur for two wires, which deliver the spinner GUI element functionality.
-spinnerW :: WireSystem
-           -> String -- ^ GUI element (should be a spinner)
-           -> Double -- ^ Default Double
-           -> IO (GameWire (Event a, Event Double) (Event Double)) -- ^ the returned wires, a value changed wire and a setter wire
+-- | A spinner wire (rename of sliderW)
+spinnerW :: WireSystem -- ^ the Wiresystem
+           -> String -- ^ name of widget
+           -> Double -- ^ start value
+           -> IO (GameWire (Event Double) (Event Double, Double)) -- ^ resulting wire
 spinnerW = sliderW
-
-
 
 
 -- LISTBOX AND COMBOBOX
 -----------------------
 
 _guiPropertyListboxW :: GUIElement
-                        -> IO (GameWire (Event a, Event [(String, Bool, b)]) (Event [(String, Bool, b)]))
-_guiPropertyListboxW widget = do
+                        -> (a -> String)
+                        -> IO (GameWire (Event b, Event [(a, Bool)]) (Event [a]) )
+_guiPropertyListboxW widget toStringF = do
   let wire slist = mkGenN (\(evtL, evtR) -> do
                                              let rVal slist' = do
                                                    case evtL of
                                                      Event _ -> do
                                                        val <- listboxStatus widget
-                                                       let val' = fmap (\( (e', s'), (e, s, n)) -> (e', s', n)) (zip val slist')
+                                                       let val' = fmap snd (filter (\( (e', s'), entry) -> s') (zip val slist'))  
                                                        return (Right (Event val'), wire slist')
                                                      _ -> return (Right NoEvent, wire slist')
                                                    
                                              case evtR of
                                                Event value -> do
-                                                 let value' = fmap (\(e, s, n) -> (e, s)) value
+                                                 let value' = fmap (\(aval,s) -> (toStringF aval, s)) value
+                                                 let value'' = fmap fst value
                                                  listboxInitialize widget value'
-                                                 r <- rVal value
+                                                 r <- rVal value''
                                                  return r
                                                _ -> do
                                                  r <- rVal slist
                                                  return r)
   return $ wire []
 
-listBoxW :: WireSystem
-            -> String -- ^ GUI element
-            -> IO (GameWire (Event a, Event [(String, Bool, b)]) (Event [(String, Bool, b)]))  -- ^ In: request val, set list, set choices
-listBoxW ws widgetname = do
+-- | A listbox wire, , output events are selection changes, output contains selected data
+listBoxW :: WireSystem -- ^ the Wiresystem
+            -> String -- ^ name of widget
+            -> (a -> String) -- ^ function to convert data values to display string
+            -> [(a, Bool)] -- ^ start values
+            -> IO (GameWire (Event [(a, Bool)]) (Event [a], [a]))  -- ^ resulting wire
+listBoxW ws widgetname toStringF startv = do
   widget <- getGuiWidget ws widgetname
-  propW <- _guiPropertyListboxW widget
+  propW <- _guiPropertyListboxW widget toStringF
   eventW <- guiEventW ws widgetname "ItemSelectionChanged"
-  let wire = proc (evtL, evtR) -> do
-        changeEvent <- eventW -< ()
-        let evtLN = fmap (\x -> ()) evtL
-        inhibitFlag <- pure False . holdFor 0.5 <|> pure True -< evtR
-        evtL' <- arr (\(l, c, p) -> mergeL l (if p then c else NoEvent) ) -< (evtLN, changeEvent, inhibitFlag)
-        rVal <- propW -< (evtL', evtR)
-        returnA -< rVal
+  let wire = proc setE -> do
+        changeE <- eventW -< ()
+        setE' <- id &> now . pure startv -< setE
+        changeE' <- propW -< (changeE, setE')
+        let setE'' = fmap (fmap fst) (fmap (\l -> filter (\(e, s) -> s) l) setE')
+        value <- hold -< setE'' `mergeL` changeE'
+        inhibitFlag <- (pure False . holdFor 0.5) <|> (pure True) -< setE
+        changeE'' <- arr (\(c, p) -> if p then c else NoEvent) -< (changeE', inhibitFlag)
+        returnA -< (changeE'', value)
   return wire
-    
-
 

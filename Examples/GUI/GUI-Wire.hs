@@ -59,7 +59,7 @@ getWidget widget name = do
       return widgetOk
     Nothing -> do
       return widget
-  
+   
 initialize3DComponents  ws cam = do
         let g3ds = wsG3d ws
         let guis = wsGui ws
@@ -87,45 +87,37 @@ initialize3DComponents  ws cam = do
         
         return (rw, rE)
         
+intoEvt :: Functor f  => a -> f b -> f a
+intoEvt inval f = fmap (const inval) f
+
 -- book: arithmetic window
 getAddWindow ws  = do
   
-        -- Arithmetic Window
-        leb <- doubleBoxW ws "WindowAdd/LeftEB" 0.0
-        reb <- doubleBoxW ws "WindowAdd/RightEB" 0.0
-        sums <- staticTextW ws "WindowAdd/Sum"
-            
+        leftEB <- doubleBoxW ws "WindowAdd/LeftEB" 0.0
+        rightEB <- doubleBoxW ws "WindowAdd/RightEB" 0.0
+        sumS <- staticTextW ws "WindowAdd/Sum"
+        
         let wire = proc _ -> do
-              valL <- hold . leb . (now &&& now ) -< 0.0
-              valR <- hold . reb . (now &&& now ) -< 0.0
-              let s = show (valL + valR)
-              sums . (never &&& id) -< Event s
+              (leftE, leftV) <- leftEB . never -< ()
+              (rightE, rightV) <- rightEB . never -< ()
+              sumS -< (show (leftV + rightV)) `intoEvt` (leftE `mergeL` rightE)
               returnA -< ()
         
         return wire
 
-printCheck :: String -> GameWire (Event a) (Event a)
-printCheck marker = mkGen_ (\a -> case a of 
-                        Event _ -> do
-                                   print $ marker ++ ": event received"
-                                   return (Right a)
-                        _ -> do 
-                          return (Right a))
-  
 getCntWindow ws  = do
   
         -- Counter Window
-        bu <- buttonW ws "WindowCounter/ButtonUp"
-        bd <- buttonW ws "WindowCounter/ButtonDown"
+        buttonUp <- buttonW ws "WindowCounter/ButtonUp"
+        buttonDown <- buttonW ws "WindowCounter/ButtonDown"
         cnts <- staticTextW ws "WindowCounter/Counter"
         
         let wire = proc _ -> do
-              ae <- bu -< 1
-              se <- bd -< (-1)
-              sum <- accumE (\a b -> a + b) 0.0 -< mergeL ae se
-              let ssum = fmap show sum
-              cnts . (never &&& id) -< ssum
-              returnA -< ()
+              addE <- buttonUp -< 1
+              subE <- buttonDown -< (-1)
+              sumE <- accumE (+) 0 -< mergeL addE subE
+              cnts -< show `fmap` sumE
+              returnA -< ()        
             
         return wire
         
@@ -139,10 +131,10 @@ getCurrWindow ws rate = do
               rec
                 inEur' <- delay NoEvent -< inEur
                 inDol' <- delay NoEvent -< inDol
-                outEur <- eurs . (never &&& id) -< inEur'
-                outDol <- dols . (never &&& id) -< inDol'
-                let inDol = fmap (* rate) outEur
-                let inEur = fmap (/ rate) outDol
+                (outEur, _) <- eurs  -< inEur'
+                (outDol, _) <- dols  -< inDol'
+                let inDol = (* rate) `fmap` outEur
+                let inEur = (/ rate) `fmap` outDol
               returnA -< ()        
 
         return wire
@@ -151,36 +143,40 @@ _nE event = fmap (const ()) event
 
 getCrudWindow ws  = do
   
-        -- get GUI elements 
-        names <- listBoxW ws "WindowCrud/Names"
-        prename <- editBoxW ws "WindowCrud/Name"      
-        surname <- editBoxW ws "WindowCrud/Surname"
-        create <- buttonW ws "WindowCrud/ButtonCreate"
-        createText <- guiPropertyW ws "WindowCrud/ButtonCreate" "Text"
-        delete <- buttonW ws "WindowCrud/ButtonDelete"
-        filterstr <- editBoxW ws "WindowCrud/Filter"
-
-        -- state is a list of: (entrytext, selected, id)
-        -- functions to process this type of state
+  
+  
+        -- state is a list of: ((prename, surname), idn)
+        -- selection is a list of id's with either 1 or 0 elements
         
-        let addNW = (iterateE 0 . (arr . fmap) (const (+ 1))) 
-        let addF (p, s, l, n) = if (length p > 0) && (length s > 0) then ((p ++ " " ++ s, False, n) : l) else l 
-        let delF l = filter (\(e, s, n) -> not s) l 
-        let filF l rex = filter (\(e, s, n) -> (isInfixOf rex e) ) l
-        let desF state = fmap (\(e, s, n) -> (e, False, n)) state
-        let selF state = Data.List.find (\(e, s, n) -> s) state
-        let upPreF state n pre = fmap (\(e, s, n') -> if n == n' then 
-                                                        (pre ++ " " ++ ((splitOn " " e) !! 1), s, n) 
-                                                      else (e, s, n') ) state
-        let upSurF state n sur = fmap (\(e, s, n') -> if n == n' then
-                                                        (((splitOn " " e) !! 0) ++ " " ++ sur, s, n) 
-                                                      else (e, s, n') ) state
+        let idTp = snd
+        let pnTp = fst . fst
+        let snTp = snd . fst 
+        let nameTp tp = (pnTp tp) ++ " " ++ (snTp tp)
+        
+        -- deletion and creation functions
+        let delF selV = filter (\el -> idTp el /= (selV !! 0) ) 
+        let addF (p, s, state, idn) = ((p, s), idn) : state
+        
+        -- update functions for prename, surname        
+        let upPreF state idn pre = fmap (\tp -> if idTp tp == idn then ((pre, snTp tp), idn) else tp) state -- update function for prename
+        let upSurF state idn sur = fmap (\tp -> if idTp tp  == idn then ((pnTp tp, sur), idn) else tp) state -- update function for prename
+        
+        -- filter function, apply the filter box
+        let filF fstr stateV = filter (\el -> isInfixOf fstr (nameTp el)) stateV
             
-        let mergeState vOri vChange = let
-              appChanges = \(e', s', n') (e, s, n) -> if n == n' then (e, s', n) else (e, s, n)
-              onApp c l = fmap (appChanges c) l
-              in foldr onApp vOri vChange
-              
+        -- apply selection to state
+        let appSelF selV = (\el -> if null selV then (el, False) else (el, (idTp el) == (selV !! 0) )) 
+        
+        -- get GUI elements 
+        namesLB <- listBoxW ws "WindowCrud/Names" nameTp []
+        prenameEB <- editBoxW ws "WindowCrud/Name" ""    
+        surnameEB <- editBoxW ws "WindowCrud/Surname" ""
+        createB <- buttonW ws "WindowCrud/ButtonCreate"
+        createBTxt <- guiSetPropertyW ws "WindowCrud/ButtonCreate" "Text"
+        deleteB <- buttonW ws "WindowCrud/ButtonDelete"
+        filterEB <- editBoxW ws "WindowCrud/Filter" ""
+
+             
                  
         -- the main wire
         ----------------
@@ -188,63 +184,72 @@ getCrudWindow ws  = do
         let wire = proc _ -> do
               rec
                 -- Values have a V, Events have an E at the end
-                (selV, stateV, preE, surE) <- delay (Nothing, []::[(String, Bool, Int)], NoEvent, NoEvent) -< (selV', stateV'', preE', surE')
-                         
-                                 
-                -- events happening, values created
-                                 
+                (stateV, selV, preE, surE) <- delay ([]::[((String, String), Int)], []::[((String, String), Int)], NoEvent, NoEvent) -< (stateV', selV', preE', surE')
+                          
+                -- buttons and edit fields
+                --------------------------
+                                              
                 -- prename surname field
-                preE'' <- prename . (now &&& id) -< preE
-                surE'' <- surname . (now &&& id) -< surE
-                preV <- hold -< (preE'' `mergeL` preE)
-                surV <- hold -< (surE'' `mergeL` surE)
+                (preE'', preV) <- prenameEB -< preE
+                (surE'', surV) <- surnameEB -< surE
+                                  
                 -- filter string 
-                filE <- filterstr . (now &&& now) -< ""
-                filV <- hold -< filE
-                let filE' = fmap (filF stateV) filE
-                
-                
+                (filE, filV) <- filterEB . now -< ""
+                                
                 -- create button, depending on selV it is either a create or a deselect event!
-                (crE, desE) <- (filterE isNothing &&& filterE isJust) . create -< selV
-                n <- (hold . addNW) <|> pure 0 -< crE      -- this one simply counts ids
-                let crE' = fmap (addF . (const (preV, surV, stateV, n))) crE
-                -- delete button
-                dlE' <- arr (fmap delF) . delete -< stateV
-                -- deselection
-                let desE' = fmap (const (desF stateV)) desE
-                -- prename surname change
-                let selUp' = if isJust selV then
-                       let selN = (\(e, s, n) -> n) $ fromJust selV
-                           preUp' = fmap (upPreF stateV selN) preE''
-                           surUp' = fmap (upSurF stateV selN) surE''
-                           in preUp' `mergeL` surUp'
-                       else
-                           NoEvent
-                   
-                     
-                -- main element, the displayed list                       
-                let inE = fmap ((flip filF) filV) (dlE' `mergeL` crE' `mergeL` filE' `mergeL` desE' `mergeL` selUp')
-                listCE <- names . (id &&& id) -< inE
-                visStateV <- hold -< listCE
+                (crE, desE) <- (filterE null &&& filterE (\v -> not (null v))) . createB -< selV
+                               
+                -- delete button, event contains new list
+                dlE <- deleteB -< stateV
+                       
+                -- modification of stateV by events 
+                -----------------------------------
+                               
+                -- creation of an element
+                idV <- (hold . accum1E (+)) <|> pure 0 -< fmap (const (1::Int)) crE      -- this one simply counts ids
+                let crE' = fmap (addF . (const (preV, surV, stateV, idV))) crE -- create final event, which contains the new list
+                  
+                -- deletion of an element
+                let dlE' = fmap (delF (map idTp selV)) dlE
+                    
+                -- change of prename or surname in the data
+                let preUp' = if not (null selV) then fmap (upPreF stateV (idTp (selV !! 0))) preE'' else NoEvent
+                let surUp' = if not (null selV) then fmap (upSurF stateV (idTp (selV !! 0))) surE'' else NoEvent
+                    
+                -- summary: stateE', stateV'
+                let stateE' =  dlE' `mergeL` crE' `mergeL` preUp' `mergeL` surUp'
+                stateV' <- hold <|> pure [] -< stateE'
 
-                -- selection check
-                selE <- arr (fmap fromJust) . filterE isJust . arr (fmap selF) -< listCE
+                -- modification of selV by event
+                --------------------------------
 
-                -- main state handling
-                let stateV' = event stateV id (crE' `mergeL` dlE' `mergeL` desE')
-                let stateV'' = mergeState stateV' visStateV
+                let desE' = fmap (const []) desE
+                    
                         
-                -- get selection n
-                let selV' = selF stateV''
-                let selES = fmap (\(e, s, n) -> e) selE
-                let preE' = fmap (\x -> (splitOn " " x) !! 0) selES
-                let surE' = fmap (\x -> (splitOn " " x) !! 1) selES
+                -- handle display listbox element
+                ---------------------------------
 
-                -- set button text
-                createText . (id &&& id) -< fmap (const "Deselect") selE
-                -- handle deselection
-                createText . (id &&& id) -< fmap (const "Create") ((_nE desE) `mergeL` (_nE dlE'))
+                -- create filtered input
+                let displayV = fmap (appSelF (fmap idTp selV)) (filF filV stateV')
+                 
+                -- set display elements on events, get event from selection changes
+                (selChangeE, selStateV) <- namesLB -< fmap (const displayV) (_nE stateE' `mergeL` _nE filE)
 
+                -- handle selection 
+                -------------------
+
+                selV' <- hold <|> pure [] -< desE' `mergeL` (fmap (const selStateV) (_nE stateE' `mergeL` _nE filE `mergeL` _nE selChangeE)  )
+
+                -- check selection and deselection processes for prename, surname and button text
+                selectedE <- filterE (\l -> not (null l)) -< fmap (const selV') (_nE stateE' `mergeL` _nE filE `mergeL` _nE selChangeE)
+                deselectedE <- filterE null -< fmap (const selV') (_nE stateE' `mergeL` _nE filE `mergeL` _nE selChangeE)
+
+                -- set prename, surname, if new selection
+                let preE' = fmap (\[tp] -> pnTp tp) selectedE
+                let surE' = fmap (\[tp] -> snTp tp) selectedE
+
+                -- set button text, depending on selection state`mergeL` Event (fmap idTp selStateV)
+                createBTxt -< (fmap (const "Deselect") selectedE) `mergeL` (fmap (const "Create") deselectedE)
                            
               returnA -< ()
               
@@ -253,27 +258,30 @@ getCrudWindow ws  = do
 getMenueWindow ws  = do
 
         -- create the FRP wires for "changed value" and "set" functionality for each radio button
-        bAdd <- radioButtonW ws "Menue/AddWindow"
-        bCnt <- radioButtonW ws "Menue/CntWindow"
-        bCurr <- radioButtonW ws "Menue/CurrWindow"
-        bCrud <- radioButtonW ws "Menue/CrudWindow"
+        bAdd <- radioButtonW ws "Menue/AddWindow" True
+        bCnt <- radioButtonW ws "Menue/CntWindow" False
+        bCurr <- radioButtonW ws "Menue/CurrWindow" False
+        bCrud <- radioButtonW ws "Menue/CrudWindow" False
         
         -- create the FRP wires, which set visibility of the windows, depending on radio button state
-        vAdd <- guiPropertyW ws "WindowAdd" "Visible" 
-        vCnt <- guiPropertyW ws "WindowCounter" "Visible" 
-        vCurr <- guiPropertyW ws "WindowCurrency" "Visible" 
-        vCrud <- guiPropertyW ws "WindowCrud" "Visible" 
+        vAdd <- guiSetPropertyW ws "WindowAdd" "Visible"
+        vCnt <- guiSetPropertyW ws "WindowCounter" "Visible"
+        vCurr <- guiSetPropertyW ws "WindowCurrency" "Visible"
+        vCrud <- guiSetPropertyW ws "WindowCrud" "Visible"
         
-        let nn = now &&& now
-        let b2st = (arr . fmap) (\b -> if b then "True" else "False")
-        let nb = now &&& b2st
+        let b2st = \b ->if b then "True" else "False"
 
         -- create the menu wire
-        let menueWindowW = proc _ -> do
-              vAdd . nb . bAdd . nn -< True 
-              vCnt . nb . bCnt . nn -< False
-              vCurr . nb . bCurr . nn -< False
-              vCrud . nb . bCrud . nn -< False
+        let menueWindowW = proc _ -> do 
+              (addE, _) <- bAdd . never -< ()
+              (cntE, _) <- bCnt . never -< ()
+              (currE, _) <- bCurr . never -< ()
+              (crudE, _) <- bCrud . never -< ()
+              
+              vAdd . (id &> now . pure "True" ) -< b2st `fmap` addE
+              vCnt . (id &> now . pure "Fals" ) -< b2st `fmap` cntE
+              vCurr . (id &> now . pure "Fals" ) -< b2st `fmap` currE
+              vCrud . (id &> now . pure "Fals" ) -< b2st `fmap` crudE 
               returnA -< ()
               
         return menueWindowW
