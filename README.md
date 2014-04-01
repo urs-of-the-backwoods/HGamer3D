@@ -9,5 +9,5 @@ Documentation is on: http://www.hgamer3d.org
 
 News
 ----
-- Fixes of various build problems, April 2014, see new install instructions on http://wwww.hgamer3d.org/Install.html
+- Fixes of various build problems, April 2014, see new install instructions on http://www.hgamer3d.org/Install.html
 - Version 0.3.x published on master, changes keep 0.3.x compatibility
