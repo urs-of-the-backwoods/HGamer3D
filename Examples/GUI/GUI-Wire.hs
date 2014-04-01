@@ -45,10 +45,10 @@ import Data.Time.Clock
 
 import Control.Concurrent
 import Data.List
-import Data.List.Split
+-- import Data.List.Split
 import Data.Maybe
 import GHC.Float
-import Data.Tuple.Select
+-- import Data.Tuple.Select
 
 import Control.Exception
 

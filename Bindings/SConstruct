@@ -106,11 +106,11 @@ libsfml-window.so.2
 libsfml-window.so.2.1
 """)
 
-ogreHG3DLib = env.Command("Ogre/cBuild/libhg3dogre031.so", "", "cd Ogre/cBuild && scons")
-enetHG3DLib = env.Command("Enet/cBuild/libhg3denet031.so", "", "cd Enet/cBuild && scons")
-ceguiHG3DLib = env.Command("CEGUI/cBuild/libhg3dcegui030.so", "", "cd CEGUI/cBuild && scons")
-sdl2HG3DLib = env.Command("SDL2/cBuild/libhg3dsdl2031.so", "", "cd SDL2/cBuild && scons")
-sfmlHG3DLib = env.Command("SFML/cBuild/libhg3dsfml031.so", "", "cd SFML/cBuild && scons")
+ogreHG3DLib = env.Command("Ogre/cBuild/libhg3dogre032.so", "", "cd Ogre/cBuild && scons")
+enetHG3DLib = env.Command("Enet/cBuild/libhg3denet032.so", "", "cd Enet/cBuild && scons")
+ceguiHG3DLib = env.Command("CEGUI/cBuild/libhg3dcegui031.so", "", "cd CEGUI/cBuild && scons")
+sdl2HG3DLib = env.Command("SDL2/cBuild/libhg3dsdl2033.so", "", "cd SDL2/cBuild && scons")
+sfmlHG3DLib = env.Command("SFML/cBuild/libhg3dsfml032.so", "", "cd SFML/cBuild && scons")
 
 # a couple of aliases, who define the build targets
 ###################################################
@@ -125,17 +125,17 @@ def libFiles(inList):
     return outList
 
 # Graphics3D
-graphics3DFiles = ogreFiles + ["Ogre/cBuild/libhg3dogre031.so"]
+graphics3DFiles = ogreFiles + ["Ogre/cBuild/libhg3dogre032.so"]
 graphics3D = libFiles(graphics3DFiles)
 Alias('Graphics3D', graphics3D)
 
 # GUI
-guiFiles = sdl2Files + ["SDL2/cBuild/libhg3dsdl2031.so"] + ceguiFiles + ["CEGUI/cBuild/libhg3dcegui030.so"]
+guiFiles = sdl2Files + ["SDL2/cBuild/libhg3dsdl2033.so"] + ceguiFiles + ["CEGUI/cBuild/libhg3dcegui031.so"]
 gui = libFiles(guiFiles)
 Alias('GUI', gui)
 
 # Aux
-auxFiles = sdl2Files + ["SDL2/cBuild/libhg3dsdl2031.so"] + sfmlFiles + ["SFML/cBuild/libhg3dsfml031.so"] + enetFiles + ["Enet/cBuild/libhg3denet031.so"]
+auxFiles = sdl2Files + ["SDL2/cBuild/libhg3dsdl2033.so"] + sfmlFiles + ["SFML/cBuild/libhg3dsfml032.so"] + enetFiles + ["Enet/cBuild/libhg3denet032.so"]
 aux = libFiles(auxFiles)
 Alias('Aux', aux)
 
