@@ -62,6 +62,8 @@ libOgreMain.so
 libOgreMain.so.1.8.1
 libOgrePaging.so
 libOgrePaging.so.1.8.1
+libOgreProperty.so
+libOgreProperty.so.1.8.1
 libOgreRTShaderSystem.so
 libOgreRTShaderSystem.so.1.8.1
 libOgreTerrain.so
