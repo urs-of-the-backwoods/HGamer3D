@@ -1,5 +1,5 @@
 Name:                HGamer3D-Enet-Binding
-Version:             0.3.1
+Version:             0.3.2
 Synopsis:            Enet Binding for HGamer3D
 Description:         
    HGamer3D is a game engine for developing 3D games in the programming 
@@ -19,7 +19,7 @@ Build-Type:          Simple
 Cabal-Version:       >=1.4
 Homepage:            http://www.hgamer3d.org
 Category:            Game Engine, Network
-Extra-source-files:  Setup.hs, include/hg3dstruct.h
+Extra-source-files:  Setup.hs, include/ClassEnetPacket.h, include/StructHG3DClass.h, include/ClassEnetClient.h, include/hg3denet.hpp, include/ClassEnetServer.h, include/ClassEnet.h, include/EnetDllDefines.h, include/ClassPtr.h, include/hg3dstruct.h
 
 Library
   Build-Depends:     base >= 3 && < 5, HGamer3D-Data >= 0.3.0
@@ -34,6 +34,6 @@ Library
   Build-tools:       
   build-depends:     
   if os(windows)
-     extra-libraries:   hg3denet031
+     extra-libraries:   hg3denet032
   else
-     extra-libraries:   hg3denet031,enet
+     extra-libraries:   hg3denet032,enet

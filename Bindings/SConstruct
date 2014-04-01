@@ -40,8 +40,6 @@ libenet.so.2.2.0
 ceguiFiles = buildFileDeps("CEGUI", """
 libCEGUIBase-0.7.7.so
 libCEGUIBase.so
-libCEGUIExpatParser-0.7.7.so
-libCEGUIExpatParser.so
 libCEGUIFalagardWRBase-0.7.7.so
 libCEGUIFalagardWRBase.so
 libCEGUIFreeImageImageCodec-0.7.7.so
@@ -137,7 +135,7 @@ gui = libFiles(guiFiles)
 Alias('GUI', gui)
 
 # Aux
-auxFiles = sfmlFiles + ["SFML/cBuild/libhg3dsfml031.so"] + enetFiles + ["Enet/cBuild/libhg3denet031.so"]
+auxFiles = sdl2Files + ["SDL2/cBuild/libhg3dsdl2031.so"] + sfmlFiles + ["SFML/cBuild/libhg3dsfml031.so"] + enetFiles + ["Enet/cBuild/libhg3denet031.so"]
 aux = libFiles(auxFiles)
 Alias('Aux', aux)
 

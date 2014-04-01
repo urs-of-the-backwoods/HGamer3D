@@ -37,6 +37,7 @@
 #include "HG3DUtilities.h"
 
 using namespace Ogre;
+using Ogre::uint;
 
 
 

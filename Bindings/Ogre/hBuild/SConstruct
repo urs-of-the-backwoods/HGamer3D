@@ -1,5 +1,5 @@
-# SConstruct file to build Haskell packages
-# #########################################
+# SConstruct file to build Ogre Haskell packages
+# ##############################################
 
 # set environment
 #################
@@ -10,11 +10,14 @@ env = Environment()
 env["ENV"]["PATH"] = os.environ.get("PATH")
 env["ENV"]["HOME"] = os.environ.get("HOME")
 
+# add c2hs location
+env.AppendENVPath('PATH', home + os.sep + '.cabal' + os.sep + 'bin')
+
 # Gather main dependencies
 ##########################
 
 dependsOn = [
-	  Glob("HGamer3D/*"),
+	  Glob("HGamer3D/Bindings/Ogre/*"),
 	  Glob("*.cabal"),
 	  "LICENSE"
 ]
@@ -25,6 +28,6 @@ env.Command(target, dependsOn, [
 "cabal configure --user --extra-lib-dirs=" + home + "/.HGamer3D/lib",
 "cabal build",
 "cabal haddock",
-"cabal install --user --force-reinstalls --extra-lib-dirs=" + home + "/.HGamer3D/lib",
+"cabal install --user --extra-lib-dirs=" + home + "/.HGamer3D/lib",
 "cabal sdist"
 ])

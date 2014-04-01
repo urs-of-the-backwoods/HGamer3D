@@ -15,7 +15,7 @@ Alias('install', libpath)
 ogreDlls = [
 	 "libOgreMain.so.1.8.1",
 	 "libOgrePaging.so.1.8.1",
-#	 "libOgreProperty.so.1.8.1",
+	 "libOgreProperty.so.1.8.1",
 	 "libOgreRTShaderSystem.so.1.8.1",
 	 "libOgreTerrain.so.1.8.1"
 ]

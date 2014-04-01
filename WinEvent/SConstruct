@@ -25,6 +25,6 @@ env.Command(target, dependsOn, [
 "cabal configure --user",
 "cabal build",
 "cabal haddock",
-"cabal install --user --force-reinstalls --extra-lib-dirs=" + home + "/.HGamer3D/lib",
+"cabal install --user --extra-lib-dirs=" + home + "/.HGamer3D/lib",
 "cabal sdist"
 ])

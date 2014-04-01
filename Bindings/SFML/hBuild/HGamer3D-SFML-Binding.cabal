@@ -1,5 +1,5 @@
 Name:                HGamer3D-SFML-Binding
-Version:             0.3.1
+Version:             0.3.2
 Synopsis:            SFML Binding for HGamer3D
 Description:         
    HGamer3D is a game engine for developing 3D games in the programming 
@@ -18,7 +18,7 @@ Build-Type:          Simple
 Cabal-Version:       >=1.4
 Homepage:            http://www.hgamer3d.org
 Category:            Game Engine, Audio, Graphics
-Extra-source-files:  Setup.hs, include/vector2istruct.h, include/vector2fstruct.h, include/MouseHG3D.h, include/vector3istruct.h, include/hg3dstruct.h, include/vector3fstruct.h
+Extra-source-files:  Setup.hs, include/EnumMouseButton.h, include/vector2istruct.h, include/StructHG3DClass.h, include/ClassMusic.h, include/ClassSoundStream.h, include/StructVec3.h, include/vector2fstruct.h, include/ClassSound.h, include/ClassSoundBuffer.h, include/EnumKey.h, include/ClassListener.h, include/ClassMouseHG3D.h, include/EnumJoystickAxis.h, include/MouseHG3D.h, include/ClassKeyboard.h, include/ClassSoundSource.h, include/ClassJoystick.h, include/vector3istruct.h, include/SFMLDllDefines.h, include/ClassMouse.h, include/ClassPtr.h, include/hg3dstruct.h, include/EnumSoundSourceStatus.h, include/vector3fstruct.h
 
 Library
   Build-Depends:     base >= 3 && < 5, HGamer3D-Data >= 0.3.0
@@ -33,6 +33,6 @@ Library
   Build-tools:       
   build-depends:     
   if os(windows)
-     extra-libraries:   hg3dsfml031
+     extra-libraries:   hg3dsfml032
   else
-     extra-libraries:   hg3dsfml031,sfml-audio,sfml-system,sfml-window,sfml-network
+     extra-libraries:   hg3dsfml032,sfml-audio,sfml-system,sfml-window,sfml-network

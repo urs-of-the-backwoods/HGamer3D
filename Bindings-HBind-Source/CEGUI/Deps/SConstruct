@@ -21,15 +21,14 @@ def linkSO(target, source, env):
 #######################
 
 files = [
-"./CEGUI-0.7.7/cegui/src/XMLParserModules/ExpatParser/.libs/libCEGUIExpatParser-0.7.7.so",
-"./CEGUI-0.7.7/cegui/src/XMLParserModules/TinyXMLParser/.libs/libCEGUITinyXMLParser-0.7.7.so",
 "./CEGUI-0.7.7/cegui/src/.libs/libCEGUIBase-0.7.7.so",
 "./CEGUI-0.7.7/cegui/src/WindowRendererSets/Falagard/.libs/libCEGUIFalagardWRBase-0.7.7.so",
 "./CEGUI-0.7.7/cegui/src/RendererModules/OpenGL/.libs/libCEGUIOpenGLRenderer-0.7.7.so",
 "./CEGUI-0.7.7/cegui/src/RendererModules/Ogre/.libs/libCEGUIOgreRenderer-0.7.7.so",
 "./CEGUI-0.7.7/cegui/src/ImageCodecModules/TGAImageCodec/.libs/libCEGUITGAImageCodec-0.7.7.so",
 "./CEGUI-0.7.7/cegui/src/ImageCodecModules/FreeImageImageCodec/.libs/libCEGUIFreeImageImageCodec-0.7.7.so",
-"./CEGUI-0.7.7/cegui/src/ImageCodecModules/STBImageCodec/.libs/libCEGUISTBImageCodec-0.7.7.so"
+"./CEGUI-0.7.7/cegui/src/ImageCodecModules/STBImageCodec/.libs/libCEGUISTBImageCodec-0.7.7.so",
+"./CEGUI-0.7.7/cegui/src/XMLParserModules/TinyXMLParser/.libs/libCEGUITinyXMLParser-0.7.7.so"
 ]
 
 # EXTRACT - LINUX SECTION

@@ -1,5 +1,5 @@
 Name:                HGamer3D-SDL2-Binding
-Version:             0.3.1
+Version:             0.3.3
 Synopsis:            SDL2 Binding for HGamer3D
 Description:         
    HGamer3D is a game engine for developing 3D games in the programming 
@@ -18,7 +18,7 @@ Build-Type:          Simple
 Cabal-Version:       >=1.4
 Homepage:            http://www.hgamer3d.org
 Category:            Game Engine
-Extra-source-files:  Setup.hs, include/sdlevent_struct.h, include/hg3dstruct.h
+Extra-source-files:  Setup.hs, include/HeaderSDLEvents.h, include/EnumSDLRendererFlags.h, include/StructHG3DClass.h, include/EnumSDLLogPriority.h, include/EnumSDLWindowShapeMode.h, include/HG3DUtilities.h, include/StructSDLEvent.h, include/HeaderSDL.h, include/EnumSDLMessageBoxColorType.h, include/EnumSDLThreadPriority.h, include/sdlevent_struct.h, include/HeaderSDLVideo.h, include/EnumSDLBlendMode.h, include/EnumSDLEventType.h, include/EnumSDLKeycode.h, include/EnumSDLHintPriority.h, include/EnumSDLGLAttr.h, include/EnumSDLWindowEventID.h, include/EnumSDLTextureAccess.h, include/EnumSDLRendererFlip.h, include/EnumSDLMessageBoxFlags.h, include/SDL2DllDefines.h, include/EnumSDLPowerState.h, include/EnumSDLSystemCursor.h, include/EnumSDLGameControllerButton.h, include/EnumSDLTextureModulate.h, include/HeaderSDLKeyboard.h, include/EnumSDLKeymod.h, include/EnumSDLGameControllerAxis.h, include/EnumSDLScancode.h, include/EnumSDLGLProfile.h, include/EnumSDLWindowFlags.h, include/EnumSDLGlContextFlag.h, include/EnumSDLSysWMType.h, include/ClassPtr.h, include/ClassHG3DUtilities.h, include/hg3dstruct.h, include/EnumSDLMessageBoxButtonFlags.h, include/EnumSDLGameControllerBindType.h, include/HeaderSDLMouse.h
 
 Library
   Build-Depends:     base >= 3 && < 5, utf8-string, bytestring, HGamer3D-Data >= 0.3.0
@@ -33,6 +33,6 @@ Library
   Build-tools:       
   build-depends:     
   if os(windows)
-     extra-libraries:   hg3dsdl2031
+     extra-libraries:   hg3dsdl2033
   else
-     extra-libraries:   hg3dsdl2031,SDL2-2.0,X11
+     extra-libraries:   hg3dsdl2033,SDL2-2.0,X11

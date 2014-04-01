@@ -92,8 +92,8 @@ import HGamer3D.Graphics3D.Engine
 
 import Control.Monad
 import Control.Monad.Trans
-import Control.Monad.IO.Class
 import Control.Monad.State.Class
+
 
 				
 -- set the material of an Ogre entity, used during mesh creation

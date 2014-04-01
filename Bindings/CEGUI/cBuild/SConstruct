@@ -14,7 +14,7 @@
 # 
 
 
-# scons file to build HGamer3DCEGUI library, version 0.3.0
+# scons file to build HGamer3DCEGUI library, version 0.3.1
 
 
 # set environment
@@ -28,29 +28,27 @@ env["ENV"]["HOME"] = os.environ.get("HOME")
 
 libpath = home + "/.HGamer3D/lib"
 
-# environment
-env = Environment() 
 if env["PLATFORM"] == "win32":
-   env = Environment(TARGET_ARCH="x86", MSVC_VERSION="10.0") 
-   env.MergeFlags({"CCFLAGS" : "/DWIN32 /D_WIN32 /DHGamer3DCEGUI030_EXPORTS /EHsc /MD"})
+   # on windows, create new environment, which finds MS C-Compiler
+   env = Environment(TARGET_ARCH="x86", MSVC_VERSION="10.0")
+   env.MergeFlags({"CCFLAGS" : "/DWIN32 /D_WIN32 /DHGamer3DCEGUI031_EXPORTS /EHsc /MD"})
 
-# env["ENV"]["PATH"] = os.environ.get("PATH")
-
-# include path, libpath
+# set other compile parameters
+##############################
 
 if env["PLATFORM"] == "win32":
 
    env.Append(CPPPATH=["include","../Deps/include","../Deps/include/CEGUI","../Deps/dependencies/include"])
    env.Append(LIBPATH=["lib","../Deps/lib","../Deps/lib"])
-   env.SharedLibrary("hg3dcegui030", ["ClassListboxItem.cpp","ClassSchemeManager.cpp","ClassSystem.cpp","ClassEventArgs.cpp","ClassPropertySet.cpp","ClassScrollbar.cpp","ClassRenderer.cpp","ClassScriptModule.cpp","ClassScrollablePane.cpp","HG3DEventModule.cpp","ClassHG3DListboxStaticFunctions.cpp","ClassWindowManager.cpp","ClassThumb.cpp","ClassComboDropList.cpp","ClassFont.cpp","HG3DEventStaticFunctions.cpp","ClassFontManager.cpp","ClassCombobox.cpp","ClassHG3DEventStaticFunctions.cpp","ClassSlider.cpp","HG3DListboxStaticFunctions.cpp","ClassItemListbox.cpp","ClassWidgetLookManager.cpp","ClassDefaultResourceProvider.cpp","ClassTree.cpp","ClassImageset.cpp","ClassScrolledContainer.cpp","ClassOgreResourceProvider.cpp","HG3DCommandHandler.cpp","ClassDragContainer.cpp","ClassResourceProvider.cpp","ClassMenuBase.cpp","ClassItemEntry.cpp","ClassEventSet.cpp","ClassProgressBar.cpp","ClassSpinner.cpp","ClassListboxTextItem.cpp","ClassWindow.cpp","ClassMenuItem.cpp","ClassHG3DWindowStaticFunctions.cpp","ClassLogger.cpp","ClassTabButton.cpp","ClassScriptFunctor.cpp","ClassOgreRenderer.cpp","ClassRadioButton.cpp","ClassScrolledItemListBase.cpp","ClassPushButton.cpp","ClassListHeaderSegment.cpp","ClassImageCodec.cpp","ClassWindowManagerHG3D.cpp","ClassListHeader.cpp","HG3DEventController.cpp","HG3DWindowStaticFunctions.cpp","ClassXMLParser.cpp","ClassMultiLineEditbox.cpp","ClassSystemHG3D.cpp","ClassPtr.cpp","ClassFrameWindow.cpp","ClassHG3DEventController.cpp","ClassMultiColumnList.cpp","ClassEditbox.cpp","ClassListbox.cpp","ClassScheme.cpp","ClassCheckbox.cpp","ClassTooltip.cpp","ClassDefaultLogger.cpp"], LIBS = ["CEGUIBase.lib","CEGUIOgreRenderer.lib"])
+   env.SharedLibrary("hg3dcegui031", ["ClassListboxItem.cpp","ClassSchemeManager.cpp","ClassSystem.cpp","ClassEventArgs.cpp","ClassPropertySet.cpp","ClassScrollbar.cpp","ClassRenderer.cpp","ClassScriptModule.cpp","ClassScrollablePane.cpp","HG3DEventModule.cpp","ClassHG3DListboxStaticFunctions.cpp","ClassWindowManager.cpp","ClassThumb.cpp","ClassComboDropList.cpp","ClassFont.cpp","HG3DEventStaticFunctions.cpp","ClassFontManager.cpp","ClassCombobox.cpp","ClassHG3DEventStaticFunctions.cpp","ClassSlider.cpp","HG3DListboxStaticFunctions.cpp","ClassItemListbox.cpp","ClassWidgetLookManager.cpp","ClassDefaultResourceProvider.cpp","ClassTree.cpp","ClassImageset.cpp","ClassScrolledContainer.cpp","ClassOgreResourceProvider.cpp","HG3DCommandHandler.cpp","ClassDragContainer.cpp","ClassResourceProvider.cpp","ClassMenuBase.cpp","ClassItemEntry.cpp","ClassEventSet.cpp","ClassProgressBar.cpp","ClassSpinner.cpp","ClassListboxTextItem.cpp","ClassWindow.cpp","ClassMenuItem.cpp","ClassHG3DWindowStaticFunctions.cpp","ClassLogger.cpp","ClassTabButton.cpp","ClassScriptFunctor.cpp","ClassOgreRenderer.cpp","ClassRadioButton.cpp","ClassScrolledItemListBase.cpp","ClassPushButton.cpp","ClassListHeaderSegment.cpp","ClassImageCodec.cpp","ClassWindowManagerHG3D.cpp","ClassListHeader.cpp","HG3DEventController.cpp","HG3DWindowStaticFunctions.cpp","ClassXMLParser.cpp","ClassMultiLineEditbox.cpp","ClassSystemHG3D.cpp","ClassPtr.cpp","ClassFrameWindow.cpp","ClassHG3DEventController.cpp","ClassMultiColumnList.cpp","ClassEditbox.cpp","ClassListbox.cpp","ClassScheme.cpp","ClassCheckbox.cpp","ClassTooltip.cpp","ClassDefaultLogger.cpp"], LIBS = ["CEGUIBase.lib","CEGUIOgreRenderer.lib"])
    env.Alias('install', libpath)
-   env.Install(libpath, "hg3dcegui030.dll")
+   env.Install(libpath, "hg3dcegui031.dll")
 
 else:
    env.Append(CPPPATH=["include","../Deps/include","../Deps/include/CEGUI","../Deps/dependencies/include"])
    env.Append(LIBPATH=["lib","../Deps/lib","../Deps/lib"])
-   env.SharedLibrary("hg3dcegui030", ["ClassListboxItem.cpp","ClassSchemeManager.cpp","ClassSystem.cpp","ClassEventArgs.cpp","ClassPropertySet.cpp","ClassScrollbar.cpp","ClassRenderer.cpp","ClassScriptModule.cpp","ClassScrollablePane.cpp","HG3DEventModule.cpp","ClassHG3DListboxStaticFunctions.cpp","ClassWindowManager.cpp","ClassThumb.cpp","ClassComboDropList.cpp","ClassFont.cpp","HG3DEventStaticFunctions.cpp","ClassFontManager.cpp","ClassCombobox.cpp","ClassHG3DEventStaticFunctions.cpp","ClassSlider.cpp","HG3DListboxStaticFunctions.cpp","ClassItemListbox.cpp","ClassWidgetLookManager.cpp","ClassDefaultResourceProvider.cpp","ClassTree.cpp","ClassImageset.cpp","ClassScrolledContainer.cpp","ClassOgreResourceProvider.cpp","HG3DCommandHandler.cpp","ClassDragContainer.cpp","ClassResourceProvider.cpp","ClassMenuBase.cpp","ClassItemEntry.cpp","ClassEventSet.cpp","ClassProgressBar.cpp","ClassSpinner.cpp","ClassListboxTextItem.cpp","ClassWindow.cpp","ClassMenuItem.cpp","ClassHG3DWindowStaticFunctions.cpp","ClassLogger.cpp","ClassTabButton.cpp","ClassScriptFunctor.cpp","ClassOgreRenderer.cpp","ClassRadioButton.cpp","ClassScrolledItemListBase.cpp","ClassPushButton.cpp","ClassListHeaderSegment.cpp","ClassImageCodec.cpp","ClassWindowManagerHG3D.cpp","ClassListHeader.cpp","HG3DEventController.cpp","HG3DWindowStaticFunctions.cpp","ClassXMLParser.cpp","ClassMultiLineEditbox.cpp","ClassSystemHG3D.cpp","ClassPtr.cpp","ClassFrameWindow.cpp","ClassHG3DEventController.cpp","ClassMultiColumnList.cpp","ClassEditbox.cpp","ClassListbox.cpp","ClassScheme.cpp","ClassCheckbox.cpp","ClassTooltip.cpp","ClassDefaultLogger.cpp"], LIBS = ["CEGUIBase-0.7.7","CEGUIOgreRenderer-0.7.7"])
+   env.SharedLibrary("hg3dcegui031", ["ClassListboxItem.cpp","ClassSchemeManager.cpp","ClassSystem.cpp","ClassEventArgs.cpp","ClassPropertySet.cpp","ClassScrollbar.cpp","ClassRenderer.cpp","ClassScriptModule.cpp","ClassScrollablePane.cpp","HG3DEventModule.cpp","ClassHG3DListboxStaticFunctions.cpp","ClassWindowManager.cpp","ClassThumb.cpp","ClassComboDropList.cpp","ClassFont.cpp","HG3DEventStaticFunctions.cpp","ClassFontManager.cpp","ClassCombobox.cpp","ClassHG3DEventStaticFunctions.cpp","ClassSlider.cpp","HG3DListboxStaticFunctions.cpp","ClassItemListbox.cpp","ClassWidgetLookManager.cpp","ClassDefaultResourceProvider.cpp","ClassTree.cpp","ClassImageset.cpp","ClassScrolledContainer.cpp","ClassOgreResourceProvider.cpp","HG3DCommandHandler.cpp","ClassDragContainer.cpp","ClassResourceProvider.cpp","ClassMenuBase.cpp","ClassItemEntry.cpp","ClassEventSet.cpp","ClassProgressBar.cpp","ClassSpinner.cpp","ClassListboxTextItem.cpp","ClassWindow.cpp","ClassMenuItem.cpp","ClassHG3DWindowStaticFunctions.cpp","ClassLogger.cpp","ClassTabButton.cpp","ClassScriptFunctor.cpp","ClassOgreRenderer.cpp","ClassRadioButton.cpp","ClassScrolledItemListBase.cpp","ClassPushButton.cpp","ClassListHeaderSegment.cpp","ClassImageCodec.cpp","ClassWindowManagerHG3D.cpp","ClassListHeader.cpp","HG3DEventController.cpp","HG3DWindowStaticFunctions.cpp","ClassXMLParser.cpp","ClassMultiLineEditbox.cpp","ClassSystemHG3D.cpp","ClassPtr.cpp","ClassFrameWindow.cpp","ClassHG3DEventController.cpp","ClassMultiColumnList.cpp","ClassEditbox.cpp","ClassListbox.cpp","ClassScheme.cpp","ClassCheckbox.cpp","ClassTooltip.cpp","ClassDefaultLogger.cpp"], LIBS = ["CEGUIBase-0.7.7","CEGUIOgreRenderer-0.7.7"])
    env.Alias('install', libpath)
-   env.Install(libpath, "libhg3dcegui030.so")
+   env.Install(libpath, "libhg3dcegui031.so")
 
 

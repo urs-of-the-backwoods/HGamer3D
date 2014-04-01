@@ -1,5 +1,5 @@
 Name:                HGamer3D-Ogre-Binding
-Version:             0.3.1
+Version:             0.3.2
 Synopsis:            Ogre Binding for HGamer3D
 Description:         
    HGamer3D is a game engine for developing 3D games in the programming 
@@ -18,7 +18,7 @@ Build-Type:          Simple
 Cabal-Version:       >=1.4
 Homepage:            http://www.hgamer3d.org
 Category:            Game Engine, Graphics
-Extra-source-files:  Setup.hs, include/WindowUtilsHG3D.h, include/quaternion_struct.h, include/sharedptr_struct.h, include/radian_struct.h, include/vector2_struct.h, include/vector4_struct.h, include/hg3dstruct.h, include/vector3_struct.h, include/colorvalue_struct.h, include/degree_struct.h
+Extra-source-files:  Setup.hs, include/EnumAnimationRotationInterpolationMode.h, include/WindowUtilsHG3D.h, include/ClassTimeIndex.h, include/EnumSceneManagerIlluminationRenderStage.h, include/ClassSkeleton.h, include/ClassArchive.h, include/StructHG3DClass.h, include/EnumRenderTargetFrameBuffer.h, include/ClassBillboardSet.h, include/EnumSkeletonAnimationBlendMode.h, include/StructDegrees.h, include/EnumSceneType.h, include/HG3DUtilities.h, include/EnumAxisAlignedBoxCorner.h, include/ClassBillboardSetFactory.h, include/ClassBillboardChainFactory.h, include/EnumOrientationMode.h, include/ClassManualObject.h, include/ClassVertexAnimationTrack.h, include/EnumRootFrameEventTimeType.h, include/quaternion_struct.h, include/EnumRenderOperationOperationType.h, include/ClassManualObjectSection.h, include/StructColour.h, include/ClassResourceGroupManager.h, include/ClassNumericAnimationTrack.h, include/StructVec3.h, include/ClassException.h, include/StructVec2.h, include/ClassTextureManager.h, include/ClassBillboardChain.h, include/EnumSceneManagerPrefabType.h, include/sharedptr_struct.h, include/ClassMaterialManager.h, include/EnumSceneManagerSpecialCaseRenderQueueMode.h, include/radian_struct.h, include/ClassLight.h, include/ClassAnimationState.h, include/ClassMovableObject.h, include/ClassBone.h, include/ClassAnimation.h, include/vector2_struct.h, include/ClassRenderTarget.h, include/ClassRenderTexture.h, include/EnumTexCoordCalcMethod.h, include/StructSharedPtr.h, include/ClassRenderSystem.h, include/EnumDataStreamAccessMode.h, include/EnumAnimationInterpolationMode.h, include/ClassMesh.h, include/ClassSceneManager.h, include/EnumGpuProgramType.h, include/ClassRenderable.h, include/ClassNode.h, include/ClassMultiRenderTarget.h, include/EnumLogMessageLevel.h, include/ClassEntityFactory.h, include/ClassAnimationStateSet.h, include/EnumNodeTransformSpace.h, include/ClassSceneManagerFactory.h, include/EnumBillboardRotationType.h, include/EnumProjectionType.h, include/ClassArchiveManager.h, include/EnumMathAngleUnit.h, include/ClassSkeletonManager.h, include/EnumFrustumPlane.h, include/EnumVertexAnimationType.h, include/EnumLoggingLevel.h, include/EnumStencilOperation.h, include/ClassSceneNode.h, include/ClassControllerManager.h, include/ClassManualObjectFactory.h, include/ClassResource.h, include/OgreDllDefines.h, include/ClassLightFactory.h, include/ClassBillboard.h, include/ClassResourceManager.h, include/EnumBillboardOrigin.h, include/StructQuaternion.h, include/ClassFrustum.h, include/ClassNodeAnimationTrack.h, include/EnumBillboardChainTexCoordDirection.h, include/EnumSceneManagerBoxPlane.h, include/ClassEntity.h, include/EnumAxisAlignedBoxExtent.h, include/ClassWindowEventUtilities.h, include/ClassConfigFile.h, include/EnumEntityVertexDataBindChoice.h, include/EnumRenderTargetStatFlags.h, include/vector4_struct.h, include/EnumBillboardType.h, include/ClassLogManager.h, include/ClassPtr.h, include/StructRadians.h, include/EnumVertexAnimationTrackTargetMode.h, include/ClassCamera.h, include/ClassHG3DUtilities.h, include/ClassRoot.h, include/hg3dstruct.h, include/vector3_struct.h, include/ClassMovableObjectFactory.h, include/EnumExceptionCode.h, include/colorvalue_struct.h, include/ClassViewport.h, include/ClassAnimationTrack.h, include/ClassRenderWindow.h, include/EnumMeshManagerMeshBuildType.h, include/ClassMaterial.h, include/ClassLog.h, include/EnumLightType.h, include/degree_struct.h, include/ClassMeshManager.h
 
 Library
   Build-Depends:     base >= 3 && < 5, transformers>=0.3.0,mtl, HGamer3D-Data >= 0.3.0
@@ -33,6 +33,6 @@ Library
   Build-tools:       
   build-depends:     
   if os(windows)
-     extra-libraries:   hg3dogre031
+     extra-libraries:   hg3dogre032
   else
-     extra-libraries:   hg3dogre031,OgreMain,OgrePaging,OgreProperty,OgreRTShaderSystem,OgreTerrain
+     extra-libraries:   hg3dogre032,OgreMain,OgrePaging,OgreProperty,OgreRTShaderSystem,OgreTerrain

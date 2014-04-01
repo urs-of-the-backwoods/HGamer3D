@@ -15,6 +15,7 @@ env["ENV"]["HOME"] = os.environ.get("HOME")
 
 dependsOn = [
 	  Glob("HGamer3D/*"),
+	  Glob("HGamer3D/Wire/*"),
 	  Glob("*.cabal"),
 	  "LICENSE"
 ]
@@ -25,6 +26,6 @@ env.Command(target, dependsOn, [
 "cabal configure --user",
 "cabal build",
 "cabal haddock",
-"cabal install --user --force-reinstalls --extra-lib-dirs=" + home + "/.HGamer3D/lib",
+"cabal install --user --extra-lib-dirs=" + home + "/.HGamer3D/lib",
 "cabal sdist"
 ])

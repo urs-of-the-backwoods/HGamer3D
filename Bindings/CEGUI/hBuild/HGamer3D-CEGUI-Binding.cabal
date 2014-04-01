@@ -1,5 +1,5 @@
 Name:                HGamer3D-CEGUI-Binding
-Version:             0.3.0
+Version:             0.3.1
 Synopsis:            A Game Engine for the Haskell Programmer - CEGUI  Bindings
 Description:         
    HGamer3D is a game engine for developing 3D games in the programming 
@@ -16,7 +16,7 @@ Build-Type:          Simple
 Cabal-Version:       >=1.4
 Homepage:            http://www.hgamer3d.org
 Category:            Game Engine, GUI
-Extra-source-files:  Setup.hs, include/SystemHG3D.h, include/quaternion_struct.h, include/WindowManagerHG3D.h, include/sharedptr_struct.h, include/radian_struct.h, include/vector2_struct.h, include/vector4_struct.h, include/hg3dstruct.h, include/vector3_struct.h, include/colorvalue_struct.h, include/degree_struct.h
+Extra-source-files:  Setup.hs, include/EnumMouseButton.h, include/EnumSystemKey.h, include/ClassListboxTextItem.h, include/ClassSlider.h, include/ClassMultiColumnList.h, include/HG3DEventStaticFunctions.h, include/StructHG3DClass.h, include/ClassImageset.h, include/ClassTabButton.h, include/ClassListHeaderSegment.h, include/ClassMenuBase.h, include/EnumTipState.h, include/SystemHG3D.h, include/EnumVerticalAlignment.h, include/ClassHG3DEventStaticFunctions.h, include/ClassHG3DEventController.h, include/ClassComboDropList.h, include/HG3DListboxStaticFunctions.h, include/ClassWindowManager.h, include/ClassFrameWindow.h, include/ClassHG3DListboxStaticFunctions.h, include/ClassXMLParser.h, include/ClassThumb.h, include/ClassSpinner.h, include/quaternion_struct.h, include/CEGUIDllDefines.h, include/HG3DEventController.h, include/WindowManagerHG3D.h, include/ClassSystemHG3D.h, include/ClassSchemeManager.h, include/sharedptr_struct.h, include/radian_struct.h, include/ClassScrolledItemListBase.h, include/ClassDefaultLogger.h, include/ClassWindowManagerHG3D.h, include/ClassScrollbar.h, include/ClassDefaultResourceProvider.h, include/ClassRadioButton.h, include/vector2_struct.h, include/ClassListbox.h, include/ClassListHeader.h, include/ClassWindow.h, include/ClassEditbox.h, include/EnumTextInputMode.h, include/ClassItemEntry.h, include/EnumWindowUpdateMode.h, include/EnumQuadSplitMode.h, include/ClassItemListbox.h, include/ClassFont.h, include/ClassImageCodec.h, include/ClassOgreRenderer.h, include/ClassEventSet.h, include/EnumSortDirection.h, include/EnumTabPanePosition.h, include/ClassHG3DWindowStaticFunctions.h, include/ClassScrollablePane.h, include/EnumLoggingLevel.h, include/HG3DCommandHandler.h, include/ClassTooltip.h, include/ClassCombobox.h, include/ClassScheme.h, include/ClassTree.h, include/ClassScriptFunctor.h, include/HG3DEventModule.h, include/ClassDragContainer.h, include/ClassMultiLineEditbox.h, include/ClassFontManager.h, include/EnumBlendMode.h, include/EnumFWSizingLocation.h, include/ClassResourceProvider.h, include/ClassScriptModule.h, include/ClassLogger.h, include/ClassScrolledContainer.h, include/ClassMenuItem.h, include/vector4_struct.h, include/ClassPushButton.h, include/ClassProgressBar.h, include/ClassPtr.h, include/HG3DWindowStaticFunctions.h, include/hg3dstruct.h, include/vector3_struct.h, include/ClassListboxItem.h, include/ClassSystem.h, include/colorvalue_struct.h, include/EnumHorizontalAlignment.h, include/ClassPropertySet.h, include/ClassEventArgs.h, include/EnumKeyScan.h, include/ClassRenderer.h, include/degree_struct.h, include/EnumSelectionMode.h, include/ClassOgreResourceProvider.h, include/ClassCheckbox.h, include/ClassWidgetLookManager.h
 
 Library
   Build-Depends:     base >= 3 && < 5,  HGamer3D-Data >= 0.3.0 && < 0.4.0
@@ -31,6 +31,6 @@ Library
   Build-tools:       
   build-depends:     
   if os(windows)
-     extra-libraries:   hg3dcegui030
+     extra-libraries:   hg3dcegui031
   else
-     extra-libraries:   hg3dcegui030,CEGUIBase-0.7.7,CEGUIOgreRenderer-0.7.7
+     extra-libraries:   hg3dcegui031,CEGUIBase-0.7.7,CEGUIOgreRenderer-0.7.7
