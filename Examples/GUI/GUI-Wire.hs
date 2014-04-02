@@ -21,7 +21,7 @@
 
 
 -- GUI-Wire.hs
--- example, to create a basic running HGamer3D Framework with Wire semantics
+-- example, to create and use GUI elements efficiently with netwire
 -- build on top of netwire: http://hackage.haskell.org/package/netwire
 
 module Main where
@@ -177,14 +177,14 @@ getCrudWindow ws  = do
         let wire = proc _ -> do
               rec
                 -- Values have a V, Events have an E at the end
-                (stateV, selV, preE, surE) <- delay ([]::[((String, String), Int)], []::[((String, String), Int)], NoEvent, NoEvent) -< (stateV', selV'', preE', surE')
+                (stateV, selV, preE, surE) <- delay ([], [], NoEvent, NoEvent) -< (stateV', selV'', preE', surE')
                           
                 -- buttons and edit fields
                 --------------------------
                                               
                 -- prename surname field
-                (preE'', preV) <- prenameEB -< preE
-                (surE'', surV) <- surnameEB -< surE
+                (preEB, preV) <- prenameEB -< preE
+                (surEB, surV) <- surnameEB -< surE
                                   
                 -- filter string 
                 (filE, filV) <- filterEB . now -< ""
@@ -200,28 +200,29 @@ getCrudWindow ws  = do
                                
                 -- creation of an element
                 idV <- (hold . accum1E (+)) <|> pure 0 -< fmap (const (1::Int)) crE      -- this one simply counts ids
-                let crE' = crE <# (((preV, surV), idV) : stateV)      -- create final event, which contains the new list
+                let crSVE = crE <# (((preV, surV), idV) : stateV)      -- create final event, which contains the new list
                   
                 -- deletion of an element
-                let dlE' = dlE <# if null selV then stateV else filter (\el -> idTp el /= idTp (selV !! 0) ) stateV
+                let dlSVE = dlE <# if null selV then stateV else filter (\el -> idTp el /= idTp (selV !! 0) ) stateV
                     
                 -- change of prename or surname in the data
-                let preUp' = if not (null selV) 
-                             then preE'' <# fmap (\tp -> if idTp tp == idTp (selV !! 0) then ((preV, snTp tp), idTp tp) else tp) stateV 
+                let preSVE = if not (null selV) 
+                             then preEB <# fmap (\tp -> if idTp tp == idTp (selV !! 0) then ((preV, snTp tp), idTp tp) else tp) stateV 
                              else NoEvent
                                 
-                let surUp' = if not (null selV) 
-                             then surE'' <# fmap (\tp -> if idTp tp == idTp (selV !! 0) then ((pnTp tp, surV), idTp tp) else tp) stateV 
+                let surSVE = if not (null selV) 
+                             then surEB <# fmap (\tp -> if idTp tp == idTp (selV !! 0) then ((pnTp tp, surV), idTp tp) else tp) stateV 
                              else NoEvent
                     
-                -- handle selection, deselect button 
-                ------------------------------------
-                let desE' = desE <# []
-                selV' <- hold <|> pure [] -< desE' |# Event selV 
+                -- change selection on deselect button 
+                selV' <- hold <|> pure [] -< (desE <# []) |# Event selV 
 
-                -- summary: stateE', stateV'
-                let stateE' =  dlE' |# crE' |# preUp' |# surUp'
-                stateV' <- hold <|> pure [] -< stateE'
+
+                -- update of main state value
+                -----------------------------
+
+                let changeSVE =  dlSVE |# crSVE |# preSVE |# surSVE
+                stateV' <- hold <|> pure [] -< changeSVE
 
                         
                 -- handle display listbox element
@@ -230,16 +231,16 @@ getCrudWindow ws  = do
                 -- create filtered input, first filter non matching, then apply selection again
                 let displayV = fmap (\el -> if null selV' then (el, False) else (el, (idTp el) == idTp (selV' !! 0) )) (filter (\el -> isInfixOf filV (nameTp el)) stateV')
                  
-                -- set display elements on events, get event from selection changes
-                (selChangeE, selStateV) <- namesLB -< (stateE' |!  filE |! desE') <# displayV
+                -- set display listbox and get events from selection in listbox
+                (selE, selV'') <- namesLB -< (changeSVE |!  filE |! desE) <# displayV
 
-                -- handle selection, user click
-                -------------------------------
-                selV'' <- hold <|> pure [] -< (stateE' |! filE |! selChangeE  |! desE') <# selStateV 
+
+                -- clean up selections, due to filter and other events
+                ------------------------------------------------------
 
                 -- check selection and deselection processes for prename, surname and button text
-                selectedE <- filterE (\l -> not (null l)) -< ( stateE' |! filE  |! desE' |! selChangeE) <# selV''
-                deselectedE <- filterE null -< ( stateE' |! filE  |! desE' |! selChangeE) <# selV''
+                selectedE <- filterE (\l -> not (null l)) -< ( changeSVE |! filE  |! desE |! selE) <# selV''
+                deselectedE <- filterE null -< ( changeSVE |! filE  |! desE |! selE) <# selV''
 
                 -- set prename, surname, if new selection
                 let preE' = fmap (\[tp] -> pnTp tp) selectedE
