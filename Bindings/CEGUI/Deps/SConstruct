@@ -88,6 +88,7 @@ env.Command("include/CEGUI", "CEGUI-0.7.7/cegui/include", [
 if env["PLATFORM"] == "posix":
 
    # configure step, to create Makefile
+   env.AppendENVPath("PKG_CONFIG_PATH", ["/usr/local/lib/pkgconfig"])
    env.Command("CEGUI-0.7.7/Makefile", "include", [
         "pkg-config --exact-version=1.8.1 OGRE || (echo \"you need to install Ogre 1.8.1 as root from folder Ogre/Deps/ogre_src... by typing: make install\" && exit 1)",
    	"cd CEGUI-0.7.7 && ./configure"
