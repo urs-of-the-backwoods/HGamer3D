@@ -1,7 +1,5 @@
 {-# LANGUAGE Arrows #-}
 
--- Cuboid2, a 3D puzzle game, thanks to Pedro Martins for game idea (https://github.com/pedromartins/cuboid)
---
 -- (c) 2014 Peter Althainz
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +13,11 @@
 -- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
+
+
+-- this module will probably not be part of future API
+-- it is solely for testing new paradigms in game programming 
+-- the state modifications by IORef might be replaced in the future
 
 module EntityComponentSystem where
 
@@ -95,8 +98,8 @@ createSystem sdata  = let
           
 -- COMPONENTS
                     
-modifyIORef' :: IORef a -> (a -> a) -> IO ()
-modifyIORef' ref f = do
+modifyIORef'' :: IORef a -> (a -> a) -> IO ()
+modifyIORef'' ref f = do
     x <- readIORef ref
     let x' =  (f x)
     x' `seq` writeIORef ref x'
@@ -125,7 +128,7 @@ setLocation :: Entity -> (Vec3 -> Vec3) -> IO ()
 setLocation e f = do
   case e `gC` location of
     Just (Location l) -> do
-      modifyIORef' l f
+      modifyIORef'' l f
       return ()
     _ -> return ()
   
@@ -170,7 +173,7 @@ getOrientation e = case e `gC` orientation of
 setOrientation :: Entity -> (U -> U) -> IO ()
 setOrientation e f = do
   case e `gC` orientation of
-    Just (Orientation o) -> modifyIORef' o f
+    Just (Orientation o) -> modifyIORef'' o f
     _ -> return ()
   
 orientationSystem :: SystemData (M.Map ObId (IORef UnitQuaternion, Object3D))
@@ -191,7 +194,7 @@ rotate :: Entity -> Vec3 -> Float -> GameWire (Event a) (Event a)
 rotate e rv a = mkGen $ \s evt -> case (evt, (e `gC` orientation)) of
   (Event _, Just (Orientation r)) -> do
     let t = realToFrac (dtime s) 
-    modifyIORef' r (\ori -> ori .*. (rotU rv (a*t))) 
+    modifyIORef'' r (\ori -> ori .*. (rotU rv (a*t))) 
     return $ (Right evt, rotate e rv a)  
   _ -> return $ (Right evt, rotate e rv a)
 
@@ -214,7 +217,7 @@ velocity _ = False
 setVelocity :: Entity -> (Vec3 -> Vec3) -> IO ()
 setVelocity e f = do
   case e `gC` velocity of
-    Just (Velocity v) -> modifyIORef' v f
+    Just (Velocity v) -> modifyIORef'' v f
     _ -> return ()
   
 velocitySystem :: SystemData (M.Map ObId (IORef Vec3, IORef Vec3))
@@ -228,14 +231,14 @@ velocitySystem = let
     mapM (\(rV, rP) -> do
              vel <- readIORef rV
              let t = realToFrac $ dtime s :: Float
-             modifyIORef' rP (\pos -> pos &+ (vel &* t)) ) (map snd (M.toList mapIn)) 
+             modifyIORef'' rP (\pos -> pos &+ (vel &* t)) ) (map snd (M.toList mapIn)) 
     return ()
   in (SystemData fInit fAdd fRem runAction)
 
 accelerate :: Entity -> Vec3 -> GameWire (Event a) (Event a)
 accelerate e vec = mkGen_ $ \evt -> case (evt, (e `gC` velocity)) of
   (Event _, Just (Velocity r)) -> do
-    modifyIORef' r (\vel -> vel &+ vec) 
+    modifyIORef'' r (\vel -> vel &+ vec) 
     return $ (Right evt)  
   _ -> return $ (Right evt)
 
