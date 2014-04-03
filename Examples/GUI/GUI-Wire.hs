@@ -5,7 +5,7 @@
 -- (A project to enable 3D game development in Haskell)
 -- For the latest info, see http://www.althainz.de/HGamer3D.html
 --
--- (c) 2011 Peter Althainz
+-- (c) 2014 Peter Althainz
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -176,79 +176,72 @@ getCrudWindow ws  = do
             
         let wire = proc _ -> do
               rec
-                -- Values have a V, Events have an E at the end
-                (stateV, selV, preE, surE) <- delay ([], [], NoEvent, NoEvent) -< (stateV', selV'', preE', surE')
-                          
-                -- buttons and edit fields
-                --------------------------
-                                              
-                -- prename surname field
-                (preEB, preV) <- prenameEB -< preE
-                (surEB, surV) <- surnameEB -< surE
-                                  
-                -- filter string 
-                (filE, filV) <- filterEB . now -< ""
-                                
-                -- create button, depending on selV it is either a create or a deselect event!
-                (crE, desE) <- (filterE null &&& filterE (\v -> not (null v))) . createB -< selV
-                               
-                -- delete button, event contains new list
-                dlE <- deleteB -< ()
-                       
-                -- modification of stateV by events 
-                -----------------------------------
-                               
-                -- creation of an element
-                idV <- (hold . accum1E (+)) <|> pure 0 -< fmap (const (1::Int)) crE      -- this one simply counts ids
-                let crSVE = crE <# (((preV, surV), idV) : stateV)      -- create final event, which contains the new list
-                  
-                -- deletion of an element
-                let dlSVE = dlE <# if null selV then stateV else filter (\el -> idTp el /= idTp (selV !! 0) ) stateV
-                    
-                -- change of prename or surname in the data
-                let preSVE = if not (null selV) 
-                             then preEB <# fmap (\tp -> if idTp tp == idTp (selV !! 0) then ((preV, snTp tp), idTp tp) else tp) stateV 
-                             else NoEvent
-                                
-                let surSVE = if not (null selV) 
-                             then surEB <# fmap (\tp -> if idTp tp == idTp (selV !! 0) then ((pnTp tp, surV), idTp tp) else tp) stateV 
-                             else NoEvent
-                    
-                -- change selection on deselect button 
-                selV' <- hold <|> pure [] -< (desE <# []) |# Event selV 
 
+                -- setup main events, those events drive all computations
+                ---------------------------------------------------------
 
-                -- update of main state value
-                -----------------------------
+                -- input events, to all element
+                (preInE, surInE, namesInE) <- delay (Event "", Event "", Event []) -< (preInE', surInE', namesInE')
+                (stateInE, selInE, creBInE) <- delay (Event [], Event [], Event "Create") -< (stateInE', selInE', creBInE')
 
-                let changeSVE =  dlSVE |# crSVE |# preSVE |# surSVE
-                stateV' <- hold <|> pure [] -< changeSVE
+                -- all elements, wired with in and out and value
+                (preOutE, preV) <- prenameEB -< preInE
+                (surOutE, surV) <- surnameEB -< surInE
+                (filOutE, filV) <- filterEB . now -< ""
+                (selNamesOutE, selNamesV) <- namesLB -< namesInE
+                createBTxt -< creBInE
+                stateV <- hold -< stateInE
+                selV <- hold -< selInE
 
-                        
-                -- handle display listbox element
-                ---------------------------------
+                -- additional elements, which only create events
+                creBE <- createB -< ()
+                delBE <- deleteB -< ()
 
-                -- create filtered input, first filter non matching, then apply selection again
-                let displayV = fmap (\el -> if null selV' then (el, False) else (el, (idTp el) == idTp (selV' !! 0) )) (filter (\el -> isInfixOf filV (nameTp el)) stateV')
-                 
-                -- set display listbox and get events from selection in listbox
-                (selE, selV'') <- namesLB -< (changeSVE |!  filE |! desE) <# displayV
+                -- specific computed events
+                let dataChangeE = preOutE |! surOutE |! creBE |! delBE
+                let selChangeE = delBE |! filOutE |! selNamesOutE
+                selectedE <- filterE (not . null) -< selInE <# selV          -- selection appeared
+                deselectedE <- filterE null -< selInE <# selV                        -- deselection appeard
+                (crE, desE) <- (filterE null &&& filterE (not . null)) -< creBE <# selV      -- create button is either create or deselect evt
+                preOutSelE <- filterE (not . null) -< preOutE <# selV        -- only set pre field, when selection
+                surOutSelE <- filterE (not . null) -< surOutE <# selV        -- only set sur field, when selection
 
+                -- computed values
+                idV <- (hold . accum1E (+)) <|> pure 0 -< fmap (const (1::Int)) crE      -- this one simply counts ids, upon creation
+                              
+                -- now the logic, for each event
+                --------------------------------
 
-                -- clean up selections, due to filter and other events
-                ------------------------------------------------------
+                -- prename surname fields get set upon new selection
+                let preInE' = fmap (\[tp] -> pnTp tp) selectedE 
+                let surInE' = fmap (\[tp] -> snTp tp) selectedE
+              
+                -- main state value, change the list of items
+                let stateInE' =    (crE <# (((preV, surV), idV) : stateV)  )      -- creation of element
+                                |# (delBE <# if null selV then stateV else filter (\el -> idTp el /= idTp (selV !! 0) ) stateV) -- deletion of element
+                                |# (preOutSelE <# (
+                                     let updatePre idx tp = if idTp tp == idTp idx then ((preV, snTp tp), idTp tp) else tp
+                                     in (fmap (updatePre (selV !! 0)) stateV ) ))           -- pre changed
+                                |# (surOutSelE <# (
+                                     let updateSur idx tp = if idTp tp == idTp (selV !! 0) then ((pnTp tp, surV), idTp tp) else tp
+                                     in (fmap (updateSur (selV !! 0)) stateV ) ))           -- sur changed
 
-                -- check selection and deselection processes for prename, surname and button text
-                selectedE <- filterE (\l -> not (null l)) -< ( changeSVE |! filE  |! desE |! selE) <# selV''
-                deselectedE <- filterE null -< ( changeSVE |! filE  |! desE |! selE) <# selV''
+                -- selection state value, change list of selected items
+                let selInE' =      (desE <# []) 
+                                |# (delBE <# [])
+                                |# (selNamesOutE <# selNamesV)
+                                |# (filOutE <# (filter (isInfixOf filV . nameTp) selNamesV) )
 
-                -- set prename, surname, if new selection
-                let preE' = fmap (\[tp] -> pnTp tp) selectedE
-                let surE' = fmap (\[tp] -> snTp tp) selectedE
+                -- names dialog box, filter by search string and re-apply selection
+                let namesInE' =  (stateInE |! selInE |! filOutE) <# ( 
+                         let reSelect el = (el, if null selV then False else (idTp el) == idTp (selV !! 0))
+                             filterF = filter ( (isInfixOf filV) . nameTp )
+                         in fmap reSelect (filterF stateV) )
 
-                -- set button text, depending on selection state
-                createBTxt -< (selectedE <# "Deselect") |# (deselectedE <# "Create")
-                           
+                -- create button text, in value
+                let creBInE' =     (selectedE <# "Deselect") 
+                                |# (deselectedE <# "Create")
+
               returnA -< ()
               
         return wire
