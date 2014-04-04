@@ -73,8 +73,8 @@ writeIORef' ref val = MaybeT $ do
   writeIORef ref val
   return $ Just ()
 
-modifyIORef' :: IORef a -> (a -> a) -> MaybeT IO ()
-modifyIORef' ref f = MaybeT $ do
+modifyIORef'' :: IORef a -> (a -> a) -> MaybeT IO ()
+modifyIORef'' ref f = MaybeT $ do
     x <- readIORef ref
     let x' =  (f x)
     x' `seq` writeIORef ref x'
@@ -102,7 +102,7 @@ getLocation e = do
 setLocation :: Entity -> (Vec3 -> Vec3) -> MaybeT IO ()
 setLocation e f = do
   LocationC l <- getC' e
-  modifyIORef' l f
+  modifyIORef'' l f
   return ()
   
 locationSystem :: SystemData (M.Map ObId (IORef Vec3, Object3D))
@@ -130,7 +130,7 @@ getOrientation e = do
 setOrientation :: Entity -> (U -> U) -> MaybeT IO ()
 setOrientation e f = do
     OrientationC o <- getC' e     
-    modifyIORef' o f
+    modifyIORef'' o f
     return ()
   
 orientationSystem :: SystemData (M.Map ObId (IORef UnitQuaternion, Object3D))
@@ -158,7 +158,7 @@ getVelocity e = do
 setVelocity :: Entity -> (Vec3 -> Vec3) -> MaybeT IO ()
 setVelocity e f = do
     VelocityC v <- getC' e     
-    modifyIORef' v f
+    modifyIORef'' v f
     return ()
   
 velocitySystem :: SystemData (M.Map ObId (IORef Vec3, IORef Vec3))
@@ -172,7 +172,7 @@ velocitySystem = let
     mapM (\(rV, rP) -> do
              vel <- readIORef rV
              let t = realToFrac $ dtime s :: Float
-             runMaybeT (modifyIORef' rP (\pos -> pos &+ (vel &* t))) ) (map snd (M.toList mapIn)) 
+             runMaybeT (modifyIORef'' rP (\pos -> pos &+ (vel &* t))) ) (map snd (M.toList mapIn)) 
     return ()
   in (SystemData fInit fAdd fRem runAction)
 
