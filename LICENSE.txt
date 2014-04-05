@@ -16,11 +16,11 @@ Unless required by applicable law or agreed to in writing, software distributed 
 
 Source Code
 -----------
-You can obtain the latest version of the source code under http://www.bitbucket.org/althainz/HGamer3D
+You can obtain the latest version of the source code under http://www.github.com/urs-of-the-backwoods/HGamer3D
 
 
-Open Source Software Used
--------------------------
-HGamer3D uses a number of open source software libraries. You are responsible to comply to the licenses of those packages and the licenses of software used by those packages if you use HGamer3D. Details can be found in the LICENSE documents of the single HGamer3D modules.
+Libraries Used
+--------------
+HGamer3D uses a number of open source software libraries. You are responsible to comply to the licenses of those packages and the licenses of software used by those packages if you use HGamer3D. Details can be found in the LICENSES folder and subfolders.
 
 
