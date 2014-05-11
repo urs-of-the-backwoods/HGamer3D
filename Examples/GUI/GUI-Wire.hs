@@ -140,10 +140,8 @@ getCurrWindow ws rate = do
         
         let wire = proc _ -> do
               rec
-                inEur' <- delay NoEvent -< inEur
-                inDol' <- delay NoEvent -< inDol
-                (outEur, _) <- eurs  -< inEur'
-                (outDol, _) <- dols  -< inDol'
+                (outEur, _) <- eurs . delay NoEvent -< inEur
+                (outDol, _) <- dols . delay NoEvent -< inDol
                 let inDol = (* rate) `fmap` outEur
                 let inEur = (/ rate) `fmap` outDol
               returnA -< ()        
@@ -180,41 +178,41 @@ getCrudWindow ws  = do
                 -- setup main events, those events drive all computations
                 ---------------------------------------------------------
 
-                -- input events, to all element
-                (preInE, surInE, namesInE) <- delay (Event "", Event "", Event []) -< (preInE', surInE', namesInE')
-                (stateInE, selInE, creBInE) <- delay (Event [], Event [], Event "Create") -< (stateInE', selInE', creBInE')
+                -- need delay in recursive definition
+                (stateInE, selInE) <- delay (Event [], Event []) -< (stateInE', selInE')
 
                 -- all elements, wired with in and out and value
-                (preOutE, preV) <- prenameEB -< preInE
-                (surOutE, surV) <- surnameEB -< surInE
+                (preOutE, preV) <- prenameEB . delay (Event "") -< preInE
+                (surOutE, surV) <- surnameEB . delay (Event "") -< surInE
                 (filOutE, filV) <- filterEB . now -< ""
-                (selNamesOutE, selNamesV) <- namesLB -< namesInE
-                createBTxt -< creBInE
-                stateV <- hold -< stateInE
-                selV <- hold -< selInE
-
+                (selNamesOutE, selNamesV) <- namesLB . delay (Event []) -< namesInE
+                createBTxt . delay (Event "Create") -< creBInE
+                
                 -- additional elements, which only create events
                 creBE <- createB -< ()
                 delBE <- deleteB -< ()
 
+                -- values, computed from events, main state info of program
+                stateV <- hold -< stateInE
+                selV <- hold -< selInE
+                
                 -- specific computed events
-                let dataChangeE = preOutE |! surOutE |! creBE |! delBE
-                let selChangeE = delBE |! filOutE |! selNamesOutE
                 selectedE <- filterE (not . null) -< selInE <# selV          -- selection appeared
                 deselectedE <- filterE null -< selInE <# selV                        -- deselection appeard
                 (crE, desE) <- (filterE null &&& filterE (not . null)) -< creBE <# selV      -- create button is either create or deselect evt
                 preOutSelE <- filterE (not . null) -< preOutE <# selV        -- only set pre field, when selection
                 surOutSelE <- filterE (not . null) -< surOutE <# selV        -- only set sur field, when selection
 
-                -- computed values
-                idV <- (hold . accum1E (+)) <|> pure 0 -< fmap (const (1::Int)) crE      -- this one simply counts ids, upon creation
+                -- value, computed from events        
+                idV <- (hold . accum1E (+)) <|> pure 0 -< fmap (const (1::Int)) crE      -- counts ids upon creation
+
                               
                 -- now the logic, for each event
                 --------------------------------
 
                 -- prename surname fields get set upon new selection
-                let preInE' = fmap (\[tp] -> pnTp tp) selectedE 
-                let surInE' = fmap (\[tp] -> snTp tp) selectedE
+                let preInE = fmap (\[tp] -> pnTp tp) selectedE 
+                let surInE = fmap (\[tp] -> snTp tp) selectedE
               
                 -- main state value, change the list of items
                 let stateInE' =    (crE <# (((preV, surV), idV) : stateV)  )      -- creation of element
@@ -233,13 +231,13 @@ getCrudWindow ws  = do
                                 |# (filOutE <# (filter (isInfixOf filV . nameTp) selNamesV) )
 
                 -- names dialog box, filter by search string and re-apply selection
-                let namesInE' =  (stateInE |! selInE |! filOutE) <# ( 
+                let namesInE =  (stateInE |! selInE |! filOutE) <# ( 
                          let reSelect el = (el, if null selV then False else (idTp el) == idTp (selV !! 0))
                              filterF = filter ( (isInfixOf filV) . nameTp )
                          in fmap reSelect (filterF stateV) )
 
                 -- create button text, in value
-                let creBInE' =     (selectedE <# "Deselect") 
+                let creBInE  =     (selectedE <# "Deselect") 
                                 |# (deselectedE <# "Create")
 
               returnA -< ()
