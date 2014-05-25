@@ -45,12 +45,19 @@ main = do
 	pointLight g3ds white (Vec3 10.0 10.0 20.0)
         
 	-- create a shiny blue cube        
-        cube <- object3DFromMesh g3ds cubeMesh (Just (ResourceMaterial "Colours/Blue") ) False
-        positionTo3D cube (Vec3 0.0 0.0 0.0)
-        scaleTo3D cube (Vec3 0.2 0.2 0.2)
+        --cube <- object3DFromMesh g3ds cubeMesh (Just (ResourceMaterial "Colours/Blue") ) False
+        --positionTo3D cube (Vec3 0.0 0.0 0.0)
+        --scaleTo3D cube (Vec3 0.2 0.2 0.2)
+        
+        pinky <- colouredCubeMesh g3ds (Colour 0.5 0.5 0.0 1.0)
+        cube2 <- object3DFromMesh g3ds pinky Nothing False
+        positionTo3D cube2 (Vec3 0.0 0.0 0.0)
+--        scaleTo3D cube (Vec3 0.2 0.2 0.2)
+        cube <- object3DFromMesh g3ds pinky Nothing False
+        positionTo3D cube (Vec3 5.0 0.0 0.0)
         
 	-- start render loop
-	renderLoop cube g3ds 
+	renderLoop cube2 g3ds 
         exitHGamer3D g3ds
         return ()
 

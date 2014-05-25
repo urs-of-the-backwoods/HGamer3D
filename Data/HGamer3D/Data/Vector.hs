@@ -20,17 +20,38 @@
 
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
--- book: math3d vector lib
--- |Includes the right pieces of the Vect libray of Balazs Komuves.
--- see: <http://hackage.haskell.org/package/vect>
+-- | Vector library for HGamer3D
 module HGamer3D.Data.Vector
 (
-	module Data.Vect.Float,
-	module Data.Vect.Float.Util.Quaternion
+	
+        -- * the Vect libray of Balazs Komuves, see: <http://hackage.haskell.org/package/vect>
+        
+        module Data.Vect.Float,
+	module Data.Vect.Float.Util.Quaternion,
+
+        -- * some constants
+
+        vec2Zero,
+        vec2U,
+
+        vec3Zero,
+        vec3U
 )
 
 where
 
 import Data.Vect.Float
 import Data.Vect.Float.Util.Quaternion
--- book: end
+
+-- | the 2d zero vector
+vec2Zero = Vec2 0.0 0.0
+
+-- | the 2d unity vector
+vec2U = Vec2 1.0 1.0
+
+-- | the 3d Zero vector
+vec3Zero = Vec3 0.0 0.0 0.0
+
+-- | the 3d Unity vector
+vec3U = Vec3 1.0 1.0 1.0
+

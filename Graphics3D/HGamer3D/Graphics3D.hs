@@ -24,28 +24,66 @@ module HGamer3D.Graphics3D
 (
   module HGamer3D.Data,
   module HGamer3D.Util,
-  module HGamer3D.Graphics3D.Types,
-  module HGamer3D.Graphics3D.Basic3D,
-  module HGamer3D.Graphics3D.Object3D,
-  module HGamer3D.Graphics3D.Light,
-  module HGamer3D.Graphics3D.PlatonObjects,
-  module HGamer3D.Graphics3D.Engine,
+
+  -- * Fundamental Types
+  
+  Object3D,
+  Material,
+  Mesh,
+  Camera,
+  
+  -- * Initialization
+
+  Graphics3DSystem,
   initHGamer3D,
   exitHGamer3D,
-  loopHGamer3D
+  loopHGamer3D,
+
+  -- * Misc Functions
+
+  cameraLookAt,
+  HGamer3D.Graphics3D.Base.setBackgroundColour,
+  addResourceLocationMedia,
+  addResourceZipfileMedia,
+  addResourceLocationGUI,
+
+    -- * Light
+  Light,
+  HGamer3D.Graphics3D.Light.setAmbientLight,
+  pointLight,
+  spotLight,
+  spotLightSetDirection,
+  setSpotLightAngle,
+  directionalLight,
+  
+  -- * Shapes
+  sphereMesh,
+  cubeMesh,
+  planeMesh,
+  resourceMesh,
+        
+  colouredCubeMesh,
+  colouredLineMesh,
+  rainbowCubeMesh,
+	
+  createIkosaederMesh,
+  createDodekaederMesh,
+
+  object3DFromMesh,
+  object3DFromObjects
+
 )
 
 where
 
   import HGamer3D.Data
   import HGamer3D.Util
-  import HGamer3D.Graphics3D.Types
-  import HGamer3D.Graphics3D.Basic3D
-  import HGamer3D.Graphics3D.Object3D
+  
+  import HGamer3D.Graphics3D.Base
   import HGamer3D.Graphics3D.Light
-  import HGamer3D.Graphics3D.PlatonObjects
-  import HGamer3D.Graphics3D.Engine
-
+  import HGamer3D.Graphics3D.Shapes
+  import HGamer3D.Graphics3D.PlatonShapes
+  
   initHGamer3D windowName sceneManagerType fConfig fLog = do
     (g3ds, camera, viewport, window) <- initGraphics3D windowName sceneManagerType fConfig fLog
     return (g3ds, camera, viewport)

@@ -18,10 +18,10 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- PlatonObjects.hs
+-- PlatonShapes.hs
 
--- | Create platonic objects, ikosaeder and dodekaeder
-module HGamer3D.Graphics3D.PlatonObjects (
+-- | Create platonic shapes, ikosaeder and dodekaeder
+module HGamer3D.Graphics3D.PlatonShapes (
 
 	createIkosaederMesh,
 	createDodekaederMesh
@@ -67,9 +67,7 @@ import HGamer3D.Bindings.Ogre.ClassControllerManager as ControllerManager
 import HGamer3D.Bindings.Ogre.ClassWindowEventUtilities as WindowEventUtilities
 import HGamer3D.Bindings.Ogre.ClassManualObject as ManualObject
 
-import HGamer3D.Graphics3D.Types
-import HGamer3D.Graphics3D.Object3D
-import HGamer3D.Graphics3D.Engine
+import HGamer3D.Graphics3D.Base
 
 import Control.Monad
 import Control.Monad.Trans

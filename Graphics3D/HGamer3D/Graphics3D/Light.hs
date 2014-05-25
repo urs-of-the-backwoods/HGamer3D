@@ -32,6 +32,7 @@ module HGamer3D.Graphics3D.Light (
 	HGamer3D.Graphics3D.Light.setAmbientLight,
 	pointLight,
 	spotLight,
+	spotLightSetDirection,
 	setSpotLightAngle,
 	directionalLight
 ) 
@@ -78,9 +79,8 @@ import HGamer3D.Bindings.Ogre.StructHG3DClass
 import HGamer3D.Bindings.Ogre.EnumSceneManagerPrefabType
 
 import HGamer3D.Data.HG3DClass
-import HGamer3D.Data.Operation3D
-import HGamer3D.Graphics3D.Types
-import HGamer3D.Graphics3D.Engine
+import HGamer3D.Data.Transform3D
+import HGamer3D.Graphics3D.Base
 
 import Control.Monad
 import Control.Monad.Trans
@@ -92,26 +92,18 @@ import Control.Monad.State.Class
 -- | The light.
 data Light = Light HG3DClass deriving (Show)
 
-instance Position3D Light where
+instance Position Light where
 
-	position3D (Light l) = do
+	position (Light l) = do
 		pos <- Light.getPosition l
 		return (pos)
 		
-	positionTo3D (Light l) pos = do
+	positionTo (Light l) pos = do
 		let (Vec3 x y z) = pos
 		Light.setPosition l x y z
 		return ()
 	
-instance Direction3D Light where
-
-	direction3D (Light l)  = do
-		d <- Light.getDirection l
-		return d
-	
-	directionTo3D (Light l) v = do
-		Light.setDirection2 l v
-		return ()
+spotLightSetDirection l v = Light.setDirection2 l v
 
 
 -- | Ambient light is present everywhere, this function creates it and sets the colour of it.

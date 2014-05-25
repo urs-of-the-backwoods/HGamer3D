@@ -18,12 +18,9 @@
 
 -- Rectangle.hs
 
--- | Type definitions for 2D geometry and windows
-module HGamer3D.Data.ScreenGeometry
+-- | Type definitions for 2D geometry 
+module HGamer3D.Data.Geometry2D
 (
-  -- * Windowing
-  Window (..),
-  
   -- * Geometry
   Point (..),
   Rectangle (..),
@@ -32,13 +29,13 @@ module HGamer3D.Data.ScreenGeometry
   
 ) where
   
--- | A window is simply represented by it's window id, an unsigned C int
-data Window = Window Int
+import HGamer3D.Data.Vector
 
 -- | A point has two coordinates an x and y one
 data Point = Point {
-  ptX::Int, 
-  ptY::Int } deriving (Eq, Show)
+  ptX :: Int,
+  ptY :: Int
+  }
                       
 -- | A rectangle has an a position as x and y and widht and height
 data Rectangle = Rectangle {
@@ -49,19 +46,19 @@ data Rectangle = Rectangle {
 
 -- | derive a rectangle from upper left and lower right points
 rectFromPoints :: Point -> Point -> Rectangle
-rectFromPoints upperLeft lowerRight = Rectangle x y w h where
-  x = ptX upperLeft
-  y = ptY upperLeft
-  w = (ptX lowerRight) - x
-  h = (ptY lowerRight) - y
+rectFromPoints upperLeft lowerRight = Rectangle rx ry rw rh where
+  rx = ptX upperLeft
+  ry = ptY upperLeft
+  rw = (ptY lowerRight) - rx
+  rh = (ptY lowerRight) - ry
   
 -- | get upper left and lower right point from a rect
 pointsFromRect :: Rectangle -> (Point, Point)
 pointsFromRect rect = (ul, lr) where
-  x = rectX rect
-  y = rectY rect
-  x' = x + (rectWidth rect)
-  y' = y + (rectHeight rect)
-  ul = Point x y
-  lr = Point x' y'
+  rx = rectX rect
+  ry = rectY rect
+  rx' = rx + (rectWidth rect)
+  ry' = ry + (rectHeight rect)
+  ul = Point rx ry
+  lr = Point rx' ry'
   
