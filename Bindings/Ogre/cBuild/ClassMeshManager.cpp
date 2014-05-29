@@ -58,7 +58,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mshmgr_destruct(struct hg3dclass_struct * t
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mshmgr_setPrepareAllMeshesForShadowVolumes(struct hg3dclass_struct * thisclass_c, int enable_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mshmgr_setPrepareAllMeshesForShadowVolumes(struct hg3dclass_struct * thisclass_c, long enable_c)
 {
   Ogre::MeshManager * thisclass_cpp = static_cast<Ogre::MeshManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::MeshManager"));
   bool enable_cpp = (bool)enable_c;
@@ -66,12 +66,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_mshmgr_setPrepareAllMeshesForShadowVolumes(
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mshmgr_getPrepareAllMeshesForShadowVolumes(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mshmgr_getPrepareAllMeshesForShadowVolumes(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::MeshManager * thisclass_cpp = static_cast<Ogre::MeshManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::MeshManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getPrepareAllMeshesForShadowVolumes());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 

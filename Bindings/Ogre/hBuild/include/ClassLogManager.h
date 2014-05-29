@@ -34,7 +34,7 @@
 void ogre_lmgr_destruct(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_lmgr_createLog(struct hg3dclass_struct * thisclass_c, char * name_c, int defaultLog_c, int debuggerOutput_c, int suppressFileOutput_c, struct hg3dclass_struct * result_c);
+void ogre_lmgr_createLog(struct hg3dclass_struct * thisclass_c, char * name_c, long defaultLog_c, long debuggerOutput_c, long suppressFileOutput_c, struct hg3dclass_struct * result_c);
 
 // 
 void ogre_lmgr_getLog(struct hg3dclass_struct * thisclass_c, char * name_c, struct hg3dclass_struct * result_c);
@@ -52,10 +52,10 @@ void ogre_lmgr_destroyLog2(struct hg3dclass_struct * thisclass_c, struct hg3dcla
 void ogre_lmgr_setDefaultLog(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * newLog_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_lmgr_logMessage(struct hg3dclass_struct * thisclass_c, char * message_c, enum EnumLogMessageLevel lml_c, int maskDebug_c);
+void ogre_lmgr_logMessage(struct hg3dclass_struct * thisclass_c, char * message_c, enum EnumLogMessageLevel lml_c, long maskDebug_c);
 
 // 
-void ogre_lmgr_logMessage2(struct hg3dclass_struct * thisclass_c, enum EnumLogMessageLevel lml_c, char * message_c, int maskDebug_c);
+void ogre_lmgr_logMessage2(struct hg3dclass_struct * thisclass_c, enum EnumLogMessageLevel lml_c, char * message_c, long maskDebug_c);
 
 // 
 void ogre_lmgr_setLogDetail(struct hg3dclass_struct * thisclass_c, enum EnumLoggingLevel ll_c);

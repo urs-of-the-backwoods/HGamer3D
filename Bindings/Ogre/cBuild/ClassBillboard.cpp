@@ -138,12 +138,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbd_getColour(struct hg3dclass_struct * thi
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbd_hasOwnDimensions(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbd_hasOwnDimensions(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Billboard * thisclass_cpp = static_cast<Ogre::Billboard*> (getHG3DClassPtr(*thisclass_c, "Ogre::Billboard"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasOwnDimensions());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -165,12 +165,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbd_getOwnHeight(struct hg3dclass_struct * 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbd_isUseTexcoordRect(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbd_isUseTexcoordRect(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Billboard * thisclass_cpp = static_cast<Ogre::Billboard*> (getHG3DClassPtr(*thisclass_c, "Ogre::Billboard"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isUseTexcoordRect());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 

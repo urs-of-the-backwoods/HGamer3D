@@ -247,6 +247,11 @@ import HGamer3D.Data.Angle
 { withHG3DClass* `HG3DClass' ,
  withCString* `String' } -> `()'  #}
 
+{- function getNextFrameNumber -}
+{#fun ogre_rt_getNextFrameNumber as getNextFrameNumber 
+{ withHG3DClass* `HG3DClass' ,
+ alloca- `Int' peekIntConv*} -> `()'  #}
+
 {- function destroyRenderQueueInvocationSequence -}
 {#fun ogre_rt_destroyRenderQueueInvocationSequence as destroyRenderQueueInvocationSequence 
 { withHG3DClass* `HG3DClass' ,

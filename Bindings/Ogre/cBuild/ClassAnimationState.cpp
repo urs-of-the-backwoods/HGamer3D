@@ -42,7 +42,7 @@ using Ogre::uint;
 
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_anms_construct(char * animName_c, struct hg3dclass_struct * parent_c, float timePos_c, float length_c, float weight_c, int enabled_c, struct hg3dclass_struct * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_anms_construct(char * animName_c, struct hg3dclass_struct * parent_c, float timePos_c, float length_c, float weight_c, long enabled_c, struct hg3dclass_struct * result_c)
 {
   Ogre::String animName_cpp = Ogre::String((const char*) animName_c);
   Ogre::AnimationStateSet * parent_cpp = static_cast<Ogre::AnimationStateSet*> (getHG3DClassPtr(*parent_c, "Ogre::AnimationStateSet"));
@@ -136,25 +136,25 @@ extern "C" Ogre_LIB_EXPORT void ogre_anms_addTime(struct hg3dclass_struct * this
 };
 
 // Returns true if the animation has reached the end and is not looping. 
-extern "C" Ogre_LIB_EXPORT void ogre_anms_hasEnded(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_anms_hasEnded(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::AnimationState * thisclass_cpp = static_cast<Ogre::AnimationState*> (getHG3DClassPtr(*thisclass_c, "Ogre::AnimationState"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasEnded());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // Returns true if this animation is currently enabled. 
-extern "C" Ogre_LIB_EXPORT void ogre_anms_getEnabled(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_anms_getEnabled(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::AnimationState * thisclass_cpp = static_cast<Ogre::AnimationState*> (getHG3DClassPtr(*thisclass_c, "Ogre::AnimationState"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getEnabled());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // Sets whether this animation is enabled. 
-extern "C" Ogre_LIB_EXPORT void ogre_anms_setEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c)
+extern "C" Ogre_LIB_EXPORT void ogre_anms_setEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c)
 {
   Ogre::AnimationState * thisclass_cpp = static_cast<Ogre::AnimationState*> (getHG3DClassPtr(*thisclass_c, "Ogre::AnimationState"));
   bool enabled_cpp = (bool)enabled_c;
@@ -162,7 +162,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_anms_setEnabled(struct hg3dclass_struct * t
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_anms_setLoop(struct hg3dclass_struct * thisclass_c, int loop_c)
+extern "C" Ogre_LIB_EXPORT void ogre_anms_setLoop(struct hg3dclass_struct * thisclass_c, long loop_c)
 {
   Ogre::AnimationState * thisclass_cpp = static_cast<Ogre::AnimationState*> (getHG3DClassPtr(*thisclass_c, "Ogre::AnimationState"));
   bool loop_cpp = (bool)loop_c;
@@ -170,12 +170,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_anms_setLoop(struct hg3dclass_struct * this
 };
 
 // Gets whether or not this animation loops. 
-extern "C" Ogre_LIB_EXPORT void ogre_anms_getLoop(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_anms_getLoop(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::AnimationState * thisclass_cpp = static_cast<Ogre::AnimationState*> (getHG3DClassPtr(*thisclass_c, "Ogre::AnimationState"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getLoop());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -197,7 +197,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_anms_getParent(struct hg3dclass_struct * th
 };
 
 // Create a new blend mask with the given number of entries. 
-extern "C" Ogre_LIB_EXPORT void ogre_anms_createBlendMask(struct hg3dclass_struct * thisclass_c, int blendMaskSizeHint_c, float initialWeight_c)
+extern "C" Ogre_LIB_EXPORT void ogre_anms_createBlendMask(struct hg3dclass_struct * thisclass_c, long blendMaskSizeHint_c, float initialWeight_c)
 {
   Ogre::AnimationState * thisclass_cpp = static_cast<Ogre::AnimationState*> (getHG3DClassPtr(*thisclass_c, "Ogre::AnimationState"));
   size_t blendMaskSizeHint_cpp = (size_t)blendMaskSizeHint_c;
@@ -213,16 +213,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_anms_destroyBlendMask(struct hg3dclass_stru
 };
 
 // Return whether there is currently a valid blend mask set. 
-extern "C" Ogre_LIB_EXPORT void ogre_anms_hasBlendMask(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_anms_hasBlendMask(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::AnimationState * thisclass_cpp = static_cast<Ogre::AnimationState*> (getHG3DClassPtr(*thisclass_c, "Ogre::AnimationState"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasBlendMask());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // Set the weight for the bone identified by the given handle. 
-extern "C" Ogre_LIB_EXPORT void ogre_anms_setBlendMaskEntry(struct hg3dclass_struct * thisclass_c, int boneHandle_c, float weight_c)
+extern "C" Ogre_LIB_EXPORT void ogre_anms_setBlendMaskEntry(struct hg3dclass_struct * thisclass_c, long boneHandle_c, float weight_c)
 {
   Ogre::AnimationState * thisclass_cpp = static_cast<Ogre::AnimationState*> (getHG3DClassPtr(*thisclass_c, "Ogre::AnimationState"));
   size_t boneHandle_cpp = (size_t)boneHandle_c;
@@ -231,7 +231,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_anms_setBlendMaskEntry(struct hg3dclass_str
 };
 
 // Get the weight for the bone identified by the given handle. 
-extern "C" Ogre_LIB_EXPORT void ogre_anms_getBlendMaskEntry(struct hg3dclass_struct * thisclass_c, int boneHandle_c, float * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_anms_getBlendMaskEntry(struct hg3dclass_struct * thisclass_c, long boneHandle_c, float * result_c)
 {
   Ogre::AnimationState * thisclass_cpp = static_cast<Ogre::AnimationState*> (getHG3DClassPtr(*thisclass_c, "Ogre::AnimationState"));
   size_t boneHandle_cpp = (size_t)boneHandle_c;

@@ -34,16 +34,16 @@ void ogre_cf_construct(struct hg3dclass_struct * result_c);
 void ogre_cf_destruct(struct hg3dclass_struct * thisclass_c);
 
 // load from a filename (not using resource group locations) 
-void ogre_cf_load(struct hg3dclass_struct * thisclass_c, char * filename_c, char * separators_c, int trimWhitespace_c);
+void ogre_cf_load(struct hg3dclass_struct * thisclass_c, char * filename_c, char * separators_c, long trimWhitespace_c);
 
 // load from a filename (using resource group locations) 
-void ogre_cf_load2(struct hg3dclass_struct * thisclass_c, char * filename_c, char * resourceGroup_c, char * separators_c, int trimWhitespace_c);
+void ogre_cf_load2(struct hg3dclass_struct * thisclass_c, char * filename_c, char * resourceGroup_c, char * separators_c, long trimWhitespace_c);
 
 // load from a filename (not using resource group locations) 
-void ogre_cf_loadDirect(struct hg3dclass_struct * thisclass_c, char * filename_c, char * separators_c, int trimWhitespace_c);
+void ogre_cf_loadDirect(struct hg3dclass_struct * thisclass_c, char * filename_c, char * separators_c, long trimWhitespace_c);
 
 // load from a filename (using resource group locations) 
-void ogre_cf_loadFromResourceSystem(struct hg3dclass_struct * thisclass_c, char * filename_c, char * resourceGroup_c, char * separators_c, int trimWhitespace_c);
+void ogre_cf_loadFromResourceSystem(struct hg3dclass_struct * thisclass_c, char * filename_c, char * resourceGroup_c, char * separators_c, long trimWhitespace_c);
 
 // 
 void ogre_cf_getSetting(struct hg3dclass_struct * thisclass_c, char * key_c, char * section_c, char * defaultValue_c, char * result_c);

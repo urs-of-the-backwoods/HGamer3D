@@ -42,7 +42,7 @@ using Ogre::uint;
 
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_exc_construct(int number_c, char * description_c, char * source_c, struct hg3dclass_struct * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_exc_construct(long number_c, char * description_c, char * source_c, struct hg3dclass_struct * result_c)
 {
   int number_cpp = (int)number_c;
   Ogre::String description_cpp = Ogre::String((const char*) description_c);
@@ -74,12 +74,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_exc_getFullDescription(struct hg3dclass_str
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_exc_getNumber(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_exc_getNumber(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Exception * thisclass_cpp = static_cast<Ogre::Exception*> (getHG3DClassPtr(*thisclass_c, "Ogre::Exception"));
   int result_cpp;
   result_cpp = (thisclass_cpp->getNumber());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -109,12 +109,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_exc_getFile(struct hg3dclass_struct * thisc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_exc_getLine(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_exc_getLine(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Exception * thisclass_cpp = static_cast<Ogre::Exception*> (getHG3DClassPtr(*thisclass_c, "Ogre::Exception"));
   long result_cpp;
   result_cpp = (thisclass_cpp->getLine());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 

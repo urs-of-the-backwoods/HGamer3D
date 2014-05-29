@@ -43,22 +43,22 @@ void ogre_mno_destruct(struct hg3dclass_struct * thisclass_c);
 void ogre_mno_clear(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_mno_estimateVertexCount(struct hg3dclass_struct * thisclass_c, int vcount_c);
+void ogre_mno_estimateVertexCount(struct hg3dclass_struct * thisclass_c, long vcount_c);
 
 // 
-void ogre_mno_estimateIndexCount(struct hg3dclass_struct * thisclass_c, int icount_c);
+void ogre_mno_estimateIndexCount(struct hg3dclass_struct * thisclass_c, long icount_c);
 
 // 
 void ogre_mno_begin(struct hg3dclass_struct * thisclass_c, char * materialName_c, enum EnumRenderOperationOperationType opType_c, char * groupName_c);
 
 // 
-void ogre_mno_setDynamic(struct hg3dclass_struct * thisclass_c, int dyn_c);
+void ogre_mno_setDynamic(struct hg3dclass_struct * thisclass_c, long dyn_c);
 
 // 
-void ogre_mno_getDynamic(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mno_getDynamic(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_mno_beginUpdate(struct hg3dclass_struct * thisclass_c, int sectionIndex_c);
+void ogre_mno_beginUpdate(struct hg3dclass_struct * thisclass_c, long sectionIndex_c);
 
 // 
 void ogre_mno_position(struct hg3dclass_struct * thisclass_c, struct vector3_struct * pos_c);
@@ -103,60 +103,60 @@ void ogre_mno_colour(struct hg3dclass_struct * thisclass_c, struct colourvalue_s
 void ogre_mno_colour2(struct hg3dclass_struct * thisclass_c, float r_c, float g_c, float b_c, float a_c);
 
 // 
-void ogre_mno_index(struct hg3dclass_struct * thisclass_c, unsigned int idx_c);
+void ogre_mno_index(struct hg3dclass_struct * thisclass_c, unsigned long idx_c);
 
 // 
-void ogre_mno_triangle(struct hg3dclass_struct * thisclass_c, unsigned int i1_c, unsigned int i2_c, unsigned int i3_c);
+void ogre_mno_triangle(struct hg3dclass_struct * thisclass_c, unsigned long i1_c, unsigned long i2_c, unsigned long i3_c);
 
 // 
-void ogre_mno_quad(struct hg3dclass_struct * thisclass_c, unsigned int i1_c, unsigned int i2_c, unsigned int i3_c, unsigned int i4_c);
+void ogre_mno_quad(struct hg3dclass_struct * thisclass_c, unsigned long i1_c, unsigned long i2_c, unsigned long i3_c, unsigned long i4_c);
 
 // Get the number of vertices in the section currently being defined (returns 0 if no section is in progress). 
-void ogre_mno_getCurrentVertexCount(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mno_getCurrentVertexCount(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // Get the number of indices in the section currently being defined (returns 0 if no section is in progress). 
-void ogre_mno_getCurrentIndexCount(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mno_getCurrentIndexCount(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_mno_end(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_mno_setMaterialName(struct hg3dclass_struct * thisclass_c, int subindex_c, char * name_c, char * group_c);
+void ogre_mno_setMaterialName(struct hg3dclass_struct * thisclass_c, long subindex_c, char * name_c, char * group_c);
 
 // 
 void ogre_mno_convertToMesh(struct hg3dclass_struct * thisclass_c, char * meshName_c, char * groupName_c, struct sharedptr_struct * result_c);
 
 // 
-void ogre_mno_setUseIdentityProjection(struct hg3dclass_struct * thisclass_c, int useIdentityProjection_c);
+void ogre_mno_setUseIdentityProjection(struct hg3dclass_struct * thisclass_c, long useIdentityProjection_c);
 
 // 
-void ogre_mno_getUseIdentityProjection(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mno_getUseIdentityProjection(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_mno_setUseIdentityView(struct hg3dclass_struct * thisclass_c, int useIdentityView_c);
+void ogre_mno_setUseIdentityView(struct hg3dclass_struct * thisclass_c, long useIdentityView_c);
 
 // 
-void ogre_mno_getUseIdentityView(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mno_getUseIdentityView(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_mno_getSection(struct hg3dclass_struct * thisclass_c, unsigned int index_c, struct hg3dclass_struct * result_c);
+void ogre_mno_getSection(struct hg3dclass_struct * thisclass_c, unsigned long index_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_mno_getNumSections(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_mno_getNumSections(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 // 
-void ogre_mno_setKeepDeclarationOrder(struct hg3dclass_struct * thisclass_c, int keepOrder_c);
+void ogre_mno_setKeepDeclarationOrder(struct hg3dclass_struct * thisclass_c, long keepOrder_c);
 
 // 
-void ogre_mno_getKeepDeclarationOrder(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mno_getKeepDeclarationOrder(struct hg3dclass_struct * thisclass_c, long * result_c);
 
-// . 
+// 
 void ogre_mno_getMovableType(struct hg3dclass_struct * thisclass_c, char * result_c);
 
-// . 
+// 
 void ogre_mno_getBoundingRadius(struct hg3dclass_struct * thisclass_c, float * result_c);
 
 // 
-void ogre_mno_hasEdgeList(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mno_hasEdgeList(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 #endif 

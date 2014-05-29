@@ -211,25 +211,25 @@ extern "C" Ogre_LIB_EXPORT void ogre_frst_getFrustumExtents(struct hg3dclass_str
 };
 
 // Returns whether a custom view matrix is in use. 
-extern "C" Ogre_LIB_EXPORT void ogre_frst_isCustomViewMatrixEnabled(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_frst_isCustomViewMatrixEnabled(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Frustum * thisclass_cpp = static_cast<Ogre::Frustum*> (getHG3DClassPtr(*thisclass_c, "Ogre::Frustum"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isCustomViewMatrixEnabled());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // Returns whether a custom projection matrix is in use. 
-extern "C" Ogre_LIB_EXPORT void ogre_frst_isCustomProjectionMatrixEnabled(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_frst_isCustomProjectionMatrixEnabled(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Frustum * thisclass_cpp = static_cast<Ogre::Frustum*> (getHG3DClassPtr(*thisclass_c, "Ogre::Frustum"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isCustomProjectionMatrixEnabled());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_frst_isVisible3(struct hg3dclass_struct * thisclass_c, struct vector3_struct * vert_c, enum EnumFrustumPlane * culledBy_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_frst_isVisible3(struct hg3dclass_struct * thisclass_c, struct vector3_struct * vert_c, enum EnumFrustumPlane * culledBy_c, long * result_c)
 {
   Ogre::Frustum * thisclass_cpp = static_cast<Ogre::Frustum*> (getHG3DClassPtr(*thisclass_c, "Ogre::Frustum"));
   Vector3 vert_cpp = *((Vector3*) vert_c);
@@ -237,16 +237,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_frst_isVisible3(struct hg3dclass_struct * t
   bool result_cpp;
   result_cpp = (thisclass_cpp->isVisible(vert_cpp, &culledBy_cpp));
   *culledBy_c = (enum EnumFrustumPlane) culledBy_cpp;
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // Overridden from MovableObject::getTypeFlags
-extern "C" Ogre_LIB_EXPORT void ogre_frst_getTypeFlags(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_frst_getTypeFlags(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::Frustum * thisclass_cpp = static_cast<Ogre::Frustum*> (getHG3DClassPtr(*thisclass_c, "Ogre::Frustum"));
   uint32 result_cpp;
   result_cpp = (thisclass_cpp->getTypeFlags());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 
@@ -367,12 +367,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_frst_disableReflection(struct hg3dclass_str
 };
 
 // Returns whether this frustum is being reflected. 
-extern "C" Ogre_LIB_EXPORT void ogre_frst_isReflected(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_frst_isReflected(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Frustum * thisclass_cpp = static_cast<Ogre::Frustum*> (getHG3DClassPtr(*thisclass_c, "Ogre::Frustum"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isReflected());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -383,12 +383,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_frst_disableCustomNearClipPlane(struct hg3d
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_frst_isCustomNearClipPlaneEnabled(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_frst_isCustomNearClipPlaneEnabled(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Frustum * thisclass_cpp = static_cast<Ogre::Frustum*> (getHG3DClassPtr(*thisclass_c, "Ogre::Frustum"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isCustomNearClipPlaneEnabled());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 

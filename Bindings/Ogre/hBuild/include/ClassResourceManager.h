@@ -31,28 +31,28 @@
 void ogre_rsrcmgr_destruct(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_rsrcmgr_setMemoryBudget(struct hg3dclass_struct * thisclass_c, int bytes_c);
+void ogre_rsrcmgr_setMemoryBudget(struct hg3dclass_struct * thisclass_c, long bytes_c);
 
 // 
-void ogre_rsrcmgr_getMemoryBudget(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rsrcmgr_getMemoryBudget(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rsrcmgr_getMemoryUsage(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rsrcmgr_getMemoryUsage(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_rsrcmgr_unload(struct hg3dclass_struct * thisclass_c, char * name_c);
 
 // 
-void ogre_rsrcmgr_unloadAll(struct hg3dclass_struct * thisclass_c, int reloadableOnly_c);
+void ogre_rsrcmgr_unloadAll(struct hg3dclass_struct * thisclass_c, long reloadableOnly_c);
 
 // 
-void ogre_rsrcmgr_reloadAll(struct hg3dclass_struct * thisclass_c, int reloadableOnly_c);
+void ogre_rsrcmgr_reloadAll(struct hg3dclass_struct * thisclass_c, long reloadableOnly_c);
 
 // 
-void ogre_rsrcmgr_unloadUnreferencedResources(struct hg3dclass_struct * thisclass_c, int reloadableOnly_c);
+void ogre_rsrcmgr_unloadUnreferencedResources(struct hg3dclass_struct * thisclass_c, long reloadableOnly_c);
 
 // 
-void ogre_rsrcmgr_reloadUnreferencedResources(struct hg3dclass_struct * thisclass_c, int reloadableOnly_c);
+void ogre_rsrcmgr_reloadUnreferencedResources(struct hg3dclass_struct * thisclass_c, long reloadableOnly_c);
 
 // 
 void ogre_rsrcmgr_remove2(struct hg3dclass_struct * thisclass_c, char * name_c);
@@ -61,10 +61,10 @@ void ogre_rsrcmgr_remove2(struct hg3dclass_struct * thisclass_c, char * name_c);
 void ogre_rsrcmgr_removeAll(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_rsrcmgr_removeUnreferencedResources(struct hg3dclass_struct * thisclass_c, int reloadableOnly_c);
+void ogre_rsrcmgr_removeUnreferencedResources(struct hg3dclass_struct * thisclass_c, long reloadableOnly_c);
 
 // Returns whether the named resource exists in this manager. 
-void ogre_rsrcmgr_resourceExists(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c);
+void ogre_rsrcmgr_resourceExists(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c);
 
 // 
 void ogre_rsrcmgr_getLoadingOrder(struct hg3dclass_struct * thisclass_c, float * result_c);
@@ -73,10 +73,10 @@ void ogre_rsrcmgr_getLoadingOrder(struct hg3dclass_struct * thisclass_c, float *
 void ogre_rsrcmgr_getResourceType(struct hg3dclass_struct * thisclass_c, char * result_c);
 
 // 
-void ogre_rsrcmgr_setVerbose(struct hg3dclass_struct * thisclass_c, int v_c);
+void ogre_rsrcmgr_setVerbose(struct hg3dclass_struct * thisclass_c, long v_c);
 
 // 
-void ogre_rsrcmgr_getVerbose(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rsrcmgr_getVerbose(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // Destroy a resource pool. 
 void ogre_rsrcmgr_destroyResourcePool2(struct hg3dclass_struct * thisclass_c, char * name_c);

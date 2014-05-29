@@ -46,10 +46,10 @@ void ogre_rt_destruct(struct hg3dclass_struct * thisclass_c);
 void ogre_rt_saveConfig(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_rt_restoreConfig(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rt_restoreConfig(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rt_showConfigDialog(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rt_showConfigDialog(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_rt_addRenderSystem(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * newRend_c);
@@ -64,16 +64,16 @@ void ogre_rt_setRenderSystem(struct hg3dclass_struct * thisclass_c, struct hg3dc
 void ogre_rt_getRenderSystem(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_rt_initialise(struct hg3dclass_struct * thisclass_c, int autoCreateWindow_c, char * windowTitle_c, char * customCapabilitiesConfig_c, struct hg3dclass_struct * result_c);
+void ogre_rt_initialise(struct hg3dclass_struct * thisclass_c, long autoCreateWindow_c, char * windowTitle_c, char * customCapabilitiesConfig_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_rt_isInitialised(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rt_isInitialised(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rt_getRemoveRenderQueueStructuresOnClear(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rt_getRemoveRenderQueueStructuresOnClear(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rt_setRemoveRenderQueueStructuresOnClear(struct hg3dclass_struct * thisclass_c, int r_c);
+void ogre_rt_setRemoveRenderQueueStructuresOnClear(struct hg3dclass_struct * thisclass_c, long r_c);
 
 // 
 void ogre_rt_addSceneManagerFactory(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * fact_c);
@@ -91,7 +91,7 @@ void ogre_rt_destroySceneManager(struct hg3dclass_struct * thisclass_c, struct h
 void ogre_rt_getSceneManager(struct hg3dclass_struct * thisclass_c, char * instanceName_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_rt_hasSceneManager(struct hg3dclass_struct * thisclass_c, char * instanceName_c, int * result_c);
+void ogre_rt_hasSceneManager(struct hg3dclass_struct * thisclass_c, char * instanceName_c, long * result_c);
 
 // 
 void ogre_rt_getTextureManager(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
@@ -100,7 +100,7 @@ void ogre_rt_getTextureManager(struct hg3dclass_struct * thisclass_c, struct hg3
 void ogre_rt_getMeshManager(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_rt_getErrorDescription(struct hg3dclass_struct * thisclass_c, int errorNumber_c, char * result_c);
+void ogre_rt_getErrorDescription(struct hg3dclass_struct * thisclass_c, long errorNumber_c, char * result_c);
 
 // 
 void ogre_rt_queueEndRendering(struct hg3dclass_struct * thisclass_c);
@@ -109,22 +109,22 @@ void ogre_rt_queueEndRendering(struct hg3dclass_struct * thisclass_c);
 void ogre_rt_startRendering(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_rt_renderOneFrame(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rt_renderOneFrame(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rt_renderOneFrame2(struct hg3dclass_struct * thisclass_c, float timeSinceLastFrame_c, int * result_c);
+void ogre_rt_renderOneFrame2(struct hg3dclass_struct * thisclass_c, float timeSinceLastFrame_c, long * result_c);
 
 // 
 void ogre_rt_shutdown(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_rt_addResourceLocation(struct hg3dclass_struct * thisclass_c, char * name_c, char * locType_c, char * groupName_c, int recursive_c);
+void ogre_rt_addResourceLocation(struct hg3dclass_struct * thisclass_c, char * name_c, char * locType_c, char * groupName_c, long recursive_c);
 
 // 
 void ogre_rt_removeResourceLocation(struct hg3dclass_struct * thisclass_c, char * name_c, char * groupName_c);
 
 // 
-void ogre_rt_convertColourValue(struct hg3dclass_struct * thisclass_c, struct colourvalue_struct * colour_c, unsigned int * pDest_c);
+void ogre_rt_convertColourValue(struct hg3dclass_struct * thisclass_c, struct colourvalue_struct * colour_c, unsigned long * pDest_c);
 
 // 
 void ogre_rt_getAutoCreatedWindow(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
@@ -151,6 +151,9 @@ void ogre_rt_loadPlugin(struct hg3dclass_struct * thisclass_c, char * pluginName
 void ogre_rt_unloadPlugin(struct hg3dclass_struct * thisclass_c, char * pluginName_c);
 
 // 
+void ogre_rt_getNextFrameNumber(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
+
+// 
 void ogre_rt_destroyRenderQueueInvocationSequence(struct hg3dclass_struct * thisclass_c, char * name_c);
 
 // 
@@ -166,31 +169,31 @@ void ogre_rt_setFrameSmoothingPeriod(struct hg3dclass_struct * thisclass_c, floa
 void ogre_rt_getFrameSmoothingPeriod(struct hg3dclass_struct * thisclass_c, float * result_c);
 
 // 
-void ogre_rt_addMovableObjectFactory(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * fact_c, int overrideExisting_c);
+void ogre_rt_addMovableObjectFactory(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * fact_c, long overrideExisting_c);
 
 // 
 void ogre_rt_removeMovableObjectFactory(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * fact_c);
 
 // Checks whether a factory is registered for a given MovableObject
-void ogre_rt_hasMovableObjectFactory(struct hg3dclass_struct * thisclass_c, char * typeName_c, int * result_c);
+void ogre_rt_hasMovableObjectFactory(struct hg3dclass_struct * thisclass_c, char * typeName_c, long * result_c);
 
 // Get a MovableObjectFactory
 void ogre_rt_getMovableObjectFactory(struct hg3dclass_struct * thisclass_c, char * typeName_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_rt_getDisplayMonitorCount(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_rt_getDisplayMonitorCount(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 // 
-void ogre_rt_setBlendIndicesGpuRedundant(struct hg3dclass_struct * thisclass_c, int redundant_c);
+void ogre_rt_setBlendIndicesGpuRedundant(struct hg3dclass_struct * thisclass_c, long redundant_c);
 
 // 
-void ogre_rt_isBlendIndicesGpuRedundant(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rt_isBlendIndicesGpuRedundant(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rt_setBlendWeightsGpuRedundant(struct hg3dclass_struct * thisclass_c, int redundant_c);
+void ogre_rt_setBlendWeightsGpuRedundant(struct hg3dclass_struct * thisclass_c, long redundant_c);
 
 // 
-void ogre_rt_isBlendWeightsGpuRedundant(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rt_isBlendWeightsGpuRedundant(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_rt_setDefaultMinPixelSize(struct hg3dclass_struct * thisclass_c, float pixelSize_c);

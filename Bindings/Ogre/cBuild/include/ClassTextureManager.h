@@ -31,10 +31,10 @@
 void ogre_txmgr_destruct(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_txmgr_setDefaultNumMipmaps(struct hg3dclass_struct * thisclass_c, int num_c);
+void ogre_txmgr_setDefaultNumMipmaps(struct hg3dclass_struct * thisclass_c, long num_c);
 
 // 
-void ogre_txmgr_getDefaultNumMipmaps(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_txmgr_getDefaultNumMipmaps(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_txmgr_getSingleton(struct hg3dclass_struct * result_c);

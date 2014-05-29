@@ -92,12 +92,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_at_apply(struct hg3dclass_struct * thisclas
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_at_hasNonZeroKeyFrames(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_at_hasNonZeroKeyFrames(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::AnimationTrack * thisclass_cpp = static_cast<Ogre::AnimationTrack*> (getHG3DClassPtr(*thisclass_c, "Ogre::AnimationTrack"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasNonZeroKeyFrames());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 

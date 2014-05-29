@@ -81,6 +81,11 @@ import HGamer3D.Data.Angle
 { withHG3DClass* `HG3DClass' ,
  withHG3DClass* `HG3DClass' } -> `()'  #}
 
+{- function getDirtyFrameNumber -}
+{#fun ogre_ass_getDirtyFrameNumber as getDirtyFrameNumber 
+{ withHG3DClass* `HG3DClass' ,
+ alloca- `Int' peekIntConv*} -> `()'  #}
+
 {- function hasEnabledAnimationState -}
 {#fun ogre_ass_hasEnabledAnimationState as hasEnabledAnimationState 
 { withHG3DClass* `HG3DClass' ,

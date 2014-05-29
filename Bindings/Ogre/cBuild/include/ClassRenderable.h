@@ -38,7 +38,7 @@ void ogre_rndl_destruct(struct hg3dclass_struct * thisclass_c);
 void ogre_rndl_getMaterial(struct hg3dclass_struct * thisclass_c, struct sharedptr_struct * result_c);
 
 // 
-void ogre_rndl_preRender(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * sm_c, struct hg3dclass_struct * rsys_c, int * result_c);
+void ogre_rndl_preRender(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * sm_c, struct hg3dclass_struct * rsys_c, long * result_c);
 
 // 
 void ogre_rndl_postRender(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * sm_c, struct hg3dclass_struct * rsys_c);
@@ -47,33 +47,33 @@ void ogre_rndl_postRender(struct hg3dclass_struct * thisclass_c, struct hg3dclas
 void ogre_rndl_getNumWorldTransforms(struct hg3dclass_struct * thisclass_c, unsigned short * result_c);
 
 // 
-void ogre_rndl_setUseIdentityProjection(struct hg3dclass_struct * thisclass_c, int useIdentityProjection_c);
+void ogre_rndl_setUseIdentityProjection(struct hg3dclass_struct * thisclass_c, long useIdentityProjection_c);
 
 // 
-void ogre_rndl_getUseIdentityProjection(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rndl_getUseIdentityProjection(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rndl_setUseIdentityView(struct hg3dclass_struct * thisclass_c, int useIdentityView_c);
+void ogre_rndl_setUseIdentityView(struct hg3dclass_struct * thisclass_c, long useIdentityView_c);
 
 // 
-void ogre_rndl_getUseIdentityView(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rndl_getUseIdentityView(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_rndl_getSquaredViewDepth(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * cam_c, float * result_c);
 
 // 
-void ogre_rndl_getCastsShadows(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rndl_getCastsShadows(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rndl_removeCustomParameter(struct hg3dclass_struct * thisclass_c, int index_c);
+void ogre_rndl_removeCustomParameter(struct hg3dclass_struct * thisclass_c, long index_c);
 
 // 
-void ogre_rndl_hasCustomParameter(struct hg3dclass_struct * thisclass_c, int index_c, int * result_c);
+void ogre_rndl_hasCustomParameter(struct hg3dclass_struct * thisclass_c, long index_c, long * result_c);
 
 // 
-void ogre_rndl_setPolygonModeOverrideable(struct hg3dclass_struct * thisclass_c, int override_c);
+void ogre_rndl_setPolygonModeOverrideable(struct hg3dclass_struct * thisclass_c, long override_c);
 
 // 
-void ogre_rndl_getPolygonModeOverrideable(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rndl_getPolygonModeOverrideable(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 #endif 

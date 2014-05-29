@@ -69,21 +69,21 @@ extern "C" Ogre_LIB_EXPORT void ogre_rt_saveConfig(struct hg3dclass_struct * thi
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rt_restoreConfig(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rt_restoreConfig(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Root * thisclass_cpp = static_cast<Ogre::Root*> (getHG3DClassPtr(*thisclass_c, "Ogre::Root"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->restoreConfig());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rt_showConfigDialog(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rt_showConfigDialog(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Root * thisclass_cpp = static_cast<Ogre::Root*> (getHG3DClassPtr(*thisclass_c, "Ogre::Root"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->showConfigDialog());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -124,7 +124,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rt_getRenderSystem(struct hg3dclass_struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rt_initialise(struct hg3dclass_struct * thisclass_c, int autoCreateWindow_c, char * windowTitle_c, char * customCapabilitiesConfig_c, struct hg3dclass_struct * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rt_initialise(struct hg3dclass_struct * thisclass_c, long autoCreateWindow_c, char * windowTitle_c, char * customCapabilitiesConfig_c, struct hg3dclass_struct * result_c)
 {
   Ogre::Root * thisclass_cpp = static_cast<Ogre::Root*> (getHG3DClassPtr(*thisclass_c, "Ogre::Root"));
   bool autoCreateWindow_cpp = (bool)autoCreateWindow_c;
@@ -137,25 +137,25 @@ extern "C" Ogre_LIB_EXPORT void ogre_rt_initialise(struct hg3dclass_struct * thi
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rt_isInitialised(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rt_isInitialised(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Root * thisclass_cpp = static_cast<Ogre::Root*> (getHG3DClassPtr(*thisclass_c, "Ogre::Root"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isInitialised());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rt_getRemoveRenderQueueStructuresOnClear(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rt_getRemoveRenderQueueStructuresOnClear(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Root * thisclass_cpp = static_cast<Ogre::Root*> (getHG3DClassPtr(*thisclass_c, "Ogre::Root"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getRemoveRenderQueueStructuresOnClear());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rt_setRemoveRenderQueueStructuresOnClear(struct hg3dclass_struct * thisclass_c, int r_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rt_setRemoveRenderQueueStructuresOnClear(struct hg3dclass_struct * thisclass_c, long r_c)
 {
   Ogre::Root * thisclass_cpp = static_cast<Ogre::Root*> (getHG3DClassPtr(*thisclass_c, "Ogre::Root"));
   bool r_cpp = (bool)r_c;
@@ -210,13 +210,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_rt_getSceneManager(struct hg3dclass_struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rt_hasSceneManager(struct hg3dclass_struct * thisclass_c, char * instanceName_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rt_hasSceneManager(struct hg3dclass_struct * thisclass_c, char * instanceName_c, long * result_c)
 {
   Ogre::Root * thisclass_cpp = static_cast<Ogre::Root*> (getHG3DClassPtr(*thisclass_c, "Ogre::Root"));
   Ogre::String instanceName_cpp = Ogre::String((const char*) instanceName_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasSceneManager(instanceName_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -240,7 +240,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rt_getMeshManager(struct hg3dclass_struct *
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rt_getErrorDescription(struct hg3dclass_struct * thisclass_c, int errorNumber_c, char * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rt_getErrorDescription(struct hg3dclass_struct * thisclass_c, long errorNumber_c, char * result_c)
 {
   Ogre::Root * thisclass_cpp = static_cast<Ogre::Root*> (getHG3DClassPtr(*thisclass_c, "Ogre::Root"));
   long errorNumber_cpp = (long)errorNumber_c;
@@ -268,22 +268,22 @@ extern "C" Ogre_LIB_EXPORT void ogre_rt_startRendering(struct hg3dclass_struct *
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rt_renderOneFrame(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rt_renderOneFrame(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Root * thisclass_cpp = static_cast<Ogre::Root*> (getHG3DClassPtr(*thisclass_c, "Ogre::Root"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->renderOneFrame());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rt_renderOneFrame2(struct hg3dclass_struct * thisclass_c, float timeSinceLastFrame_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rt_renderOneFrame2(struct hg3dclass_struct * thisclass_c, float timeSinceLastFrame_c, long * result_c)
 {
   Ogre::Root * thisclass_cpp = static_cast<Ogre::Root*> (getHG3DClassPtr(*thisclass_c, "Ogre::Root"));
   Real timeSinceLastFrame_cpp = (Real)timeSinceLastFrame_c;
   bool result_cpp;
   result_cpp = (thisclass_cpp->renderOneFrame(timeSinceLastFrame_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -294,7 +294,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rt_shutdown(struct hg3dclass_struct * thisc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rt_addResourceLocation(struct hg3dclass_struct * thisclass_c, char * name_c, char * locType_c, char * groupName_c, int recursive_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rt_addResourceLocation(struct hg3dclass_struct * thisclass_c, char * name_c, char * locType_c, char * groupName_c, long recursive_c)
 {
   Ogre::Root * thisclass_cpp = static_cast<Ogre::Root*> (getHG3DClassPtr(*thisclass_c, "Ogre::Root"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
@@ -314,13 +314,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_rt_removeResourceLocation(struct hg3dclass_
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rt_convertColourValue(struct hg3dclass_struct * thisclass_c, struct colourvalue_struct * colour_c, unsigned int * pDest_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rt_convertColourValue(struct hg3dclass_struct * thisclass_c, struct colourvalue_struct * colour_c, unsigned long * pDest_c)
 {
   Ogre::Root * thisclass_cpp = static_cast<Ogre::Root*> (getHG3DClassPtr(*thisclass_c, "Ogre::Root"));
   ColourValue colour_cpp = *((ColourValue*) colour_c);
   uint32 pDest_cpp;
   (thisclass_cpp->convertColourValue(colour_cpp, &pDest_cpp));
-  *pDest_c = (unsigned int)pDest_cpp;
+  *pDest_c = (unsigned long)pDest_cpp;
 };
 
 // 
@@ -399,6 +399,15 @@ extern "C" Ogre_LIB_EXPORT void ogre_rt_unloadPlugin(struct hg3dclass_struct * t
 };
 
 // 
+extern "C" Ogre_LIB_EXPORT void ogre_rt_getNextFrameNumber(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
+{
+  Ogre::Root * thisclass_cpp = static_cast<Ogre::Root*> (getHG3DClassPtr(*thisclass_c, "Ogre::Root"));
+  unsigned long result_cpp;
+  result_cpp = (thisclass_cpp->getNextFrameNumber());
+  *result_c = (unsigned long)result_cpp;
+};
+
+// 
 extern "C" Ogre_LIB_EXPORT void ogre_rt_destroyRenderQueueInvocationSequence(struct hg3dclass_struct * thisclass_c, char * name_c)
 {
   Ogre::Root * thisclass_cpp = static_cast<Ogre::Root*> (getHG3DClassPtr(*thisclass_c, "Ogre::Root"));
@@ -438,7 +447,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rt_getFrameSmoothingPeriod(struct hg3dclass
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rt_addMovableObjectFactory(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * fact_c, int overrideExisting_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rt_addMovableObjectFactory(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * fact_c, long overrideExisting_c)
 {
   Ogre::Root * thisclass_cpp = static_cast<Ogre::Root*> (getHG3DClassPtr(*thisclass_c, "Ogre::Root"));
   Ogre::MovableObjectFactory * fact_cpp = static_cast<Ogre::MovableObjectFactory*> (getHG3DClassPtr(*fact_c, "Ogre::MovableObjectFactory"));
@@ -455,13 +464,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_rt_removeMovableObjectFactory(struct hg3dcl
 };
 
 // Checks whether a factory is registered for a given MovableObject
-extern "C" Ogre_LIB_EXPORT void ogre_rt_hasMovableObjectFactory(struct hg3dclass_struct * thisclass_c, char * typeName_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rt_hasMovableObjectFactory(struct hg3dclass_struct * thisclass_c, char * typeName_c, long * result_c)
 {
   Ogre::Root * thisclass_cpp = static_cast<Ogre::Root*> (getHG3DClassPtr(*thisclass_c, "Ogre::Root"));
   Ogre::String typeName_cpp = Ogre::String((const char*) typeName_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasMovableObjectFactory(typeName_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // Get a MovableObjectFactory
@@ -476,16 +485,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_rt_getMovableObjectFactory(struct hg3dclass
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rt_getDisplayMonitorCount(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rt_getDisplayMonitorCount(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::Root * thisclass_cpp = static_cast<Ogre::Root*> (getHG3DClassPtr(*thisclass_c, "Ogre::Root"));
   unsigned int result_cpp;
   result_cpp = (thisclass_cpp->getDisplayMonitorCount());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rt_setBlendIndicesGpuRedundant(struct hg3dclass_struct * thisclass_c, int redundant_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rt_setBlendIndicesGpuRedundant(struct hg3dclass_struct * thisclass_c, long redundant_c)
 {
   Ogre::Root * thisclass_cpp = static_cast<Ogre::Root*> (getHG3DClassPtr(*thisclass_c, "Ogre::Root"));
   bool redundant_cpp = (bool)redundant_c;
@@ -493,16 +502,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_rt_setBlendIndicesGpuRedundant(struct hg3dc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rt_isBlendIndicesGpuRedundant(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rt_isBlendIndicesGpuRedundant(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Root * thisclass_cpp = static_cast<Ogre::Root*> (getHG3DClassPtr(*thisclass_c, "Ogre::Root"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isBlendIndicesGpuRedundant());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rt_setBlendWeightsGpuRedundant(struct hg3dclass_struct * thisclass_c, int redundant_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rt_setBlendWeightsGpuRedundant(struct hg3dclass_struct * thisclass_c, long redundant_c)
 {
   Ogre::Root * thisclass_cpp = static_cast<Ogre::Root*> (getHG3DClassPtr(*thisclass_c, "Ogre::Root"));
   bool redundant_cpp = (bool)redundant_c;
@@ -510,12 +519,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_rt_setBlendWeightsGpuRedundant(struct hg3dc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rt_isBlendWeightsGpuRedundant(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rt_isBlendWeightsGpuRedundant(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Root * thisclass_cpp = static_cast<Ogre::Root*> (getHG3DClassPtr(*thisclass_c, "Ogre::Root"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isBlendWeightsGpuRedundant());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 

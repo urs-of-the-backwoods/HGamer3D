@@ -28,7 +28,7 @@
 
 
 // 
-void ogre_exc_construct(int number_c, char * description_c, char * source_c, struct hg3dclass_struct * result_c);
+void ogre_exc_construct(long number_c, char * description_c, char * source_c, struct hg3dclass_struct * result_c);
 
 // Needed for compatibility with std::exception. 
 void ogre_exc_destruct(struct hg3dclass_struct * thisclass_c);
@@ -37,7 +37,7 @@ void ogre_exc_destruct(struct hg3dclass_struct * thisclass_c);
 void ogre_exc_getFullDescription(struct hg3dclass_struct * thisclass_c, char * result_c);
 
 // 
-void ogre_exc_getNumber(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_exc_getNumber(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_exc_getSource(struct hg3dclass_struct * thisclass_c, char * result_c);
@@ -46,7 +46,7 @@ void ogre_exc_getSource(struct hg3dclass_struct * thisclass_c, char * result_c);
 void ogre_exc_getFile(struct hg3dclass_struct * thisclass_c, char * result_c);
 
 // 
-void ogre_exc_getLine(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_exc_getLine(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_exc_getDescription(struct hg3dclass_struct * thisclass_c, char * result_c);

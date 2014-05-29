@@ -110,7 +110,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rds_setAmbientLight(struct hg3dclass_struct
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rds_setLightingEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rds_setLightingEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c)
 {
   Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
   bool enabled_cpp = (bool)enabled_c;
@@ -118,7 +118,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rds_setLightingEnabled(struct hg3dclass_str
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rds_setWBufferEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rds_setWBufferEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c)
 {
   Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
   bool enabled_cpp = (bool)enabled_c;
@@ -126,12 +126,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_rds_setWBufferEnabled(struct hg3dclass_stru
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rds_getWBufferEnabled(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rds_getWBufferEnabled(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getWBufferEnabled());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -200,7 +200,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rds_detachRenderTarget(struct hg3dclass_str
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rds_getErrorDescription(struct hg3dclass_struct * thisclass_c, int errorNumber_c, char * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rds_getErrorDescription(struct hg3dclass_struct * thisclass_c, long errorNumber_c, char * result_c)
 {
   Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
   long errorNumber_cpp = (long)errorNumber_c;
@@ -214,7 +214,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rds_getErrorDescription(struct hg3dclass_st
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rds_setWaitForVerticalBlank(struct hg3dclass_struct * thisclass_c, int enabled_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rds_setWaitForVerticalBlank(struct hg3dclass_struct * thisclass_c, long enabled_c)
 {
   Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
   bool enabled_cpp = (bool)enabled_c;
@@ -222,25 +222,25 @@ extern "C" Ogre_LIB_EXPORT void ogre_rds_setWaitForVerticalBlank(struct hg3dclas
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rds_getWaitForVerticalBlank(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rds_getWaitForVerticalBlank(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getWaitForVerticalBlank());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rds_getGlobalNumberOfInstances(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rds_getGlobalNumberOfInstances(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
   size_t result_cpp;
   result_cpp = (thisclass_cpp->getGlobalNumberOfInstances());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rds_setGlobalNumberOfInstances(struct hg3dclass_struct * thisclass_c, const int val_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rds_setGlobalNumberOfInstances(struct hg3dclass_struct * thisclass_c, const long val_c)
 {
   Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
   const size_t val_cpp = (size_t)val_c;
@@ -256,26 +256,26 @@ extern "C" Ogre_LIB_EXPORT void ogre_rds_setDepthBufferFor(struct hg3dclass_stru
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rds_areFixedFunctionLightsInViewSpace(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rds_areFixedFunctionLightsInViewSpace(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->areFixedFunctionLightsInViewSpace());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rds_convertColourValue(struct hg3dclass_struct * thisclass_c, struct colourvalue_struct * colour_c, unsigned int * pDest_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rds_convertColourValue(struct hg3dclass_struct * thisclass_c, struct colourvalue_struct * colour_c, unsigned long * pDest_c)
 {
   Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
   ColourValue colour_cpp = *((ColourValue*) colour_c);
   uint32 pDest_cpp;
   (thisclass_cpp->convertColourValue(colour_cpp, &pDest_cpp));
-  *pDest_c = (unsigned int)pDest_cpp;
+  *pDest_c = (unsigned long)pDest_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rds_setStencilCheckEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rds_setStencilCheckEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c)
 {
   Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
   bool enabled_cpp = (bool)enabled_c;
@@ -283,7 +283,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rds_setStencilCheckEnabled(struct hg3dclass
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rds_setNormaliseNormals(struct hg3dclass_struct * thisclass_c, int normalise_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rds_setNormaliseNormals(struct hg3dclass_struct * thisclass_c, long normalise_c)
 {
   Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
   bool normalise_cpp = (bool)normalise_c;
@@ -307,13 +307,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_rds_unbindGpuProgram(struct hg3dclass_struc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rds_isGpuProgramBound(struct hg3dclass_struct * thisclass_c, enum EnumGpuProgramType gptype_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rds_isGpuProgramBound(struct hg3dclass_struct * thisclass_c, enum EnumGpuProgramType gptype_c, long * result_c)
 {
   Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
   enum Ogre::GpuProgramType gptype_cpp = (enum Ogre::GpuProgramType)gptype_c;
   bool result_cpp;
   result_cpp = (thisclass_cpp->isGpuProgramBound(gptype_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -335,7 +335,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rds_resetClipPlanes(struct hg3dclass_struct
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rds_setInvertVertexWinding(struct hg3dclass_struct * thisclass_c, int invert_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rds_setInvertVertexWinding(struct hg3dclass_struct * thisclass_c, long invert_c)
 {
   Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
   bool invert_cpp = (bool)invert_c;
@@ -343,16 +343,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_rds_setInvertVertexWinding(struct hg3dclass
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rds_getInvertVertexWinding(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rds_getInvertVertexWinding(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getInvertVertexWinding());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rds_setScissorTest(struct hg3dclass_struct * thisclass_c, int enabled_c, int left_c, int top_c, int right_c, int bottom_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rds_setScissorTest(struct hg3dclass_struct * thisclass_c, long enabled_c, long left_c, long top_c, long right_c, long bottom_c)
 {
   Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
   bool enabled_cpp = (bool)enabled_c;
@@ -364,7 +364,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rds_setScissorTest(struct hg3dclass_struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rds_clearFrameBuffer(struct hg3dclass_struct * thisclass_c, unsigned int buffers_c, struct colourvalue_struct * colour_c, float depth_c, unsigned short stencil_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rds_clearFrameBuffer(struct hg3dclass_struct * thisclass_c, unsigned long buffers_c, struct colourvalue_struct * colour_c, float depth_c, unsigned short stencil_c)
 {
   Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
   unsigned int buffers_cpp = (unsigned int)buffers_c;
@@ -411,7 +411,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rds_getMaximumDepthInputValue(struct hg3dcl
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rds_setCurrentPassIterationCount(struct hg3dclass_struct * thisclass_c, const int count_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rds_setCurrentPassIterationCount(struct hg3dclass_struct * thisclass_c, const long count_c)
 {
   Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
   const size_t count_cpp = (size_t)count_c;
@@ -419,7 +419,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rds_setCurrentPassIterationCount(struct hg3
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rds_setDeriveDepthBias(struct hg3dclass_struct * thisclass_c, int derive_c, float baseValue_c, float multiplier_c, float slopeScale_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rds_setDeriveDepthBias(struct hg3dclass_struct * thisclass_c, long derive_c, float baseValue_c, float multiplier_c, float slopeScale_c)
 {
   Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
   bool derive_cpp = (bool)derive_c;
@@ -458,12 +458,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_rds_unregisterThread(struct hg3dclass_struc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rds_getDisplayMonitorCount(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rds_getDisplayMonitorCount(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
   unsigned int result_cpp;
   result_cpp = (thisclass_cpp->getDisplayMonitorCount());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 

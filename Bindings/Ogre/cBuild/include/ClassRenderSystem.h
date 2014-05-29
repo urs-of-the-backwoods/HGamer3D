@@ -53,13 +53,13 @@ void ogre_rds_shutdown(struct hg3dclass_struct * thisclass_c);
 void ogre_rds_setAmbientLight(struct hg3dclass_struct * thisclass_c, float r_c, float g_c, float b_c);
 
 // 
-void ogre_rds_setLightingEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c);
+void ogre_rds_setLightingEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c);
 
 // 
-void ogre_rds_setWBufferEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c);
+void ogre_rds_setWBufferEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c);
 
 // 
-void ogre_rds_getWBufferEnabled(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rds_getWBufferEnabled(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_rds_createMultiRenderTarget(struct hg3dclass_struct * thisclass_c, char * name_c, struct hg3dclass_struct * result_c);
@@ -83,34 +83,34 @@ void ogre_rds_getRenderTarget(struct hg3dclass_struct * thisclass_c, char * name
 void ogre_rds_detachRenderTarget(struct hg3dclass_struct * thisclass_c, char * name_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_rds_getErrorDescription(struct hg3dclass_struct * thisclass_c, int errorNumber_c, char * result_c);
+void ogre_rds_getErrorDescription(struct hg3dclass_struct * thisclass_c, long errorNumber_c, char * result_c);
 
 // 
-void ogre_rds_setWaitForVerticalBlank(struct hg3dclass_struct * thisclass_c, int enabled_c);
+void ogre_rds_setWaitForVerticalBlank(struct hg3dclass_struct * thisclass_c, long enabled_c);
 
 // 
-void ogre_rds_getWaitForVerticalBlank(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rds_getWaitForVerticalBlank(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rds_getGlobalNumberOfInstances(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rds_getGlobalNumberOfInstances(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rds_setGlobalNumberOfInstances(struct hg3dclass_struct * thisclass_c, const int val_c);
+void ogre_rds_setGlobalNumberOfInstances(struct hg3dclass_struct * thisclass_c, const long val_c);
 
 // 
 void ogre_rds_setDepthBufferFor(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * renderTarget_c);
 
 // 
-void ogre_rds_areFixedFunctionLightsInViewSpace(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rds_areFixedFunctionLightsInViewSpace(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rds_convertColourValue(struct hg3dclass_struct * thisclass_c, struct colourvalue_struct * colour_c, unsigned int * pDest_c);
+void ogre_rds_convertColourValue(struct hg3dclass_struct * thisclass_c, struct colourvalue_struct * colour_c, unsigned long * pDest_c);
 
 // 
-void ogre_rds_setStencilCheckEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c);
+void ogre_rds_setStencilCheckEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c);
 
 // 
-void ogre_rds_setNormaliseNormals(struct hg3dclass_struct * thisclass_c, int normalise_c);
+void ogre_rds_setNormaliseNormals(struct hg3dclass_struct * thisclass_c, long normalise_c);
 
 // 
 void ogre_rds_bindGpuProgramPassIterationParameters(struct hg3dclass_struct * thisclass_c, enum EnumGpuProgramType gptype_c);
@@ -119,7 +119,7 @@ void ogre_rds_bindGpuProgramPassIterationParameters(struct hg3dclass_struct * th
 void ogre_rds_unbindGpuProgram(struct hg3dclass_struct * thisclass_c, enum EnumGpuProgramType gptype_c);
 
 // 
-void ogre_rds_isGpuProgramBound(struct hg3dclass_struct * thisclass_c, enum EnumGpuProgramType gptype_c, int * result_c);
+void ogre_rds_isGpuProgramBound(struct hg3dclass_struct * thisclass_c, enum EnumGpuProgramType gptype_c, long * result_c);
 
 // 
 void ogre_rds_addClipPlane2(struct hg3dclass_struct * thisclass_c, float A_c, float B_c, float C_c, float D_c);
@@ -128,16 +128,16 @@ void ogre_rds_addClipPlane2(struct hg3dclass_struct * thisclass_c, float A_c, fl
 void ogre_rds_resetClipPlanes(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_rds_setInvertVertexWinding(struct hg3dclass_struct * thisclass_c, int invert_c);
+void ogre_rds_setInvertVertexWinding(struct hg3dclass_struct * thisclass_c, long invert_c);
 
 // 
-void ogre_rds_getInvertVertexWinding(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rds_getInvertVertexWinding(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rds_setScissorTest(struct hg3dclass_struct * thisclass_c, int enabled_c, int left_c, int top_c, int right_c, int bottom_c);
+void ogre_rds_setScissorTest(struct hg3dclass_struct * thisclass_c, long enabled_c, long left_c, long top_c, long right_c, long bottom_c);
 
 // 
-void ogre_rds_clearFrameBuffer(struct hg3dclass_struct * thisclass_c, unsigned int buffers_c, struct colourvalue_struct * colour_c, float depth_c, unsigned short stencil_c);
+void ogre_rds_clearFrameBuffer(struct hg3dclass_struct * thisclass_c, unsigned long buffers_c, struct colourvalue_struct * colour_c, float depth_c, unsigned short stencil_c);
 
 // 
 void ogre_rds_getHorizontalTexelOffset(struct hg3dclass_struct * thisclass_c, float * result_c);
@@ -152,10 +152,10 @@ void ogre_rds_getMinimumDepthInputValue(struct hg3dclass_struct * thisclass_c, f
 void ogre_rds_getMaximumDepthInputValue(struct hg3dclass_struct * thisclass_c, float * result_c);
 
 // 
-void ogre_rds_setCurrentPassIterationCount(struct hg3dclass_struct * thisclass_c, const int count_c);
+void ogre_rds_setCurrentPassIterationCount(struct hg3dclass_struct * thisclass_c, const long count_c);
 
 // 
-void ogre_rds_setDeriveDepthBias(struct hg3dclass_struct * thisclass_c, int derive_c, float baseValue_c, float multiplier_c, float slopeScale_c);
+void ogre_rds_setDeriveDepthBias(struct hg3dclass_struct * thisclass_c, long derive_c, float baseValue_c, float multiplier_c, float slopeScale_c);
 
 // 
 void ogre_rds_preExtraThreadsStarted(struct hg3dclass_struct * thisclass_c);
@@ -170,7 +170,7 @@ void ogre_rds_registerThread(struct hg3dclass_struct * thisclass_c);
 void ogre_rds_unregisterThread(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_rds_getDisplayMonitorCount(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_rds_getDisplayMonitorCount(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 // 
 void ogre_rds_beginProfileEvent(struct hg3dclass_struct * thisclass_c, char * eventName_c);

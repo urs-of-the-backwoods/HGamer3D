@@ -58,7 +58,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_destruct(struct hg3dclass_struct * th
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_createResourceGroup(struct hg3dclass_struct * thisclass_c, char * name_c, const int inGlobalPool_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_createResourceGroup(struct hg3dclass_struct * thisclass_c, char * name_c, const long inGlobalPool_c)
 {
   Ogre::ResourceGroupManager * thisclass_cpp = static_cast<Ogre::ResourceGroupManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceGroupManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
@@ -82,7 +82,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_initialiseAllResourceGroups(struct hg
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_prepareResourceGroup(struct hg3dclass_struct * thisclass_c, char * name_c, int prepareMainResources_c, int prepareWorldGeom_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_prepareResourceGroup(struct hg3dclass_struct * thisclass_c, char * name_c, long prepareMainResources_c, long prepareWorldGeom_c)
 {
   Ogre::ResourceGroupManager * thisclass_cpp = static_cast<Ogre::ResourceGroupManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceGroupManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
@@ -92,7 +92,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_prepareResourceGroup(struct hg3dclass
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_loadResourceGroup(struct hg3dclass_struct * thisclass_c, char * name_c, int loadMainResources_c, int loadWorldGeom_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_loadResourceGroup(struct hg3dclass_struct * thisclass_c, char * name_c, long loadMainResources_c, long loadWorldGeom_c)
 {
   Ogre::ResourceGroupManager * thisclass_cpp = static_cast<Ogre::ResourceGroupManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceGroupManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
@@ -102,7 +102,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_loadResourceGroup(struct hg3dclass_st
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_unloadResourceGroup(struct hg3dclass_struct * thisclass_c, char * name_c, int reloadableOnly_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_unloadResourceGroup(struct hg3dclass_struct * thisclass_c, char * name_c, long reloadableOnly_c)
 {
   Ogre::ResourceGroupManager * thisclass_cpp = static_cast<Ogre::ResourceGroupManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceGroupManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
@@ -111,7 +111,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_unloadResourceGroup(struct hg3dclass_
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_unloadUnreferencedResourcesInGroup(struct hg3dclass_struct * thisclass_c, char * name_c, int reloadableOnly_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_unloadUnreferencedResourcesInGroup(struct hg3dclass_struct * thisclass_c, char * name_c, long reloadableOnly_c)
 {
   Ogre::ResourceGroupManager * thisclass_cpp = static_cast<Ogre::ResourceGroupManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceGroupManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
@@ -136,37 +136,37 @@ extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_destroyResourceGroup(struct hg3dclass
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_isResourceGroupInitialised(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_isResourceGroupInitialised(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::ResourceGroupManager * thisclass_cpp = static_cast<Ogre::ResourceGroupManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceGroupManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->isResourceGroupInitialised(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_isResourceGroupLoaded(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_isResourceGroupLoaded(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::ResourceGroupManager * thisclass_cpp = static_cast<Ogre::ResourceGroupManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceGroupManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->isResourceGroupLoaded(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_resourceGroupExists(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_resourceGroupExists(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::ResourceGroupManager * thisclass_cpp = static_cast<Ogre::ResourceGroupManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceGroupManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->resourceGroupExists(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_addResourceLocation(struct hg3dclass_struct * thisclass_c, char * name_c, char * locType_c, char * resGroup_c, int recursive_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_addResourceLocation(struct hg3dclass_struct * thisclass_c, char * name_c, char * locType_c, char * resGroup_c, long recursive_c)
 {
   Ogre::ResourceGroupManager * thisclass_cpp = static_cast<Ogre::ResourceGroupManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceGroupManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
@@ -186,14 +186,14 @@ extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_removeResourceLocation(struct hg3dcla
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_resourceLocationExists(struct hg3dclass_struct * thisclass_c, char * name_c, char * resGroup_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_resourceLocationExists(struct hg3dclass_struct * thisclass_c, char * name_c, char * resGroup_c, long * result_c)
 {
   Ogre::ResourceGroupManager * thisclass_cpp = static_cast<Ogre::ResourceGroupManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceGroupManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   Ogre::String resGroup_cpp = Ogre::String((const char*) resGroup_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->resourceLocationExists(name_cpp, resGroup_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -206,24 +206,24 @@ extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_undeclareResource(struct hg3dclass_st
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_resourceExists(struct hg3dclass_struct * thisclass_c, char * group_c, char * filename_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_resourceExists(struct hg3dclass_struct * thisclass_c, char * group_c, char * filename_c, long * result_c)
 {
   Ogre::ResourceGroupManager * thisclass_cpp = static_cast<Ogre::ResourceGroupManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceGroupManager"));
   Ogre::String group_cpp = Ogre::String((const char*) group_c);
   Ogre::String filename_cpp = Ogre::String((const char*) filename_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->resourceExists(group_cpp, filename_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_resourceExistsInAnyGroup(struct hg3dclass_struct * thisclass_c, char * filename_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_resourceExistsInAnyGroup(struct hg3dclass_struct * thisclass_c, char * filename_c, long * result_c)
 {
   Ogre::ResourceGroupManager * thisclass_cpp = static_cast<Ogre::ResourceGroupManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceGroupManager"));
   Ogre::String filename_cpp = Ogre::String((const char*) filename_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->resourceExistsInAnyGroup(filename_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -300,13 +300,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_unlinkWorldGeometryFromResourceGroup(
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_isResourceGroupInGlobalPool(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rgmgr_isResourceGroupInGlobalPool(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::ResourceGroupManager * thisclass_cpp = static_cast<Ogre::ResourceGroupManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceGroupManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->isResourceGroupInGlobalPool(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 

@@ -71,7 +71,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mno_clear(struct hg3dclass_struct * thiscla
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mno_estimateVertexCount(struct hg3dclass_struct * thisclass_c, int vcount_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mno_estimateVertexCount(struct hg3dclass_struct * thisclass_c, long vcount_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
   size_t vcount_cpp = (size_t)vcount_c;
@@ -79,7 +79,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mno_estimateVertexCount(struct hg3dclass_st
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mno_estimateIndexCount(struct hg3dclass_struct * thisclass_c, int icount_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mno_estimateIndexCount(struct hg3dclass_struct * thisclass_c, long icount_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
   size_t icount_cpp = (size_t)icount_c;
@@ -97,7 +97,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mno_begin(struct hg3dclass_struct * thiscla
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mno_setDynamic(struct hg3dclass_struct * thisclass_c, int dyn_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mno_setDynamic(struct hg3dclass_struct * thisclass_c, long dyn_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
   bool dyn_cpp = (bool)dyn_c;
@@ -105,16 +105,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_mno_setDynamic(struct hg3dclass_struct * th
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mno_getDynamic(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mno_getDynamic(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getDynamic());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mno_beginUpdate(struct hg3dclass_struct * thisclass_c, int sectionIndex_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mno_beginUpdate(struct hg3dclass_struct * thisclass_c, long sectionIndex_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
   size_t sectionIndex_cpp = (size_t)sectionIndex_c;
@@ -249,7 +249,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mno_colour2(struct hg3dclass_struct * thisc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mno_index(struct hg3dclass_struct * thisclass_c, unsigned int idx_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mno_index(struct hg3dclass_struct * thisclass_c, unsigned long idx_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
   uint32 idx_cpp = (uint32)idx_c;
@@ -257,7 +257,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mno_index(struct hg3dclass_struct * thiscla
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mno_triangle(struct hg3dclass_struct * thisclass_c, unsigned int i1_c, unsigned int i2_c, unsigned int i3_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mno_triangle(struct hg3dclass_struct * thisclass_c, unsigned long i1_c, unsigned long i2_c, unsigned long i3_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
   uint32 i1_cpp = (uint32)i1_c;
@@ -267,7 +267,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mno_triangle(struct hg3dclass_struct * this
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mno_quad(struct hg3dclass_struct * thisclass_c, unsigned int i1_c, unsigned int i2_c, unsigned int i3_c, unsigned int i4_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mno_quad(struct hg3dclass_struct * thisclass_c, unsigned long i1_c, unsigned long i2_c, unsigned long i3_c, unsigned long i4_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
   uint32 i1_cpp = (uint32)i1_c;
@@ -278,21 +278,21 @@ extern "C" Ogre_LIB_EXPORT void ogre_mno_quad(struct hg3dclass_struct * thisclas
 };
 
 // Get the number of vertices in the section currently being defined (returns 0 if no section is in progress). 
-extern "C" Ogre_LIB_EXPORT void ogre_mno_getCurrentVertexCount(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mno_getCurrentVertexCount(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
   size_t result_cpp;
   result_cpp = (thisclass_cpp->getCurrentVertexCount());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // Get the number of indices in the section currently being defined (returns 0 if no section is in progress). 
-extern "C" Ogre_LIB_EXPORT void ogre_mno_getCurrentIndexCount(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mno_getCurrentIndexCount(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
   size_t result_cpp;
   result_cpp = (thisclass_cpp->getCurrentIndexCount());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -306,7 +306,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mno_end(struct hg3dclass_struct * thisclass
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mno_setMaterialName(struct hg3dclass_struct * thisclass_c, int subindex_c, char * name_c, char * group_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mno_setMaterialName(struct hg3dclass_struct * thisclass_c, long subindex_c, char * name_c, char * group_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
   size_t subindex_cpp = (size_t)subindex_c;
@@ -327,7 +327,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mno_convertToMesh(struct hg3dclass_struct *
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mno_setUseIdentityProjection(struct hg3dclass_struct * thisclass_c, int useIdentityProjection_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mno_setUseIdentityProjection(struct hg3dclass_struct * thisclass_c, long useIdentityProjection_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
   bool useIdentityProjection_cpp = (bool)useIdentityProjection_c;
@@ -335,16 +335,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_mno_setUseIdentityProjection(struct hg3dcla
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mno_getUseIdentityProjection(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mno_getUseIdentityProjection(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getUseIdentityProjection());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mno_setUseIdentityView(struct hg3dclass_struct * thisclass_c, int useIdentityView_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mno_setUseIdentityView(struct hg3dclass_struct * thisclass_c, long useIdentityView_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
   bool useIdentityView_cpp = (bool)useIdentityView_c;
@@ -352,16 +352,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_mno_setUseIdentityView(struct hg3dclass_str
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mno_getUseIdentityView(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mno_getUseIdentityView(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getUseIdentityView());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mno_getSection(struct hg3dclass_struct * thisclass_c, unsigned int index_c, struct hg3dclass_struct * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mno_getSection(struct hg3dclass_struct * thisclass_c, unsigned long index_c, struct hg3dclass_struct * result_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
   unsigned int index_cpp = (unsigned int)index_c;
@@ -372,16 +372,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_mno_getSection(struct hg3dclass_struct * th
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mno_getNumSections(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mno_getNumSections(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
   unsigned int result_cpp;
   result_cpp = (thisclass_cpp->getNumSections());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mno_setKeepDeclarationOrder(struct hg3dclass_struct * thisclass_c, int keepOrder_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mno_setKeepDeclarationOrder(struct hg3dclass_struct * thisclass_c, long keepOrder_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
   bool keepOrder_cpp = (bool)keepOrder_c;
@@ -389,15 +389,15 @@ extern "C" Ogre_LIB_EXPORT void ogre_mno_setKeepDeclarationOrder(struct hg3dclas
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mno_getKeepDeclarationOrder(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mno_getKeepDeclarationOrder(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getKeepDeclarationOrder());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
-// . 
+// 
 extern "C" Ogre_LIB_EXPORT void ogre_mno_getMovableType(struct hg3dclass_struct * thisclass_c, char * result_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
@@ -410,7 +410,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mno_getMovableType(struct hg3dclass_struct 
   };
 };
 
-// . 
+// 
 extern "C" Ogre_LIB_EXPORT void ogre_mno_getBoundingRadius(struct hg3dclass_struct * thisclass_c, float * result_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
@@ -420,11 +420,11 @@ extern "C" Ogre_LIB_EXPORT void ogre_mno_getBoundingRadius(struct hg3dclass_stru
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mno_hasEdgeList(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mno_hasEdgeList(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasEdgeList());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 

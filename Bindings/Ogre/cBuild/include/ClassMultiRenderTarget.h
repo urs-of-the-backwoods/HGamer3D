@@ -29,12 +29,12 @@
 
 
 // 
-void ogre_mrt_bindSurface(struct hg3dclass_struct * thisclass_c, int attachment_c, struct hg3dclass_struct * target_c);
+void ogre_mrt_bindSurface(struct hg3dclass_struct * thisclass_c, long attachment_c, struct hg3dclass_struct * target_c);
 
 // 
-void ogre_mrt_unbindSurface(struct hg3dclass_struct * thisclass_c, int attachment_c);
+void ogre_mrt_unbindSurface(struct hg3dclass_struct * thisclass_c, long attachment_c);
 
 // 
-void ogre_mrt_getBoundSurface(struct hg3dclass_struct * thisclass_c, int index_c, struct hg3dclass_struct * result_c);
+void ogre_mrt_getBoundSurface(struct hg3dclass_struct * thisclass_c, long index_c, struct hg3dclass_struct * result_c);
 
 #endif 

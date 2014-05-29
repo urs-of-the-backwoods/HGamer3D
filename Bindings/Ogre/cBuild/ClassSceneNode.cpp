@@ -127,12 +127,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_sn_detachAllObjects(struct hg3dclass_struct
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_sn_isInSceneGraph(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_sn_isInSceneGraph(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneNode * thisclass_cpp = static_cast<Ogre::SceneNode*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneNode"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isInSceneGraph());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -169,7 +169,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_sn_removeAndDestroyAllChildren(struct hg3dc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_sn_showBoundingBox(struct hg3dclass_struct * thisclass_c, int bShow_c)
+extern "C" Ogre_LIB_EXPORT void ogre_sn_showBoundingBox(struct hg3dclass_struct * thisclass_c, long bShow_c)
 {
   Ogre::SceneNode * thisclass_cpp = static_cast<Ogre::SceneNode*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneNode"));
   bool bShow_cpp = (bool)bShow_c;
@@ -177,7 +177,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_sn_showBoundingBox(struct hg3dclass_struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_sn_hideBoundingBox(struct hg3dclass_struct * thisclass_c, int bHide_c)
+extern "C" Ogre_LIB_EXPORT void ogre_sn_hideBoundingBox(struct hg3dclass_struct * thisclass_c, long bHide_c)
 {
   Ogre::SceneNode * thisclass_cpp = static_cast<Ogre::SceneNode*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneNode"));
   bool bHide_cpp = (bool)bHide_c;
@@ -185,12 +185,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_sn_hideBoundingBox(struct hg3dclass_struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_sn_getShowBoundingBox(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_sn_getShowBoundingBox(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneNode * thisclass_cpp = static_cast<Ogre::SceneNode*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneNode"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getShowBoundingBox());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -219,7 +219,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_sn_createChildSceneNode2(struct hg3dclass_s
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_sn_setFixedYawAxis(struct hg3dclass_struct * thisclass_c, int useFixed_c, struct vector3_struct * fixedAxis_c)
+extern "C" Ogre_LIB_EXPORT void ogre_sn_setFixedYawAxis(struct hg3dclass_struct * thisclass_c, long useFixed_c, struct vector3_struct * fixedAxis_c)
 {
   Ogre::SceneNode * thisclass_cpp = static_cast<Ogre::SceneNode*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneNode"));
   bool useFixed_cpp = (bool)useFixed_c;
@@ -266,7 +266,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_sn_getParentSceneNode(struct hg3dclass_stru
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_sn_setVisible(struct hg3dclass_struct * thisclass_c, int visible_c, int cascade_c)
+extern "C" Ogre_LIB_EXPORT void ogre_sn_setVisible(struct hg3dclass_struct * thisclass_c, long visible_c, long cascade_c)
 {
   Ogre::SceneNode * thisclass_cpp = static_cast<Ogre::SceneNode*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneNode"));
   bool visible_cpp = (bool)visible_c;
@@ -275,7 +275,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_sn_setVisible(struct hg3dclass_struct * thi
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_sn_flipVisibility(struct hg3dclass_struct * thisclass_c, int cascade_c)
+extern "C" Ogre_LIB_EXPORT void ogre_sn_flipVisibility(struct hg3dclass_struct * thisclass_c, long cascade_c)
 {
   Ogre::SceneNode * thisclass_cpp = static_cast<Ogre::SceneNode*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneNode"));
   bool cascade_cpp = (bool)cascade_c;
@@ -283,7 +283,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_sn_flipVisibility(struct hg3dclass_struct *
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_sn_setDebugDisplayEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c, int cascade_c)
+extern "C" Ogre_LIB_EXPORT void ogre_sn_setDebugDisplayEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c, long cascade_c)
 {
   Ogre::SceneNode * thisclass_cpp = static_cast<Ogre::SceneNode*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneNode"));
   bool enabled_cpp = (bool)enabled_c;

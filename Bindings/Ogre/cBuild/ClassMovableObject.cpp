@@ -95,21 +95,21 @@ extern "C" Ogre_LIB_EXPORT void ogre_mvo_getParentSceneNode(struct hg3dclass_str
 };
 
 // Gets whether the parent node is a TagPoint (or a SceneNode
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_isParentTagPoint(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_isParentTagPoint(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isParentTagPoint());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_isAttached(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_isAttached(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isAttached());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -120,12 +120,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_mvo_detachFromParent(struct hg3dclass_struc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_isInScene(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_isInScene(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isInScene());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -138,7 +138,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mvo_getBoundingRadius(struct hg3dclass_stru
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_setVisible(struct hg3dclass_struct * thisclass_c, int visible_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_setVisible(struct hg3dclass_struct * thisclass_c, long visible_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   bool visible_cpp = (bool)visible_c;
@@ -146,21 +146,21 @@ extern "C" Ogre_LIB_EXPORT void ogre_mvo_setVisible(struct hg3dclass_struct * th
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_getVisible(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_getVisible(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getVisible());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_isVisible(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_isVisible(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isVisible());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -198,7 +198,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mvo_getRenderingMinPixelSize(struct hg3dcla
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_setQueryFlags(struct hg3dclass_struct * thisclass_c, unsigned int flags_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_setQueryFlags(struct hg3dclass_struct * thisclass_c, unsigned long flags_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   uint32 flags_cpp = (uint32)flags_c;
@@ -206,7 +206,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mvo_setQueryFlags(struct hg3dclass_struct *
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_addQueryFlags(struct hg3dclass_struct * thisclass_c, unsigned int flags_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_addQueryFlags(struct hg3dclass_struct * thisclass_c, unsigned long flags_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   uint32 flags_cpp = (uint32)flags_c;
@@ -214,7 +214,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mvo_addQueryFlags(struct hg3dclass_struct *
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_removeQueryFlags(struct hg3dclass_struct * thisclass_c, unsigned int flags_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_removeQueryFlags(struct hg3dclass_struct * thisclass_c, unsigned long flags_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   uint32 flags_cpp = (uint32)flags_c;
@@ -222,16 +222,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_mvo_removeQueryFlags(struct hg3dclass_struc
 };
 
 // Returns the query flags relevant for this object. 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_getQueryFlags(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_getQueryFlags(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   uint32 result_cpp;
   result_cpp = (thisclass_cpp->getQueryFlags());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_setVisibilityFlags(struct hg3dclass_struct * thisclass_c, unsigned int flags_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_setVisibilityFlags(struct hg3dclass_struct * thisclass_c, unsigned long flags_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   uint32 flags_cpp = (uint32)flags_c;
@@ -239,7 +239,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mvo_setVisibilityFlags(struct hg3dclass_str
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_addVisibilityFlags(struct hg3dclass_struct * thisclass_c, unsigned int flags_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_addVisibilityFlags(struct hg3dclass_struct * thisclass_c, unsigned long flags_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   uint32 flags_cpp = (uint32)flags_c;
@@ -247,7 +247,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mvo_addVisibilityFlags(struct hg3dclass_str
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_removeVisibilityFlags(struct hg3dclass_struct * thisclass_c, unsigned int flags_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_removeVisibilityFlags(struct hg3dclass_struct * thisclass_c, unsigned long flags_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   uint32 flags_cpp = (uint32)flags_c;
@@ -255,25 +255,25 @@ extern "C" Ogre_LIB_EXPORT void ogre_mvo_removeVisibilityFlags(struct hg3dclass_
 };
 
 // Returns the visibility flags relevant for this object. 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_getVisibilityFlags(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_getVisibilityFlags(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   uint32 result_cpp;
   result_cpp = (thisclass_cpp->getVisibilityFlags());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_getLightMask(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_getLightMask(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   uint32 result_cpp;
   result_cpp = (thisclass_cpp->getLightMask());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_setLightMask(struct hg3dclass_struct * thisclass_c, unsigned int lightMask_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_setLightMask(struct hg3dclass_struct * thisclass_c, unsigned long lightMask_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   uint32 lightMask_cpp = (uint32)lightMask_c;
@@ -281,16 +281,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_mvo_setLightMask(struct hg3dclass_struct * 
 };
 
 // Define a default implementation of method from ShadowCaster which implements no shadows. 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_hasEdgeList(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_hasEdgeList(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasEdgeList());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_setCastShadows(struct hg3dclass_struct * thisclass_c, int enabled_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_setCastShadows(struct hg3dclass_struct * thisclass_c, long enabled_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   bool enabled_cpp = (bool)enabled_c;
@@ -298,21 +298,21 @@ extern "C" Ogre_LIB_EXPORT void ogre_mvo_setCastShadows(struct hg3dclass_struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_getCastShadows(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_getCastShadows(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getCastShadows());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_getReceivesShadows(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_getReceivesShadows(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getReceivesShadows());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -326,16 +326,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_mvo_getPointExtrusionDistance(struct hg3dcl
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_getTypeFlags(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_getTypeFlags(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   uint32 result_cpp;
   result_cpp = (thisclass_cpp->getTypeFlags());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_setDebugDisplayEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_setDebugDisplayEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   bool enabled_cpp = (bool)enabled_c;
@@ -343,41 +343,41 @@ extern "C" Ogre_LIB_EXPORT void ogre_mvo_setDebugDisplayEnabled(struct hg3dclass
 };
 
 // Gets whether debug display of this object is enabled. 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_isDebugDisplayEnabled(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_isDebugDisplayEnabled(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::MovableObject * thisclass_cpp = static_cast<Ogre::MovableObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObject"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isDebugDisplayEnabled());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_setDefaultQueryFlags(unsigned int flags_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_setDefaultQueryFlags(unsigned long flags_c)
 {
   uint32 flags_cpp = (uint32)flags_c;
   (Ogre::MovableObject::setDefaultQueryFlags(flags_cpp));
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_getDefaultQueryFlags(unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_getDefaultQueryFlags(unsigned long * result_c)
 {
   uint32 result_cpp;
   result_cpp = (Ogre::MovableObject::getDefaultQueryFlags());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_setDefaultVisibilityFlags(unsigned int flags_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_setDefaultVisibilityFlags(unsigned long flags_c)
 {
   uint32 flags_cpp = (uint32)flags_c;
   (Ogre::MovableObject::setDefaultVisibilityFlags(flags_cpp));
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvo_getDefaultVisibilityFlags(unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvo_getDefaultVisibilityFlags(unsigned long * result_c)
 {
   uint32 result_cpp;
   result_cpp = (Ogre::MovableObject::getDefaultVisibilityFlags());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 

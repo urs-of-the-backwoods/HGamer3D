@@ -343,7 +343,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_lgt_getMovableType(struct hg3dclass_struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_lgt_getDerivedPosition(struct hg3dclass_struct * thisclass_c, int cameraRelativeIfSet_c, struct vector3_struct * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_lgt_getDerivedPosition(struct hg3dclass_struct * thisclass_c, long cameraRelativeIfSet_c, struct vector3_struct * result_c)
 {
   Ogre::Light * thisclass_cpp = static_cast<Ogre::Light*> (getHG3DClassPtr(*thisclass_c, "Ogre::Light"));
   bool cameraRelativeIfSet_cpp = (bool)cameraRelativeIfSet_c;
@@ -362,7 +362,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_lgt_getDerivedDirection(struct hg3dclass_st
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_lgt_setVisible(struct hg3dclass_struct * thisclass_c, int visible_c)
+extern "C" Ogre_LIB_EXPORT void ogre_lgt_setVisible(struct hg3dclass_struct * thisclass_c, long visible_c)
 {
   Ogre::Light * thisclass_cpp = static_cast<Ogre::Light*> (getHG3DClassPtr(*thisclass_c, "Ogre::Light"));
   bool visible_cpp = (bool)visible_c;
@@ -379,12 +379,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_lgt_getBoundingRadius(struct hg3dclass_stru
 };
 
 // Override to return specific type flag. 
-extern "C" Ogre_LIB_EXPORT void ogre_lgt_getTypeFlags(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_lgt_getTypeFlags(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::Light * thisclass_cpp = static_cast<Ogre::Light*> (getHG3DClassPtr(*thisclass_c, "Ogre::Light"));
   uint32 result_cpp;
   result_cpp = (thisclass_cpp->getTypeFlags());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 

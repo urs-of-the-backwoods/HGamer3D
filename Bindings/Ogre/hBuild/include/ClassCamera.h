@@ -96,7 +96,7 @@ void ogre_cam_rotate(struct hg3dclass_struct * thisclass_c, struct vector3_struc
 void ogre_cam_rotate2(struct hg3dclass_struct * thisclass_c, struct quaternion_struct * q_c);
 
 // 
-void ogre_cam_setFixedYawAxis(struct hg3dclass_struct * thisclass_c, int useFixed_c, struct vector3_struct * fixedAxis_c);
+void ogre_cam_setFixedYawAxis(struct hg3dclass_struct * thisclass_c, long useFixed_c, struct vector3_struct * fixedAxis_c);
 
 // 
 void ogre_cam_getOrientation(struct hg3dclass_struct * thisclass_c, struct quaternion_struct * result_c);
@@ -156,7 +156,7 @@ void ogre_cam_setWindow(struct hg3dclass_struct * thisclass_c, float Left_c, flo
 void ogre_cam_resetWindow(struct hg3dclass_struct * thisclass_c);
 
 // Returns if a viewport window is being used. 
-void ogre_cam_isWindowSet(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_cam_isWindowSet(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_cam_getBoundingRadius(struct hg3dclass_struct * thisclass_c, float * result_c);
@@ -171,10 +171,10 @@ void ogre_cam_getAutoTrackOffset(struct hg3dclass_struct * thisclass_c, struct v
 void ogre_cam_getViewport(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_cam_setAutoAspectRatio(struct hg3dclass_struct * thisclass_c, int autoratio_c);
+void ogre_cam_setAutoAspectRatio(struct hg3dclass_struct * thisclass_c, long autoratio_c);
 
 // 
-void ogre_cam_getAutoAspectRatio(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_cam_getAutoAspectRatio(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_cam_setCullingFrustum(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * frustum_c);
@@ -183,7 +183,7 @@ void ogre_cam_setCullingFrustum(struct hg3dclass_struct * thisclass_c, struct hg
 void ogre_cam_getCullingFrustum(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_cam_isVisible3(struct hg3dclass_struct * thisclass_c, struct vector3_struct * vert_c, enum EnumFrustumPlane * culledBy_c, int * result_c);
+void ogre_cam_isVisible3(struct hg3dclass_struct * thisclass_c, struct vector3_struct * vert_c, enum EnumFrustumPlane * culledBy_c, long * result_c);
 
 // 
 void ogre_cam_getWorldSpaceCorners(struct hg3dclass_struct * thisclass_c, struct vector3_struct * result_c);
@@ -195,10 +195,10 @@ void ogre_cam_getNearClipDistance(struct hg3dclass_struct * thisclass_c, float *
 void ogre_cam_getFarClipDistance(struct hg3dclass_struct * thisclass_c, float * result_c);
 
 // 
-void ogre_cam_setUseRenderingDistance(struct hg3dclass_struct * thisclass_c, int use_c);
+void ogre_cam_setUseRenderingDistance(struct hg3dclass_struct * thisclass_c, long use_c);
 
 // 
-void ogre_cam_getUseRenderingDistance(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_cam_getUseRenderingDistance(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_cam_synchroniseBaseSettingsWith(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * cam_c);
@@ -211,10 +211,10 @@ void ogre_cam_getOrientationForViewUpdate(struct hg3dclass_struct * thisclass_c,
 
 // Sets whether to use min display size calculations 
 
-void ogre_cam_setUseMinPixelSize(struct hg3dclass_struct * thisclass_c, int enable_c);
+void ogre_cam_setUseMinPixelSize(struct hg3dclass_struct * thisclass_c, long enable_c);
 
 // 
-void ogre_cam_getUseMinPixelSize(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_cam_getUseMinPixelSize(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_cam_getPixelDisplayRatio(struct hg3dclass_struct * thisclass_c, float * result_c);

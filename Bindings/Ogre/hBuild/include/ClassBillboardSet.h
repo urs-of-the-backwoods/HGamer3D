@@ -36,7 +36,7 @@
 
 
 // 
-void ogre_bbs_construct(char * name_c, unsigned int poolSize_c, int externalDataSource_c, struct hg3dclass_struct * result_c);
+void ogre_bbs_construct(char * name_c, unsigned long poolSize_c, long externalDataSource_c, struct hg3dclass_struct * result_c);
 
 // 
 void ogre_bbs_destruct(struct hg3dclass_struct * thisclass_c);
@@ -48,34 +48,34 @@ void ogre_bbs_createBillboard(struct hg3dclass_struct * thisclass_c, struct vect
 void ogre_bbs_createBillboard2(struct hg3dclass_struct * thisclass_c, float x_c, float y_c, float z_c, struct colourvalue_struct * colour_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_bbs_getNumBillboards(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_bbs_getNumBillboards(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_bbs_setAutoextend(struct hg3dclass_struct * thisclass_c, int autoextend_c);
+void ogre_bbs_setAutoextend(struct hg3dclass_struct * thisclass_c, long autoextend_c);
 
 // 
-void ogre_bbs_getAutoextend(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_bbs_getAutoextend(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_bbs_setSortingEnabled(struct hg3dclass_struct * thisclass_c, int sortenable_c);
+void ogre_bbs_setSortingEnabled(struct hg3dclass_struct * thisclass_c, long sortenable_c);
 
 // 
-void ogre_bbs_getSortingEnabled(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_bbs_getSortingEnabled(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_bbs_setPoolSize(struct hg3dclass_struct * thisclass_c, int size_c);
+void ogre_bbs_setPoolSize(struct hg3dclass_struct * thisclass_c, long size_c);
 
 // 
-void ogre_bbs_getPoolSize(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_bbs_getPoolSize(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 // 
 void ogre_bbs_clear(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_bbs_getBillboard(struct hg3dclass_struct * thisclass_c, unsigned int index_c, struct hg3dclass_struct * result_c);
+void ogre_bbs_getBillboard(struct hg3dclass_struct * thisclass_c, unsigned long index_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_bbs_removeBillboard(struct hg3dclass_struct * thisclass_c, unsigned int index_c);
+void ogre_bbs_removeBillboard(struct hg3dclass_struct * thisclass_c, unsigned long index_c);
 
 // 
 void ogre_bbs_removeBillboard2(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * pBill_c);
@@ -114,7 +114,7 @@ void ogre_bbs_setMaterialName(struct hg3dclass_struct * thisclass_c, char * name
 void ogre_bbs_getMaterialName(struct hg3dclass_struct * thisclass_c, char * result_c);
 
 // 
-void ogre_bbs_beginBillboards(struct hg3dclass_struct * thisclass_c, int numBillboards_c);
+void ogre_bbs_beginBillboards(struct hg3dclass_struct * thisclass_c, long numBillboards_c);
 
 // 
 void ogre_bbs_injectBillboard(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * bb_c);
@@ -132,10 +132,10 @@ void ogre_bbs_getMaterial(struct hg3dclass_struct * thisclass_c, struct sharedpt
 void ogre_bbs_setMaterial(struct hg3dclass_struct * thisclass_c, struct sharedptr_struct * material_c);
 
 // 
-void ogre_bbs_getCullIndividually(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_bbs_getCullIndividually(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_bbs_setCullIndividually(struct hg3dclass_struct * thisclass_c, int cullIndividual_c);
+void ogre_bbs_setCullIndividually(struct hg3dclass_struct * thisclass_c, long cullIndividual_c);
 
 // 
 void ogre_bbs_setBillboardType(struct hg3dclass_struct * thisclass_c, enum EnumBillboardType bbt_c);
@@ -156,10 +156,10 @@ void ogre_bbs_setCommonUpVector(struct hg3dclass_struct * thisclass_c, struct ve
 void ogre_bbs_getCommonUpVector(struct hg3dclass_struct * thisclass_c, struct vector3_struct * result_c);
 
 // 
-void ogre_bbs_setUseAccurateFacing(struct hg3dclass_struct * thisclass_c, int acc_c);
+void ogre_bbs_setUseAccurateFacing(struct hg3dclass_struct * thisclass_c, long acc_c);
 
 // 
-void ogre_bbs_getUseAccurateFacing(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_bbs_getUseAccurateFacing(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_bbs_getMovableType(struct hg3dclass_struct * thisclass_c, char * result_c);
@@ -168,22 +168,22 @@ void ogre_bbs_getMovableType(struct hg3dclass_struct * thisclass_c, char * resul
 void ogre_bbs_getSquaredViewDepth(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * cam_c, float * result_c);
 
 // 
-void ogre_bbs_setBillboardsInWorldSpace(struct hg3dclass_struct * thisclass_c, int ws_c);
+void ogre_bbs_setBillboardsInWorldSpace(struct hg3dclass_struct * thisclass_c, long ws_c);
 
 // 
-void ogre_bbs_setPointRenderingEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c);
+void ogre_bbs_setPointRenderingEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c);
 
 // 
-void ogre_bbs_isPointRenderingEnabled(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_bbs_isPointRenderingEnabled(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // Override to return specific type flag. 
-void ogre_bbs_getTypeFlags(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_bbs_getTypeFlags(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 // 
-void ogre_bbs_setAutoUpdate(struct hg3dclass_struct * thisclass_c, int autoUpdate_c);
+void ogre_bbs_setAutoUpdate(struct hg3dclass_struct * thisclass_c, long autoUpdate_c);
 
 // 
-void ogre_bbs_getAutoUpdate(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_bbs_getAutoUpdate(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_bbs_notifyBillboardDataChanged(struct hg3dclass_struct * thisclass_c);

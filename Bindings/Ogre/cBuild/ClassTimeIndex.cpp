@@ -52,12 +52,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_tnx_construct(float timePos_c, struct hg3dc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_tnx_hasKeyIndex(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_tnx_hasKeyIndex(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::TimeIndex * thisclass_cpp = static_cast<Ogre::TimeIndex*> (getHG3DClassPtr(*thisclass_c, "Ogre::TimeIndex"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasKeyIndex());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -70,11 +70,11 @@ extern "C" Ogre_LIB_EXPORT void ogre_tnx_getTimePos(struct hg3dclass_struct * th
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_tnx_getKeyIndex(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_tnx_getKeyIndex(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::TimeIndex * thisclass_cpp = static_cast<Ogre::TimeIndex*> (getHG3DClassPtr(*thisclass_c, "Ogre::TimeIndex"));
   uint result_cpp;
   result_cpp = (thisclass_cpp->getKeyIndex());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 

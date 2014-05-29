@@ -42,7 +42,7 @@ using Ogre::uint;
 
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rw_setFullscreen(struct hg3dclass_struct * thisclass_c, int fullScreen_c, unsigned int width_c, unsigned int height_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rw_setFullscreen(struct hg3dclass_struct * thisclass_c, long fullScreen_c, unsigned long width_c, unsigned long height_c)
 {
   Ogre::RenderWindow * thisclass_cpp = static_cast<Ogre::RenderWindow*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderWindow"));
   bool fullScreen_cpp = (bool)fullScreen_c;
@@ -59,7 +59,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rw_destroy(struct hg3dclass_struct * thiscl
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rw_resize(struct hg3dclass_struct * thisclass_c, unsigned int width_c, unsigned int height_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rw_resize(struct hg3dclass_struct * thisclass_c, unsigned long width_c, unsigned long height_c)
 {
   Ogre::RenderWindow * thisclass_cpp = static_cast<Ogre::RenderWindow*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderWindow"));
   unsigned int width_cpp = (unsigned int)width_c;
@@ -75,7 +75,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rw_windowMovedOrResized(struct hg3dclass_st
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rw_reposition(struct hg3dclass_struct * thisclass_c, int left_c, int top_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rw_reposition(struct hg3dclass_struct * thisclass_c, long left_c, long top_c)
 {
   Ogre::RenderWindow * thisclass_cpp = static_cast<Ogre::RenderWindow*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderWindow"));
   int left_cpp = (int)left_c;
@@ -84,16 +84,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_rw_reposition(struct hg3dclass_struct * thi
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rw_isVisible(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rw_isVisible(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::RenderWindow * thisclass_cpp = static_cast<Ogre::RenderWindow*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderWindow"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isVisible());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rw_setVisible(struct hg3dclass_struct * thisclass_c, int visible_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rw_setVisible(struct hg3dclass_struct * thisclass_c, long visible_c)
 {
   Ogre::RenderWindow * thisclass_cpp = static_cast<Ogre::RenderWindow*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderWindow"));
   bool visible_cpp = (bool)visible_c;
@@ -101,16 +101,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_rw_setVisible(struct hg3dclass_struct * thi
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rw_isHidden(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rw_isHidden(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::RenderWindow * thisclass_cpp = static_cast<Ogre::RenderWindow*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderWindow"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isHidden());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rw_setHidden(struct hg3dclass_struct * thisclass_c, int hidden_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rw_setHidden(struct hg3dclass_struct * thisclass_c, long hidden_c)
 {
   Ogre::RenderWindow * thisclass_cpp = static_cast<Ogre::RenderWindow*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderWindow"));
   bool hidden_cpp = (bool)hidden_c;
@@ -118,7 +118,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rw_setHidden(struct hg3dclass_struct * this
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rw_setVSyncEnabled(struct hg3dclass_struct * thisclass_c, int vsync_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rw_setVSyncEnabled(struct hg3dclass_struct * thisclass_c, long vsync_c)
 {
   Ogre::RenderWindow * thisclass_cpp = static_cast<Ogre::RenderWindow*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderWindow"));
   bool vsync_cpp = (bool)vsync_c;
@@ -126,16 +126,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_rw_setVSyncEnabled(struct hg3dclass_struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rw_isVSyncEnabled(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rw_isVSyncEnabled(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::RenderWindow * thisclass_cpp = static_cast<Ogre::RenderWindow*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderWindow"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isVSyncEnabled());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rw_setVSyncInterval(struct hg3dclass_struct * thisclass_c, unsigned int interval_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rw_setVSyncInterval(struct hg3dclass_struct * thisclass_c, unsigned long interval_c)
 {
   Ogre::RenderWindow * thisclass_cpp = static_cast<Ogre::RenderWindow*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderWindow"));
   unsigned int interval_cpp = (unsigned int)interval_c;
@@ -143,52 +143,52 @@ extern "C" Ogre_LIB_EXPORT void ogre_rw_setVSyncInterval(struct hg3dclass_struct
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rw_getVSyncInterval(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rw_getVSyncInterval(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::RenderWindow * thisclass_cpp = static_cast<Ogre::RenderWindow*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderWindow"));
   unsigned int result_cpp;
   result_cpp = (thisclass_cpp->getVSyncInterval());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rw_isActive(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rw_isActive(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::RenderWindow * thisclass_cpp = static_cast<Ogre::RenderWindow*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderWindow"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isActive());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rw_isClosed(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rw_isClosed(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::RenderWindow * thisclass_cpp = static_cast<Ogre::RenderWindow*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderWindow"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isClosed());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rw_isPrimary(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rw_isPrimary(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::RenderWindow * thisclass_cpp = static_cast<Ogre::RenderWindow*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderWindow"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isPrimary());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rw_isFullScreen(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rw_isFullScreen(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::RenderWindow * thisclass_cpp = static_cast<Ogre::RenderWindow*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderWindow"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isFullScreen());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rw_getMetrics(struct hg3dclass_struct * thisclass_c, unsigned int * width_c, unsigned int * height_c, unsigned int * colourDepth_c, int * left_c, int * top_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rw_getMetrics(struct hg3dclass_struct * thisclass_c, unsigned long * width_c, unsigned long * height_c, unsigned long * colourDepth_c, long * left_c, long * top_c)
 {
   Ogre::RenderWindow * thisclass_cpp = static_cast<Ogre::RenderWindow*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderWindow"));
   unsigned int width_cpp;
@@ -197,24 +197,24 @@ extern "C" Ogre_LIB_EXPORT void ogre_rw_getMetrics(struct hg3dclass_struct * thi
   int left_cpp;
   int top_cpp;
   (thisclass_cpp->getMetrics(width_cpp, height_cpp, colourDepth_cpp, left_cpp, top_cpp));
-  *width_c = (unsigned int)width_cpp;
-  *height_c = (unsigned int)height_cpp;
-  *colourDepth_c = (unsigned int)colourDepth_cpp;
-  *left_c = (int)left_cpp;
-  *top_c = (int)top_cpp;
+  *width_c = (unsigned long)width_cpp;
+  *height_c = (unsigned long)height_cpp;
+  *colourDepth_c = (unsigned long)colourDepth_cpp;
+  *left_c = (long)left_cpp;
+  *top_c = (long)top_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rw_isDeactivatedOnFocusChange(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rw_isDeactivatedOnFocusChange(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::RenderWindow * thisclass_cpp = static_cast<Ogre::RenderWindow*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderWindow"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isDeactivatedOnFocusChange());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rw_setDeactivateOnFocusChange(struct hg3dclass_struct * thisclass_c, int deactivate_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rw_setDeactivateOnFocusChange(struct hg3dclass_struct * thisclass_c, long deactivate_c)
 {
   Ogre::RenderWindow * thisclass_cpp = static_cast<Ogre::RenderWindow*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderWindow"));
   bool deactivate_cpp = (bool)deactivate_c;

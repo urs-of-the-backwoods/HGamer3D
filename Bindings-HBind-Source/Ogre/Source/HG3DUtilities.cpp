@@ -25,9 +25,9 @@ limitations under the License.
 
 static int quitReceived = 0;
 
-unsigned int HG3DUtilities::getWindowHandle(Ogre::RenderWindow *window)
+unsigned long HG3DUtilities::getWindowHandle(Ogre::RenderWindow *window)
 {
-  unsigned int handle;
+  unsigned long handle;
 
   window->getCustomAttribute("WINDOW", &handle);
   return handle;

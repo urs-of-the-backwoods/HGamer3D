@@ -51,16 +51,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_mtrl_destruct(struct hg3dclass_struct * thi
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mtrl_isTransparent(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mtrl_isTransparent(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Material * thisclass_cpp = static_cast<Ogre::Material*> (getHG3DClassPtr(*thisclass_c, "Ogre::Material"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isTransparent());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mtrl_setReceiveShadows(struct hg3dclass_struct * thisclass_c, int enabled_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mtrl_setReceiveShadows(struct hg3dclass_struct * thisclass_c, long enabled_c)
 {
   Ogre::Material * thisclass_cpp = static_cast<Ogre::Material*> (getHG3DClassPtr(*thisclass_c, "Ogre::Material"));
   bool enabled_cpp = (bool)enabled_c;
@@ -68,16 +68,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_mtrl_setReceiveShadows(struct hg3dclass_str
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mtrl_getReceiveShadows(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mtrl_getReceiveShadows(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Material * thisclass_cpp = static_cast<Ogre::Material*> (getHG3DClassPtr(*thisclass_c, "Ogre::Material"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getReceiveShadows());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mtrl_setTransparencyCastsShadows(struct hg3dclass_struct * thisclass_c, int enabled_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mtrl_setTransparencyCastsShadows(struct hg3dclass_struct * thisclass_c, long enabled_c)
 {
   Ogre::Material * thisclass_cpp = static_cast<Ogre::Material*> (getHG3DClassPtr(*thisclass_c, "Ogre::Material"));
   bool enabled_cpp = (bool)enabled_c;
@@ -85,12 +85,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_mtrl_setTransparencyCastsShadows(struct hg3
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mtrl_getTransparencyCastsShadows(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mtrl_getTransparencyCastsShadows(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Material * thisclass_cpp = static_cast<Ogre::Material*> (getHG3DClassPtr(*thisclass_c, "Ogre::Material"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getTransparencyCastsShadows());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -160,7 +160,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mtrl_getNumLodLevels2(struct hg3dclass_stru
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mtrl_clone(struct hg3dclass_struct * thisclass_c, char * newName_c, int changeGroup_c, char * newGroup_c, struct sharedptr_struct * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mtrl_clone(struct hg3dclass_struct * thisclass_c, char * newName_c, long changeGroup_c, char * newGroup_c, struct sharedptr_struct * result_c)
 {
   Ogre::Material * thisclass_cpp = static_cast<Ogre::Material*> (getHG3DClassPtr(*thisclass_c, "Ogre::Material"));
   Ogre::String newName_cpp = Ogre::String((const char*) newName_c);
@@ -181,7 +181,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mtrl_copyDetailsTo(struct hg3dclass_struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mtrl_compile(struct hg3dclass_struct * thisclass_c, int autoManageTextureUnits_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mtrl_compile(struct hg3dclass_struct * thisclass_c, long autoManageTextureUnits_c)
 {
   Ogre::Material * thisclass_cpp = static_cast<Ogre::Material*> (getHG3DClassPtr(*thisclass_c, "Ogre::Material"));
   bool autoManageTextureUnits_cpp = (bool)autoManageTextureUnits_c;
@@ -279,7 +279,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mtrl_setSelfIllumination2(struct hg3dclass_
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mtrl_setDepthCheckEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mtrl_setDepthCheckEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c)
 {
   Ogre::Material * thisclass_cpp = static_cast<Ogre::Material*> (getHG3DClassPtr(*thisclass_c, "Ogre::Material"));
   bool enabled_cpp = (bool)enabled_c;
@@ -287,7 +287,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mtrl_setDepthCheckEnabled(struct hg3dclass_
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mtrl_setDepthWriteEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mtrl_setDepthWriteEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c)
 {
   Ogre::Material * thisclass_cpp = static_cast<Ogre::Material*> (getHG3DClassPtr(*thisclass_c, "Ogre::Material"));
   bool enabled_cpp = (bool)enabled_c;
@@ -295,7 +295,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mtrl_setDepthWriteEnabled(struct hg3dclass_
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mtrl_setColourWriteEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mtrl_setColourWriteEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c)
 {
   Ogre::Material * thisclass_cpp = static_cast<Ogre::Material*> (getHG3DClassPtr(*thisclass_c, "Ogre::Material"));
   bool enabled_cpp = (bool)enabled_c;
@@ -303,7 +303,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mtrl_setColourWriteEnabled(struct hg3dclass
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mtrl_setLightingEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mtrl_setLightingEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c)
 {
   Ogre::Material * thisclass_cpp = static_cast<Ogre::Material*> (getHG3DClassPtr(*thisclass_c, "Ogre::Material"));
   bool enabled_cpp = (bool)enabled_c;
@@ -320,7 +320,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mtrl_setDepthBias(struct hg3dclass_struct *
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mtrl_setTextureAnisotropy(struct hg3dclass_struct * thisclass_c, int maxAniso_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mtrl_setTextureAnisotropy(struct hg3dclass_struct * thisclass_c, long maxAniso_c)
 {
   Ogre::Material * thisclass_cpp = static_cast<Ogre::Material*> (getHG3DClassPtr(*thisclass_c, "Ogre::Material"));
   int maxAniso_cpp = (int)maxAniso_c;
@@ -335,11 +335,11 @@ extern "C" Ogre_LIB_EXPORT void ogre_mtrl_touch(struct hg3dclass_struct * thiscl
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mtrl_getCompilationRequired(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mtrl_getCompilationRequired(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Material * thisclass_cpp = static_cast<Ogre::Material*> (getHG3DClassPtr(*thisclass_c, "Ogre::Material"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getCompilationRequired());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
