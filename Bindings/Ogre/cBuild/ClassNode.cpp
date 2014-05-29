@@ -165,7 +165,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_nd_getScale(struct hg3dclass_struct * thisc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_nd_setInheritOrientation(struct hg3dclass_struct * thisclass_c, int inherit_c)
+extern "C" Ogre_LIB_EXPORT void ogre_nd_setInheritOrientation(struct hg3dclass_struct * thisclass_c, long inherit_c)
 {
   Ogre::Node * thisclass_cpp = static_cast<Ogre::Node*> (getHG3DClassPtr(*thisclass_c, "Ogre::Node"));
   bool inherit_cpp = (bool)inherit_c;
@@ -173,16 +173,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_nd_setInheritOrientation(struct hg3dclass_s
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_nd_getInheritOrientation(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_nd_getInheritOrientation(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Node * thisclass_cpp = static_cast<Ogre::Node*> (getHG3DClassPtr(*thisclass_c, "Ogre::Node"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getInheritOrientation());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_nd_setInheritScale(struct hg3dclass_struct * thisclass_c, int inherit_c)
+extern "C" Ogre_LIB_EXPORT void ogre_nd_setInheritScale(struct hg3dclass_struct * thisclass_c, long inherit_c)
 {
   Ogre::Node * thisclass_cpp = static_cast<Ogre::Node*> (getHG3DClassPtr(*thisclass_c, "Ogre::Node"));
   bool inherit_cpp = (bool)inherit_c;
@@ -190,12 +190,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_nd_setInheritScale(struct hg3dclass_struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_nd_getInheritScale(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_nd_getInheritScale(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Node * thisclass_cpp = static_cast<Ogre::Node*> (getHG3DClassPtr(*thisclass_c, "Ogre::Node"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getInheritScale());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -478,7 +478,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_nd_getSquaredViewDepth(struct hg3dclass_str
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_nd_needUpdate(struct hg3dclass_struct * thisclass_c, int forceParentUpdate_c)
+extern "C" Ogre_LIB_EXPORT void ogre_nd_needUpdate(struct hg3dclass_struct * thisclass_c, long forceParentUpdate_c)
 {
   Ogre::Node * thisclass_cpp = static_cast<Ogre::Node*> (getHG3DClassPtr(*thisclass_c, "Ogre::Node"));
   bool forceParentUpdate_cpp = (bool)forceParentUpdate_c;
@@ -486,7 +486,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_nd_needUpdate(struct hg3dclass_struct * thi
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_nd_requestUpdate(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * child_c, int forceParentUpdate_c)
+extern "C" Ogre_LIB_EXPORT void ogre_nd_requestUpdate(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * child_c, long forceParentUpdate_c)
 {
   Ogre::Node * thisclass_cpp = static_cast<Ogre::Node*> (getHG3DClassPtr(*thisclass_c, "Ogre::Node"));
   Ogre::Node * child_cpp = static_cast<Ogre::Node*> (getHG3DClassPtr(*child_c, "Ogre::Node"));

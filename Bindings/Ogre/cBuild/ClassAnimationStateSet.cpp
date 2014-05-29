@@ -49,7 +49,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_ass_destruct(struct hg3dclass_struct * this
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ass_createAnimationState(struct hg3dclass_struct * thisclass_c, char * animName_c, float timePos_c, float length_c, float weight_c, int enabled_c, struct hg3dclass_struct * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ass_createAnimationState(struct hg3dclass_struct * thisclass_c, char * animName_c, float timePos_c, float length_c, float weight_c, long enabled_c, struct hg3dclass_struct * result_c)
 {
   Ogre::AnimationStateSet * thisclass_cpp = static_cast<Ogre::AnimationStateSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::AnimationStateSet"));
   Ogre::String animName_cpp = Ogre::String((const char*) animName_c);
@@ -75,13 +75,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_ass_getAnimationState(struct hg3dclass_stru
 };
 
 // Tests if state for the named animation is present. 
-extern "C" Ogre_LIB_EXPORT void ogre_ass_hasAnimationState(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ass_hasAnimationState(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::AnimationStateSet * thisclass_cpp = static_cast<Ogre::AnimationStateSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::AnimationStateSet"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasAnimationState(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // Remove animation state with the given name. 
@@ -107,12 +107,21 @@ extern "C" Ogre_LIB_EXPORT void ogre_ass_copyMatchingState(struct hg3dclass_stru
   (thisclass_cpp->copyMatchingState(target_cpp));
 };
 
+// Get the latest animation state been altered frame number. 
+extern "C" Ogre_LIB_EXPORT void ogre_ass_getDirtyFrameNumber(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
+{
+  Ogre::AnimationStateSet * thisclass_cpp = static_cast<Ogre::AnimationStateSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::AnimationStateSet"));
+  unsigned long result_cpp;
+  result_cpp = (thisclass_cpp->getDirtyFrameNumber());
+  *result_c = (unsigned long)result_cpp;
+};
+
 // Tests if exists enabled animation state in this set. 
-extern "C" Ogre_LIB_EXPORT void ogre_ass_hasEnabledAnimationState(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ass_hasEnabledAnimationState(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::AnimationStateSet * thisclass_cpp = static_cast<Ogre::AnimationStateSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::AnimationStateSet"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasEnabledAnimationState());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 

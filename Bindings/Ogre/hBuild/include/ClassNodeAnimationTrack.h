@@ -46,16 +46,16 @@ void ogre_noat_setAssociatedNode(struct hg3dclass_struct * thisclass_c, struct h
 void ogre_noat_applyToNode(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * node_c, struct hg3dclass_struct * timeIndex_c, float weight_c, float scale_c);
 
 // 
-void ogre_noat_setUseShortestRotationPath(struct hg3dclass_struct * thisclass_c, int useShortestPath_c);
+void ogre_noat_setUseShortestRotationPath(struct hg3dclass_struct * thisclass_c, long useShortestPath_c);
 
 // 
-void ogre_noat_getUseShortestRotationPath(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_noat_getUseShortestRotationPath(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_noat_apply(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * timeIndex_c, float weight_c, float scale_c);
 
 // 
-void ogre_noat_hasNonZeroKeyFrames(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_noat_hasNonZeroKeyFrames(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_noat_optimise(struct hg3dclass_struct * thisclass_c);

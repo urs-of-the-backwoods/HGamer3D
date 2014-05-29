@@ -38,10 +38,10 @@ void ogre_mtrlmgr_destruct(struct hg3dclass_struct * thisclass_c);
 void ogre_mtrlmgr_initialise(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_mtrlmgr_setDefaultAnisotropy(struct hg3dclass_struct * thisclass_c, unsigned int maxAniso_c);
+void ogre_mtrlmgr_setDefaultAnisotropy(struct hg3dclass_struct * thisclass_c, unsigned long maxAniso_c);
 
 // Get the default maxAnisotropy. 
-void ogre_mtrlmgr_getDefaultAnisotropy(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_mtrlmgr_getDefaultAnisotropy(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 // 
 void ogre_mtrlmgr_getDefaultSettings(struct hg3dclass_struct * thisclass_c, struct sharedptr_struct * result_c);

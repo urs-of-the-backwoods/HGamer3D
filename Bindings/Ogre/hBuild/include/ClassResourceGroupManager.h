@@ -35,7 +35,7 @@ void ogre_rgmgr_construct(struct hg3dclass_struct * result_c);
 void ogre_rgmgr_destruct(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_rgmgr_createResourceGroup(struct hg3dclass_struct * thisclass_c, char * name_c, const int inGlobalPool_c);
+void ogre_rgmgr_createResourceGroup(struct hg3dclass_struct * thisclass_c, char * name_c, const long inGlobalPool_c);
 
 // 
 void ogre_rgmgr_initialiseResourceGroup(struct hg3dclass_struct * thisclass_c, char * name_c);
@@ -44,16 +44,16 @@ void ogre_rgmgr_initialiseResourceGroup(struct hg3dclass_struct * thisclass_c, c
 void ogre_rgmgr_initialiseAllResourceGroups(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_rgmgr_prepareResourceGroup(struct hg3dclass_struct * thisclass_c, char * name_c, int prepareMainResources_c, int prepareWorldGeom_c);
+void ogre_rgmgr_prepareResourceGroup(struct hg3dclass_struct * thisclass_c, char * name_c, long prepareMainResources_c, long prepareWorldGeom_c);
 
 // 
-void ogre_rgmgr_loadResourceGroup(struct hg3dclass_struct * thisclass_c, char * name_c, int loadMainResources_c, int loadWorldGeom_c);
+void ogre_rgmgr_loadResourceGroup(struct hg3dclass_struct * thisclass_c, char * name_c, long loadMainResources_c, long loadWorldGeom_c);
 
 // 
-void ogre_rgmgr_unloadResourceGroup(struct hg3dclass_struct * thisclass_c, char * name_c, int reloadableOnly_c);
+void ogre_rgmgr_unloadResourceGroup(struct hg3dclass_struct * thisclass_c, char * name_c, long reloadableOnly_c);
 
 // 
-void ogre_rgmgr_unloadUnreferencedResourcesInGroup(struct hg3dclass_struct * thisclass_c, char * name_c, int reloadableOnly_c);
+void ogre_rgmgr_unloadUnreferencedResourcesInGroup(struct hg3dclass_struct * thisclass_c, char * name_c, long reloadableOnly_c);
 
 // 
 void ogre_rgmgr_clearResourceGroup(struct hg3dclass_struct * thisclass_c, char * name_c);
@@ -62,31 +62,31 @@ void ogre_rgmgr_clearResourceGroup(struct hg3dclass_struct * thisclass_c, char *
 void ogre_rgmgr_destroyResourceGroup(struct hg3dclass_struct * thisclass_c, char * name_c);
 
 // 
-void ogre_rgmgr_isResourceGroupInitialised(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c);
+void ogre_rgmgr_isResourceGroupInitialised(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c);
 
 // 
-void ogre_rgmgr_isResourceGroupLoaded(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c);
+void ogre_rgmgr_isResourceGroupLoaded(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c);
 
 // 
-void ogre_rgmgr_resourceGroupExists(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c);
+void ogre_rgmgr_resourceGroupExists(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c);
 
 // 
-void ogre_rgmgr_addResourceLocation(struct hg3dclass_struct * thisclass_c, char * name_c, char * locType_c, char * resGroup_c, int recursive_c);
+void ogre_rgmgr_addResourceLocation(struct hg3dclass_struct * thisclass_c, char * name_c, char * locType_c, char * resGroup_c, long recursive_c);
 
 // 
 void ogre_rgmgr_removeResourceLocation(struct hg3dclass_struct * thisclass_c, char * name_c, char * resGroup_c);
 
 // 
-void ogre_rgmgr_resourceLocationExists(struct hg3dclass_struct * thisclass_c, char * name_c, char * resGroup_c, int * result_c);
+void ogre_rgmgr_resourceLocationExists(struct hg3dclass_struct * thisclass_c, char * name_c, char * resGroup_c, long * result_c);
 
 // 
 void ogre_rgmgr_undeclareResource(struct hg3dclass_struct * thisclass_c, char * name_c, char * groupName_c);
 
 // 
-void ogre_rgmgr_resourceExists(struct hg3dclass_struct * thisclass_c, char * group_c, char * filename_c, int * result_c);
+void ogre_rgmgr_resourceExists(struct hg3dclass_struct * thisclass_c, char * group_c, char * filename_c, long * result_c);
 
 // 
-void ogre_rgmgr_resourceExistsInAnyGroup(struct hg3dclass_struct * thisclass_c, char * filename_c, int * result_c);
+void ogre_rgmgr_resourceExistsInAnyGroup(struct hg3dclass_struct * thisclass_c, char * filename_c, long * result_c);
 
 // 
 void ogre_rgmgr_findGroupContainingResource(struct hg3dclass_struct * thisclass_c, char * filename_c, char * result_c);
@@ -110,7 +110,7 @@ void ogre_rgmgr_linkWorldGeometryToResourceGroup(struct hg3dclass_struct * thisc
 void ogre_rgmgr_unlinkWorldGeometryFromResourceGroup(struct hg3dclass_struct * thisclass_c, char * group_c);
 
 // 
-void ogre_rgmgr_isResourceGroupInGlobalPool(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c);
+void ogre_rgmgr_isResourceGroupInGlobalPool(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c);
 
 // 
 void ogre_rgmgr_shutdownAll(struct hg3dclass_struct * thisclass_c);

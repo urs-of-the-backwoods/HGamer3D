@@ -37,22 +37,22 @@
 void ogre_bbdc_destruct(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_bbdc_setMaxChainElements(struct hg3dclass_struct * thisclass_c, int maxElements_c);
+void ogre_bbdc_setMaxChainElements(struct hg3dclass_struct * thisclass_c, long maxElements_c);
 
 // 
-void ogre_bbdc_getMaxChainElements(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_bbdc_getMaxChainElements(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_bbdc_setNumberOfChains(struct hg3dclass_struct * thisclass_c, int numChains_c);
+void ogre_bbdc_setNumberOfChains(struct hg3dclass_struct * thisclass_c, long numChains_c);
 
 // 
-void ogre_bbdc_getNumberOfChains(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_bbdc_getNumberOfChains(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_bbdc_setUseTextureCoords(struct hg3dclass_struct * thisclass_c, int use_c);
+void ogre_bbdc_setUseTextureCoords(struct hg3dclass_struct * thisclass_c, long use_c);
 
 // 
-void ogre_bbdc_getUseTextureCoords(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_bbdc_getUseTextureCoords(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_bbdc_setTextureCoordDirection(struct hg3dclass_struct * thisclass_c, enum EnumBillboardChainTexCoordDirection dir_c);
@@ -64,31 +64,31 @@ void ogre_bbdc_getTextureCoordDirection(struct hg3dclass_struct * thisclass_c, e
 void ogre_bbdc_setOtherTextureCoordRange(struct hg3dclass_struct * thisclass_c, float start_c, float end_c);
 
 // 
-void ogre_bbdc_setUseVertexColours(struct hg3dclass_struct * thisclass_c, int use_c);
+void ogre_bbdc_setUseVertexColours(struct hg3dclass_struct * thisclass_c, long use_c);
 
 // 
-void ogre_bbdc_getUseVertexColours(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_bbdc_getUseVertexColours(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_bbdc_setDynamic(struct hg3dclass_struct * thisclass_c, int dyn_c);
+void ogre_bbdc_setDynamic(struct hg3dclass_struct * thisclass_c, long dyn_c);
 
 // 
-void ogre_bbdc_getDynamic(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_bbdc_getDynamic(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_bbdc_removeChainElement(struct hg3dclass_struct * thisclass_c, int chainIndex_c);
+void ogre_bbdc_removeChainElement(struct hg3dclass_struct * thisclass_c, long chainIndex_c);
 
 // 
-void ogre_bbdc_getNumChainElements(struct hg3dclass_struct * thisclass_c, int chainIndex_c, int * result_c);
+void ogre_bbdc_getNumChainElements(struct hg3dclass_struct * thisclass_c, long chainIndex_c, long * result_c);
 
 // 
-void ogre_bbdc_clearChain(struct hg3dclass_struct * thisclass_c, int chainIndex_c);
+void ogre_bbdc_clearChain(struct hg3dclass_struct * thisclass_c, long chainIndex_c);
 
 // 
 void ogre_bbdc_clearAllChains(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_bbdc_setFaceCamera(struct hg3dclass_struct * thisclass_c, int faceCamera_c, struct vector3_struct * normalVector_c);
+void ogre_bbdc_setFaceCamera(struct hg3dclass_struct * thisclass_c, long faceCamera_c, struct vector3_struct * normalVector_c);
 
 // Get the material name in use. 
 void ogre_bbdc_getMaterialName(struct hg3dclass_struct * thisclass_c, char * result_c);
@@ -109,6 +109,6 @@ void ogre_bbdc_getMaterial(struct hg3dclass_struct * thisclass_c, struct sharedp
 void ogre_bbdc_getMovableType(struct hg3dclass_struct * thisclass_c, char * result_c);
 
 // 
-void ogre_bbdc_preRender(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * sm_c, struct hg3dclass_struct * rsys_c, int * result_c);
+void ogre_bbdc_preRender(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * sm_c, struct hg3dclass_struct * rsys_c, long * result_c);
 
 #endif 

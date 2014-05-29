@@ -49,7 +49,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_destruct(struct hg3dclass_struct * 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_setMemoryBudget(struct hg3dclass_struct * thisclass_c, int bytes_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_setMemoryBudget(struct hg3dclass_struct * thisclass_c, long bytes_c)
 {
   Ogre::ResourceManager * thisclass_cpp = static_cast<Ogre::ResourceManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceManager"));
   size_t bytes_cpp = (size_t)bytes_c;
@@ -57,21 +57,21 @@ extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_setMemoryBudget(struct hg3dclass_st
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_getMemoryBudget(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_getMemoryBudget(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::ResourceManager * thisclass_cpp = static_cast<Ogre::ResourceManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceManager"));
   size_t result_cpp;
   result_cpp = (thisclass_cpp->getMemoryBudget());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_getMemoryUsage(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_getMemoryUsage(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::ResourceManager * thisclass_cpp = static_cast<Ogre::ResourceManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceManager"));
   size_t result_cpp;
   result_cpp = (thisclass_cpp->getMemoryUsage());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -83,7 +83,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_unload(struct hg3dclass_struct * th
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_unloadAll(struct hg3dclass_struct * thisclass_c, int reloadableOnly_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_unloadAll(struct hg3dclass_struct * thisclass_c, long reloadableOnly_c)
 {
   Ogre::ResourceManager * thisclass_cpp = static_cast<Ogre::ResourceManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceManager"));
   bool reloadableOnly_cpp = (bool)reloadableOnly_c;
@@ -91,7 +91,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_unloadAll(struct hg3dclass_struct *
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_reloadAll(struct hg3dclass_struct * thisclass_c, int reloadableOnly_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_reloadAll(struct hg3dclass_struct * thisclass_c, long reloadableOnly_c)
 {
   Ogre::ResourceManager * thisclass_cpp = static_cast<Ogre::ResourceManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceManager"));
   bool reloadableOnly_cpp = (bool)reloadableOnly_c;
@@ -99,7 +99,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_reloadAll(struct hg3dclass_struct *
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_unloadUnreferencedResources(struct hg3dclass_struct * thisclass_c, int reloadableOnly_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_unloadUnreferencedResources(struct hg3dclass_struct * thisclass_c, long reloadableOnly_c)
 {
   Ogre::ResourceManager * thisclass_cpp = static_cast<Ogre::ResourceManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceManager"));
   bool reloadableOnly_cpp = (bool)reloadableOnly_c;
@@ -107,7 +107,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_unloadUnreferencedResources(struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_reloadUnreferencedResources(struct hg3dclass_struct * thisclass_c, int reloadableOnly_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_reloadUnreferencedResources(struct hg3dclass_struct * thisclass_c, long reloadableOnly_c)
 {
   Ogre::ResourceManager * thisclass_cpp = static_cast<Ogre::ResourceManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceManager"));
   bool reloadableOnly_cpp = (bool)reloadableOnly_c;
@@ -130,7 +130,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_removeAll(struct hg3dclass_struct *
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_removeUnreferencedResources(struct hg3dclass_struct * thisclass_c, int reloadableOnly_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_removeUnreferencedResources(struct hg3dclass_struct * thisclass_c, long reloadableOnly_c)
 {
   Ogre::ResourceManager * thisclass_cpp = static_cast<Ogre::ResourceManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceManager"));
   bool reloadableOnly_cpp = (bool)reloadableOnly_c;
@@ -138,13 +138,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_removeUnreferencedResources(struct 
 };
 
 // Returns whether the named resource exists in this manager. 
-extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_resourceExists(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_resourceExists(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::ResourceManager * thisclass_cpp = static_cast<Ogre::ResourceManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->resourceExists(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -170,7 +170,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_getResourceType(struct hg3dclass_st
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_setVerbose(struct hg3dclass_struct * thisclass_c, int v_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_setVerbose(struct hg3dclass_struct * thisclass_c, long v_c)
 {
   Ogre::ResourceManager * thisclass_cpp = static_cast<Ogre::ResourceManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceManager"));
   bool v_cpp = (bool)v_c;
@@ -178,12 +178,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_setVerbose(struct hg3dclass_struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_getVerbose(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rsrcmgr_getVerbose(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::ResourceManager * thisclass_cpp = static_cast<Ogre::ResourceManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::ResourceManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getVerbose());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // Destroy a resource pool. 

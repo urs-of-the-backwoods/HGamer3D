@@ -91,16 +91,16 @@ void ogre_frst_resetFrustumExtents(struct hg3dclass_struct * thisclass_c);
 void ogre_frst_getFrustumExtents(struct hg3dclass_struct * thisclass_c, float * outleft_c, float * outright_c, float * outtop_c, float * outbottom_c);
 
 // Returns whether a custom view matrix is in use. 
-void ogre_frst_isCustomViewMatrixEnabled(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_frst_isCustomViewMatrixEnabled(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // Returns whether a custom projection matrix is in use. 
-void ogre_frst_isCustomProjectionMatrixEnabled(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_frst_isCustomProjectionMatrixEnabled(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_frst_isVisible3(struct hg3dclass_struct * thisclass_c, struct vector3_struct * vert_c, enum EnumFrustumPlane * culledBy_c, int * result_c);
+void ogre_frst_isVisible3(struct hg3dclass_struct * thisclass_c, struct vector3_struct * vert_c, enum EnumFrustumPlane * culledBy_c, long * result_c);
 
 // Overridden from MovableObject::getTypeFlags
-void ogre_frst_getTypeFlags(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_frst_getTypeFlags(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 // 
 void ogre_frst_getBoundingRadius(struct hg3dclass_struct * thisclass_c, float * result_c);
@@ -142,13 +142,13 @@ void ogre_frst_getOrthoWindowWidth(struct hg3dclass_struct * thisclass_c, float 
 void ogre_frst_disableReflection(struct hg3dclass_struct * thisclass_c);
 
 // Returns whether this frustum is being reflected. 
-void ogre_frst_isReflected(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_frst_isReflected(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_frst_disableCustomNearClipPlane(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_frst_isCustomNearClipPlaneEnabled(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_frst_isCustomNearClipPlaneEnabled(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_frst_getPositionForViewUpdate(struct hg3dclass_struct * thisclass_c, struct vector3_struct * result_c);

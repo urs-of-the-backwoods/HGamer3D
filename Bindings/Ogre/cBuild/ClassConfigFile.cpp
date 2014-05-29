@@ -58,7 +58,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_cf_destruct(struct hg3dclass_struct * thisc
 };
 
 // load from a filename (not using resource group locations) 
-extern "C" Ogre_LIB_EXPORT void ogre_cf_load(struct hg3dclass_struct * thisclass_c, char * filename_c, char * separators_c, int trimWhitespace_c)
+extern "C" Ogre_LIB_EXPORT void ogre_cf_load(struct hg3dclass_struct * thisclass_c, char * filename_c, char * separators_c, long trimWhitespace_c)
 {
   Ogre::ConfigFile * thisclass_cpp = static_cast<Ogre::ConfigFile*> (getHG3DClassPtr(*thisclass_c, "Ogre::ConfigFile"));
   Ogre::String filename_cpp = Ogre::String((const char*) filename_c);
@@ -68,7 +68,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_cf_load(struct hg3dclass_struct * thisclass
 };
 
 // load from a filename (using resource group locations) 
-extern "C" Ogre_LIB_EXPORT void ogre_cf_load2(struct hg3dclass_struct * thisclass_c, char * filename_c, char * resourceGroup_c, char * separators_c, int trimWhitespace_c)
+extern "C" Ogre_LIB_EXPORT void ogre_cf_load2(struct hg3dclass_struct * thisclass_c, char * filename_c, char * resourceGroup_c, char * separators_c, long trimWhitespace_c)
 {
   Ogre::ConfigFile * thisclass_cpp = static_cast<Ogre::ConfigFile*> (getHG3DClassPtr(*thisclass_c, "Ogre::ConfigFile"));
   Ogre::String filename_cpp = Ogre::String((const char*) filename_c);
@@ -79,7 +79,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_cf_load2(struct hg3dclass_struct * thisclas
 };
 
 // load from a filename (not using resource group locations) 
-extern "C" Ogre_LIB_EXPORT void ogre_cf_loadDirect(struct hg3dclass_struct * thisclass_c, char * filename_c, char * separators_c, int trimWhitespace_c)
+extern "C" Ogre_LIB_EXPORT void ogre_cf_loadDirect(struct hg3dclass_struct * thisclass_c, char * filename_c, char * separators_c, long trimWhitespace_c)
 {
   Ogre::ConfigFile * thisclass_cpp = static_cast<Ogre::ConfigFile*> (getHG3DClassPtr(*thisclass_c, "Ogre::ConfigFile"));
   Ogre::String filename_cpp = Ogre::String((const char*) filename_c);
@@ -89,7 +89,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_cf_loadDirect(struct hg3dclass_struct * thi
 };
 
 // load from a filename (using resource group locations) 
-extern "C" Ogre_LIB_EXPORT void ogre_cf_loadFromResourceSystem(struct hg3dclass_struct * thisclass_c, char * filename_c, char * resourceGroup_c, char * separators_c, int trimWhitespace_c)
+extern "C" Ogre_LIB_EXPORT void ogre_cf_loadFromResourceSystem(struct hg3dclass_struct * thisclass_c, char * filename_c, char * resourceGroup_c, char * separators_c, long trimWhitespace_c)
 {
   Ogre::ConfigFile * thisclass_cpp = static_cast<Ogre::ConfigFile*> (getHG3DClassPtr(*thisclass_c, "Ogre::ConfigFile"));
   Ogre::String filename_cpp = Ogre::String((const char*) filename_c);

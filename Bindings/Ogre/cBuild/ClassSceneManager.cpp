@@ -103,13 +103,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getCamera(struct hg3dclass_struct * t
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasCamera(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasCamera(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasCamera(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -168,13 +168,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getLight(struct hg3dclass_struct * th
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasLight(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasLight(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasLight(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -259,13 +259,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getSceneNode(struct hg3dclass_struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasSceneNode(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasSceneNode(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasSceneNode(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -350,13 +350,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getEntity(struct hg3dclass_struct * t
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasEntity(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasEntity(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasEntity(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -415,13 +415,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getManualObject(struct hg3dclass_stru
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasManualObject(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasManualObject(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasManualObject(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -480,13 +480,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getBillboardChain(struct hg3dclass_st
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasBillboardChain(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasBillboardChain(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasBillboardChain(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -513,13 +513,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_destroyAllBillboardChains(struct hg3d
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasRibbonTrail(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasRibbonTrail(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasRibbonTrail(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -538,13 +538,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_destroyAllRibbonTrails(struct hg3dcla
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasParticleSystem(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasParticleSystem(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasParticleSystem(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -603,27 +603,27 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setWorldGeometry(struct hg3dclass_str
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_estimateWorldGeometry(struct hg3dclass_struct * thisclass_c, char * filename_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_estimateWorldGeometry(struct hg3dclass_struct * thisclass_c, char * filename_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   Ogre::String filename_cpp = Ogre::String((const char*) filename_c);
   size_t result_cpp;
   result_cpp = (thisclass_cpp->estimateWorldGeometry(filename_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasOption(struct hg3dclass_struct * thisclass_c, char * strKey_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasOption(struct hg3dclass_struct * thisclass_c, char * strKey_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   Ogre::String strKey_cpp = Ogre::String((const char*) strKey_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasOption(strKey_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setSkyPlaneEnabled(struct hg3dclass_struct * thisclass_c, int enable_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setSkyPlaneEnabled(struct hg3dclass_struct * thisclass_c, long enable_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool enable_cpp = (bool)enable_c;
@@ -631,12 +631,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setSkyPlaneEnabled(struct hg3dclass_s
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_isSkyPlaneEnabled(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_isSkyPlaneEnabled(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isSkyPlaneEnabled());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -650,7 +650,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getSkyPlaneNode(struct hg3dclass_stru
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setSkyBox(struct hg3dclass_struct * thisclass_c, int enable_c, char * materialName_c, float distance_c, int drawFirst_c, struct quaternion_struct * orientation_c, char * groupName_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setSkyBox(struct hg3dclass_struct * thisclass_c, long enable_c, char * materialName_c, float distance_c, long drawFirst_c, struct quaternion_struct * orientation_c, char * groupName_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool enable_cpp = (bool)enable_c;
@@ -663,7 +663,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setSkyBox(struct hg3dclass_struct * t
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setSkyBoxEnabled(struct hg3dclass_struct * thisclass_c, int enable_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setSkyBoxEnabled(struct hg3dclass_struct * thisclass_c, long enable_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool enable_cpp = (bool)enable_c;
@@ -671,12 +671,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setSkyBoxEnabled(struct hg3dclass_str
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_isSkyBoxEnabled(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_isSkyBoxEnabled(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isSkyBoxEnabled());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -690,7 +690,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getSkyBoxNode(struct hg3dclass_struct
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setSkyDome(struct hg3dclass_struct * thisclass_c, int enable_c, char * materialName_c, float curvature_c, float tiling_c, float distance_c, int drawFirst_c, struct quaternion_struct * orientation_c, int xsegments_c, int ysegments_c, int ysegments_keep_c, char * groupName_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setSkyDome(struct hg3dclass_struct * thisclass_c, long enable_c, char * materialName_c, float curvature_c, float tiling_c, float distance_c, long drawFirst_c, struct quaternion_struct * orientation_c, long xsegments_c, long ysegments_c, long ysegments_keep_c, char * groupName_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool enable_cpp = (bool)enable_c;
@@ -708,7 +708,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setSkyDome(struct hg3dclass_struct * 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setSkyDomeEnabled(struct hg3dclass_struct * thisclass_c, int enable_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setSkyDomeEnabled(struct hg3dclass_struct * thisclass_c, long enable_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool enable_cpp = (bool)enable_c;
@@ -716,12 +716,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setSkyDomeEnabled(struct hg3dclass_st
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_isSkyDomeEnabled(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_isSkyDomeEnabled(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isSkyDomeEnabled());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -771,7 +771,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getFogDensity(struct hg3dclass_struct
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_createBillboardSet(struct hg3dclass_struct * thisclass_c, char * name_c, unsigned int poolSize_c, struct hg3dclass_struct * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_createBillboardSet(struct hg3dclass_struct * thisclass_c, char * name_c, unsigned long poolSize_c, struct hg3dclass_struct * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
@@ -783,7 +783,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_createBillboardSet(struct hg3dclass_s
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_createBillboardSet2(struct hg3dclass_struct * thisclass_c, unsigned int poolSize_c, struct hg3dclass_struct * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_createBillboardSet2(struct hg3dclass_struct * thisclass_c, unsigned long poolSize_c, struct hg3dclass_struct * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   unsigned int poolSize_cpp = (unsigned int)poolSize_c;
@@ -805,13 +805,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getBillboardSet(struct hg3dclass_stru
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasBillboardSet(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasBillboardSet(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasBillboardSet(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -838,7 +838,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_destroyAllBillboardSets(struct hg3dcl
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setDisplaySceneNodes(struct hg3dclass_struct * thisclass_c, int display_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setDisplaySceneNodes(struct hg3dclass_struct * thisclass_c, long display_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool display_cpp = (bool)display_c;
@@ -846,12 +846,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setDisplaySceneNodes(struct hg3dclass
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getDisplaySceneNodes(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getDisplaySceneNodes(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getDisplaySceneNodes());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -878,13 +878,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getAnimation(struct hg3dclass_struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasAnimation(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasAnimation(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasAnimation(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -925,13 +925,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getAnimationState(struct hg3dclass_st
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasAnimationState(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasAnimationState(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasAnimationState(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -974,7 +974,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getSpecialCaseRenderQueueMode(struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_showBoundingBoxes(struct hg3dclass_struct * thisclass_c, int bShow_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_showBoundingBoxes(struct hg3dclass_struct * thisclass_c, long bShow_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool bShow_cpp = (bool)bShow_c;
@@ -982,16 +982,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_showBoundingBoxes(struct hg3dclass_st
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getShowBoundingBoxes(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getShowBoundingBoxes(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getShowBoundingBoxes());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShowDebugShadows(struct hg3dclass_struct * thisclass_c, int debug_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShowDebugShadows(struct hg3dclass_struct * thisclass_c, long debug_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool debug_cpp = (bool)debug_c;
@@ -999,12 +999,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShowDebugShadows(struct hg3dclass_
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getShowDebugShadows(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getShowDebugShadows(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getShowDebugShadows());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -1068,7 +1068,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getShadowFarDistanceSquared(struct hg
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowIndexBufferSize(struct hg3dclass_struct * thisclass_c, int size_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowIndexBufferSize(struct hg3dclass_struct * thisclass_c, long size_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   size_t size_cpp = (size_t)size_c;
@@ -1076,12 +1076,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowIndexBufferSize(struct hg3dc
 };
 
 // Get the size of the shadow index buffer. 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getShadowIndexBufferSize(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getShadowIndexBufferSize(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   size_t result_cpp;
   result_cpp = (thisclass_cpp->getShadowIndexBufferSize());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -1101,7 +1101,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowTextureFSAA(struct hg3dclass
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowTextureCount(struct hg3dclass_struct * thisclass_c, int count_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowTextureCount(struct hg3dclass_struct * thisclass_c, long count_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   size_t count_cpp = (size_t)count_c;
@@ -1109,16 +1109,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowTextureCount(struct hg3dclas
 };
 
 // Get the number of the textures allocated for texture based shadows. 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getShadowTextureCount(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getShadowTextureCount(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   size_t result_cpp;
   result_cpp = (thisclass_cpp->getShadowTextureCount());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowTextureCountPerLightType(struct hg3dclass_struct * thisclass_c, enum EnumLightType type_c, int count_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowTextureCountPerLightType(struct hg3dclass_struct * thisclass_c, enum EnumLightType type_c, long count_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   enum Light::LightTypes type_cpp = (enum Light::LightTypes)type_c;
@@ -1127,17 +1127,17 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowTextureCountPerLightType(str
 };
 
 // Get the number of shadow textures is assigned for the given light type. 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getShadowTextureCountPerLightType(struct hg3dclass_struct * thisclass_c, enum EnumLightType type_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getShadowTextureCountPerLightType(struct hg3dclass_struct * thisclass_c, enum EnumLightType type_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   enum Light::LightTypes type_cpp = (enum Light::LightTypes)type_c;
   size_t result_cpp;
   result_cpp = (thisclass_cpp->getShadowTextureCountPerLightType(type_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getShadowTexture(struct hg3dclass_struct * thisclass_c, int shadowIndex_c, struct sharedptr_struct * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getShadowTexture(struct hg3dclass_struct * thisclass_c, long shadowIndex_c, struct sharedptr_struct * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   size_t shadowIndex_cpp = (size_t)shadowIndex_c;
@@ -1180,7 +1180,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowTextureFadeEnd(struct hg3dcl
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowTextureSelfShadow(struct hg3dclass_struct * thisclass_c, int selfShadow_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowTextureSelfShadow(struct hg3dclass_struct * thisclass_c, long selfShadow_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool selfShadow_cpp = (bool)selfShadow_c;
@@ -1188,12 +1188,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowTextureSelfShadow(struct hg3
 };
 
 // Gets whether or not texture shadows attempt to self-shadow. 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getShadowTextureSelfShadow(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getShadowTextureSelfShadow(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getShadowTextureSelfShadow());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -1213,7 +1213,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowTextureReceiverMaterial(stru
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowCasterRenderBackFaces(struct hg3dclass_struct * thisclass_c, int bf_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowCasterRenderBackFaces(struct hg3dclass_struct * thisclass_c, long bf_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool bf_cpp = (bool)bf_c;
@@ -1221,16 +1221,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowCasterRenderBackFaces(struct
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getShadowCasterRenderBackFaces(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getShadowCasterRenderBackFaces(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getShadowCasterRenderBackFaces());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowUseInfiniteFarPlane(struct hg3dclass_struct * thisclass_c, int enable_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowUseInfiniteFarPlane(struct hg3dclass_struct * thisclass_c, long enable_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool enable_cpp = (bool)enable_c;
@@ -1238,61 +1238,61 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowUseInfiniteFarPlane(struct h
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_isShadowTechniqueStencilBased(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_isShadowTechniqueStencilBased(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isShadowTechniqueStencilBased());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_isShadowTechniqueTextureBased(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_isShadowTechniqueTextureBased(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isShadowTechniqueTextureBased());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_isShadowTechniqueModulative(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_isShadowTechniqueModulative(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isShadowTechniqueModulative());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_isShadowTechniqueAdditive(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_isShadowTechniqueAdditive(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isShadowTechniqueAdditive());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_isShadowTechniqueIntegrated(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_isShadowTechniqueIntegrated(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isShadowTechniqueIntegrated());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_isShadowTechniqueInUse(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_isShadowTechniqueInUse(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isShadowTechniqueInUse());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowUseLightClipPlanes(struct hg3dclass_struct * thisclass_c, int enabled_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowUseLightClipPlanes(struct hg3dclass_struct * thisclass_c, long enabled_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool enabled_cpp = (bool)enabled_c;
@@ -1300,16 +1300,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setShadowUseLightClipPlanes(struct hg
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getShadowUseLightClipPlanes(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getShadowUseLightClipPlanes(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getShadowUseLightClipPlanes());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setLateMaterialResolving(struct hg3dclass_struct * thisclass_c, int isLate_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setLateMaterialResolving(struct hg3dclass_struct * thisclass_c, long isLate_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool isLate_cpp = (bool)isLate_c;
@@ -1317,22 +1317,22 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setLateMaterialResolving(struct hg3dc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_isLateMaterialResolving(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_isLateMaterialResolving(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isLateMaterialResolving());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasStaticGeometry(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasStaticGeometry(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasStaticGeometry(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -1366,13 +1366,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_destroyAllInstancedGeometry(struct hg
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasInstanceManager(struct hg3dclass_struct * thisclass_c, char * managerName_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasInstanceManager(struct hg3dclass_struct * thisclass_c, char * managerName_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   Ogre::String managerName_cpp = Ogre::String((const char*) managerName_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasInstanceManager(managerName_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -1435,14 +1435,14 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getMovableObject(struct hg3dclass_str
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasMovableObject(struct hg3dclass_struct * thisclass_c, char * name_c, char * typeName_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_hasMovableObject(struct hg3dclass_struct * thisclass_c, char * name_c, char * typeName_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   Ogre::String typeName_cpp = Ogre::String((const char*) typeName_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasMovableObject(name_cpp, typeName_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -1479,7 +1479,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_extractAllMovableObjectsByType(struct
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setVisibilityMask(struct hg3dclass_struct * thisclass_c, unsigned int vmask_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setVisibilityMask(struct hg3dclass_struct * thisclass_c, unsigned long vmask_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   uint32 vmask_cpp = (uint32)vmask_c;
@@ -1487,16 +1487,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setVisibilityMask(struct hg3dclass_st
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getVisibilityMask(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getVisibilityMask(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   uint32 result_cpp;
   result_cpp = (thisclass_cpp->getVisibilityMask());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setFindVisibleObjects(struct hg3dclass_struct * thisclass_c, int find_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setFindVisibleObjects(struct hg3dclass_struct * thisclass_c, long find_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool find_cpp = (bool)find_c;
@@ -1504,16 +1504,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setFindVisibleObjects(struct hg3dclas
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getFindVisibleObjects(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getFindVisibleObjects(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getFindVisibleObjects());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setNormaliseNormalsOnScale(struct hg3dclass_struct * thisclass_c, int n_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setNormaliseNormalsOnScale(struct hg3dclass_struct * thisclass_c, long n_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool n_cpp = (bool)n_c;
@@ -1521,16 +1521,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setNormaliseNormalsOnScale(struct hg3
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getNormaliseNormalsOnScale(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getNormaliseNormalsOnScale(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getNormaliseNormalsOnScale());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setFlipCullingOnNegativeScale(struct hg3dclass_struct * thisclass_c, int n_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setFlipCullingOnNegativeScale(struct hg3dclass_struct * thisclass_c, long n_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool n_cpp = (bool)n_c;
@@ -1538,12 +1538,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setFlipCullingOnNegativeScale(struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getFlipCullingOnNegativeScale(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getFlipCullingOnNegativeScale(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getFlipCullingOnNegativeScale());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -1567,7 +1567,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getCurrentViewport(struct hg3dclass_s
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setCameraRelativeRendering(struct hg3dclass_struct * thisclass_c, int rel_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setCameraRelativeRendering(struct hg3dclass_struct * thisclass_c, long rel_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool rel_cpp = (bool)rel_c;
@@ -1575,11 +1575,11 @@ extern "C" Ogre_LIB_EXPORT void ogre_scmgr_setCameraRelativeRendering(struct hg3
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getCameraRelativeRendering(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_scmgr_getCameraRelativeRendering(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::SceneManager * thisclass_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::SceneManager"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getCameraRelativeRendering());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 

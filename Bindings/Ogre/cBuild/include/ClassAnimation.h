@@ -67,7 +67,7 @@ void ogre_anm_getNumNodeTracks(struct hg3dclass_struct * thisclass_c, unsigned s
 void ogre_anm_getNodeTrack(struct hg3dclass_struct * thisclass_c, unsigned short handle_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_anm_hasNodeTrack(struct hg3dclass_struct * thisclass_c, unsigned short handle_c, int * result_c);
+void ogre_anm_hasNodeTrack(struct hg3dclass_struct * thisclass_c, unsigned short handle_c, long * result_c);
 
 // 
 void ogre_anm_getNumNumericTracks(struct hg3dclass_struct * thisclass_c, unsigned short * result_c);
@@ -76,7 +76,7 @@ void ogre_anm_getNumNumericTracks(struct hg3dclass_struct * thisclass_c, unsigne
 void ogre_anm_getNumericTrack(struct hg3dclass_struct * thisclass_c, unsigned short handle_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_anm_hasNumericTrack(struct hg3dclass_struct * thisclass_c, unsigned short handle_c, int * result_c);
+void ogre_anm_hasNumericTrack(struct hg3dclass_struct * thisclass_c, unsigned short handle_c, long * result_c);
 
 // 
 void ogre_anm_getNumVertexTracks(struct hg3dclass_struct * thisclass_c, unsigned short * result_c);
@@ -85,7 +85,7 @@ void ogre_anm_getNumVertexTracks(struct hg3dclass_struct * thisclass_c, unsigned
 void ogre_anm_getVertexTrack(struct hg3dclass_struct * thisclass_c, unsigned short handle_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_anm_hasVertexTrack(struct hg3dclass_struct * thisclass_c, unsigned short handle_c, int * result_c);
+void ogre_anm_hasVertexTrack(struct hg3dclass_struct * thisclass_c, unsigned short handle_c, long * result_c);
 
 // 
 void ogre_anm_destroyNodeTrack(struct hg3dclass_struct * thisclass_c, unsigned short handle_c);
@@ -118,7 +118,7 @@ void ogre_anm_applyToNode(struct hg3dclass_struct * thisclass_c, struct hg3dclas
 void ogre_anm_apply2(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * skeleton_c, float timePos_c, float weight_c, float scale_c);
 
 // 
-void ogre_anm_apply4(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * entity_c, float timePos_c, float weight_c, int software_c, int hardware_c);
+void ogre_anm_apply4(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * entity_c, float timePos_c, float weight_c, long software_c, long hardware_c);
 
 // 
 void ogre_anm_setInterpolationMode(struct hg3dclass_struct * thisclass_c, enum EnumAnimationInterpolationMode im_c);
@@ -133,16 +133,16 @@ void ogre_anm_setRotationInterpolationMode(struct hg3dclass_struct * thisclass_c
 void ogre_anm_getRotationInterpolationMode(struct hg3dclass_struct * thisclass_c, enum EnumAnimationRotationInterpolationMode * result_c);
 
 // 
-void ogre_anm_optimise(struct hg3dclass_struct * thisclass_c, int discardIdentityNodeTracks_c);
+void ogre_anm_optimise(struct hg3dclass_struct * thisclass_c, long discardIdentityNodeTracks_c);
 
 // 
 void ogre_anm_clone(struct hg3dclass_struct * thisclass_c, char * newName_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_anm_setUseBaseKeyFrame(struct hg3dclass_struct * thisclass_c, int useBaseKeyFrame_c, float keyframeTime_c, char * baseAnimName_c);
+void ogre_anm_setUseBaseKeyFrame(struct hg3dclass_struct * thisclass_c, long useBaseKeyFrame_c, float keyframeTime_c, char * baseAnimName_c);
 
 // 
-void ogre_anm_getUseBaseKeyFrame(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_anm_getUseBaseKeyFrame(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_anm_getBaseKeyFrameTime(struct hg3dclass_struct * thisclass_c, float * result_c);

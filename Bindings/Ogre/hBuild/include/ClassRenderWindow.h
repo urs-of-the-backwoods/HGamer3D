@@ -28,63 +28,63 @@
 
 
 // 
-void ogre_rw_setFullscreen(struct hg3dclass_struct * thisclass_c, int fullScreen_c, unsigned int width_c, unsigned int height_c);
+void ogre_rw_setFullscreen(struct hg3dclass_struct * thisclass_c, long fullScreen_c, unsigned long width_c, unsigned long height_c);
 
 // 
 void ogre_rw_destroy(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_rw_resize(struct hg3dclass_struct * thisclass_c, unsigned int width_c, unsigned int height_c);
+void ogre_rw_resize(struct hg3dclass_struct * thisclass_c, unsigned long width_c, unsigned long height_c);
 
 // 
 void ogre_rw_windowMovedOrResized(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_rw_reposition(struct hg3dclass_struct * thisclass_c, int left_c, int top_c);
+void ogre_rw_reposition(struct hg3dclass_struct * thisclass_c, long left_c, long top_c);
 
 // 
-void ogre_rw_isVisible(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rw_isVisible(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rw_setVisible(struct hg3dclass_struct * thisclass_c, int visible_c);
+void ogre_rw_setVisible(struct hg3dclass_struct * thisclass_c, long visible_c);
 
 // 
-void ogre_rw_isHidden(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rw_isHidden(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rw_setHidden(struct hg3dclass_struct * thisclass_c, int hidden_c);
+void ogre_rw_setHidden(struct hg3dclass_struct * thisclass_c, long hidden_c);
 
 // 
-void ogre_rw_setVSyncEnabled(struct hg3dclass_struct * thisclass_c, int vsync_c);
+void ogre_rw_setVSyncEnabled(struct hg3dclass_struct * thisclass_c, long vsync_c);
 
 // 
-void ogre_rw_isVSyncEnabled(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rw_isVSyncEnabled(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rw_setVSyncInterval(struct hg3dclass_struct * thisclass_c, unsigned int interval_c);
+void ogre_rw_setVSyncInterval(struct hg3dclass_struct * thisclass_c, unsigned long interval_c);
 
 // 
-void ogre_rw_getVSyncInterval(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_rw_getVSyncInterval(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 // 
-void ogre_rw_isActive(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rw_isActive(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rw_isClosed(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rw_isClosed(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rw_isPrimary(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rw_isPrimary(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rw_isFullScreen(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rw_isFullScreen(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rw_getMetrics(struct hg3dclass_struct * thisclass_c, unsigned int * width_c, unsigned int * height_c, unsigned int * colourDepth_c, int * left_c, int * top_c);
+void ogre_rw_getMetrics(struct hg3dclass_struct * thisclass_c, unsigned long * width_c, unsigned long * height_c, unsigned long * colourDepth_c, long * left_c, long * top_c);
 
 // 
-void ogre_rw_isDeactivatedOnFocusChange(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rw_isDeactivatedOnFocusChange(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rw_setDeactivateOnFocusChange(struct hg3dclass_struct * thisclass_c, int deactivate_c);
+void ogre_rw_setDeactivateOnFocusChange(struct hg3dclass_struct * thisclass_c, long deactivate_c);
 
 #endif 

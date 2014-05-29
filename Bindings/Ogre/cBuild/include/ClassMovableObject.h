@@ -46,28 +46,28 @@ void ogre_mvo_getParentNode(struct hg3dclass_struct * thisclass_c, struct hg3dcl
 void ogre_mvo_getParentSceneNode(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
 
 // Gets whether the parent node is a TagPoint (or a SceneNode
-void ogre_mvo_isParentTagPoint(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mvo_isParentTagPoint(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_mvo_isAttached(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mvo_isAttached(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_mvo_detachFromParent(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_mvo_isInScene(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mvo_isInScene(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_mvo_getBoundingRadius(struct hg3dclass_struct * thisclass_c, float * result_c);
 
 // 
-void ogre_mvo_setVisible(struct hg3dclass_struct * thisclass_c, int visible_c);
+void ogre_mvo_setVisible(struct hg3dclass_struct * thisclass_c, long visible_c);
 
 // 
-void ogre_mvo_getVisible(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mvo_getVisible(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_mvo_isVisible(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mvo_isVisible(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_mvo_setRenderingDistance(struct hg3dclass_struct * thisclass_c, float dist_c);
@@ -82,69 +82,69 @@ void ogre_mvo_setRenderingMinPixelSize(struct hg3dclass_struct * thisclass_c, fl
 void ogre_mvo_getRenderingMinPixelSize(struct hg3dclass_struct * thisclass_c, float * result_c);
 
 // 
-void ogre_mvo_setQueryFlags(struct hg3dclass_struct * thisclass_c, unsigned int flags_c);
+void ogre_mvo_setQueryFlags(struct hg3dclass_struct * thisclass_c, unsigned long flags_c);
 
 // 
-void ogre_mvo_addQueryFlags(struct hg3dclass_struct * thisclass_c, unsigned int flags_c);
+void ogre_mvo_addQueryFlags(struct hg3dclass_struct * thisclass_c, unsigned long flags_c);
 
 // 
-void ogre_mvo_removeQueryFlags(struct hg3dclass_struct * thisclass_c, unsigned int flags_c);
+void ogre_mvo_removeQueryFlags(struct hg3dclass_struct * thisclass_c, unsigned long flags_c);
 
 // Returns the query flags relevant for this object. 
-void ogre_mvo_getQueryFlags(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_mvo_getQueryFlags(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 // 
-void ogre_mvo_setVisibilityFlags(struct hg3dclass_struct * thisclass_c, unsigned int flags_c);
+void ogre_mvo_setVisibilityFlags(struct hg3dclass_struct * thisclass_c, unsigned long flags_c);
 
 // 
-void ogre_mvo_addVisibilityFlags(struct hg3dclass_struct * thisclass_c, unsigned int flags_c);
+void ogre_mvo_addVisibilityFlags(struct hg3dclass_struct * thisclass_c, unsigned long flags_c);
 
 // 
-void ogre_mvo_removeVisibilityFlags(struct hg3dclass_struct * thisclass_c, unsigned int flags_c);
+void ogre_mvo_removeVisibilityFlags(struct hg3dclass_struct * thisclass_c, unsigned long flags_c);
 
 // Returns the visibility flags relevant for this object. 
-void ogre_mvo_getVisibilityFlags(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_mvo_getVisibilityFlags(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 // 
-void ogre_mvo_getLightMask(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_mvo_getLightMask(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 // 
-void ogre_mvo_setLightMask(struct hg3dclass_struct * thisclass_c, unsigned int lightMask_c);
+void ogre_mvo_setLightMask(struct hg3dclass_struct * thisclass_c, unsigned long lightMask_c);
 
 // Define a default implementation of method from ShadowCaster which implements no shadows. 
-void ogre_mvo_hasEdgeList(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mvo_hasEdgeList(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_mvo_setCastShadows(struct hg3dclass_struct * thisclass_c, int enabled_c);
+void ogre_mvo_setCastShadows(struct hg3dclass_struct * thisclass_c, long enabled_c);
 
 // 
-void ogre_mvo_getCastShadows(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mvo_getCastShadows(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_mvo_getReceivesShadows(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mvo_getReceivesShadows(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_mvo_getPointExtrusionDistance(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * l_c, float * result_c);
 
 // 
-void ogre_mvo_getTypeFlags(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_mvo_getTypeFlags(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 // 
-void ogre_mvo_setDebugDisplayEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c);
+void ogre_mvo_setDebugDisplayEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c);
 
 // Gets whether debug display of this object is enabled. 
-void ogre_mvo_isDebugDisplayEnabled(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mvo_isDebugDisplayEnabled(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_mvo_setDefaultQueryFlags(unsigned int flags_c);
+void ogre_mvo_setDefaultQueryFlags(unsigned long flags_c);
 
 // 
-void ogre_mvo_getDefaultQueryFlags(unsigned int * result_c);
+void ogre_mvo_getDefaultQueryFlags(unsigned long * result_c);
 
 // 
-void ogre_mvo_setDefaultVisibilityFlags(unsigned int flags_c);
+void ogre_mvo_setDefaultVisibilityFlags(unsigned long flags_c);
 
 // 
-void ogre_mvo_getDefaultVisibilityFlags(unsigned int * result_c);
+void ogre_mvo_getDefaultVisibilityFlags(unsigned long * result_c);
 
 #endif 

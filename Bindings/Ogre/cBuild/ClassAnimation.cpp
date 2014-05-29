@@ -148,13 +148,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_anm_getNodeTrack(struct hg3dclass_struct * 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_anm_hasNodeTrack(struct hg3dclass_struct * thisclass_c, unsigned short handle_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_anm_hasNodeTrack(struct hg3dclass_struct * thisclass_c, unsigned short handle_c, long * result_c)
 {
   Ogre::Animation * thisclass_cpp = static_cast<Ogre::Animation*> (getHG3DClassPtr(*thisclass_c, "Ogre::Animation"));
   unsigned short handle_cpp = (unsigned short)handle_c;
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasNodeTrack(handle_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -178,13 +178,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_anm_getNumericTrack(struct hg3dclass_struct
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_anm_hasNumericTrack(struct hg3dclass_struct * thisclass_c, unsigned short handle_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_anm_hasNumericTrack(struct hg3dclass_struct * thisclass_c, unsigned short handle_c, long * result_c)
 {
   Ogre::Animation * thisclass_cpp = static_cast<Ogre::Animation*> (getHG3DClassPtr(*thisclass_c, "Ogre::Animation"));
   unsigned short handle_cpp = (unsigned short)handle_c;
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasNumericTrack(handle_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -208,13 +208,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_anm_getVertexTrack(struct hg3dclass_struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_anm_hasVertexTrack(struct hg3dclass_struct * thisclass_c, unsigned short handle_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_anm_hasVertexTrack(struct hg3dclass_struct * thisclass_c, unsigned short handle_c, long * result_c)
 {
   Ogre::Animation * thisclass_cpp = static_cast<Ogre::Animation*> (getHG3DClassPtr(*thisclass_c, "Ogre::Animation"));
   unsigned short handle_cpp = (unsigned short)handle_c;
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasVertexTrack(handle_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -302,7 +302,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_anm_apply2(struct hg3dclass_struct * thiscl
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_anm_apply4(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * entity_c, float timePos_c, float weight_c, int software_c, int hardware_c)
+extern "C" Ogre_LIB_EXPORT void ogre_anm_apply4(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * entity_c, float timePos_c, float weight_c, long software_c, long hardware_c)
 {
   Ogre::Animation * thisclass_cpp = static_cast<Ogre::Animation*> (getHG3DClassPtr(*thisclass_c, "Ogre::Animation"));
   Ogre::Entity * entity_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*entity_c, "Ogre::Entity"));
@@ -348,7 +348,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_anm_getRotationInterpolationMode(struct hg3
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_anm_optimise(struct hg3dclass_struct * thisclass_c, int discardIdentityNodeTracks_c)
+extern "C" Ogre_LIB_EXPORT void ogre_anm_optimise(struct hg3dclass_struct * thisclass_c, long discardIdentityNodeTracks_c)
 {
   Ogre::Animation * thisclass_cpp = static_cast<Ogre::Animation*> (getHG3DClassPtr(*thisclass_c, "Ogre::Animation"));
   bool discardIdentityNodeTracks_cpp = (bool)discardIdentityNodeTracks_c;
@@ -367,7 +367,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_anm_clone(struct hg3dclass_struct * thiscla
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_anm_setUseBaseKeyFrame(struct hg3dclass_struct * thisclass_c, int useBaseKeyFrame_c, float keyframeTime_c, char * baseAnimName_c)
+extern "C" Ogre_LIB_EXPORT void ogre_anm_setUseBaseKeyFrame(struct hg3dclass_struct * thisclass_c, long useBaseKeyFrame_c, float keyframeTime_c, char * baseAnimName_c)
 {
   Ogre::Animation * thisclass_cpp = static_cast<Ogre::Animation*> (getHG3DClassPtr(*thisclass_c, "Ogre::Animation"));
   bool useBaseKeyFrame_cpp = (bool)useBaseKeyFrame_c;
@@ -377,12 +377,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_anm_setUseBaseKeyFrame(struct hg3dclass_str
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_anm_getUseBaseKeyFrame(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_anm_getUseBaseKeyFrame(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Animation * thisclass_cpp = static_cast<Ogre::Animation*> (getHG3DClassPtr(*thisclass_c, "Ogre::Animation"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getUseBaseKeyFrame());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 

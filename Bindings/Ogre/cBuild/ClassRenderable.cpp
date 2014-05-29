@@ -59,14 +59,14 @@ extern "C" Ogre_LIB_EXPORT void ogre_rndl_getMaterial(struct hg3dclass_struct * 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rndl_preRender(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * sm_c, struct hg3dclass_struct * rsys_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rndl_preRender(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * sm_c, struct hg3dclass_struct * rsys_c, long * result_c)
 {
   Ogre::Renderable * thisclass_cpp = static_cast<Ogre::Renderable*> (getHG3DClassPtr(*thisclass_c, "Ogre::Renderable"));
   Ogre::SceneManager * sm_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*sm_c, "Ogre::SceneManager"));
   Ogre::RenderSystem * rsys_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*rsys_c, "Ogre::RenderSystem"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->preRender(sm_cpp, rsys_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -88,7 +88,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rndl_getNumWorldTransforms(struct hg3dclass
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rndl_setUseIdentityProjection(struct hg3dclass_struct * thisclass_c, int useIdentityProjection_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rndl_setUseIdentityProjection(struct hg3dclass_struct * thisclass_c, long useIdentityProjection_c)
 {
   Ogre::Renderable * thisclass_cpp = static_cast<Ogre::Renderable*> (getHG3DClassPtr(*thisclass_c, "Ogre::Renderable"));
   bool useIdentityProjection_cpp = (bool)useIdentityProjection_c;
@@ -96,16 +96,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_rndl_setUseIdentityProjection(struct hg3dcl
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rndl_getUseIdentityProjection(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rndl_getUseIdentityProjection(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Renderable * thisclass_cpp = static_cast<Ogre::Renderable*> (getHG3DClassPtr(*thisclass_c, "Ogre::Renderable"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getUseIdentityProjection());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rndl_setUseIdentityView(struct hg3dclass_struct * thisclass_c, int useIdentityView_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rndl_setUseIdentityView(struct hg3dclass_struct * thisclass_c, long useIdentityView_c)
 {
   Ogre::Renderable * thisclass_cpp = static_cast<Ogre::Renderable*> (getHG3DClassPtr(*thisclass_c, "Ogre::Renderable"));
   bool useIdentityView_cpp = (bool)useIdentityView_c;
@@ -113,12 +113,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_rndl_setUseIdentityView(struct hg3dclass_st
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rndl_getUseIdentityView(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rndl_getUseIdentityView(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Renderable * thisclass_cpp = static_cast<Ogre::Renderable*> (getHG3DClassPtr(*thisclass_c, "Ogre::Renderable"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getUseIdentityView());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -132,16 +132,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_rndl_getSquaredViewDepth(struct hg3dclass_s
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rndl_getCastsShadows(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rndl_getCastsShadows(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Renderable * thisclass_cpp = static_cast<Ogre::Renderable*> (getHG3DClassPtr(*thisclass_c, "Ogre::Renderable"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getCastsShadows());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rndl_removeCustomParameter(struct hg3dclass_struct * thisclass_c, int index_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rndl_removeCustomParameter(struct hg3dclass_struct * thisclass_c, long index_c)
 {
   Ogre::Renderable * thisclass_cpp = static_cast<Ogre::Renderable*> (getHG3DClassPtr(*thisclass_c, "Ogre::Renderable"));
   size_t index_cpp = (size_t)index_c;
@@ -149,17 +149,17 @@ extern "C" Ogre_LIB_EXPORT void ogre_rndl_removeCustomParameter(struct hg3dclass
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rndl_hasCustomParameter(struct hg3dclass_struct * thisclass_c, int index_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rndl_hasCustomParameter(struct hg3dclass_struct * thisclass_c, long index_c, long * result_c)
 {
   Ogre::Renderable * thisclass_cpp = static_cast<Ogre::Renderable*> (getHG3DClassPtr(*thisclass_c, "Ogre::Renderable"));
   size_t index_cpp = (size_t)index_c;
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasCustomParameter(index_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rndl_setPolygonModeOverrideable(struct hg3dclass_struct * thisclass_c, int override_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rndl_setPolygonModeOverrideable(struct hg3dclass_struct * thisclass_c, long override_c)
 {
   Ogre::Renderable * thisclass_cpp = static_cast<Ogre::Renderable*> (getHG3DClassPtr(*thisclass_c, "Ogre::Renderable"));
   bool override_cpp = (bool)override_c;
@@ -167,11 +167,11 @@ extern "C" Ogre_LIB_EXPORT void ogre_rndl_setPolygonModeOverrideable(struct hg3d
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rndl_getPolygonModeOverrideable(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rndl_getPolygonModeOverrideable(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Renderable * thisclass_cpp = static_cast<Ogre::Renderable*> (getHG3DClassPtr(*thisclass_c, "Ogre::Renderable"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getPolygonModeOverrideable());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 

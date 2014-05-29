@@ -48,7 +48,7 @@ using Ogre::uint;
 
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbs_construct(char * name_c, unsigned int poolSize_c, int externalDataSource_c, struct hg3dclass_struct * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbs_construct(char * name_c, unsigned long poolSize_c, long externalDataSource_c, struct hg3dclass_struct * result_c)
 {
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   unsigned int poolSize_cpp = (unsigned int)poolSize_c;
@@ -93,16 +93,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbs_createBillboard2(struct hg3dclass_struc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbs_getNumBillboards(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbs_getNumBillboards(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::BillboardSet * thisclass_cpp = static_cast<Ogre::BillboardSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardSet"));
   int result_cpp;
   result_cpp = (thisclass_cpp->getNumBillboards());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbs_setAutoextend(struct hg3dclass_struct * thisclass_c, int autoextend_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbs_setAutoextend(struct hg3dclass_struct * thisclass_c, long autoextend_c)
 {
   Ogre::BillboardSet * thisclass_cpp = static_cast<Ogre::BillboardSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardSet"));
   bool autoextend_cpp = (bool)autoextend_c;
@@ -110,16 +110,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbs_setAutoextend(struct hg3dclass_struct *
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbs_getAutoextend(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbs_getAutoextend(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::BillboardSet * thisclass_cpp = static_cast<Ogre::BillboardSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardSet"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getAutoextend());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbs_setSortingEnabled(struct hg3dclass_struct * thisclass_c, int sortenable_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbs_setSortingEnabled(struct hg3dclass_struct * thisclass_c, long sortenable_c)
 {
   Ogre::BillboardSet * thisclass_cpp = static_cast<Ogre::BillboardSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardSet"));
   bool sortenable_cpp = (bool)sortenable_c;
@@ -127,16 +127,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbs_setSortingEnabled(struct hg3dclass_stru
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbs_getSortingEnabled(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbs_getSortingEnabled(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::BillboardSet * thisclass_cpp = static_cast<Ogre::BillboardSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardSet"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getSortingEnabled());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbs_setPoolSize(struct hg3dclass_struct * thisclass_c, int size_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbs_setPoolSize(struct hg3dclass_struct * thisclass_c, long size_c)
 {
   Ogre::BillboardSet * thisclass_cpp = static_cast<Ogre::BillboardSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardSet"));
   size_t size_cpp = (size_t)size_c;
@@ -144,12 +144,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbs_setPoolSize(struct hg3dclass_struct * t
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbs_getPoolSize(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbs_getPoolSize(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::BillboardSet * thisclass_cpp = static_cast<Ogre::BillboardSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardSet"));
   unsigned int result_cpp;
   result_cpp = (thisclass_cpp->getPoolSize());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 
@@ -160,7 +160,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbs_clear(struct hg3dclass_struct * thiscla
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbs_getBillboard(struct hg3dclass_struct * thisclass_c, unsigned int index_c, struct hg3dclass_struct * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbs_getBillboard(struct hg3dclass_struct * thisclass_c, unsigned long index_c, struct hg3dclass_struct * result_c)
 {
   Ogre::BillboardSet * thisclass_cpp = static_cast<Ogre::BillboardSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardSet"));
   unsigned int index_cpp = (unsigned int)index_c;
@@ -171,7 +171,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbs_getBillboard(struct hg3dclass_struct * 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbs_removeBillboard(struct hg3dclass_struct * thisclass_c, unsigned int index_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbs_removeBillboard(struct hg3dclass_struct * thisclass_c, unsigned long index_c)
 {
   Ogre::BillboardSet * thisclass_cpp = static_cast<Ogre::BillboardSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardSet"));
   unsigned int index_cpp = (unsigned int)index_c;
@@ -286,7 +286,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbs_getMaterialName(struct hg3dclass_struct
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbs_beginBillboards(struct hg3dclass_struct * thisclass_c, int numBillboards_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbs_beginBillboards(struct hg3dclass_struct * thisclass_c, long numBillboards_c)
 {
   Ogre::BillboardSet * thisclass_cpp = static_cast<Ogre::BillboardSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardSet"));
   size_t numBillboards_cpp = (size_t)numBillboards_c;
@@ -335,16 +335,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbs_setMaterial(struct hg3dclass_struct * t
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbs_getCullIndividually(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbs_getCullIndividually(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::BillboardSet * thisclass_cpp = static_cast<Ogre::BillboardSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardSet"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getCullIndividually());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbs_setCullIndividually(struct hg3dclass_struct * thisclass_c, int cullIndividual_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbs_setCullIndividually(struct hg3dclass_struct * thisclass_c, long cullIndividual_c)
 {
   Ogre::BillboardSet * thisclass_cpp = static_cast<Ogre::BillboardSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardSet"));
   bool cullIndividual_cpp = (bool)cullIndividual_c;
@@ -403,7 +403,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbs_getCommonUpVector(struct hg3dclass_stru
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbs_setUseAccurateFacing(struct hg3dclass_struct * thisclass_c, int acc_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbs_setUseAccurateFacing(struct hg3dclass_struct * thisclass_c, long acc_c)
 {
   Ogre::BillboardSet * thisclass_cpp = static_cast<Ogre::BillboardSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardSet"));
   bool acc_cpp = (bool)acc_c;
@@ -411,12 +411,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbs_setUseAccurateFacing(struct hg3dclass_s
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbs_getUseAccurateFacing(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbs_getUseAccurateFacing(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::BillboardSet * thisclass_cpp = static_cast<Ogre::BillboardSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardSet"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getUseAccurateFacing());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -443,7 +443,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbs_getSquaredViewDepth(struct hg3dclass_st
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbs_setBillboardsInWorldSpace(struct hg3dclass_struct * thisclass_c, int ws_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbs_setBillboardsInWorldSpace(struct hg3dclass_struct * thisclass_c, long ws_c)
 {
   Ogre::BillboardSet * thisclass_cpp = static_cast<Ogre::BillboardSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardSet"));
   bool ws_cpp = (bool)ws_c;
@@ -451,7 +451,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbs_setBillboardsInWorldSpace(struct hg3dcl
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbs_setPointRenderingEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbs_setPointRenderingEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c)
 {
   Ogre::BillboardSet * thisclass_cpp = static_cast<Ogre::BillboardSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardSet"));
   bool enabled_cpp = (bool)enabled_c;
@@ -459,25 +459,25 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbs_setPointRenderingEnabled(struct hg3dcla
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbs_isPointRenderingEnabled(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbs_isPointRenderingEnabled(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::BillboardSet * thisclass_cpp = static_cast<Ogre::BillboardSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardSet"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isPointRenderingEnabled());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // Override to return specific type flag. 
-extern "C" Ogre_LIB_EXPORT void ogre_bbs_getTypeFlags(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbs_getTypeFlags(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::BillboardSet * thisclass_cpp = static_cast<Ogre::BillboardSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardSet"));
   uint32 result_cpp;
   result_cpp = (thisclass_cpp->getTypeFlags());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbs_setAutoUpdate(struct hg3dclass_struct * thisclass_c, int autoUpdate_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbs_setAutoUpdate(struct hg3dclass_struct * thisclass_c, long autoUpdate_c)
 {
   Ogre::BillboardSet * thisclass_cpp = static_cast<Ogre::BillboardSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardSet"));
   bool autoUpdate_cpp = (bool)autoUpdate_c;
@@ -485,12 +485,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbs_setAutoUpdate(struct hg3dclass_struct *
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbs_getAutoUpdate(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbs_getAutoUpdate(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::BillboardSet * thisclass_cpp = static_cast<Ogre::BillboardSet*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardSet"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getAutoUpdate());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 

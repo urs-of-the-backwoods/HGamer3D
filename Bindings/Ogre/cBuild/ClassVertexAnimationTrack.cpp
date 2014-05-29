@@ -65,12 +65,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_vat_getAnimationType(struct hg3dclass_struc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vat_getVertexAnimationIncludesNormals(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vat_getVertexAnimationIncludesNormals(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::VertexAnimationTrack * thisclass_cpp = static_cast<Ogre::VertexAnimationTrack*> (getHG3DClassPtr(*thisclass_c, "Ogre::VertexAnimationTrack"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getVertexAnimationIncludesNormals());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -101,12 +101,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_vat_getTargetMode(struct hg3dclass_struct *
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vat_hasNonZeroKeyFrames(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vat_hasNonZeroKeyFrames(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::VertexAnimationTrack * thisclass_cpp = static_cast<Ogre::VertexAnimationTrack*> (getHG3DClassPtr(*thisclass_c, "Ogre::VertexAnimationTrack"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasNonZeroKeyFrames());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 

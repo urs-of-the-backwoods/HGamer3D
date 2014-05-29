@@ -64,34 +64,34 @@ extern "C" Ogre_LIB_EXPORT void ogre_lg_getName(struct hg3dclass_struct * thiscl
 };
 
 // Get whether debug output is enabled for this log. 
-extern "C" Ogre_LIB_EXPORT void ogre_lg_isDebugOutputEnabled(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_lg_isDebugOutputEnabled(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Log * thisclass_cpp = static_cast<Ogre::Log*> (getHG3DClassPtr(*thisclass_c, "Ogre::Log"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isDebugOutputEnabled());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // Get whether file output is suppressed for this log. 
-extern "C" Ogre_LIB_EXPORT void ogre_lg_isFileOutputSuppressed(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_lg_isFileOutputSuppressed(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Log * thisclass_cpp = static_cast<Ogre::Log*> (getHG3DClassPtr(*thisclass_c, "Ogre::Log"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isFileOutputSuppressed());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // Get whether time stamps are printed for this log. 
-extern "C" Ogre_LIB_EXPORT void ogre_lg_isTimeStampEnabled(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_lg_isTimeStampEnabled(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Log * thisclass_cpp = static_cast<Ogre::Log*> (getHG3DClassPtr(*thisclass_c, "Ogre::Log"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isTimeStampEnabled());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_lg_logMessage(struct hg3dclass_struct * thisclass_c, char * message_c, enum EnumLogMessageLevel lml_c, int maskDebug_c)
+extern "C" Ogre_LIB_EXPORT void ogre_lg_logMessage(struct hg3dclass_struct * thisclass_c, char * message_c, enum EnumLogMessageLevel lml_c, long maskDebug_c)
 {
   Ogre::Log * thisclass_cpp = static_cast<Ogre::Log*> (getHG3DClassPtr(*thisclass_c, "Ogre::Log"));
   Ogre::String message_cpp = Ogre::String((const char*) message_c);
@@ -101,7 +101,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_lg_logMessage(struct hg3dclass_struct * thi
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_lg_setDebugOutputEnabled(struct hg3dclass_struct * thisclass_c, int debugOutput_c)
+extern "C" Ogre_LIB_EXPORT void ogre_lg_setDebugOutputEnabled(struct hg3dclass_struct * thisclass_c, long debugOutput_c)
 {
   Ogre::Log * thisclass_cpp = static_cast<Ogre::Log*> (getHG3DClassPtr(*thisclass_c, "Ogre::Log"));
   bool debugOutput_cpp = (bool)debugOutput_c;
@@ -117,7 +117,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_lg_setLogDetail(struct hg3dclass_struct * t
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_lg_setTimeStampEnabled(struct hg3dclass_struct * thisclass_c, int timeStamp_c)
+extern "C" Ogre_LIB_EXPORT void ogre_lg_setTimeStampEnabled(struct hg3dclass_struct * thisclass_c, long timeStamp_c)
 {
   Ogre::Log * thisclass_cpp = static_cast<Ogre::Log*> (getHG3DClassPtr(*thisclass_c, "Ogre::Log"));
   bool timeStamp_cpp = (bool)timeStamp_c;

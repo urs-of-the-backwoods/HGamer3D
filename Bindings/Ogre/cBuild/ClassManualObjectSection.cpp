@@ -99,7 +99,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mnos_setMaterialName(struct hg3dclass_struc
 };
 
 // Set whether we need 32-bit indices. 
-extern "C" Ogre_LIB_EXPORT void ogre_mnos_set32BitIndices(struct hg3dclass_struct * thisclass_c, int n32_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mnos_set32BitIndices(struct hg3dclass_struct * thisclass_c, long n32_c)
 {
   Ogre::ManualObject::ManualObjectSection * thisclass_cpp = static_cast<Ogre::ManualObject::ManualObjectSection*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject::ManualObjectSection"));
   bool n32_cpp = (bool)n32_c;
@@ -107,15 +107,15 @@ extern "C" Ogre_LIB_EXPORT void ogre_mnos_set32BitIndices(struct hg3dclass_struc
 };
 
 // Get whether we need 32-bit indices. 
-extern "C" Ogre_LIB_EXPORT void ogre_mnos_get32BitIndices(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mnos_get32BitIndices(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::ManualObject::ManualObjectSection * thisclass_cpp = static_cast<Ogre::ManualObject::ManualObjectSection*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject::ManualObjectSection"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->get32BitIndices());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
-// . 
+// 
 extern "C" Ogre_LIB_EXPORT void ogre_mnos_getMaterial(struct hg3dclass_struct * thisclass_c, struct sharedptr_struct * result_c)
 {
   Ogre::ManualObject::ManualObjectSection * thisclass_cpp = static_cast<Ogre::ManualObject::ManualObjectSection*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject::ManualObjectSection"));
@@ -124,7 +124,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mnos_getMaterial(struct hg3dclass_struct * 
   *result_c = *((struct sharedptr_struct*) &result_cpp);
 };
 
-// . 
+// 
 extern "C" Ogre_LIB_EXPORT void ogre_mnos_getSquaredViewDepth(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * _c, float * result_c)
 {
   Ogre::ManualObject::ManualObjectSection * thisclass_cpp = static_cast<Ogre::ManualObject::ManualObjectSection*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject::ManualObjectSection"));

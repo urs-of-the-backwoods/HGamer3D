@@ -30,13 +30,13 @@
 
 
 // 
-void ogre_hg3dutl_getWindowHandle(struct hg3dclass_struct * window_c, unsigned int * result_c);
+void ogre_hg3dutl_getWindowHandle(struct hg3dclass_struct * window_c, unsigned long * result_c);
 
 // 
 void ogre_hg3dutl_setupCloseEventHandler(struct hg3dclass_struct * window_c);
 
 // 
-void ogre_hg3dutl_checkQuitReceived(int * result_c);
+void ogre_hg3dutl_checkQuitReceived(long * result_c);
 
 // 
 void ogre_hg3dutl_buildTangentVectors(struct hg3dclass_struct * entity_c);

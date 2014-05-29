@@ -36,16 +36,16 @@ void ogre_rtgt_destruct(struct hg3dclass_struct * thisclass_c);
 void ogre_rtgt_getName(struct hg3dclass_struct * thisclass_c, char * result_c);
 
 // Retrieve information about the render target. 
-void ogre_rtgt_getMetrics(struct hg3dclass_struct * thisclass_c, unsigned int * width_c, unsigned int * height_c, unsigned int * colourDepth_c);
+void ogre_rtgt_getMetrics(struct hg3dclass_struct * thisclass_c, unsigned long * width_c, unsigned long * height_c, unsigned long * colourDepth_c);
 
 // 
-void ogre_rtgt_getWidth(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_rtgt_getWidth(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 // 
-void ogre_rtgt_getHeight(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_rtgt_getHeight(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 // 
-void ogre_rtgt_getColourDepth(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_rtgt_getColourDepth(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 // 
 void ogre_rtgt_setDepthBufferPool(struct hg3dclass_struct * thisclass_c, unsigned short poolId_c);
@@ -57,13 +57,13 @@ void ogre_rtgt_getDepthBufferPool(struct hg3dclass_struct * thisclass_c, unsigne
 void ogre_rtgt_detachDepthBuffer(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_rtgt_update(struct hg3dclass_struct * thisclass_c, int swapBuffers_c);
+void ogre_rtgt_update(struct hg3dclass_struct * thisclass_c, long swapBuffers_c);
 
 // 
-void ogre_rtgt_swapBuffers(struct hg3dclass_struct * thisclass_c, int waitForVSync_c);
+void ogre_rtgt_swapBuffers(struct hg3dclass_struct * thisclass_c, long waitForVSync_c);
 
 // 
-void ogre_rtgt_addViewport(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * cam_c, int ZOrder_c, float left_c, float top_c, float width_c, float height_c, struct hg3dclass_struct * result_c);
+void ogre_rtgt_addViewport(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * cam_c, long ZOrder_c, float left_c, float top_c, float width_c, float height_c, struct hg3dclass_struct * result_c);
 
 // 
 void ogre_rtgt_getNumViewports(struct hg3dclass_struct * thisclass_c, unsigned short * result_c);
@@ -72,13 +72,13 @@ void ogre_rtgt_getNumViewports(struct hg3dclass_struct * thisclass_c, unsigned s
 void ogre_rtgt_getViewport(struct hg3dclass_struct * thisclass_c, unsigned short index_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_rtgt_getViewportByZOrder(struct hg3dclass_struct * thisclass_c, int ZOrder_c, struct hg3dclass_struct * result_c);
+void ogre_rtgt_getViewportByZOrder(struct hg3dclass_struct * thisclass_c, long ZOrder_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_rtgt_hasViewportWithZOrder(struct hg3dclass_struct * thisclass_c, int ZOrder_c, int * result_c);
+void ogre_rtgt_hasViewportWithZOrder(struct hg3dclass_struct * thisclass_c, long ZOrder_c, long * result_c);
 
 // 
-void ogre_rtgt_removeViewport(struct hg3dclass_struct * thisclass_c, int ZOrder_c);
+void ogre_rtgt_removeViewport(struct hg3dclass_struct * thisclass_c, long ZOrder_c);
 
 // 
 void ogre_rtgt_removeAllViewports(struct hg3dclass_struct * thisclass_c);
@@ -111,16 +111,16 @@ void ogre_rtgt_resetStatistics(struct hg3dclass_struct * thisclass_c);
 void ogre_rtgt_removeAllListeners(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_rtgt_isActive(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rtgt_isActive(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rtgt_setActive(struct hg3dclass_struct * thisclass_c, int state_c);
+void ogre_rtgt_setActive(struct hg3dclass_struct * thisclass_c, long state_c);
 
 // 
-void ogre_rtgt_setAutoUpdated(struct hg3dclass_struct * thisclass_c, int autoupdate_c);
+void ogre_rtgt_setAutoUpdated(struct hg3dclass_struct * thisclass_c, long autoupdate_c);
 
 // 
-void ogre_rtgt_isAutoUpdated(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rtgt_isAutoUpdated(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_rtgt_writeContentsToFile(struct hg3dclass_struct * thisclass_c, char * filename_c);
@@ -129,22 +129,22 @@ void ogre_rtgt_writeContentsToFile(struct hg3dclass_struct * thisclass_c, char *
 void ogre_rtgt_writeContentsToTimestampedFile(struct hg3dclass_struct * thisclass_c, char * filenamePrefix_c, char * filenameSuffix_c, char * result_c);
 
 // 
-void ogre_rtgt_requiresTextureFlipping(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rtgt_requiresTextureFlipping(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rtgt_getTriangleCount(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rtgt_getTriangleCount(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rtgt_getBatchCount(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rtgt_getBatchCount(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rtgt_isPrimary(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rtgt_isPrimary(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rtgt_isHardwareGammaEnabled(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rtgt_isHardwareGammaEnabled(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rtgt_getFSAA(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_rtgt_getFSAA(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 // 
 void ogre_rtgt_getFSAAHint(struct hg3dclass_struct * thisclass_c, char * result_c);

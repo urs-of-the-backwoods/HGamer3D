@@ -64,7 +64,7 @@ void ogre_bbd_setColour(struct hg3dclass_struct * thisclass_c, struct colourvalu
 void ogre_bbd_getColour(struct hg3dclass_struct * thisclass_c, struct colourvalue_struct * result_c);
 
 // 
-void ogre_bbd_hasOwnDimensions(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_bbd_hasOwnDimensions(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_bbd_getOwnWidth(struct hg3dclass_struct * thisclass_c, float * result_c);
@@ -73,7 +73,7 @@ void ogre_bbd_getOwnWidth(struct hg3dclass_struct * thisclass_c, float * result_
 void ogre_bbd_getOwnHeight(struct hg3dclass_struct * thisclass_c, float * result_c);
 
 // 
-void ogre_bbd_isUseTexcoordRect(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_bbd_isUseTexcoordRect(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_bbd_setTexcoordIndex(struct hg3dclass_struct * thisclass_c, unsigned short texcoordIndex_c);
