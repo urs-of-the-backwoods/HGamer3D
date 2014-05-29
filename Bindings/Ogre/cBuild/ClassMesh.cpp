@@ -112,21 +112,21 @@ extern "C" Ogre_LIB_EXPORT void ogre_msh_setSkeletonName(struct hg3dclass_struct
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_msh_hasSkeleton(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_msh_hasSkeleton(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Mesh * thisclass_cpp = static_cast<Ogre::Mesh*> (getHG3DClassPtr(*thisclass_c, "Ogre::Mesh"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasSkeleton());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_msh_hasVertexAnimation(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_msh_hasVertexAnimation(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Mesh * thisclass_cpp = static_cast<Ogre::Mesh*> (getHG3DClassPtr(*thisclass_c, "Ogre::Mesh"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasVertexAnimation());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -169,12 +169,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_msh_createManualLodLevel(struct hg3dclass_s
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_msh_isLodManual(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_msh_isLodManual(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Mesh * thisclass_cpp = static_cast<Ogre::Mesh*> (getHG3DClassPtr(*thisclass_c, "Ogre::Mesh"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isLodManual());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -185,21 +185,21 @@ extern "C" Ogre_LIB_EXPORT void ogre_msh_removeLodLevels(struct hg3dclass_struct
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_msh_isVertexBufferShadowed(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_msh_isVertexBufferShadowed(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Mesh * thisclass_cpp = static_cast<Ogre::Mesh*> (getHG3DClassPtr(*thisclass_c, "Ogre::Mesh"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isVertexBufferShadowed());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_msh_isIndexBufferShadowed(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_msh_isIndexBufferShadowed(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Mesh * thisclass_cpp = static_cast<Ogre::Mesh*> (getHG3DClassPtr(*thisclass_c, "Ogre::Mesh"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isIndexBufferShadowed());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -224,25 +224,25 @@ extern "C" Ogre_LIB_EXPORT void ogre_msh_prepareForShadowVolume(struct hg3dclass
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_msh_isPreparedForShadowVolumes(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_msh_isPreparedForShadowVolumes(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Mesh * thisclass_cpp = static_cast<Ogre::Mesh*> (getHG3DClassPtr(*thisclass_c, "Ogre::Mesh"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isPreparedForShadowVolumes());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_msh_isEdgeListBuilt(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_msh_isEdgeListBuilt(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Mesh * thisclass_cpp = static_cast<Ogre::Mesh*> (getHG3DClassPtr(*thisclass_c, "Ogre::Mesh"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isEdgeListBuilt());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_msh_setAutoBuildEdgeLists(struct hg3dclass_struct * thisclass_c, int autobuild_c)
+extern "C" Ogre_LIB_EXPORT void ogre_msh_setAutoBuildEdgeLists(struct hg3dclass_struct * thisclass_c, long autobuild_c)
 {
   Ogre::Mesh * thisclass_cpp = static_cast<Ogre::Mesh*> (getHG3DClassPtr(*thisclass_c, "Ogre::Mesh"));
   bool autobuild_cpp = (bool)autobuild_c;
@@ -250,12 +250,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_msh_setAutoBuildEdgeLists(struct hg3dclass_
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_msh_getAutoBuildEdgeLists(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_msh_getAutoBuildEdgeLists(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Mesh * thisclass_cpp = static_cast<Ogre::Mesh*> (getHG3DClassPtr(*thisclass_c, "Ogre::Mesh"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getAutoBuildEdgeLists());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -268,12 +268,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_msh_getSharedVertexDataAnimationType(struct
 };
 
 // Returns whether animation on shared vertex data includes normals. 
-extern "C" Ogre_LIB_EXPORT void ogre_msh_getSharedVertexDataAnimationIncludesNormals(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_msh_getSharedVertexDataAnimationIncludesNormals(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Mesh * thisclass_cpp = static_cast<Ogre::Mesh*> (getHG3DClassPtr(*thisclass_c, "Ogre::Mesh"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getSharedVertexDataAnimationIncludesNormals());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -300,13 +300,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_msh_getAnimation(struct hg3dclass_struct * 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_msh_hasAnimation(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_msh_hasAnimation(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::Mesh * thisclass_cpp = static_cast<Ogre::Mesh*> (getHG3DClassPtr(*thisclass_c, "Ogre::Mesh"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasAnimation(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -352,12 +352,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_msh_updateMaterialForAllSubMeshes(struct hg
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_msh_getPoseCount(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_msh_getPoseCount(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Mesh * thisclass_cpp = static_cast<Ogre::Mesh*> (getHG3DClassPtr(*thisclass_c, "Ogre::Mesh"));
   size_t result_cpp;
   result_cpp = (thisclass_cpp->getPoseCount());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 

@@ -59,7 +59,7 @@ void ogre_sn_detachObject3(struct hg3dclass_struct * thisclass_c, char * name_c,
 void ogre_sn_detachAllObjects(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_sn_isInSceneGraph(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_sn_isInSceneGraph(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_sn_getCreator(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
@@ -74,13 +74,13 @@ void ogre_sn_removeAndDestroyChild2(struct hg3dclass_struct * thisclass_c, unsig
 void ogre_sn_removeAndDestroyAllChildren(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_sn_showBoundingBox(struct hg3dclass_struct * thisclass_c, int bShow_c);
+void ogre_sn_showBoundingBox(struct hg3dclass_struct * thisclass_c, long bShow_c);
 
 // 
-void ogre_sn_hideBoundingBox(struct hg3dclass_struct * thisclass_c, int bHide_c);
+void ogre_sn_hideBoundingBox(struct hg3dclass_struct * thisclass_c, long bHide_c);
 
 // 
-void ogre_sn_getShowBoundingBox(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_sn_getShowBoundingBox(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_sn_createChildSceneNode(struct hg3dclass_struct * thisclass_c, struct vector3_struct * translate_c, struct quaternion_struct * rotate_c, struct hg3dclass_struct * result_c);
@@ -89,7 +89,7 @@ void ogre_sn_createChildSceneNode(struct hg3dclass_struct * thisclass_c, struct 
 void ogre_sn_createChildSceneNode2(struct hg3dclass_struct * thisclass_c, char * name_c, struct vector3_struct * translate_c, struct quaternion_struct * rotate_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_sn_setFixedYawAxis(struct hg3dclass_struct * thisclass_c, int useFixed_c, struct vector3_struct * fixedAxis_c);
+void ogre_sn_setFixedYawAxis(struct hg3dclass_struct * thisclass_c, long useFixed_c, struct vector3_struct * fixedAxis_c);
 
 // 
 void ogre_sn_getAutoTrackTarget(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
@@ -104,12 +104,12 @@ void ogre_sn_getAutoTrackLocalDirection(struct hg3dclass_struct * thisclass_c, s
 void ogre_sn_getParentSceneNode(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_sn_setVisible(struct hg3dclass_struct * thisclass_c, int visible_c, int cascade_c);
+void ogre_sn_setVisible(struct hg3dclass_struct * thisclass_c, long visible_c, long cascade_c);
 
 // 
-void ogre_sn_flipVisibility(struct hg3dclass_struct * thisclass_c, int cascade_c);
+void ogre_sn_flipVisibility(struct hg3dclass_struct * thisclass_c, long cascade_c);
 
 // 
-void ogre_sn_setDebugDisplayEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c, int cascade_c);
+void ogre_sn_setDebugDisplayEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c, long cascade_c);
 
 #endif 

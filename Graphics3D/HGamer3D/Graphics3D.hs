@@ -18,45 +18,38 @@
 
 -- Graphics.hs
 
--- | 3D Graphics for HGamer3D
+-- | 3D Graphics for HGamer3D, public API.
 module HGamer3D.Graphics3D
 
 (
-  module HGamer3D.Data,
-  module HGamer3D.Util,
-
   -- * Fundamental Types
   
+  Graphics3DSystem,
   Object3D,
   Material,
   Mesh,
   Camera,
+  Viewport,
   
-  -- * Initialization
+  -- * Initialization and Game Loop Functions
 
-  Graphics3DSystem,
-  initHGamer3D,
-  exitHGamer3D,
-  loopHGamer3D,
-
-  -- * Misc Functions
-
-  cameraLookAt,
-  HGamer3D.Graphics3D.Base.setBackgroundColour,
-  addResourceLocationMedia,
-  addResourceZipfileMedia,
-  addResourceLocationGUI,
+  initGraphics3D,
+  freeGraphics3D,
+  stepGraphics3D,
 
     -- * Light
   Light,
-  HGamer3D.Graphics3D.Light.setAmbientLight,
+  HGamer3D.Graphics3D.Internal.Light.setAmbientLight,
   pointLight,
   spotLight,
   spotLightSetDirection,
   setSpotLightAngle,
   directionalLight,
   
-  -- * Shapes
+  -- * Materials
+  resourceMaterial,
+
+  -- * Meshes
   sphereMesh,
   cubeMesh,
   planeMesh,
@@ -66,11 +59,20 @@ module HGamer3D.Graphics3D
   colouredLineMesh,
   rainbowCubeMesh,
 	
-  createIkosaederMesh,
-  createDodekaederMesh,
+  ikosaederMesh,
+  dodekaederMesh,
 
+  -- * Graphics Objects
   object3DFromMesh,
-  object3DFromObjects
+  object3DFromObjects,
+
+  -- * Misc Functions
+
+  cameraLookAt,
+  HGamer3D.Graphics3D.Internal.Base.setBackgroundColour,
+  addResourceLocationMedia,
+  addResourceZipfileMedia,
+  addResourceLocationGUI,
 
 )
 
@@ -79,18 +81,11 @@ where
   import HGamer3D.Data
   import HGamer3D.Util
   
-  import HGamer3D.Graphics3D.Base
-  import HGamer3D.Graphics3D.Light
-  import HGamer3D.Graphics3D.Shapes
-  import HGamer3D.Graphics3D.PlatonShapes
+  import HGamer3D.Graphics3D.Internal.Base
+  import HGamer3D.Graphics3D.Internal.Light
+  import HGamer3D.Graphics3D.Internal.Shapes
+  import HGamer3D.Graphics3D.Internal.PlatonShapes
   
-  initHGamer3D windowName sceneManagerType fConfig fLog = do
-    (g3ds, camera, viewport, window) <- initGraphics3D windowName sceneManagerType fConfig fLog
-    return (g3ds, camera, viewport)
-    
-  exitHGamer3D = exitGraphics3D
-  
-  loopHGamer3D = loopGraphics3D
 
 
 

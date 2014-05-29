@@ -72,16 +72,16 @@ void ogre_nd_setScale2(struct hg3dclass_struct * thisclass_c, float x_c, float y
 void ogre_nd_getScale(struct hg3dclass_struct * thisclass_c, struct vector3_struct * result_c);
 
 // 
-void ogre_nd_setInheritOrientation(struct hg3dclass_struct * thisclass_c, int inherit_c);
+void ogre_nd_setInheritOrientation(struct hg3dclass_struct * thisclass_c, long inherit_c);
 
 // 
-void ogre_nd_getInheritOrientation(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_nd_getInheritOrientation(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_nd_setInheritScale(struct hg3dclass_struct * thisclass_c, int inherit_c);
+void ogre_nd_setInheritScale(struct hg3dclass_struct * thisclass_c, long inherit_c);
 
 // 
-void ogre_nd_getInheritScale(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_nd_getInheritScale(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_nd_scale(struct hg3dclass_struct * thisclass_c, struct vector3_struct * scale_c);
@@ -171,10 +171,10 @@ void ogre_nd_getInitialScale(struct hg3dclass_struct * thisclass_c, struct vecto
 void ogre_nd_getSquaredViewDepth(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * cam_c, float * result_c);
 
 // 
-void ogre_nd_needUpdate(struct hg3dclass_struct * thisclass_c, int forceParentUpdate_c);
+void ogre_nd_needUpdate(struct hg3dclass_struct * thisclass_c, long forceParentUpdate_c);
 
 // 
-void ogre_nd_requestUpdate(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * child_c, int forceParentUpdate_c);
+void ogre_nd_requestUpdate(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * child_c, long forceParentUpdate_c);
 
 // 
 void ogre_nd_cancelUpdate(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * child_c);

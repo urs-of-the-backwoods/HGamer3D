@@ -17,13 +17,13 @@ serverLoop server clients = do
 	serverLoop server clients
 
 doServerWork = do
-	server <- createNetworkServer 7890
+	server <- networkServer 7890
 	serverLoop server []
 
 -- connect to server on port 7890
 action = do
         n <- initNetwork
-	client <- createNetworkClient
+	client <- networkClient
 	ok <- connectClientToServer client "localhost" 7890
 	if ok
 		then do

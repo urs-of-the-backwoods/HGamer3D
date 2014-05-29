@@ -23,19 +23,17 @@
 module HGamer3D.Data 
 
 (
-    module HGamer3D.Data.HG3DClass,
     module HGamer3D.Data.Angle,
     module HGamer3D.Data.Colour,
     module HGamer3D.Data.Transform3D,
     module HGamer3D.Data.TimeMS,
     module HGamer3D.Data.Vector,
     module HGamer3D.Data.Geometry2D,
-    module HGamer3D.Data.Window
+    Window,
 )
 
 where
 
-import HGamer3D.Data.HG3DClass
 import HGamer3D.Data.Angle
 import HGamer3D.Data.Colour
 import HGamer3D.Data.Transform3D

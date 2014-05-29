@@ -48,7 +48,7 @@ void ogre_at_removeAllKeyFrames(struct hg3dclass_struct * thisclass_c);
 void ogre_at_apply(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * timeIndex_c, float weight_c, float scale_c);
 
 // 
-void ogre_at_hasNonZeroKeyFrames(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_at_hasNonZeroKeyFrames(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_at_optimise(struct hg3dclass_struct * thisclass_c);

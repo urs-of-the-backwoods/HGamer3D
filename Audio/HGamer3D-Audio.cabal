@@ -1,5 +1,5 @@
 Name:                HGamer3D-Audio
-Version:             0.3.0
+Version:             0.4.0
 Synopsis:            Audio Functionality for HGamer3D
 Description:         
 	HGamer3D is a game engine for developing 3D games in the programming 
@@ -18,9 +18,9 @@ Category:            Game Engine
 Extra-source-files:  Setup.hs 
 
 Library
-  Build-Depends:     base >= 3 && < 5, HGamer3D-Data >= 0.3.0 && < 0.4.0, HGamer3D-SFML-Binding >= 0.3.0 && < 0.4.0
+  Build-Depends:     base >= 3 && < 5, HGamer3D-Data >= 0.4.0 && < 0.5.0, HGamer3D-SFML-Binding >= 0.4.0 && < 0.5.0
 
-  Exposed-modules:   HGamer3D.Audio
+  Exposed-modules:   HGamer3D.Audio.Internal.Base, HGamer3D.Audio
   Other-modules:     
 
   c-sources:         

@@ -1,5 +1,6 @@
 Name:                HGamer3D-Data
 Version:             0.4.0
+tch and new HG3DClass
 Synopsis:            Game Engine for the Haskell Programmer - Data Definitions and Utilities
 Description:         
 	HGamer3D is a game engine for developing 3D games in the programming 

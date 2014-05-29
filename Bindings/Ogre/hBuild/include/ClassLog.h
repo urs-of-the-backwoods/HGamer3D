@@ -36,25 +36,25 @@ void ogre_lg_destruct(struct hg3dclass_struct * thisclass_c);
 void ogre_lg_getName(struct hg3dclass_struct * thisclass_c, char * result_c);
 
 // Get whether debug output is enabled for this log. 
-void ogre_lg_isDebugOutputEnabled(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_lg_isDebugOutputEnabled(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // Get whether file output is suppressed for this log. 
-void ogre_lg_isFileOutputSuppressed(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_lg_isFileOutputSuppressed(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // Get whether time stamps are printed for this log. 
-void ogre_lg_isTimeStampEnabled(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_lg_isTimeStampEnabled(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_lg_logMessage(struct hg3dclass_struct * thisclass_c, char * message_c, enum EnumLogMessageLevel lml_c, int maskDebug_c);
+void ogre_lg_logMessage(struct hg3dclass_struct * thisclass_c, char * message_c, enum EnumLogMessageLevel lml_c, long maskDebug_c);
 
 // 
-void ogre_lg_setDebugOutputEnabled(struct hg3dclass_struct * thisclass_c, int debugOutput_c);
+void ogre_lg_setDebugOutputEnabled(struct hg3dclass_struct * thisclass_c, long debugOutput_c);
 
 // 
 void ogre_lg_setLogDetail(struct hg3dclass_struct * thisclass_c, enum EnumLoggingLevel ll_c);
 
 // 
-void ogre_lg_setTimeStampEnabled(struct hg3dclass_struct * thisclass_c, int timeStamp_c);
+void ogre_lg_setTimeStampEnabled(struct hg3dclass_struct * thisclass_c, long timeStamp_c);
 
 // 
 void ogre_lg_getLogDetail(struct hg3dclass_struct * thisclass_c, enum EnumLoggingLevel * result_c);

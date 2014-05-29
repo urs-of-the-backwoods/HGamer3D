@@ -47,15 +47,15 @@ void ogre_mnos_getMaterialGroup(struct hg3dclass_struct * thisclass_c, char * re
 void ogre_mnos_setMaterialName(struct hg3dclass_struct * thisclass_c, char * name_c, char * groupName_c);
 
 // Set whether we need 32-bit indices. 
-void ogre_mnos_set32BitIndices(struct hg3dclass_struct * thisclass_c, int n32_c);
+void ogre_mnos_set32BitIndices(struct hg3dclass_struct * thisclass_c, long n32_c);
 
 // Get whether we need 32-bit indices. 
-void ogre_mnos_get32BitIndices(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mnos_get32BitIndices(struct hg3dclass_struct * thisclass_c, long * result_c);
 
-// . 
+// 
 void ogre_mnos_getMaterial(struct hg3dclass_struct * thisclass_c, struct sharedptr_struct * result_c);
 
-// . 
+// 
 void ogre_mnos_getSquaredViewDepth(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * _c, float * result_c);
 
 #endif 

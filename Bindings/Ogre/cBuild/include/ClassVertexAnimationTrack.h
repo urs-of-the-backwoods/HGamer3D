@@ -38,7 +38,7 @@ void ogre_vat_construct(struct hg3dclass_struct * parent_c, unsigned short handl
 void ogre_vat_getAnimationType(struct hg3dclass_struct * thisclass_c, enum EnumVertexAnimationType * result_c);
 
 // 
-void ogre_vat_getVertexAnimationIncludesNormals(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_vat_getVertexAnimationIncludesNormals(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_vat_apply(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * timeIndex_c, float weight_c, float scale_c);
@@ -50,7 +50,7 @@ void ogre_vat_setTargetMode(struct hg3dclass_struct * thisclass_c, enum EnumVert
 void ogre_vat_getTargetMode(struct hg3dclass_struct * thisclass_c, enum EnumVertexAnimationTrackTargetMode * result_c);
 
 // 
-void ogre_vat_hasNonZeroKeyFrames(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_vat_hasNonZeroKeyFrames(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_vat_optimise(struct hg3dclass_struct * thisclass_c);

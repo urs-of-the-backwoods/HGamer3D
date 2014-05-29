@@ -21,11 +21,13 @@
 
 module Main where
 
-import HGamer3D                              -- this import HGamer3D with GUI and Graphics3d and WinEvents
+-- import HGamer3D                              -- this import HGamer3D with GUI and Graphics3d and WinEvents
+import HGamer3D.BaseAPI
+
 import Control.Monad.Trans
 import Data.Maybe
 
-printEvent :: GUIElement -> GUIEvent -> IO ()
+printEvent :: GUIElement a -> GUIEvent -> IO ()
 printEvent outbox event = do
         case event of
                 GUIEvent tag sender window -> do
@@ -54,14 +56,17 @@ printEvent outbox event = do
                                         sel <- getGuiElProperty window "CurrentValue"
                                         return (sel)
                                 "ListboxWidget" -> do
-                                        sel <- listboxGetSelectedText window
+                                        mlb <- toListBox window
+                                        sel <- case mlb of
+                                          Just lb -> listboxGetSelectedText lb
+                                          Nothing -> return [""]
                                         let sel' = if length sel>0 then foldl (\s1 s2 -> (s1 ++ "\n " ++ s2)) [] sel else ""
                                         return (sel')
                                 "ComboboxWidget" -> do
                                         sel <- getGuiElProperty window "Text"
                                         return (sel)
                                 "ButtonWidget" -> do
-                                        return "clicked"
+                                        return "Button clicked"
                                 _ -> return "no details"
                                         
                         let oldtext' = if length oldtext > 250 then drop 50 oldtext else oldtext
@@ -71,7 +76,7 @@ printEvent outbox event = do
 
 
 checkEvents outtext g3ds guis = do
-  (evt, qFlag) <- loopHGamer3D g3ds guis
+  (evt, qFlag) <- stepHGamer3D g3ds guis
   if qFlag then
     return False
     else
@@ -84,8 +89,8 @@ checkEvents outtext g3ds guis = do
       
 renderLoop cube outtext g3ds guis = do
    -- rotate 
-  yaw3D cube (Rad 0.005) 
-  roll3D cube (Rad 0.002)
+  yaw cube (Rad 0.005) 
+  roll cube (Rad 0.002)
   proceed <- checkEvents outtext g3ds guis
   if proceed then renderLoop cube outtext g3ds guis else return ()
    
@@ -99,15 +104,13 @@ registerWidgetEvent guis rootWindow widgetName eventName tagName = do
                 Nothing -> do
                         return ()                                                         
                                                          
-white = Colour 1.0 1.0 1.0 1.0
-
 main = do 
   
         (g3ds, guis, camera, viewport) <- initHGamer3D "HGamer3D - GUI Widgets Example" True False True
   
 	-- camera position
 	let pos = Vec3 5.0 5.0 80.0
-        positionTo3D camera pos
+        positionTo camera pos
 	let at = Vec3 0.0 0.0 (-300.0)
         cameraLookAt camera at
 	
@@ -118,9 +121,10 @@ main = do
         
 	-- create a shiny blue cube
         let cube = cubeMesh
-        cube <- object3DFromMesh g3ds cube (Just (ResourceMaterial "Colours/Blue") ) False
-        positionTo3D cube (Vec3 0.0 0.0 0.0)
-        scaleTo3D cube (Vec3 0.2 0.2 0.2)
+        let blueMat = resourceMaterial "Colours/Blue"
+        cube <- object3DFromMesh g3ds cube (Just blueMat) False
+        positionTo cube (Vec3 0.0 0.0 0.0)
+        scale cube (Vec3 0.2 0.2 0.2)
         
 	-- GUI Code starts here, display hg3d logo
 	loadGuiScheme guis "hg3d.scheme"
@@ -134,7 +138,7 @@ main = do
 	addGuiElToDisplay guis guiwidgets
         
         -- add lists to listbox and combobox
-	listbox <- findChildGuiElRecursive guiwidgets "ListboxWidget"
+	listbox <- findListBox "ListboxWidget" guiwidgets
         outtext <- fmap fromJust ( findChildGuiElRecursive guiwidgets "OuttextWidget")
         
 	case listbox of
@@ -145,7 +149,7 @@ main = do
 		Nothing -> do
 			return ()
                         
-	combobox <- findChildGuiElRecursive guiwidgets "ComboboxWidget"
+	combobox <- findComboBox "ComboboxWidget" guiwidgets
 	case combobox of
 		Just widgetOk -> do
 			mapM (comboboxAddText widgetOk) ["Choice One", "Choice Two", "Choice Three"]
@@ -169,5 +173,5 @@ main = do
                         
 	-- start render loop
 	renderLoop cube outtext g3ds guis
-        exitHGamer3D g3ds guis
+        freeHGamer3D g3ds guis
         return ()

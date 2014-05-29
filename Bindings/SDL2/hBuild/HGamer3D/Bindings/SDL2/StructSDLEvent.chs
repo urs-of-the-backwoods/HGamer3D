@@ -40,6 +40,7 @@ import HGamer3D.Data.Angle
 #include "StructSDLEvent.h"
 
 import HGamer3D.Data
+import HGamer3D.Data.Window
 
 import HGamer3D.Bindings.SDL2.EnumSDLEventType
 import HGamer3D.Bindings.SDL2.EnumSDLKeymod

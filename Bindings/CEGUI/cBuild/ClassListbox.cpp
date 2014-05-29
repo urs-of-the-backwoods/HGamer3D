@@ -36,10 +36,10 @@
 #include "RendererModules/Ogre/CEGUIOgreRenderer.h"
 #include "./WindowManagerHG3D.h"
 #include "./SystemHG3D.h"
+#include "HG3DCommandHandler.h"
 #include "HG3DEventStaticFunctions.h"
 #include "HG3DListboxStaticFunctions.h"
 #include "HG3DEventController.h"
-#include "HG3DCommandHandler.h"
 #include "HG3DEventModule.h"
 #include "HG3DWindowStaticFunctions.h"
 
@@ -206,8 +206,7 @@ extern "C" CEGUI_LIB_EXPORT void cegui_lstbx_addItem(struct hg3dclass_struct * t
   (thisclass_cpp->addItem(item_cpp));
 };
 
-//     Insert an item into the list box before a specified item already in the
-
+// Insert an item into the list box before a specified item already in the list. 
 extern "C" CEGUI_LIB_EXPORT void cegui_lstbx_insertItem(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * item_c, struct hg3dclass_struct * position_c)
 {
   CEGUI::Listbox * thisclass_cpp = static_cast<CEGUI::Listbox*> (getHG3DClassPtr(*thisclass_c, "CEGUI::Listbox"));

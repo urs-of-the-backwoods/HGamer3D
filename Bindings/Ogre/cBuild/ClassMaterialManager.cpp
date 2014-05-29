@@ -66,7 +66,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mtrlmgr_initialise(struct hg3dclass_struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mtrlmgr_setDefaultAnisotropy(struct hg3dclass_struct * thisclass_c, unsigned int maxAniso_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mtrlmgr_setDefaultAnisotropy(struct hg3dclass_struct * thisclass_c, unsigned long maxAniso_c)
 {
   Ogre::MaterialManager * thisclass_cpp = static_cast<Ogre::MaterialManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::MaterialManager"));
   unsigned int maxAniso_cpp = (unsigned int)maxAniso_c;
@@ -74,12 +74,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_mtrlmgr_setDefaultAnisotropy(struct hg3dcla
 };
 
 // Get the default maxAnisotropy. 
-extern "C" Ogre_LIB_EXPORT void ogre_mtrlmgr_getDefaultAnisotropy(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mtrlmgr_getDefaultAnisotropy(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::MaterialManager * thisclass_cpp = static_cast<Ogre::MaterialManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::MaterialManager"));
   unsigned int result_cpp;
   result_cpp = (thisclass_cpp->getDefaultAnisotropy());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 

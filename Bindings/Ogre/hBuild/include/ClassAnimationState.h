@@ -29,7 +29,7 @@
 
 
 // 
-void ogre_anms_construct(char * animName_c, struct hg3dclass_struct * parent_c, float timePos_c, float length_c, float weight_c, int enabled_c, struct hg3dclass_struct * result_c);
+void ogre_anms_construct(char * animName_c, struct hg3dclass_struct * parent_c, float timePos_c, float length_c, float weight_c, long enabled_c, struct hg3dclass_struct * result_c);
 
 // 
 void ogre_anms_destruct(struct hg3dclass_struct * thisclass_c);
@@ -59,19 +59,19 @@ void ogre_anms_setWeight(struct hg3dclass_struct * thisclass_c, float weight_c);
 void ogre_anms_addTime(struct hg3dclass_struct * thisclass_c, float offset_c);
 
 // Returns true if the animation has reached the end and is not looping. 
-void ogre_anms_hasEnded(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_anms_hasEnded(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // Returns true if this animation is currently enabled. 
-void ogre_anms_getEnabled(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_anms_getEnabled(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // Sets whether this animation is enabled. 
-void ogre_anms_setEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c);
+void ogre_anms_setEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c);
 
 // 
-void ogre_anms_setLoop(struct hg3dclass_struct * thisclass_c, int loop_c);
+void ogre_anms_setLoop(struct hg3dclass_struct * thisclass_c, long loop_c);
 
 // Gets whether or not this animation loops. 
-void ogre_anms_getLoop(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_anms_getLoop(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_anms_copyStateFrom(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * animState_c);
@@ -80,18 +80,18 @@ void ogre_anms_copyStateFrom(struct hg3dclass_struct * thisclass_c, struct hg3dc
 void ogre_anms_getParent(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
 
 // Create a new blend mask with the given number of entries. 
-void ogre_anms_createBlendMask(struct hg3dclass_struct * thisclass_c, int blendMaskSizeHint_c, float initialWeight_c);
+void ogre_anms_createBlendMask(struct hg3dclass_struct * thisclass_c, long blendMaskSizeHint_c, float initialWeight_c);
 
 // Destroy the currently set blend mask. 
 void ogre_anms_destroyBlendMask(struct hg3dclass_struct * thisclass_c);
 
 // Return whether there is currently a valid blend mask set. 
-void ogre_anms_hasBlendMask(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_anms_hasBlendMask(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // Set the weight for the bone identified by the given handle. 
-void ogre_anms_setBlendMaskEntry(struct hg3dclass_struct * thisclass_c, int boneHandle_c, float weight_c);
+void ogre_anms_setBlendMaskEntry(struct hg3dclass_struct * thisclass_c, long boneHandle_c, float weight_c);
 
 // Get the weight for the bone identified by the given handle. 
-void ogre_anms_getBlendMaskEntry(struct hg3dclass_struct * thisclass_c, int boneHandle_c, float * result_c);
+void ogre_anms_getBlendMaskEntry(struct hg3dclass_struct * thisclass_c, long boneHandle_c, float * result_c);
 
 #endif 

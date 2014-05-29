@@ -55,10 +55,10 @@ void ogre_msh_getBoundingSphereRadius(struct hg3dclass_struct * thisclass_c, flo
 void ogre_msh_setSkeletonName(struct hg3dclass_struct * thisclass_c, char * skelName_c);
 
 // 
-void ogre_msh_hasSkeleton(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_msh_hasSkeleton(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_msh_hasVertexAnimation(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_msh_hasVertexAnimation(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_msh_getSkeleton(struct hg3dclass_struct * thisclass_c, struct sharedptr_struct * result_c);
@@ -73,16 +73,16 @@ void ogre_msh_clearBoneAssignments(struct hg3dclass_struct * thisclass_c);
 void ogre_msh_createManualLodLevel(struct hg3dclass_struct * thisclass_c, float value_c, char * meshName_c, char * groupName_c);
 
 // 
-void ogre_msh_isLodManual(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_msh_isLodManual(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_msh_removeLodLevels(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_msh_isVertexBufferShadowed(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_msh_isVertexBufferShadowed(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_msh_isIndexBufferShadowed(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_msh_isIndexBufferShadowed(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_msh_buildEdgeList(struct hg3dclass_struct * thisclass_c);
@@ -94,22 +94,22 @@ void ogre_msh_freeEdgeList(struct hg3dclass_struct * thisclass_c);
 void ogre_msh_prepareForShadowVolume(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_msh_isPreparedForShadowVolumes(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_msh_isPreparedForShadowVolumes(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_msh_isEdgeListBuilt(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_msh_isEdgeListBuilt(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_msh_setAutoBuildEdgeLists(struct hg3dclass_struct * thisclass_c, int autobuild_c);
+void ogre_msh_setAutoBuildEdgeLists(struct hg3dclass_struct * thisclass_c, long autobuild_c);
 
 // 
-void ogre_msh_getAutoBuildEdgeLists(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_msh_getAutoBuildEdgeLists(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_msh_getSharedVertexDataAnimationType(struct hg3dclass_struct * thisclass_c, enum EnumVertexAnimationType * result_c);
 
 // Returns whether animation on shared vertex data includes normals. 
-void ogre_msh_getSharedVertexDataAnimationIncludesNormals(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_msh_getSharedVertexDataAnimationIncludesNormals(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_msh_createAnimation(struct hg3dclass_struct * thisclass_c, char * name_c, float length_c, struct hg3dclass_struct * result_c);
@@ -118,7 +118,7 @@ void ogre_msh_createAnimation(struct hg3dclass_struct * thisclass_c, char * name
 void ogre_msh_getAnimation(struct hg3dclass_struct * thisclass_c, char * name_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_msh_hasAnimation(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c);
+void ogre_msh_hasAnimation(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c);
 
 // 
 void ogre_msh_removeAnimation(struct hg3dclass_struct * thisclass_c, char * name_c);
@@ -136,7 +136,7 @@ void ogre_msh_removeAllAnimations(struct hg3dclass_struct * thisclass_c);
 void ogre_msh_updateMaterialForAllSubMeshes(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_msh_getPoseCount(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_msh_getPoseCount(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_msh_removePose2(struct hg3dclass_struct * thisclass_c, char * name_c);

@@ -1,5 +1,5 @@
 Name:                HGamer3D
-Version:             0.3.3
+Version:             0.4.0
 Synopsis:            A Game Engine for the Haskell Programmer
 Description:         
 	HGamer3D is a game engine for developing 3D games in the programming 
@@ -7,7 +7,6 @@ Description:
 	sound, input device handling, gui programming and other areas and make
 	those functions available for the Haskell programmer by providing  
 	a Haskell API on top of that. HGamer3D is available on Windows and Linux.
-	This package includes 3D Graphics, GUI and WinEvent.
 	
 License:             OtherLicense
 License-file:        LICENSE
@@ -19,10 +18,26 @@ Homepage:            http://www.hgamer3d.org
 Category:            Game Engine
 Extra-source-files:  Setup.hs 
 
-Library
-  Build-Depends:     base >= 3 && < 5, HGamer3D-Data >= 0.3.0 && < 0.4.0, HGamer3D-Graphics3D >= 0.3.0 && < 0.4.0, HGamer3D-WinEvent >= 0.3.0 && < 0.4.0, HGamer3D-GUI >= 0.3.0 && < 0.4.0 
+Flag Audio
+  Description: Enable Audio
+  Default: True
 
-  Exposed-modules:   HGamer3D
+Flag Network
+  Description: Enable Network
+  Default: True
+
+Flag InputSystem
+  Description: Enable Joystick, Mouse, Keyboard Polling
+  Default: True
+
+Flag Extensions
+  Description: API extensions
+  Default: True
+
+Library
+  Build-Depends:     base >= 3 && < 5, HGamer3D-Data >= 0.4.0 && < 0.5.0, HGamer3D-Graphics3D >= 0.4.0 && < 0.5.0, HGamer3D-WinEvent >= 0.4.0 && < 0.5.0, HGamer3D-GUI >= 0.4.0 && < 0.5.0 
+
+  Exposed-modules:   HGamer3D.Internal.GameLoop, HGamer3D.BaseAPI
   Other-modules:     
 
   c-sources:         
@@ -33,3 +48,19 @@ Library
   Include-dirs:      . 
   build-depends:     
   extra-libraries:   
+
+  if flag(audio)
+    build-depends: HGamer3D-Audio >= 0.4 && < 0.5
+    exposed-modules: HGamer3D.Modules.Audio
+
+  if flag(network)
+    build-depends: HGamer3D-Network >= 0.4 && < 0.5
+    exposed-modules: HGamer3D.Modules.Network
+
+  if flag(inputsystem)
+    build-depends: HGamer3D-InputSystem >= 0.4 && < 0.5
+    exposed-modules: HGamer3D.Modules.InputSystem
+
+  if flag(extensions)
+    build-depends: HGamer3D-Wire >= 0.4.0 && < 0.5.0, HGamer3D-Schema >= 0.4.0 && < 0.5.0
+    exposed-modules: HGamer3D.Extensions.Schema, HGamer3D.Extensions.Wire

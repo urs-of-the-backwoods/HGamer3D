@@ -23,7 +23,7 @@ limitations under the License.
 class HG3DUtilities
 {
  public:
-     static unsigned int getWindowHandle(Ogre::RenderWindow *window);
+     static unsigned long getWindowHandle(Ogre::RenderWindow *window);
      static void setupCloseEventHandler(Ogre::RenderWindow *window);
      static int checkQuitReceived();
      static void buildTangentVectors(Ogre::Entity *entity);

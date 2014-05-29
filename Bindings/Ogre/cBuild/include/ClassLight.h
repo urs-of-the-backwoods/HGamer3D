@@ -131,19 +131,19 @@ void ogre_lgt_getPowerScale(struct hg3dclass_struct * thisclass_c, float * resul
 void ogre_lgt_getMovableType(struct hg3dclass_struct * thisclass_c, char * result_c);
 
 // 
-void ogre_lgt_getDerivedPosition(struct hg3dclass_struct * thisclass_c, int cameraRelativeIfSet_c, struct vector3_struct * result_c);
+void ogre_lgt_getDerivedPosition(struct hg3dclass_struct * thisclass_c, long cameraRelativeIfSet_c, struct vector3_struct * result_c);
 
 // 
 void ogre_lgt_getDerivedDirection(struct hg3dclass_struct * thisclass_c, struct vector3_struct * result_c);
 
 // 
-void ogre_lgt_setVisible(struct hg3dclass_struct * thisclass_c, int visible_c);
+void ogre_lgt_setVisible(struct hg3dclass_struct * thisclass_c, long visible_c);
 
 // 
 void ogre_lgt_getBoundingRadius(struct hg3dclass_struct * thisclass_c, float * result_c);
 
 // Override to return specific type flag. 
-void ogre_lgt_getTypeFlags(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_lgt_getTypeFlags(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 // 
 void ogre_lgt_resetCustomShadowCameraSetup(struct hg3dclass_struct * thisclass_c);

@@ -3,19 +3,17 @@ module Main where
 import HGamer3D.WinEvent
 
 loopEvents = do
-  evt <- loopHGamer3D
+  evt <- pollWinEvent
   case evt of
     Just (EvtQuit ts) -> return ()
     _ -> loopEvents
 
 main = do
-  success <- initHGamer3D [WEV_INIT_EVENTS, WEV_INIT_TIMER, WEV_INIT_VIDEO]
-  win <- openWindow "HGamer3D - WinEvent window creation test" 100 100 500 300 [SDL_WINDOW_SHOWN]
-  
+  success <- initWinEvent [WEV_INIT_EVENTS, WEV_INIT_TIMER, WEV_INIT_VIDEO]
   print success
-  print win
+  win <- openWindow "HGamer3D - WinEvent window creation test" 100 100 500 300 [SDL_WINDOW_SHOWN]
   loopEvents
-  exitHGamer3D
+  freeWinEvent
   return ()
   
   

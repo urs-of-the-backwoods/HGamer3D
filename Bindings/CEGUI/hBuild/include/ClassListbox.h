@@ -80,8 +80,7 @@ void cegui_lstbx_resetList(struct hg3dclass_struct * thisclass_c);
 // Add the given ListboxItem
 void cegui_lstbx_addItem(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * item_c);
 
-//     Insert an item into the list box before a specified item already in the
-
+// Insert an item into the list box before a specified item already in the list. 
 void cegui_lstbx_insertItem(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * item_c, struct hg3dclass_struct * position_c);
 
 // Removes the given item from the list box. If the item is has the auto delete state set, the item will be deleted. 

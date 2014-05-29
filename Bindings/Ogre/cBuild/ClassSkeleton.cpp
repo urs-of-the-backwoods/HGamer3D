@@ -135,13 +135,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_skl_getBone2(struct hg3dclass_struct * this
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_skl_hasBone(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_skl_hasBone(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::Skeleton * thisclass_cpp = static_cast<Ogre::Skeleton*> (getHG3DClassPtr(*thisclass_c, "Ogre::Skeleton"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasBone(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -152,7 +152,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_skl_setBindingPose(struct hg3dclass_struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_skl_reset(struct hg3dclass_struct * thisclass_c, int resetManualBones_c)
+extern "C" Ogre_LIB_EXPORT void ogre_skl_reset(struct hg3dclass_struct * thisclass_c, long resetManualBones_c)
 {
   Ogre::Skeleton * thisclass_cpp = static_cast<Ogre::Skeleton*> (getHG3DClassPtr(*thisclass_c, "Ogre::Skeleton"));
   bool resetManualBones_cpp = (bool)resetManualBones_c;
@@ -183,13 +183,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_skl_getAnimation2(struct hg3dclass_struct *
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_skl_hasAnimation(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_skl_hasAnimation(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::Skeleton * thisclass_cpp = static_cast<Ogre::Skeleton*> (getHG3DClassPtr(*thisclass_c, "Ogre::Skeleton"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasAnimation(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -246,7 +246,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_skl_setBlendMode(struct hg3dclass_struct * 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_skl_optimiseAllAnimations(struct hg3dclass_struct * thisclass_c, int preservingIdentityNodeTracks_c)
+extern "C" Ogre_LIB_EXPORT void ogre_skl_optimiseAllAnimations(struct hg3dclass_struct * thisclass_c, long preservingIdentityNodeTracks_c)
 {
   Ogre::Skeleton * thisclass_cpp = static_cast<Ogre::Skeleton*> (getHG3DClassPtr(*thisclass_c, "Ogre::Skeleton"));
   bool preservingIdentityNodeTracks_cpp = (bool)preservingIdentityNodeTracks_c;
@@ -270,20 +270,20 @@ extern "C" Ogre_LIB_EXPORT void ogre_skl_removeAllLinkedSkeletonAnimationSources
 };
 
 // Have manual bones been modified since the skeleton was last updated? 
-extern "C" Ogre_LIB_EXPORT void ogre_skl_getManualBonesDirty(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_skl_getManualBonesDirty(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Skeleton * thisclass_cpp = static_cast<Ogre::Skeleton*> (getHG3DClassPtr(*thisclass_c, "Ogre::Skeleton"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getManualBonesDirty());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // Are there any manually controlled bones? 
-extern "C" Ogre_LIB_EXPORT void ogre_skl_hasManualBones(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_skl_hasManualBones(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Skeleton * thisclass_cpp = static_cast<Ogre::Skeleton*> (getHG3DClassPtr(*thisclass_c, "Ogre::Skeleton"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasManualBones());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 

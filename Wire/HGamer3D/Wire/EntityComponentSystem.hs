@@ -18,7 +18,7 @@ module HGamer3D.Wire.EntityComponentSystem where
 
 import HGamer3D.Wire.Types
 
-import HGamer3D  
+import HGamer3D.Graphics3D
 import HGamer3D.Audio
 import HGamer3D.InputSystem
 

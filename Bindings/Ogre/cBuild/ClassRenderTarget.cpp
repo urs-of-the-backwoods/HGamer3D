@@ -62,43 +62,43 @@ extern "C" Ogre_LIB_EXPORT void ogre_rtgt_getName(struct hg3dclass_struct * this
 };
 
 // Retrieve information about the render target. 
-extern "C" Ogre_LIB_EXPORT void ogre_rtgt_getMetrics(struct hg3dclass_struct * thisclass_c, unsigned int * width_c, unsigned int * height_c, unsigned int * colourDepth_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rtgt_getMetrics(struct hg3dclass_struct * thisclass_c, unsigned long * width_c, unsigned long * height_c, unsigned long * colourDepth_c)
 {
   Ogre::RenderTarget * thisclass_cpp = static_cast<Ogre::RenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderTarget"));
   unsigned int width_cpp;
   unsigned int height_cpp;
   unsigned int colourDepth_cpp;
   (thisclass_cpp->getMetrics(width_cpp, height_cpp, colourDepth_cpp));
-  *width_c = (unsigned int)width_cpp;
-  *height_c = (unsigned int)height_cpp;
-  *colourDepth_c = (unsigned int)colourDepth_cpp;
+  *width_c = (unsigned long)width_cpp;
+  *height_c = (unsigned long)height_cpp;
+  *colourDepth_c = (unsigned long)colourDepth_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rtgt_getWidth(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rtgt_getWidth(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::RenderTarget * thisclass_cpp = static_cast<Ogre::RenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderTarget"));
   unsigned int result_cpp;
   result_cpp = (thisclass_cpp->getWidth());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rtgt_getHeight(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rtgt_getHeight(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::RenderTarget * thisclass_cpp = static_cast<Ogre::RenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderTarget"));
   unsigned int result_cpp;
   result_cpp = (thisclass_cpp->getHeight());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rtgt_getColourDepth(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rtgt_getColourDepth(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::RenderTarget * thisclass_cpp = static_cast<Ogre::RenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderTarget"));
   unsigned int result_cpp;
   result_cpp = (thisclass_cpp->getColourDepth());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 
@@ -126,7 +126,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rtgt_detachDepthBuffer(struct hg3dclass_str
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rtgt_update(struct hg3dclass_struct * thisclass_c, int swapBuffers_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rtgt_update(struct hg3dclass_struct * thisclass_c, long swapBuffers_c)
 {
   Ogre::RenderTarget * thisclass_cpp = static_cast<Ogre::RenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderTarget"));
   bool swapBuffers_cpp = (bool)swapBuffers_c;
@@ -134,7 +134,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rtgt_update(struct hg3dclass_struct * thisc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rtgt_swapBuffers(struct hg3dclass_struct * thisclass_c, int waitForVSync_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rtgt_swapBuffers(struct hg3dclass_struct * thisclass_c, long waitForVSync_c)
 {
   Ogre::RenderTarget * thisclass_cpp = static_cast<Ogre::RenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderTarget"));
   bool waitForVSync_cpp = (bool)waitForVSync_c;
@@ -142,7 +142,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rtgt_swapBuffers(struct hg3dclass_struct * 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rtgt_addViewport(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * cam_c, int ZOrder_c, float left_c, float top_c, float width_c, float height_c, struct hg3dclass_struct * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rtgt_addViewport(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * cam_c, long ZOrder_c, float left_c, float top_c, float width_c, float height_c, struct hg3dclass_struct * result_c)
 {
   Ogre::RenderTarget * thisclass_cpp = static_cast<Ogre::RenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderTarget"));
   Ogre::Camera * cam_cpp = static_cast<Ogre::Camera*> (getHG3DClassPtr(*cam_c, "Ogre::Camera"));
@@ -178,7 +178,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rtgt_getViewport(struct hg3dclass_struct * 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rtgt_getViewportByZOrder(struct hg3dclass_struct * thisclass_c, int ZOrder_c, struct hg3dclass_struct * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rtgt_getViewportByZOrder(struct hg3dclass_struct * thisclass_c, long ZOrder_c, struct hg3dclass_struct * result_c)
 {
   Ogre::RenderTarget * thisclass_cpp = static_cast<Ogre::RenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderTarget"));
   int ZOrder_cpp = (int)ZOrder_c;
@@ -189,17 +189,17 @@ extern "C" Ogre_LIB_EXPORT void ogre_rtgt_getViewportByZOrder(struct hg3dclass_s
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rtgt_hasViewportWithZOrder(struct hg3dclass_struct * thisclass_c, int ZOrder_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rtgt_hasViewportWithZOrder(struct hg3dclass_struct * thisclass_c, long ZOrder_c, long * result_c)
 {
   Ogre::RenderTarget * thisclass_cpp = static_cast<Ogre::RenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderTarget"));
   int ZOrder_cpp = (int)ZOrder_c;
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasViewportWithZOrder(ZOrder_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rtgt_removeViewport(struct hg3dclass_struct * thisclass_c, int ZOrder_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rtgt_removeViewport(struct hg3dclass_struct * thisclass_c, long ZOrder_c)
 {
   Ogre::RenderTarget * thisclass_cpp = static_cast<Ogre::RenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderTarget"));
   int ZOrder_cpp = (int)ZOrder_c;
@@ -297,16 +297,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_rtgt_removeAllListeners(struct hg3dclass_st
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rtgt_isActive(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rtgt_isActive(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::RenderTarget * thisclass_cpp = static_cast<Ogre::RenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderTarget"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isActive());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rtgt_setActive(struct hg3dclass_struct * thisclass_c, int state_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rtgt_setActive(struct hg3dclass_struct * thisclass_c, long state_c)
 {
   Ogre::RenderTarget * thisclass_cpp = static_cast<Ogre::RenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderTarget"));
   bool state_cpp = (bool)state_c;
@@ -314,7 +314,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_rtgt_setActive(struct hg3dclass_struct * th
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rtgt_setAutoUpdated(struct hg3dclass_struct * thisclass_c, int autoupdate_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rtgt_setAutoUpdated(struct hg3dclass_struct * thisclass_c, long autoupdate_c)
 {
   Ogre::RenderTarget * thisclass_cpp = static_cast<Ogre::RenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderTarget"));
   bool autoupdate_cpp = (bool)autoupdate_c;
@@ -322,12 +322,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_rtgt_setAutoUpdated(struct hg3dclass_struct
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rtgt_isAutoUpdated(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rtgt_isAutoUpdated(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::RenderTarget * thisclass_cpp = static_cast<Ogre::RenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderTarget"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isAutoUpdated());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -354,57 +354,57 @@ extern "C" Ogre_LIB_EXPORT void ogre_rtgt_writeContentsToTimestampedFile(struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rtgt_requiresTextureFlipping(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rtgt_requiresTextureFlipping(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::RenderTarget * thisclass_cpp = static_cast<Ogre::RenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderTarget"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->requiresTextureFlipping());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rtgt_getTriangleCount(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rtgt_getTriangleCount(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::RenderTarget * thisclass_cpp = static_cast<Ogre::RenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderTarget"));
   size_t result_cpp;
   result_cpp = (thisclass_cpp->getTriangleCount());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rtgt_getBatchCount(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rtgt_getBatchCount(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::RenderTarget * thisclass_cpp = static_cast<Ogre::RenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderTarget"));
   size_t result_cpp;
   result_cpp = (thisclass_cpp->getBatchCount());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rtgt_isPrimary(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rtgt_isPrimary(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::RenderTarget * thisclass_cpp = static_cast<Ogre::RenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderTarget"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isPrimary());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rtgt_isHardwareGammaEnabled(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rtgt_isHardwareGammaEnabled(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::RenderTarget * thisclass_cpp = static_cast<Ogre::RenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderTarget"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isHardwareGammaEnabled());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_rtgt_getFSAA(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_rtgt_getFSAA(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::RenderTarget * thisclass_cpp = static_cast<Ogre::RenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderTarget"));
   uint result_cpp;
   result_cpp = (thisclass_cpp->getFSAA());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 

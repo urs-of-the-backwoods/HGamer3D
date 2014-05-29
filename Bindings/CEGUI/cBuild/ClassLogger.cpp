@@ -37,10 +37,10 @@
 #include "RendererModules/Ogre/CEGUIOgreRenderer.h"
 #include "./WindowManagerHG3D.h"
 #include "./SystemHG3D.h"
+#include "HG3DCommandHandler.h"
 #include "HG3DEventStaticFunctions.h"
 #include "HG3DListboxStaticFunctions.h"
 #include "HG3DEventController.h"
-#include "HG3DCommandHandler.h"
 #include "HG3DEventModule.h"
 #include "HG3DWindowStaticFunctions.h"
 

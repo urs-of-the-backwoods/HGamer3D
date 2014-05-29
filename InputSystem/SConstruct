@@ -1,5 +1,5 @@
-# SConstruct file to build Haskell packages
-# #########################################
+# SConstruct file to build Haskell packages for InputSystem module
+# ################################################################
 
 # set environment
 #################
@@ -14,14 +14,23 @@ env["ENV"]["HOME"] = os.environ.get("HOME")
 ##########################
 
 dependsOn = [
-	  Glob("HGamer3D/*"),
+	  "HGamer3D/InputSystem.hs",
+	  Glob("HGamer3D/InputSystem/Internal/*"),
 	  Glob("*.cabal"),
-	  "LICENSE"
+	  "LICENSE",
+
+	  Glob("../Data/dist/HGamer3D-*.tar.gz"),
+	  Glob("../Bindings/SFML/hBuild/dist/HGamer3D-*.tar.gz"),
+
 ]
 
 target = [ "dist/setup-config", Glob("dist/HGamer3D-*.tar.gz")]
 
 env.Command(target, dependsOn, [
+
+"ghc-pkg unregister HGamer3D || true",
+"ghc-pkg unregister HGamer3D-Wire || true",
+
 "cabal configure --user",
 "cabal build",
 "cabal haddock",

@@ -59,13 +59,13 @@ void ogre_skl_getBone(struct hg3dclass_struct * thisclass_c, unsigned short hand
 void ogre_skl_getBone2(struct hg3dclass_struct * thisclass_c, char * name_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_skl_hasBone(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c);
+void ogre_skl_hasBone(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c);
 
 // 
 void ogre_skl_setBindingPose(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_skl_reset(struct hg3dclass_struct * thisclass_c, int resetManualBones_c);
+void ogre_skl_reset(struct hg3dclass_struct * thisclass_c, long resetManualBones_c);
 
 // 
 void ogre_skl_createAnimation(struct hg3dclass_struct * thisclass_c, char * name_c, float length_c, struct hg3dclass_struct * result_c);
@@ -74,7 +74,7 @@ void ogre_skl_createAnimation(struct hg3dclass_struct * thisclass_c, char * name
 void ogre_skl_getAnimation2(struct hg3dclass_struct * thisclass_c, char * name_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_skl_hasAnimation(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c);
+void ogre_skl_hasAnimation(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c);
 
 // 
 void ogre_skl_removeAnimation(struct hg3dclass_struct * thisclass_c, char * name_c);
@@ -95,7 +95,7 @@ void ogre_skl_getBlendMode(struct hg3dclass_struct * thisclass_c, enum EnumSkele
 void ogre_skl_setBlendMode(struct hg3dclass_struct * thisclass_c, enum EnumSkeletonAnimationBlendMode state_c);
 
 // 
-void ogre_skl_optimiseAllAnimations(struct hg3dclass_struct * thisclass_c, int preservingIdentityNodeTracks_c);
+void ogre_skl_optimiseAllAnimations(struct hg3dclass_struct * thisclass_c, long preservingIdentityNodeTracks_c);
 
 // 
 void ogre_skl_addLinkedSkeletonAnimationSource(struct hg3dclass_struct * thisclass_c, char * skelName_c, float scale_c);
@@ -104,9 +104,9 @@ void ogre_skl_addLinkedSkeletonAnimationSource(struct hg3dclass_struct * thiscla
 void ogre_skl_removeAllLinkedSkeletonAnimationSources(struct hg3dclass_struct * thisclass_c);
 
 // Have manual bones been modified since the skeleton was last updated? 
-void ogre_skl_getManualBonesDirty(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_skl_getManualBonesDirty(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // Are there any manually controlled bones? 
-void ogre_skl_hasManualBones(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_skl_hasManualBones(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 #endif 

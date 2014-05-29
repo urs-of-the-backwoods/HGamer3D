@@ -47,7 +47,7 @@ module HGamer3D.Wire.GUI
 
 where
 
-import HGamer3D
+import HGamer3D.Graphics3D
 import HGamer3D.GUI
 
 import Control.Monad.Trans

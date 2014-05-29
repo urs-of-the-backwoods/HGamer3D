@@ -34,15 +34,11 @@ getJoysticks = do
 
 showAxesValues jn axes = do
 	updateJoystickStatus
-	bp <- isJoystickButtonPressed jn (JoystickButton 0)
 	vals <- mapM (\a -> do 
 		getJoystickAxisPosition jn a) axes
 	putStrLn $ "Joystick Positions: " ++ (show vals)
-	if not bp then do
-		showAxesValues jn axes
-		return ()
-		else
-			return ()
+	showAxesValues jn axes
+	return ()
 		
 getJoystickProperties jn = do
 	jbs <- getJoystickButtons jn
@@ -66,7 +62,7 @@ main = do
 	putStrLn "Choose one (only type the number):"
 	line <- readLn
 	let jn = (fromIntegral (toInteger line))::Int
-	let joystick = Joystick jn
+	let joystick = js !! jn
 	
 	if (elem joystick js) then do
 		putStrLn $  (show jn) ++ " selected"
@@ -88,7 +84,7 @@ main = do
 
 		-- show values of axes, until button one is pressed
 		
-		putStrLn "After Enter, show values of all Axes, until Button 0 pressed"
+		putStrLn "After Enter, show values of all Axes"
 		getChar
 		
 		x <- showAxesValues joystick axes

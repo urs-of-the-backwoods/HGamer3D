@@ -16,20 +16,15 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- Events.hs
+-- WinEvents.hs
 
 
--- | Windowing and Event functionality for HGamer3D
+-- | Windowing and Event functionality for HGamer3D, public API. This module abstracts the functionality needed to create a window and to handle events from this window over different platforms. This module currently is not useful standalone, but is used in HGamer3D (main module) to construct initialization and game loop functionality.
 module HGamer3D.WinEvent
 (
+  -- * Basic Data Types and Enums
   EnumWinEventInit (..),
-  SDLWindow,
-  initWinEvent,
-  attachToWindow,
-  openWindow,
-  pollWinEvent,
-  quitWinEvent,
-  showCursor,
+  SDLSystem,
   module HGamer3D.Bindings.SDL2.StructSDLEvent,
   module HGamer3D.Bindings.SDL2.EnumSDLEventType,
   module HGamer3D.Bindings.SDL2.EnumSDLKeymod,
@@ -37,96 +32,22 @@ module HGamer3D.WinEvent
   module HGamer3D.Bindings.SDL2.EnumSDLWindowEventID,
   module HGamer3D.Bindings.SDL2.EnumSDLWindowFlags,
 
-  initHGamer3D,
-  exitHGamer3D,
-  loopHGamer3D
+  -- * Initialization and Game Loop Functions
+  initWinEvent,
+  freeWinEvent,
+  pollWinEvent,
+
+  -- * Misc Functions
+  openWindow,
 )
 
 where
 
-import GHC.Ptr
-import HGamer3D.Data
-
-import HGamer3D.Bindings.SDL2.ClassPtr
-import HGamer3D.Bindings.SDL2.Utils
-
+import HGamer3D.WinEvent.Internal.Base
 
 import HGamer3D.Bindings.SDL2.EnumSDLEventType
 import HGamer3D.Bindings.SDL2.EnumSDLKeymod
 import HGamer3D.Bindings.SDL2.EnumSDLScancode
 import HGamer3D.Bindings.SDL2.EnumSDLWindowEventID
 import HGamer3D.Bindings.SDL2.EnumSDLWindowFlags
-
 import HGamer3D.Bindings.SDL2.StructSDLEvent
-
-import HGamer3D.Bindings.SDL2.HeaderSDL
-import HGamer3D.Bindings.SDL2.HeaderSDLVideo
-import HGamer3D.Bindings.SDL2.HeaderSDLEvents
-import HGamer3D.Bindings.SDL2.EnumSDLWindowFlags
-import HGamer3D.Bindings.SDL2.HeaderSDLMouse
-import HGamer3D.Bindings.SDL2.ClassHG3DUtilities
-
-import Foreign.Marshal.Utils
-import Control.Monad
-import Control.Applicative
-
--- Enum Definitions for initializing
-data EnumWinEventInit = WEV_INIT_VIDEO | WEV_INIT_TIMER | WEV_INIT_EVENTS
-instance Enum EnumWinEventInit where
- toEnum 0x20 = WEV_INIT_VIDEO
- toEnum 0x4000 = WEV_INIT_EVENTS
- toEnum 0x01 = WEV_INIT_TIMER
-
- fromEnum WEV_INIT_VIDEO = 0x20
- fromEnum WEV_INIT_EVENTS = 0x4000
- fromEnum WEV_INIT_TIMER = 0x01
-
--- show instance for SDLEvent
-instance Show SDLEvent where
-  show (EvtQuit ts) = "Event-Quit"
-  show (EvtKeyUp ts window keyscan keycode keymode) = "Event-KeyUp " ++ (show (fromEnum keyscan))
-  show (EvtKeyDown ts window keyscan keycode keymode) = "Event-KeyDown " ++ (show (fromEnum keyscan))
-  show (EvtText ts window text) = "Event-Text " ++ text
-  show (EvtMouseButtonUp ts window mid button x y) = "Event-MouseButtonUp  " ++ (show button) ++ " " ++ (show x) ++ " " ++ (show y) 
-  show (EvtMouseButtonDown ts window mid button x y) = "Event-MouseButtonDown  " ++ (show button) ++ " " ++ (show x) ++ " " ++ (show y) 
-  show (EvtMouseMotion ts window mid x y rx ry) = "Event-MouseMotion " ++ (show x) ++ " " ++ (show y) ++ " r: " ++ (show rx) ++ " " ++ (show ry)
-  show (EvtWindow ts window weid x y) = "Event-Window " ++ (show (fromEnum weid)) ++ " " ++ (show x) ++ " " ++ (show y)
-  show _ = "Specific Event is not in show instance"
-
-
-initWinEvent :: [EnumWinEventInit] -> IO Int
-initWinEvent flags = do
-  res <- sdlInit $ sum (fmap fromEnum flags)
-  return res
-  
-
-attachToWindow :: Window -> IO (Ptr SDLWindow)
-attachToWindow (Window handle) = do
-  res <- createWindowFromHandle handle
-  return $ res
-
-openWindow :: String -> Int -> Int -> Int -> Int -> [EnumSDLWindowFlags] -> IO (Ptr SDLWindow)
-openWindow title x y w h flags = do
-  win <- sdlCreateWindow title x y w h (sum $ fmap fromEnum flags)
-  return win
-
-pollWinEvent :: IO (Maybe SDLEvent)
-pollWinEvent = do
-    (sdlevt, res) <- sdlPollEvent
-    let r = case res of
-          0 -> Nothing
-          1 -> Just sdlevt
-          _ -> Nothing
-    return r
-
-quitWinEvent :: IO ()
-quitWinEvent = sdlQuit
-
-showCursor :: Bool -> IO Bool
-showCursor flag = do
-  ival <- sdlShowCursor (fromBool flag)
-  return (toBool ival)
-  
-initHGamer3D = initWinEvent  
-exitHGamer3D = quitWinEvent
-loopHGamer3D = pollWinEvent

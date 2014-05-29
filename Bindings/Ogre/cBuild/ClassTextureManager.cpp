@@ -49,7 +49,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_txmgr_destruct(struct hg3dclass_struct * th
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_txmgr_setDefaultNumMipmaps(struct hg3dclass_struct * thisclass_c, int num_c)
+extern "C" Ogre_LIB_EXPORT void ogre_txmgr_setDefaultNumMipmaps(struct hg3dclass_struct * thisclass_c, long num_c)
 {
   Ogre::TextureManager * thisclass_cpp = static_cast<Ogre::TextureManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::TextureManager"));
   size_t num_cpp = (size_t)num_c;
@@ -57,12 +57,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_txmgr_setDefaultNumMipmaps(struct hg3dclass
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_txmgr_getDefaultNumMipmaps(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_txmgr_getDefaultNumMipmaps(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::TextureManager * thisclass_cpp = static_cast<Ogre::TextureManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::TextureManager"));
   size_t result_cpp;
   result_cpp = (thisclass_cpp->getDefaultNumMipmaps());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 

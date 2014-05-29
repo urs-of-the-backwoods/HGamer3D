@@ -27,7 +27,7 @@ import HGamer3D.Audio
 import Control.Monad
 
 playM = do
-	mu <- createMusic "orchestral.ogg"
+	mu <- musicAudioSource "orchestral.ogg"
 	case mu of
 		Just audio -> do
 			playAudioSource audio
@@ -36,7 +36,7 @@ playM = do
 			return Nothing
 
 playS = do
-	mu <- createSound "canary.wav"
+	mu <- soundAudioSource "canary.wav"
 	case mu of
 		Just audio -> do
 			playAudioSource audio
@@ -48,7 +48,7 @@ delAudio mu = do
 	case mu of
 		Nothing -> return ()
 		Just audio -> do
-			deleteAudioSource audio
+			freeAudioSource audio
 			return ()
 
 

@@ -16,15 +16,13 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
+import HGamer3D.Data
 import HGamer3D.Graphics3D
-
-white :: Colour
-white = (Colour 1.0 1.0 1.0 1.0)
 
 renderLoop cube g3ds = do
    -- rotate 
-  yaw3D cube (Rad 0.005) 
-  roll3D cube (Rad 0.002)
+  yaw cube (Rad 0.005) 
+  roll cube (Rad 0.002)
   quit <- loopHGamer3D g3ds
   if quit then return () else renderLoop cube g3ds
    
@@ -35,7 +33,7 @@ main = do
         
 	-- camera position
 	let pos = Vec3 5.0 5.0 80.0
-        positionTo3D camera pos
+        positionTo camera pos
 	let at = Vec3 0.0 0.0 (-300.0)
         cameraLookAt camera at
 	
@@ -45,19 +43,13 @@ main = do
 	pointLight g3ds white (Vec3 10.0 10.0 20.0)
         
 	-- create a shiny blue cube        
-        --cube <- object3DFromMesh g3ds cubeMesh (Just (ResourceMaterial "Colours/Blue") ) False
-        --positionTo3D cube (Vec3 0.0 0.0 0.0)
-        --scaleTo3D cube (Vec3 0.2 0.2 0.2)
-        
-        pinky <- colouredCubeMesh g3ds (Colour 0.5 0.5 0.0 1.0)
-        cube2 <- object3DFromMesh g3ds pinky Nothing False
-        positionTo3D cube2 (Vec3 0.0 0.0 0.0)
---        scaleTo3D cube (Vec3 0.2 0.2 0.2)
-        cube <- object3DFromMesh g3ds pinky Nothing False
-        positionTo3D cube (Vec3 5.0 0.0 0.0)
+        let blueMaterial = resourceMaterial "Colours/Blue"
+        cube <- object3DFromMesh g3ds cubeMesh (Just blueMaterial) False
+        positionTo cube (Vec3 0.0 0.0 0.0)
+        scale cube (Vec3 0.2 0.2 0.2)
         
 	-- start render loop
-	renderLoop cube2 g3ds 
+	renderLoop cube g3ds 
         exitHGamer3D g3ds
         return ()
 

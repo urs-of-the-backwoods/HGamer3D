@@ -42,7 +42,7 @@ using Ogre::uint;
 
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mrt_bindSurface(struct hg3dclass_struct * thisclass_c, int attachment_c, struct hg3dclass_struct * target_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mrt_bindSurface(struct hg3dclass_struct * thisclass_c, long attachment_c, struct hg3dclass_struct * target_c)
 {
   Ogre::MultiRenderTarget * thisclass_cpp = static_cast<Ogre::MultiRenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::MultiRenderTarget"));
   size_t attachment_cpp = (size_t)attachment_c;
@@ -51,7 +51,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mrt_bindSurface(struct hg3dclass_struct * t
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mrt_unbindSurface(struct hg3dclass_struct * thisclass_c, int attachment_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mrt_unbindSurface(struct hg3dclass_struct * thisclass_c, long attachment_c)
 {
   Ogre::MultiRenderTarget * thisclass_cpp = static_cast<Ogre::MultiRenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::MultiRenderTarget"));
   size_t attachment_cpp = (size_t)attachment_c;
@@ -59,7 +59,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mrt_unbindSurface(struct hg3dclass_struct *
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mrt_getBoundSurface(struct hg3dclass_struct * thisclass_c, int index_c, struct hg3dclass_struct * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mrt_getBoundSurface(struct hg3dclass_struct * thisclass_c, long index_c, struct hg3dclass_struct * result_c)
 {
   Ogre::MultiRenderTarget * thisclass_cpp = static_cast<Ogre::MultiRenderTarget*> (getHG3DClassPtr(*thisclass_c, "Ogre::MultiRenderTarget"));
   size_t index_cpp = (size_t)index_c;

@@ -62,12 +62,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_arch_getName(struct hg3dclass_struct * this
 };
 
 // Returns whether this archive is case sensitive in the way it matches files. 
-extern "C" Ogre_LIB_EXPORT void ogre_arch_isCaseSensitive(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_arch_isCaseSensitive(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Archive * thisclass_cpp = static_cast<Ogre::Archive*> (getHG3DClassPtr(*thisclass_c, "Ogre::Archive"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isCaseSensitive());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -85,12 +85,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_arch_unload(struct hg3dclass_struct * thisc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_arch_isReadOnly(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_arch_isReadOnly(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Archive * thisclass_cpp = static_cast<Ogre::Archive*> (getHG3DClassPtr(*thisclass_c, "Ogre::Archive"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isReadOnly());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -102,13 +102,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_arch_remove(struct hg3dclass_struct * thisc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_arch_exists(struct hg3dclass_struct * thisclass_c, char * filename_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_arch_exists(struct hg3dclass_struct * thisclass_c, char * filename_c, long * result_c)
 {
   Ogre::Archive * thisclass_cpp = static_cast<Ogre::Archive*> (getHG3DClassPtr(*thisclass_c, "Ogre::Archive"));
   Ogre::String filename_cpp = Ogre::String((const char*) filename_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->exists(filename_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // Return the type code of this Archive

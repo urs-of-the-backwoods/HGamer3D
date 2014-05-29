@@ -14,14 +14,23 @@ env["ENV"]["HOME"] = os.environ.get("HOME")
 ##########################
 
 dependsOn = [
-	  Glob("HGamer3D/*"),
+	  "HGamer3D/WinEvent.hs",
+	  Glob("HGamer3D/WinEvent/Internal/*"),
 	  Glob("*.cabal"),
-	  "LICENSE"
+	  "LICENSE",
+
+	  Glob("../Data/dist/HGamer3D-*.tar.gz"),
+	  Glob("../Bindings/SDL2/hBuild/dist/HGamer3D-*.tar.gz"),
 ]
 
 target = [ "dist/setup-config", Glob("dist/HGamer3D-*.tar.gz")]
 
 env.Command(target, dependsOn, [
+
+"ghc-pkg unregister HGamer3D || true",
+"ghc-pkg unregister HGamer3D-Wire || true",
+"ghc-pkg unregister HGamer3D-GUI || true",
+
 "cabal configure --user",
 "cabal build",
 "cabal haddock",

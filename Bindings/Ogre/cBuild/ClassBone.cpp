@@ -87,7 +87,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_bn_reset(struct hg3dclass_struct * thisclas
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bn_setManuallyControlled(struct hg3dclass_struct * thisclass_c, int manuallyControlled_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bn_setManuallyControlled(struct hg3dclass_struct * thisclass_c, long manuallyControlled_c)
 {
   Ogre::Bone * thisclass_cpp = static_cast<Ogre::Bone*> (getHG3DClassPtr(*thisclass_c, "Ogre::Bone"));
   bool manuallyControlled_cpp = (bool)manuallyControlled_c;
@@ -95,16 +95,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_bn_setManuallyControlled(struct hg3dclass_s
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bn_isManuallyControlled(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bn_isManuallyControlled(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Bone * thisclass_cpp = static_cast<Ogre::Bone*> (getHG3DClassPtr(*thisclass_c, "Ogre::Bone"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isManuallyControlled());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bn_needUpdate(struct hg3dclass_struct * thisclass_c, int forceParentUpdate_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bn_needUpdate(struct hg3dclass_struct * thisclass_c, long forceParentUpdate_c)
 {
   Ogre::Bone * thisclass_cpp = static_cast<Ogre::Bone*> (getHG3DClassPtr(*thisclass_c, "Ogre::Bone"));
   bool forceParentUpdate_cpp = (bool)forceParentUpdate_c;

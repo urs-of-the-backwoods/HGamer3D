@@ -38,9 +38,9 @@ void ogre_mvof_getType(struct hg3dclass_struct * thisclass_c, char * result_c);
 void ogre_mvof_destroyInstance(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * obj_c);
 
 // 
-void ogre_mvof_requestTypeFlags(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mvof_requestTypeFlags(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_mvof_getTypeFlags(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_mvof_getTypeFlags(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 #endif 

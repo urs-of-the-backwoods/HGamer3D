@@ -21,7 +21,7 @@ Library
   Build-Depends:     base >= 3 && < 5, containers, mtl, transformers, filepath, directory, HGamer3D-Data >= 0.4.0 && < 0.5.0, HGamer3D-Ogre-Binding >= 0.4.0 && < 0.5.0
 
 
-  Exposed-modules:   HGamer3D.Graphics3D.Base, HGamer3D.Graphics3D.Shapes, HGamer3D.Graphics3D.PlatonShapes, HGamer3D.Graphics3D.Light, HGamer3D.Graphics3D
+  Exposed-modules:   HGamer3D.Graphics3D.Internal.Base, HGamer3D.Graphics3D.Internal.Shapes, HGamer3D.Graphics3D.Internal.PlatonShapes, HGamer3D.Graphics3D.Internal.Light, HGamer3D.Graphics3D
   Other-modules:     
 
   c-sources:         

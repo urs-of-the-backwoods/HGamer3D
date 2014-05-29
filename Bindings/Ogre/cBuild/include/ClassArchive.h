@@ -34,7 +34,7 @@ void ogre_arch_destruct(struct hg3dclass_struct * thisclass_c);
 void ogre_arch_getName(struct hg3dclass_struct * thisclass_c, char * result_c);
 
 // Returns whether this archive is case sensitive in the way it matches files. 
-void ogre_arch_isCaseSensitive(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_arch_isCaseSensitive(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_arch_load(struct hg3dclass_struct * thisclass_c);
@@ -43,13 +43,13 @@ void ogre_arch_load(struct hg3dclass_struct * thisclass_c);
 void ogre_arch_unload(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_arch_isReadOnly(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_arch_isReadOnly(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_arch_remove(struct hg3dclass_struct * thisclass_c, char * filename_c);
 
 // 
-void ogre_arch_exists(struct hg3dclass_struct * thisclass_c, char * filename_c, int * result_c);
+void ogre_arch_exists(struct hg3dclass_struct * thisclass_c, char * filename_c, long * result_c);
 
 // Return the type code of this Archive
 void ogre_arch_getType(struct hg3dclass_struct * thisclass_c, char * result_c);

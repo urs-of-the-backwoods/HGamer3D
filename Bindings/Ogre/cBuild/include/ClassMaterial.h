@@ -33,19 +33,19 @@
 void ogre_mtrl_destruct(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_mtrl_isTransparent(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mtrl_isTransparent(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_mtrl_setReceiveShadows(struct hg3dclass_struct * thisclass_c, int enabled_c);
+void ogre_mtrl_setReceiveShadows(struct hg3dclass_struct * thisclass_c, long enabled_c);
 
 // 
-void ogre_mtrl_getReceiveShadows(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mtrl_getReceiveShadows(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_mtrl_setTransparencyCastsShadows(struct hg3dclass_struct * thisclass_c, int enabled_c);
+void ogre_mtrl_setTransparencyCastsShadows(struct hg3dclass_struct * thisclass_c, long enabled_c);
 
 // 
-void ogre_mtrl_getTransparencyCastsShadows(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mtrl_getTransparencyCastsShadows(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_mtrl_getNumTechniques(struct hg3dclass_struct * thisclass_c, unsigned short * result_c);
@@ -69,13 +69,13 @@ void ogre_mtrl_getNumLodLevels(struct hg3dclass_struct * thisclass_c, unsigned s
 void ogre_mtrl_getNumLodLevels2(struct hg3dclass_struct * thisclass_c, char * schemeName_c, unsigned short * result_c);
 
 // 
-void ogre_mtrl_clone(struct hg3dclass_struct * thisclass_c, char * newName_c, int changeGroup_c, char * newGroup_c, struct sharedptr_struct * result_c);
+void ogre_mtrl_clone(struct hg3dclass_struct * thisclass_c, char * newName_c, long changeGroup_c, char * newGroup_c, struct sharedptr_struct * result_c);
 
 // 
 void ogre_mtrl_copyDetailsTo(struct hg3dclass_struct * thisclass_c, struct sharedptr_struct * mat_c);
 
 // 
-void ogre_mtrl_compile(struct hg3dclass_struct * thisclass_c, int autoManageTextureUnits_c);
+void ogre_mtrl_compile(struct hg3dclass_struct * thisclass_c, long autoManageTextureUnits_c);
 
 // 
 void ogre_mtrl_setPointSize(struct hg3dclass_struct * thisclass_c, float ps_c);
@@ -108,27 +108,27 @@ void ogre_mtrl_setSelfIllumination(struct hg3dclass_struct * thisclass_c, float 
 void ogre_mtrl_setSelfIllumination2(struct hg3dclass_struct * thisclass_c, struct colourvalue_struct * selfIllum_c);
 
 // 
-void ogre_mtrl_setDepthCheckEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c);
+void ogre_mtrl_setDepthCheckEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c);
 
 // 
-void ogre_mtrl_setDepthWriteEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c);
+void ogre_mtrl_setDepthWriteEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c);
 
 // 
-void ogre_mtrl_setColourWriteEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c);
+void ogre_mtrl_setColourWriteEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c);
 
 // 
-void ogre_mtrl_setLightingEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c);
+void ogre_mtrl_setLightingEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c);
 
 // 
 void ogre_mtrl_setDepthBias(struct hg3dclass_struct * thisclass_c, float constantBias_c, float slopeScaleBias_c);
 
 // 
-void ogre_mtrl_setTextureAnisotropy(struct hg3dclass_struct * thisclass_c, int maxAniso_c);
+void ogre_mtrl_setTextureAnisotropy(struct hg3dclass_struct * thisclass_c, long maxAniso_c);
 
 // 
 void ogre_mtrl_touch(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_mtrl_getCompilationRequired(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mtrl_getCompilationRequired(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 #endif 

@@ -221,7 +221,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_cam_rotate2(struct hg3dclass_struct * thisc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_cam_setFixedYawAxis(struct hg3dclass_struct * thisclass_c, int useFixed_c, struct vector3_struct * fixedAxis_c)
+extern "C" Ogre_LIB_EXPORT void ogre_cam_setFixedYawAxis(struct hg3dclass_struct * thisclass_c, long useFixed_c, struct vector3_struct * fixedAxis_c)
 {
   Ogre::Camera * thisclass_cpp = static_cast<Ogre::Camera*> (getHG3DClassPtr(*thisclass_c, "Ogre::Camera"));
   bool useFixed_cpp = (bool)useFixed_c;
@@ -403,12 +403,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_cam_resetWindow(struct hg3dclass_struct * t
 };
 
 // Returns if a viewport window is being used. 
-extern "C" Ogre_LIB_EXPORT void ogre_cam_isWindowSet(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_cam_isWindowSet(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Camera * thisclass_cpp = static_cast<Ogre::Camera*> (getHG3DClassPtr(*thisclass_c, "Ogre::Camera"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isWindowSet());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -450,7 +450,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_cam_getViewport(struct hg3dclass_struct * t
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_cam_setAutoAspectRatio(struct hg3dclass_struct * thisclass_c, int autoratio_c)
+extern "C" Ogre_LIB_EXPORT void ogre_cam_setAutoAspectRatio(struct hg3dclass_struct * thisclass_c, long autoratio_c)
 {
   Ogre::Camera * thisclass_cpp = static_cast<Ogre::Camera*> (getHG3DClassPtr(*thisclass_c, "Ogre::Camera"));
   bool autoratio_cpp = (bool)autoratio_c;
@@ -458,12 +458,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_cam_setAutoAspectRatio(struct hg3dclass_str
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_cam_getAutoAspectRatio(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_cam_getAutoAspectRatio(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Camera * thisclass_cpp = static_cast<Ogre::Camera*> (getHG3DClassPtr(*thisclass_c, "Ogre::Camera"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getAutoAspectRatio());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -485,7 +485,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_cam_getCullingFrustum(struct hg3dclass_stru
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_cam_isVisible3(struct hg3dclass_struct * thisclass_c, struct vector3_struct * vert_c, enum EnumFrustumPlane * culledBy_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_cam_isVisible3(struct hg3dclass_struct * thisclass_c, struct vector3_struct * vert_c, enum EnumFrustumPlane * culledBy_c, long * result_c)
 {
   Ogre::Camera * thisclass_cpp = static_cast<Ogre::Camera*> (getHG3DClassPtr(*thisclass_c, "Ogre::Camera"));
   Vector3 vert_cpp = *((Vector3*) vert_c);
@@ -493,7 +493,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_cam_isVisible3(struct hg3dclass_struct * th
   bool result_cpp;
   result_cpp = (thisclass_cpp->isVisible(vert_cpp, &culledBy_cpp));
   *culledBy_c = (enum EnumFrustumPlane) culledBy_cpp;
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -524,7 +524,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_cam_getFarClipDistance(struct hg3dclass_str
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_cam_setUseRenderingDistance(struct hg3dclass_struct * thisclass_c, int use_c)
+extern "C" Ogre_LIB_EXPORT void ogre_cam_setUseRenderingDistance(struct hg3dclass_struct * thisclass_c, long use_c)
 {
   Ogre::Camera * thisclass_cpp = static_cast<Ogre::Camera*> (getHG3DClassPtr(*thisclass_c, "Ogre::Camera"));
   bool use_cpp = (bool)use_c;
@@ -532,12 +532,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_cam_setUseRenderingDistance(struct hg3dclas
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_cam_getUseRenderingDistance(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_cam_getUseRenderingDistance(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Camera * thisclass_cpp = static_cast<Ogre::Camera*> (getHG3DClassPtr(*thisclass_c, "Ogre::Camera"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getUseRenderingDistance());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -568,7 +568,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_cam_getOrientationForViewUpdate(struct hg3d
 
 // Sets whether to use min display size calculations 
 
-extern "C" Ogre_LIB_EXPORT void ogre_cam_setUseMinPixelSize(struct hg3dclass_struct * thisclass_c, int enable_c)
+extern "C" Ogre_LIB_EXPORT void ogre_cam_setUseMinPixelSize(struct hg3dclass_struct * thisclass_c, long enable_c)
 {
   Ogre::Camera * thisclass_cpp = static_cast<Ogre::Camera*> (getHG3DClassPtr(*thisclass_c, "Ogre::Camera"));
   bool enable_cpp = (bool)enable_c;
@@ -576,12 +576,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_cam_setUseMinPixelSize(struct hg3dclass_str
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_cam_getUseMinPixelSize(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_cam_getUseMinPixelSize(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Camera * thisclass_cpp = static_cast<Ogre::Camera*> (getHG3DClassPtr(*thisclass_c, "Ogre::Camera"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getUseMinPixelSize());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 

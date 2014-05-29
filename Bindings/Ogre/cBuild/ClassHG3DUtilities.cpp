@@ -42,12 +42,12 @@ using Ogre::uint;
 
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_hg3dutl_getWindowHandle(struct hg3dclass_struct * window_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_hg3dutl_getWindowHandle(struct hg3dclass_struct * window_c, unsigned long * result_c)
 {
   Ogre::RenderWindow * window_cpp = static_cast<Ogre::RenderWindow*> (getHG3DClassPtr(*window_c, "Ogre::RenderWindow"));
-  unsigned int result_cpp;
+  unsigned long result_cpp;
   result_cpp = (HG3DUtilities::getWindowHandle(window_cpp));
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 
@@ -58,11 +58,11 @@ extern "C" Ogre_LIB_EXPORT void ogre_hg3dutl_setupCloseEventHandler(struct hg3dc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_hg3dutl_checkQuitReceived(int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_hg3dutl_checkQuitReceived(long * result_c)
 {
   int result_cpp;
   result_cpp = (HG3DUtilities::checkQuitReceived());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 

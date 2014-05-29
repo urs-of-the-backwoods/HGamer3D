@@ -70,20 +70,20 @@ extern "C" Ogre_LIB_EXPORT void ogre_mvof_destroyInstance(struct hg3dclass_struc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvof_requestTypeFlags(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvof_requestTypeFlags(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::MovableObjectFactory * thisclass_cpp = static_cast<Ogre::MovableObjectFactory*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObjectFactory"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->requestTypeFlags());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_mvof_getTypeFlags(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_mvof_getTypeFlags(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::MovableObjectFactory * thisclass_cpp = static_cast<Ogre::MovableObjectFactory*> (getHG3DClassPtr(*thisclass_c, "Ogre::MovableObjectFactory"));
   uint32 result_cpp;
   result_cpp = (thisclass_cpp->getTypeFlags());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 

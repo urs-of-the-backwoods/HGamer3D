@@ -31,12 +31,12 @@
 void ogre_tnx_construct(float timePos_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_tnx_hasKeyIndex(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_tnx_hasKeyIndex(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_tnx_getTimePos(struct hg3dclass_struct * thisclass_c, float * result_c);
 
 // 
-void ogre_tnx_getKeyIndex(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_tnx_getKeyIndex(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 #endif 

@@ -89,7 +89,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_noat_applyToNode(struct hg3dclass_struct * 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_noat_setUseShortestRotationPath(struct hg3dclass_struct * thisclass_c, int useShortestPath_c)
+extern "C" Ogre_LIB_EXPORT void ogre_noat_setUseShortestRotationPath(struct hg3dclass_struct * thisclass_c, long useShortestPath_c)
 {
   Ogre::NodeAnimationTrack * thisclass_cpp = static_cast<Ogre::NodeAnimationTrack*> (getHG3DClassPtr(*thisclass_c, "Ogre::NodeAnimationTrack"));
   bool useShortestPath_cpp = (bool)useShortestPath_c;
@@ -97,12 +97,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_noat_setUseShortestRotationPath(struct hg3d
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_noat_getUseShortestRotationPath(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_noat_getUseShortestRotationPath(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::NodeAnimationTrack * thisclass_cpp = static_cast<Ogre::NodeAnimationTrack*> (getHG3DClassPtr(*thisclass_c, "Ogre::NodeAnimationTrack"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getUseShortestRotationPath());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -116,12 +116,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_noat_apply(struct hg3dclass_struct * thiscl
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_noat_hasNonZeroKeyFrames(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_noat_hasNonZeroKeyFrames(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::NodeAnimationTrack * thisclass_cpp = static_cast<Ogre::NodeAnimationTrack*> (getHG3DClassPtr(*thisclass_c, "Ogre::NodeAnimationTrack"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasNonZeroKeyFrames());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 

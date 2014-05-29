@@ -61,7 +61,7 @@ void ogre_scmgr_createCamera(struct hg3dclass_struct * thisclass_c, char * name_
 void ogre_scmgr_getCamera(struct hg3dclass_struct * thisclass_c, char * name_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_scmgr_hasCamera(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c);
+void ogre_scmgr_hasCamera(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c);
 
 // 
 void ogre_scmgr_destroyCamera(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * cam_c);
@@ -82,7 +82,7 @@ void ogre_scmgr_createLight2(struct hg3dclass_struct * thisclass_c, struct hg3dc
 void ogre_scmgr_getLight(struct hg3dclass_struct * thisclass_c, char * name_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_scmgr_hasLight(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c);
+void ogre_scmgr_hasLight(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c);
 
 // 
 void ogre_scmgr_destroyLight(struct hg3dclass_struct * thisclass_c, char * name_c);
@@ -112,7 +112,7 @@ void ogre_scmgr_getRootSceneNode(struct hg3dclass_struct * thisclass_c, struct h
 void ogre_scmgr_getSceneNode(struct hg3dclass_struct * thisclass_c, char * name_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_scmgr_hasSceneNode(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c);
+void ogre_scmgr_hasSceneNode(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c);
 
 // 
 void ogre_scmgr_createEntity(struct hg3dclass_struct * thisclass_c, char * entityName_c, char * meshName_c, char * groupName_c, struct hg3dclass_struct * result_c);
@@ -136,7 +136,7 @@ void ogre_scmgr_createEntity6(struct hg3dclass_struct * thisclass_c, enum EnumSc
 void ogre_scmgr_getEntity(struct hg3dclass_struct * thisclass_c, char * name_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_scmgr_hasEntity(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c);
+void ogre_scmgr_hasEntity(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c);
 
 // 
 void ogre_scmgr_destroyEntity(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * ent_c);
@@ -157,7 +157,7 @@ void ogre_scmgr_createManualObject2(struct hg3dclass_struct * thisclass_c, struc
 void ogre_scmgr_getManualObject(struct hg3dclass_struct * thisclass_c, char * name_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_scmgr_hasManualObject(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c);
+void ogre_scmgr_hasManualObject(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c);
 
 // 
 void ogre_scmgr_destroyManualObject(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * obj_c);
@@ -178,7 +178,7 @@ void ogre_scmgr_createBillboardChain2(struct hg3dclass_struct * thisclass_c, str
 void ogre_scmgr_getBillboardChain(struct hg3dclass_struct * thisclass_c, char * name_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_scmgr_hasBillboardChain(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c);
+void ogre_scmgr_hasBillboardChain(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c);
 
 // 
 void ogre_scmgr_destroyBillboardChain(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * obj_c);
@@ -190,7 +190,7 @@ void ogre_scmgr_destroyBillboardChain2(struct hg3dclass_struct * thisclass_c, ch
 void ogre_scmgr_destroyAllBillboardChains(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_scmgr_hasRibbonTrail(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c);
+void ogre_scmgr_hasRibbonTrail(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c);
 
 // 
 void ogre_scmgr_destroyRibbonTrail2(struct hg3dclass_struct * thisclass_c, char * name_c);
@@ -199,7 +199,7 @@ void ogre_scmgr_destroyRibbonTrail2(struct hg3dclass_struct * thisclass_c, char 
 void ogre_scmgr_destroyAllRibbonTrails(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_scmgr_hasParticleSystem(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c);
+void ogre_scmgr_hasParticleSystem(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c);
 
 // 
 void ogre_scmgr_destroyParticleSystem2(struct hg3dclass_struct * thisclass_c, char * name_c);
@@ -223,40 +223,40 @@ void ogre_scmgr_prepareWorldGeometry(struct hg3dclass_struct * thisclass_c, char
 void ogre_scmgr_setWorldGeometry(struct hg3dclass_struct * thisclass_c, char * filename_c);
 
 // 
-void ogre_scmgr_estimateWorldGeometry(struct hg3dclass_struct * thisclass_c, char * filename_c, int * result_c);
+void ogre_scmgr_estimateWorldGeometry(struct hg3dclass_struct * thisclass_c, char * filename_c, long * result_c);
 
 // 
-void ogre_scmgr_hasOption(struct hg3dclass_struct * thisclass_c, char * strKey_c, int * result_c);
+void ogre_scmgr_hasOption(struct hg3dclass_struct * thisclass_c, char * strKey_c, long * result_c);
 
 // 
-void ogre_scmgr_setSkyPlaneEnabled(struct hg3dclass_struct * thisclass_c, int enable_c);
+void ogre_scmgr_setSkyPlaneEnabled(struct hg3dclass_struct * thisclass_c, long enable_c);
 
 // 
-void ogre_scmgr_isSkyPlaneEnabled(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_isSkyPlaneEnabled(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_scmgr_getSkyPlaneNode(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_scmgr_setSkyBox(struct hg3dclass_struct * thisclass_c, int enable_c, char * materialName_c, float distance_c, int drawFirst_c, struct quaternion_struct * orientation_c, char * groupName_c);
+void ogre_scmgr_setSkyBox(struct hg3dclass_struct * thisclass_c, long enable_c, char * materialName_c, float distance_c, long drawFirst_c, struct quaternion_struct * orientation_c, char * groupName_c);
 
 // 
-void ogre_scmgr_setSkyBoxEnabled(struct hg3dclass_struct * thisclass_c, int enable_c);
+void ogre_scmgr_setSkyBoxEnabled(struct hg3dclass_struct * thisclass_c, long enable_c);
 
 // 
-void ogre_scmgr_isSkyBoxEnabled(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_isSkyBoxEnabled(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_scmgr_getSkyBoxNode(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_scmgr_setSkyDome(struct hg3dclass_struct * thisclass_c, int enable_c, char * materialName_c, float curvature_c, float tiling_c, float distance_c, int drawFirst_c, struct quaternion_struct * orientation_c, int xsegments_c, int ysegments_c, int ysegments_keep_c, char * groupName_c);
+void ogre_scmgr_setSkyDome(struct hg3dclass_struct * thisclass_c, long enable_c, char * materialName_c, float curvature_c, float tiling_c, float distance_c, long drawFirst_c, struct quaternion_struct * orientation_c, long xsegments_c, long ysegments_c, long ysegments_keep_c, char * groupName_c);
 
 // 
-void ogre_scmgr_setSkyDomeEnabled(struct hg3dclass_struct * thisclass_c, int enable_c);
+void ogre_scmgr_setSkyDomeEnabled(struct hg3dclass_struct * thisclass_c, long enable_c);
 
 // 
-void ogre_scmgr_isSkyDomeEnabled(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_isSkyDomeEnabled(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_scmgr_getSkyDomeNode(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
@@ -274,16 +274,16 @@ void ogre_scmgr_getFogEnd(struct hg3dclass_struct * thisclass_c, float * result_
 void ogre_scmgr_getFogDensity(struct hg3dclass_struct * thisclass_c, float * result_c);
 
 // 
-void ogre_scmgr_createBillboardSet(struct hg3dclass_struct * thisclass_c, char * name_c, unsigned int poolSize_c, struct hg3dclass_struct * result_c);
+void ogre_scmgr_createBillboardSet(struct hg3dclass_struct * thisclass_c, char * name_c, unsigned long poolSize_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_scmgr_createBillboardSet2(struct hg3dclass_struct * thisclass_c, unsigned int poolSize_c, struct hg3dclass_struct * result_c);
+void ogre_scmgr_createBillboardSet2(struct hg3dclass_struct * thisclass_c, unsigned long poolSize_c, struct hg3dclass_struct * result_c);
 
 // 
 void ogre_scmgr_getBillboardSet(struct hg3dclass_struct * thisclass_c, char * name_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_scmgr_hasBillboardSet(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c);
+void ogre_scmgr_hasBillboardSet(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c);
 
 // 
 void ogre_scmgr_destroyBillboardSet(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * set_c);
@@ -295,10 +295,10 @@ void ogre_scmgr_destroyBillboardSet2(struct hg3dclass_struct * thisclass_c, char
 void ogre_scmgr_destroyAllBillboardSets(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_scmgr_setDisplaySceneNodes(struct hg3dclass_struct * thisclass_c, int display_c);
+void ogre_scmgr_setDisplaySceneNodes(struct hg3dclass_struct * thisclass_c, long display_c);
 
 // 
-void ogre_scmgr_getDisplaySceneNodes(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_getDisplaySceneNodes(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_scmgr_createAnimation(struct hg3dclass_struct * thisclass_c, char * name_c, float length_c, struct hg3dclass_struct * result_c);
@@ -307,7 +307,7 @@ void ogre_scmgr_createAnimation(struct hg3dclass_struct * thisclass_c, char * na
 void ogre_scmgr_getAnimation(struct hg3dclass_struct * thisclass_c, char * name_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_scmgr_hasAnimation(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c);
+void ogre_scmgr_hasAnimation(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c);
 
 // 
 void ogre_scmgr_destroyAnimation(struct hg3dclass_struct * thisclass_c, char * name_c);
@@ -322,7 +322,7 @@ void ogre_scmgr_createAnimationState(struct hg3dclass_struct * thisclass_c, char
 void ogre_scmgr_getAnimationState(struct hg3dclass_struct * thisclass_c, char * animName_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_scmgr_hasAnimationState(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c);
+void ogre_scmgr_hasAnimationState(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c);
 
 // 
 void ogre_scmgr_destroyAnimationState(struct hg3dclass_struct * thisclass_c, char * name_c);
@@ -340,16 +340,16 @@ void ogre_scmgr_setSpecialCaseRenderQueueMode(struct hg3dclass_struct * thisclas
 void ogre_scmgr_getSpecialCaseRenderQueueMode(struct hg3dclass_struct * thisclass_c, enum EnumSceneManagerSpecialCaseRenderQueueMode * result_c);
 
 // 
-void ogre_scmgr_showBoundingBoxes(struct hg3dclass_struct * thisclass_c, int bShow_c);
+void ogre_scmgr_showBoundingBoxes(struct hg3dclass_struct * thisclass_c, long bShow_c);
 
 // 
-void ogre_scmgr_getShowBoundingBoxes(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_getShowBoundingBoxes(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_scmgr_setShowDebugShadows(struct hg3dclass_struct * thisclass_c, int debug_c);
+void ogre_scmgr_setShowDebugShadows(struct hg3dclass_struct * thisclass_c, long debug_c);
 
 // 
-void ogre_scmgr_getShowDebugShadows(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_getShowDebugShadows(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_scmgr_setShadowColour(struct hg3dclass_struct * thisclass_c, struct colourvalue_struct * colour_c);
@@ -373,10 +373,10 @@ void ogre_scmgr_getShadowFarDistance(struct hg3dclass_struct * thisclass_c, floa
 void ogre_scmgr_getShadowFarDistanceSquared(struct hg3dclass_struct * thisclass_c, float * result_c);
 
 // 
-void ogre_scmgr_setShadowIndexBufferSize(struct hg3dclass_struct * thisclass_c, int size_c);
+void ogre_scmgr_setShadowIndexBufferSize(struct hg3dclass_struct * thisclass_c, long size_c);
 
 // Get the size of the shadow index buffer. 
-void ogre_scmgr_getShadowIndexBufferSize(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_getShadowIndexBufferSize(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_scmgr_setShadowTextureSize(struct hg3dclass_struct * thisclass_c, unsigned short size_c);
@@ -385,19 +385,19 @@ void ogre_scmgr_setShadowTextureSize(struct hg3dclass_struct * thisclass_c, unsi
 void ogre_scmgr_setShadowTextureFSAA(struct hg3dclass_struct * thisclass_c, unsigned short fsaa_c);
 
 // 
-void ogre_scmgr_setShadowTextureCount(struct hg3dclass_struct * thisclass_c, int count_c);
+void ogre_scmgr_setShadowTextureCount(struct hg3dclass_struct * thisclass_c, long count_c);
 
 // Get the number of the textures allocated for texture based shadows. 
-void ogre_scmgr_getShadowTextureCount(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_getShadowTextureCount(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_scmgr_setShadowTextureCountPerLightType(struct hg3dclass_struct * thisclass_c, enum EnumLightType type_c, int count_c);
+void ogre_scmgr_setShadowTextureCountPerLightType(struct hg3dclass_struct * thisclass_c, enum EnumLightType type_c, long count_c);
 
 // Get the number of shadow textures is assigned for the given light type. 
-void ogre_scmgr_getShadowTextureCountPerLightType(struct hg3dclass_struct * thisclass_c, enum EnumLightType type_c, int * result_c);
+void ogre_scmgr_getShadowTextureCountPerLightType(struct hg3dclass_struct * thisclass_c, enum EnumLightType type_c, long * result_c);
 
 // 
-void ogre_scmgr_getShadowTexture(struct hg3dclass_struct * thisclass_c, int shadowIndex_c, struct sharedptr_struct * result_c);
+void ogre_scmgr_getShadowTexture(struct hg3dclass_struct * thisclass_c, long shadowIndex_c, struct sharedptr_struct * result_c);
 
 // 
 void ogre_scmgr_setShadowDirLightTextureOffset(struct hg3dclass_struct * thisclass_c, float offset_c);
@@ -412,10 +412,10 @@ void ogre_scmgr_setShadowTextureFadeStart(struct hg3dclass_struct * thisclass_c,
 void ogre_scmgr_setShadowTextureFadeEnd(struct hg3dclass_struct * thisclass_c, float fadeEnd_c);
 
 // 
-void ogre_scmgr_setShadowTextureSelfShadow(struct hg3dclass_struct * thisclass_c, int selfShadow_c);
+void ogre_scmgr_setShadowTextureSelfShadow(struct hg3dclass_struct * thisclass_c, long selfShadow_c);
 
 // Gets whether or not texture shadows attempt to self-shadow. 
-void ogre_scmgr_getShadowTextureSelfShadow(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_getShadowTextureSelfShadow(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_scmgr_setShadowTextureCasterMaterial(struct hg3dclass_struct * thisclass_c, char * name_c);
@@ -424,46 +424,46 @@ void ogre_scmgr_setShadowTextureCasterMaterial(struct hg3dclass_struct * thiscla
 void ogre_scmgr_setShadowTextureReceiverMaterial(struct hg3dclass_struct * thisclass_c, char * name_c);
 
 // 
-void ogre_scmgr_setShadowCasterRenderBackFaces(struct hg3dclass_struct * thisclass_c, int bf_c);
+void ogre_scmgr_setShadowCasterRenderBackFaces(struct hg3dclass_struct * thisclass_c, long bf_c);
 
 // 
-void ogre_scmgr_getShadowCasterRenderBackFaces(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_getShadowCasterRenderBackFaces(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_scmgr_setShadowUseInfiniteFarPlane(struct hg3dclass_struct * thisclass_c, int enable_c);
+void ogre_scmgr_setShadowUseInfiniteFarPlane(struct hg3dclass_struct * thisclass_c, long enable_c);
 
 // 
-void ogre_scmgr_isShadowTechniqueStencilBased(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_isShadowTechniqueStencilBased(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_scmgr_isShadowTechniqueTextureBased(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_isShadowTechniqueTextureBased(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_scmgr_isShadowTechniqueModulative(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_isShadowTechniqueModulative(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_scmgr_isShadowTechniqueAdditive(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_isShadowTechniqueAdditive(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_scmgr_isShadowTechniqueIntegrated(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_isShadowTechniqueIntegrated(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_scmgr_isShadowTechniqueInUse(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_isShadowTechniqueInUse(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_scmgr_setShadowUseLightClipPlanes(struct hg3dclass_struct * thisclass_c, int enabled_c);
+void ogre_scmgr_setShadowUseLightClipPlanes(struct hg3dclass_struct * thisclass_c, long enabled_c);
 
 // 
-void ogre_scmgr_getShadowUseLightClipPlanes(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_getShadowUseLightClipPlanes(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_scmgr_setLateMaterialResolving(struct hg3dclass_struct * thisclass_c, int isLate_c);
+void ogre_scmgr_setLateMaterialResolving(struct hg3dclass_struct * thisclass_c, long isLate_c);
 
 // 
-void ogre_scmgr_isLateMaterialResolving(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_isLateMaterialResolving(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_scmgr_hasStaticGeometry(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c);
+void ogre_scmgr_hasStaticGeometry(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c);
 
 // 
 void ogre_scmgr_destroyStaticGeometry2(struct hg3dclass_struct * thisclass_c, char * name_c);
@@ -478,7 +478,7 @@ void ogre_scmgr_destroyInstancedGeometry2(struct hg3dclass_struct * thisclass_c,
 void ogre_scmgr_destroyAllInstancedGeometry(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_scmgr_hasInstanceManager(struct hg3dclass_struct * thisclass_c, char * managerName_c, int * result_c);
+void ogre_scmgr_hasInstanceManager(struct hg3dclass_struct * thisclass_c, char * managerName_c, long * result_c);
 
 // 
 void ogre_scmgr_destroyInstanceManager(struct hg3dclass_struct * thisclass_c, char * name_c);
@@ -502,7 +502,7 @@ void ogre_scmgr_destroyAllMovableObjects(struct hg3dclass_struct * thisclass_c);
 void ogre_scmgr_getMovableObject(struct hg3dclass_struct * thisclass_c, char * name_c, char * typeName_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_scmgr_hasMovableObject(struct hg3dclass_struct * thisclass_c, char * name_c, char * typeName_c, int * result_c);
+void ogre_scmgr_hasMovableObject(struct hg3dclass_struct * thisclass_c, char * name_c, char * typeName_c, long * result_c);
 
 // 
 void ogre_scmgr_injectMovableObject(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * m_c);
@@ -517,28 +517,28 @@ void ogre_scmgr_extractMovableObject2(struct hg3dclass_struct * thisclass_c, str
 void ogre_scmgr_extractAllMovableObjectsByType(struct hg3dclass_struct * thisclass_c, char * typeName_c);
 
 // 
-void ogre_scmgr_setVisibilityMask(struct hg3dclass_struct * thisclass_c, unsigned int vmask_c);
+void ogre_scmgr_setVisibilityMask(struct hg3dclass_struct * thisclass_c, unsigned long vmask_c);
 
 // 
-void ogre_scmgr_getVisibilityMask(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_scmgr_getVisibilityMask(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 // 
-void ogre_scmgr_setFindVisibleObjects(struct hg3dclass_struct * thisclass_c, int find_c);
+void ogre_scmgr_setFindVisibleObjects(struct hg3dclass_struct * thisclass_c, long find_c);
 
 // 
-void ogre_scmgr_getFindVisibleObjects(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_getFindVisibleObjects(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_scmgr_setNormaliseNormalsOnScale(struct hg3dclass_struct * thisclass_c, int n_c);
+void ogre_scmgr_setNormaliseNormalsOnScale(struct hg3dclass_struct * thisclass_c, long n_c);
 
 // 
-void ogre_scmgr_getNormaliseNormalsOnScale(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_getNormaliseNormalsOnScale(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_scmgr_setFlipCullingOnNegativeScale(struct hg3dclass_struct * thisclass_c, int n_c);
+void ogre_scmgr_setFlipCullingOnNegativeScale(struct hg3dclass_struct * thisclass_c, long n_c);
 
 // 
-void ogre_scmgr_getFlipCullingOnNegativeScale(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_getFlipCullingOnNegativeScale(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_scmgr_getDestinationRenderSystem(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
@@ -547,9 +547,9 @@ void ogre_scmgr_getDestinationRenderSystem(struct hg3dclass_struct * thisclass_c
 void ogre_scmgr_getCurrentViewport(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
 
 // 
-void ogre_scmgr_setCameraRelativeRendering(struct hg3dclass_struct * thisclass_c, int rel_c);
+void ogre_scmgr_setCameraRelativeRendering(struct hg3dclass_struct * thisclass_c, long rel_c);
 
 // 
-void ogre_scmgr_getCameraRelativeRendering(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_scmgr_getCameraRelativeRendering(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 #endif 

@@ -35,10 +35,10 @@ void ogre_mshmgr_construct(struct hg3dclass_struct * result_c);
 void ogre_mshmgr_destruct(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_mshmgr_setPrepareAllMeshesForShadowVolumes(struct hg3dclass_struct * thisclass_c, int enable_c);
+void ogre_mshmgr_setPrepareAllMeshesForShadowVolumes(struct hg3dclass_struct * thisclass_c, long enable_c);
 
 // 
-void ogre_mshmgr_getPrepareAllMeshesForShadowVolumes(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_mshmgr_getPrepareAllMeshesForShadowVolumes(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_mshmgr_getBoundsPaddingFactor(struct hg3dclass_struct * thisclass_c, float * result_c);

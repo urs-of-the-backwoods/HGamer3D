@@ -1,5 +1,5 @@
 Name:                HGamer3D-InputSystem
-Version:             0.3.0
+Version:             0.4.0
 Synopsis:            Joystick, Mouse and Keyboard Functionality for HGamer3D
 Description:         
 	HGamer3D is a game engine for developing 3D games in the programming 
@@ -19,9 +19,9 @@ Category:            Game Engine
 Extra-source-files:  Setup.hs 
 
 Library
-  Build-Depends:     base >= 3 && < 5, HGamer3D-Data >= 0.3.0 && < 0.4.0, HGamer3D-SFML-Binding >= 0.3.0 && < 0.4.0, HGamer3D-SDL2-Binding >= 0.3.0 && < 0.4.0
+  Build-Depends:     base >= 3 && < 5, HGamer3D-Data >= 0.4.0 && < 0.5.0, HGamer3D-SFML-Binding >= 0.4.0 && < 0.5.0, HGamer3D-SDL2-Binding >= 0.4.0 && < 0.5.0
 
-  Exposed-modules:   HGamer3D.InputSystem
+  Exposed-modules:   HGamer3D.InputSystem.Internal.Base, HGamer3D.InputSystem
   Other-modules:     
 
   c-sources:         

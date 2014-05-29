@@ -32,25 +32,25 @@
 void ogre_rsrc_destruct(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_rsrc_prepare(struct hg3dclass_struct * thisclass_c, int backgroundThread_c);
+void ogre_rsrc_prepare(struct hg3dclass_struct * thisclass_c, long backgroundThread_c);
 
 // 
-void ogre_rsrc_load(struct hg3dclass_struct * thisclass_c, int backgroundThread_c);
+void ogre_rsrc_load(struct hg3dclass_struct * thisclass_c, long backgroundThread_c);
 
 // 
 void ogre_rsrc_reload(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_rsrc_isReloadable(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rsrc_isReloadable(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rsrc_isManuallyLoaded(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rsrc_isManuallyLoaded(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_rsrc_unload(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_rsrc_getSize(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rsrc_getSize(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_rsrc_touch(struct hg3dclass_struct * thisclass_c);
@@ -59,19 +59,19 @@ void ogre_rsrc_touch(struct hg3dclass_struct * thisclass_c);
 void ogre_rsrc_getName(struct hg3dclass_struct * thisclass_c, char * result_c);
 
 // 
-void ogre_rsrc_isPrepared(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rsrc_isPrepared(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rsrc_isLoaded(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rsrc_isLoaded(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rsrc_isLoading(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rsrc_isLoading(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rsrc_isBackgroundLoaded(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rsrc_isBackgroundLoaded(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_rsrc_setBackgroundLoaded(struct hg3dclass_struct * thisclass_c, int bl_c);
+void ogre_rsrc_setBackgroundLoaded(struct hg3dclass_struct * thisclass_c, long bl_c);
 
 // 
 void ogre_rsrc_escalateLoading(struct hg3dclass_struct * thisclass_c);
@@ -89,6 +89,6 @@ void ogre_rsrc_getCreator(struct hg3dclass_struct * thisclass_c, struct hg3dclas
 void ogre_rsrc_getOrigin(struct hg3dclass_struct * thisclass_c, char * result_c);
 
 // 
-void ogre_rsrc_getStateCount(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_rsrc_getStateCount(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 #endif 

@@ -45,7 +45,7 @@ using Ogre::uint;
 
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_construct(struct hg3dclass_struct * camera_c, struct hg3dclass_struct * target_c, float left_c, float top_c, float width_c, float height_c, int ZOrder_c, struct hg3dclass_struct * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_construct(struct hg3dclass_struct * camera_c, struct hg3dclass_struct * target_c, float left_c, float top_c, float width_c, float height_c, long ZOrder_c, struct hg3dclass_struct * result_c)
 {
   Ogre::Camera * camera_cpp = static_cast<Ogre::Camera*> (getHG3DClassPtr(*camera_c, "Ogre::Camera"));
   Ogre::RenderTarget * target_cpp = static_cast<Ogre::RenderTarget*> (getHG3DClassPtr(*target_c, "Ogre::RenderTarget"));
@@ -75,7 +75,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_vprt_update(struct hg3dclass_struct * thisc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_clear(struct hg3dclass_struct * thisclass_c, unsigned int buffers_c, struct colourvalue_struct * colour_c, float depth_c, unsigned short stencil_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_clear(struct hg3dclass_struct * thisclass_c, unsigned long buffers_c, struct colourvalue_struct * colour_c, float depth_c, unsigned short stencil_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   unsigned int buffers_cpp = (unsigned int)buffers_c;
@@ -114,12 +114,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_vprt_setCamera(struct hg3dclass_struct * th
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_getZOrder(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_getZOrder(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   int result_cpp;
   result_cpp = (thisclass_cpp->getZOrder());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -159,39 +159,39 @@ extern "C" Ogre_LIB_EXPORT void ogre_vprt_getHeight(struct hg3dclass_struct * th
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_getActualLeft(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_getActualLeft(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   int result_cpp;
   result_cpp = (thisclass_cpp->getActualLeft());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_getActualTop(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_getActualTop(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   int result_cpp;
   result_cpp = (thisclass_cpp->getActualTop());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_getActualWidth(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_getActualWidth(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   int result_cpp;
   result_cpp = (thisclass_cpp->getActualWidth());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_getActualHeight(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_getActualHeight(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   int result_cpp;
   result_cpp = (thisclass_cpp->getActualHeight());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -206,7 +206,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_vprt_setDimensions(struct hg3dclass_struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_setOrientationMode(struct hg3dclass_struct * thisclass_c, enum EnumOrientationMode orientationMode_c, int setDefault_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_setOrientationMode(struct hg3dclass_struct * thisclass_c, enum EnumOrientationMode orientationMode_c, long setDefault_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   enum Ogre::OrientationMode orientationMode_cpp = (enum Ogre::OrientationMode)orientationMode_c;
@@ -258,7 +258,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_vprt_getDepthClear(struct hg3dclass_struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_setClearEveryFrame(struct hg3dclass_struct * thisclass_c, int clear_c, unsigned int buffers_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_setClearEveryFrame(struct hg3dclass_struct * thisclass_c, long clear_c, unsigned long buffers_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   bool clear_cpp = (bool)clear_c;
@@ -267,25 +267,25 @@ extern "C" Ogre_LIB_EXPORT void ogre_vprt_setClearEveryFrame(struct hg3dclass_st
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_getClearEveryFrame(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_getClearEveryFrame(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getClearEveryFrame());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_getClearBuffers(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_getClearBuffers(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   unsigned int result_cpp;
   result_cpp = (thisclass_cpp->getClearBuffers());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_setAutoUpdated(struct hg3dclass_struct * thisclass_c, int autoupdate_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_setAutoUpdated(struct hg3dclass_struct * thisclass_c, long autoupdate_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   bool autoupdate_cpp = (bool)autoupdate_c;
@@ -293,12 +293,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_vprt_setAutoUpdated(struct hg3dclass_struct
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_isAutoUpdated(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_isAutoUpdated(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isAutoUpdated());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -323,7 +323,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_vprt_getMaterialScheme(struct hg3dclass_str
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_getActualDimensions(struct hg3dclass_struct * thisclass_c, int * left_c, int * top_c, int * width_c, int * height_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_getActualDimensions(struct hg3dclass_struct * thisclass_c, long * left_c, long * top_c, long * width_c, long * height_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   int left_cpp;
@@ -331,14 +331,14 @@ extern "C" Ogre_LIB_EXPORT void ogre_vprt_getActualDimensions(struct hg3dclass_s
   int width_cpp;
   int height_cpp;
   (thisclass_cpp->getActualDimensions(left_cpp, top_cpp, width_cpp, height_cpp));
-  *left_c = (int)left_cpp;
-  *top_c = (int)top_cpp;
-  *width_c = (int)width_cpp;
-  *height_c = (int)height_cpp;
+  *left_c = (long)left_cpp;
+  *top_c = (long)top_cpp;
+  *width_c = (long)width_cpp;
+  *height_c = (long)height_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_setOverlaysEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_setOverlaysEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   bool enabled_cpp = (bool)enabled_c;
@@ -346,16 +346,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_vprt_setOverlaysEnabled(struct hg3dclass_st
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_getOverlaysEnabled(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_getOverlaysEnabled(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getOverlaysEnabled());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_setSkiesEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_setSkiesEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   bool enabled_cpp = (bool)enabled_c;
@@ -363,16 +363,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_vprt_setSkiesEnabled(struct hg3dclass_struc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_getSkiesEnabled(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_getSkiesEnabled(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getSkiesEnabled());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_setShadowsEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_setShadowsEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   bool enabled_cpp = (bool)enabled_c;
@@ -380,16 +380,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_vprt_setShadowsEnabled(struct hg3dclass_str
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_getShadowsEnabled(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_getShadowsEnabled(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getShadowsEnabled());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_setVisibilityMask(struct hg3dclass_struct * thisclass_c, unsigned int mask_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_setVisibilityMask(struct hg3dclass_struct * thisclass_c, unsigned long mask_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   uint32 mask_cpp = (uint32)mask_c;
@@ -397,12 +397,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_vprt_setVisibilityMask(struct hg3dclass_str
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_getVisibilityMask(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_getVisibilityMask(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   uint result_cpp;
   result_cpp = (thisclass_cpp->getVisibilityMask());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 
@@ -427,7 +427,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_vprt_getRenderQueueInvocationSequenceName(s
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_pointOrientedToScreen(struct hg3dclass_struct * thisclass_c, struct vector2_struct * v_c, int orientationMode_c, struct vector2_struct * outv_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_pointOrientedToScreen(struct hg3dclass_struct * thisclass_c, struct vector2_struct * v_c, long orientationMode_c, struct vector2_struct * outv_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   Vector2 v_cpp = *((Vector2*) v_c);
@@ -438,7 +438,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_vprt_pointOrientedToScreen(struct hg3dclass
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_vprt_pointOrientedToScreen2(struct hg3dclass_struct * thisclass_c, float orientedX_c, float orientedY_c, int orientationMode_c, float * screenX_c, float * screenY_c)
+extern "C" Ogre_LIB_EXPORT void ogre_vprt_pointOrientedToScreen2(struct hg3dclass_struct * thisclass_c, float orientedX_c, float orientedY_c, long orientationMode_c, float * screenX_c, float * screenY_c)
 {
   Ogre::Viewport * thisclass_cpp = static_cast<Ogre::Viewport*> (getHG3DClassPtr(*thisclass_c, "Ogre::Viewport"));
   Real orientedX_cpp = (Real)orientedX_c;

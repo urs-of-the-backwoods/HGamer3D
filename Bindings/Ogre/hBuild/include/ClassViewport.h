@@ -33,7 +33,7 @@
 
 
 // 
-void ogre_vprt_construct(struct hg3dclass_struct * camera_c, struct hg3dclass_struct * target_c, float left_c, float top_c, float width_c, float height_c, int ZOrder_c, struct hg3dclass_struct * result_c);
+void ogre_vprt_construct(struct hg3dclass_struct * camera_c, struct hg3dclass_struct * target_c, float left_c, float top_c, float width_c, float height_c, long ZOrder_c, struct hg3dclass_struct * result_c);
 
 // 
 void ogre_vprt_destruct(struct hg3dclass_struct * thisclass_c);
@@ -42,7 +42,7 @@ void ogre_vprt_destruct(struct hg3dclass_struct * thisclass_c);
 void ogre_vprt_update(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_vprt_clear(struct hg3dclass_struct * thisclass_c, unsigned int buffers_c, struct colourvalue_struct * colour_c, float depth_c, unsigned short stencil_c);
+void ogre_vprt_clear(struct hg3dclass_struct * thisclass_c, unsigned long buffers_c, struct colourvalue_struct * colour_c, float depth_c, unsigned short stencil_c);
 
 // 
 void ogre_vprt_getTarget(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
@@ -54,7 +54,7 @@ void ogre_vprt_getCamera(struct hg3dclass_struct * thisclass_c, struct hg3dclass
 void ogre_vprt_setCamera(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * cam_c);
 
 // 
-void ogre_vprt_getZOrder(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_vprt_getZOrder(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_vprt_getLeft(struct hg3dclass_struct * thisclass_c, float * result_c);
@@ -69,22 +69,22 @@ void ogre_vprt_getWidth(struct hg3dclass_struct * thisclass_c, float * result_c)
 void ogre_vprt_getHeight(struct hg3dclass_struct * thisclass_c, float * result_c);
 
 // 
-void ogre_vprt_getActualLeft(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_vprt_getActualLeft(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_vprt_getActualTop(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_vprt_getActualTop(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_vprt_getActualWidth(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_vprt_getActualWidth(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_vprt_getActualHeight(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_vprt_getActualHeight(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_vprt_setDimensions(struct hg3dclass_struct * thisclass_c, float left_c, float top_c, float width_c, float height_c);
 
 // 
-void ogre_vprt_setOrientationMode(struct hg3dclass_struct * thisclass_c, enum EnumOrientationMode orientationMode_c, int setDefault_c);
+void ogre_vprt_setOrientationMode(struct hg3dclass_struct * thisclass_c, enum EnumOrientationMode orientationMode_c, long setDefault_c);
 
 // 
 void ogre_vprt_getOrientationMode(struct hg3dclass_struct * thisclass_c, enum EnumOrientationMode * result_c);
@@ -102,19 +102,19 @@ void ogre_vprt_setDepthClear(struct hg3dclass_struct * thisclass_c, float depth_
 void ogre_vprt_getDepthClear(struct hg3dclass_struct * thisclass_c, float * result_c);
 
 // 
-void ogre_vprt_setClearEveryFrame(struct hg3dclass_struct * thisclass_c, int clear_c, unsigned int buffers_c);
+void ogre_vprt_setClearEveryFrame(struct hg3dclass_struct * thisclass_c, long clear_c, unsigned long buffers_c);
 
 // 
-void ogre_vprt_getClearEveryFrame(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_vprt_getClearEveryFrame(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_vprt_getClearBuffers(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_vprt_getClearBuffers(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 // 
-void ogre_vprt_setAutoUpdated(struct hg3dclass_struct * thisclass_c, int autoupdate_c);
+void ogre_vprt_setAutoUpdated(struct hg3dclass_struct * thisclass_c, long autoupdate_c);
 
 // 
-void ogre_vprt_isAutoUpdated(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_vprt_isAutoUpdated(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
 void ogre_vprt_setMaterialScheme(struct hg3dclass_struct * thisclass_c, char * schemeName_c);
@@ -123,31 +123,31 @@ void ogre_vprt_setMaterialScheme(struct hg3dclass_struct * thisclass_c, char * s
 void ogre_vprt_getMaterialScheme(struct hg3dclass_struct * thisclass_c, char * result_c);
 
 // 
-void ogre_vprt_getActualDimensions(struct hg3dclass_struct * thisclass_c, int * left_c, int * top_c, int * width_c, int * height_c);
+void ogre_vprt_getActualDimensions(struct hg3dclass_struct * thisclass_c, long * left_c, long * top_c, long * width_c, long * height_c);
 
 // 
-void ogre_vprt_setOverlaysEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c);
+void ogre_vprt_setOverlaysEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c);
 
 // 
-void ogre_vprt_getOverlaysEnabled(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_vprt_getOverlaysEnabled(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_vprt_setSkiesEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c);
+void ogre_vprt_setSkiesEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c);
 
 // 
-void ogre_vprt_getSkiesEnabled(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_vprt_getSkiesEnabled(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_vprt_setShadowsEnabled(struct hg3dclass_struct * thisclass_c, int enabled_c);
+void ogre_vprt_setShadowsEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c);
 
 // 
-void ogre_vprt_getShadowsEnabled(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_vprt_getShadowsEnabled(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_vprt_setVisibilityMask(struct hg3dclass_struct * thisclass_c, unsigned int mask_c);
+void ogre_vprt_setVisibilityMask(struct hg3dclass_struct * thisclass_c, unsigned long mask_c);
 
 // 
-void ogre_vprt_getVisibilityMask(struct hg3dclass_struct * thisclass_c, unsigned int * result_c);
+void ogre_vprt_getVisibilityMask(struct hg3dclass_struct * thisclass_c, unsigned long * result_c);
 
 // 
 void ogre_vprt_setRenderQueueInvocationSequenceName(struct hg3dclass_struct * thisclass_c, char * sequenceName_c);
@@ -156,10 +156,10 @@ void ogre_vprt_setRenderQueueInvocationSequenceName(struct hg3dclass_struct * th
 void ogre_vprt_getRenderQueueInvocationSequenceName(struct hg3dclass_struct * thisclass_c, char * result_c);
 
 // 
-void ogre_vprt_pointOrientedToScreen(struct hg3dclass_struct * thisclass_c, struct vector2_struct * v_c, int orientationMode_c, struct vector2_struct * outv_c);
+void ogre_vprt_pointOrientedToScreen(struct hg3dclass_struct * thisclass_c, struct vector2_struct * v_c, long orientationMode_c, struct vector2_struct * outv_c);
 
 // 
-void ogre_vprt_pointOrientedToScreen2(struct hg3dclass_struct * thisclass_c, float orientedX_c, float orientedY_c, int orientationMode_c, float * screenX_c, float * screenY_c);
+void ogre_vprt_pointOrientedToScreen2(struct hg3dclass_struct * thisclass_c, float orientedX_c, float orientedY_c, long orientationMode_c, float * screenX_c, float * screenY_c);
 
 // 
 void ogre_vprt_setDefaultOrientationMode(enum EnumOrientationMode orientationMode_c);

@@ -60,12 +60,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_ent_getMesh(struct hg3dclass_struct * thisc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_getNumSubEntities(struct hg3dclass_struct * thisclass_c, unsigned int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_getNumSubEntities(struct hg3dclass_struct * thisclass_c, unsigned long * result_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   unsigned int result_cpp;
   result_cpp = (thisclass_cpp->getNumSubEntities());
-  *result_c = (unsigned int)result_cpp;
+  *result_c = (unsigned long)result_cpp;
 };
 
 // 
@@ -121,13 +121,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_ent_getAnimationState(struct hg3dclass_stru
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_hasAnimationState(struct hg3dclass_struct * thisclass_c, char * name_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_hasAnimationState(struct hg3dclass_struct * thisclass_c, char * name_c, long * result_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasAnimationState(name_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -141,7 +141,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_ent_getAllAnimationStates(struct hg3dclass_
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_setDisplaySkeleton(struct hg3dclass_struct * thisclass_c, int display_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_setDisplaySkeleton(struct hg3dclass_struct * thisclass_c, long display_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   bool display_cpp = (bool)display_c;
@@ -149,16 +149,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_ent_setDisplaySkeleton(struct hg3dclass_str
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_getDisplaySkeleton(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_getDisplaySkeleton(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getDisplaySkeleton());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_getManualLodLevel(struct hg3dclass_struct * thisclass_c, int index_c, struct hg3dclass_struct * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_getManualLodLevel(struct hg3dclass_struct * thisclass_c, long index_c, struct hg3dclass_struct * result_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   size_t index_cpp = (size_t)index_c;
@@ -169,16 +169,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_ent_getManualLodLevel(struct hg3dclass_stru
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_getNumManualLodLevels(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_getNumManualLodLevels(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   size_t result_cpp;
   result_cpp = (thisclass_cpp->getNumManualLodLevels());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_setPolygonModeOverrideable(struct hg3dclass_struct * thisclass_c, int PolygonModeOverrideable_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_setPolygonModeOverrideable(struct hg3dclass_struct * thisclass_c, long PolygonModeOverrideable_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   bool PolygonModeOverrideable_cpp = (bool)PolygonModeOverrideable_c;
@@ -221,52 +221,52 @@ extern "C" Ogre_LIB_EXPORT void ogre_ent_getBoundingRadius(struct hg3dclass_stru
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_hasEdgeList(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_hasEdgeList(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasEdgeList());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_hasSkeleton(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_hasSkeleton(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasSkeleton());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_isHardwareAnimationEnabled(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_isHardwareAnimationEnabled(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isHardwareAnimationEnabled());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_getSoftwareAnimationRequests(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_getSoftwareAnimationRequests(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   int result_cpp;
   result_cpp = (thisclass_cpp->getSoftwareAnimationRequests());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_getSoftwareAnimationNormalsRequests(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_getSoftwareAnimationNormalsRequests(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   int result_cpp;
   result_cpp = (thisclass_cpp->getSoftwareAnimationNormalsRequests());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_addSoftwareAnimationRequest(struct hg3dclass_struct * thisclass_c, int normalsAlso_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_addSoftwareAnimationRequest(struct hg3dclass_struct * thisclass_c, long normalsAlso_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   bool normalsAlso_cpp = (bool)normalsAlso_c;
@@ -274,7 +274,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_ent_addSoftwareAnimationRequest(struct hg3d
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_removeSoftwareAnimationRequest(struct hg3dclass_struct * thisclass_c, int normalsAlso_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_removeSoftwareAnimationRequest(struct hg3dclass_struct * thisclass_c, long normalsAlso_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   bool normalsAlso_cpp = (bool)normalsAlso_c;
@@ -290,12 +290,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_ent_shareSkeletonInstanceWith(struct hg3dcl
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_hasVertexAnimation(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_hasVertexAnimation(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->hasVertexAnimation());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -306,12 +306,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_ent_stopSharingSkeletonInstance(struct hg3d
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_sharesSkeletonInstance(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_sharesSkeletonInstance(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->sharesSkeletonInstance());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -322,7 +322,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_ent_refreshAvailableAnimationState(struct h
 };
 
 // Choose which vertex data to bind to the renderer. 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_chooseVertexDataForBinding(struct hg3dclass_struct * thisclass_c, int hasVertexAnim_c, enum EnumEntityVertexDataBindChoice * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_chooseVertexDataForBinding(struct hg3dclass_struct * thisclass_c, long hasVertexAnim_c, enum EnumEntityVertexDataBindChoice * result_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   bool hasVertexAnim_cpp = (bool)hasVertexAnim_c;
@@ -332,12 +332,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_ent_chooseVertexDataForBinding(struct hg3dc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_isInitialised(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_isInitialised(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->isInitialised());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -349,7 +349,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_ent_backgroundLoadingComplete(struct hg3dcl
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_setSkipAnimationStateUpdate(struct hg3dclass_struct * thisclass_c, int skip_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_setSkipAnimationStateUpdate(struct hg3dclass_struct * thisclass_c, long skip_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   bool skip_cpp = (bool)skip_c;
@@ -357,16 +357,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_ent_setSkipAnimationStateUpdate(struct hg3d
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_getSkipAnimationStateUpdate(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_getSkipAnimationStateUpdate(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getSkipAnimationStateUpdate());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_setAlwaysUpdateMainSkeleton(struct hg3dclass_struct * thisclass_c, int update_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_setAlwaysUpdateMainSkeleton(struct hg3dclass_struct * thisclass_c, long update_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   bool update_cpp = (bool)update_c;
@@ -374,11 +374,11 @@ extern "C" Ogre_LIB_EXPORT void ogre_ent_setAlwaysUpdateMainSkeleton(struct hg3d
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_ent_getAlwaysUpdateMainSkeleton(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_ent_getAlwaysUpdateMainSkeleton(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::Entity * thisclass_cpp = static_cast<Ogre::Entity*> (getHG3DClassPtr(*thisclass_c, "Ogre::Entity"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getAlwaysUpdateMainSkeleton());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 

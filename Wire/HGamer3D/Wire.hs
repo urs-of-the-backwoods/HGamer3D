@@ -35,7 +35,7 @@ import Control.Wire.Unsafe.Event as U
 
 import Prelude hiding ((.), id)
 
-import HGamer3D
+import HGamer3D.Graphics3D
 import HGamer3D.Audio
 import HGamer3D.InputSystem
 import HGamer3D.WinEvent hiding (initHGamer3D, loopHGamer3D, exitHGamer3D)

@@ -45,12 +45,12 @@ void ogre_bn_setBindingPose(struct hg3dclass_struct * thisclass_c);
 void ogre_bn_reset(struct hg3dclass_struct * thisclass_c);
 
 // 
-void ogre_bn_setManuallyControlled(struct hg3dclass_struct * thisclass_c, int manuallyControlled_c);
+void ogre_bn_setManuallyControlled(struct hg3dclass_struct * thisclass_c, long manuallyControlled_c);
 
 // 
-void ogre_bn_isManuallyControlled(struct hg3dclass_struct * thisclass_c, int * result_c);
+void ogre_bn_isManuallyControlled(struct hg3dclass_struct * thisclass_c, long * result_c);
 
 // 
-void ogre_bn_needUpdate(struct hg3dclass_struct * thisclass_c, int forceParentUpdate_c);
+void ogre_bn_needUpdate(struct hg3dclass_struct * thisclass_c, long forceParentUpdate_c);
 
 #endif 

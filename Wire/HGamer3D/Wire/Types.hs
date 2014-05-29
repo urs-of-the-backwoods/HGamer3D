@@ -12,7 +12,7 @@ import Data.List
 import Data.Maybe
 import qualified Data.Map as M
 
-import HGamer3D  
+import HGamer3D.Graphics3D
 import HGamer3D.Audio
 import HGamer3D.InputSystem
 

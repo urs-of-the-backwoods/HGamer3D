@@ -52,7 +52,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbdc_destruct(struct hg3dclass_struct * thi
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbdc_setMaxChainElements(struct hg3dclass_struct * thisclass_c, int maxElements_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbdc_setMaxChainElements(struct hg3dclass_struct * thisclass_c, long maxElements_c)
 {
   Ogre::BillboardChain * thisclass_cpp = static_cast<Ogre::BillboardChain*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardChain"));
   size_t maxElements_cpp = (size_t)maxElements_c;
@@ -60,16 +60,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbdc_setMaxChainElements(struct hg3dclass_s
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbdc_getMaxChainElements(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbdc_getMaxChainElements(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::BillboardChain * thisclass_cpp = static_cast<Ogre::BillboardChain*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardChain"));
   size_t result_cpp;
   result_cpp = (thisclass_cpp->getMaxChainElements());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbdc_setNumberOfChains(struct hg3dclass_struct * thisclass_c, int numChains_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbdc_setNumberOfChains(struct hg3dclass_struct * thisclass_c, long numChains_c)
 {
   Ogre::BillboardChain * thisclass_cpp = static_cast<Ogre::BillboardChain*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardChain"));
   size_t numChains_cpp = (size_t)numChains_c;
@@ -77,16 +77,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbdc_setNumberOfChains(struct hg3dclass_str
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbdc_getNumberOfChains(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbdc_getNumberOfChains(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::BillboardChain * thisclass_cpp = static_cast<Ogre::BillboardChain*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardChain"));
   size_t result_cpp;
   result_cpp = (thisclass_cpp->getNumberOfChains());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbdc_setUseTextureCoords(struct hg3dclass_struct * thisclass_c, int use_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbdc_setUseTextureCoords(struct hg3dclass_struct * thisclass_c, long use_c)
 {
   Ogre::BillboardChain * thisclass_cpp = static_cast<Ogre::BillboardChain*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardChain"));
   bool use_cpp = (bool)use_c;
@@ -94,12 +94,12 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbdc_setUseTextureCoords(struct hg3dclass_s
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbdc_getUseTextureCoords(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbdc_getUseTextureCoords(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::BillboardChain * thisclass_cpp = static_cast<Ogre::BillboardChain*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardChain"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getUseTextureCoords());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
@@ -129,7 +129,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbdc_setOtherTextureCoordRange(struct hg3dc
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbdc_setUseVertexColours(struct hg3dclass_struct * thisclass_c, int use_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbdc_setUseVertexColours(struct hg3dclass_struct * thisclass_c, long use_c)
 {
   Ogre::BillboardChain * thisclass_cpp = static_cast<Ogre::BillboardChain*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardChain"));
   bool use_cpp = (bool)use_c;
@@ -137,16 +137,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbdc_setUseVertexColours(struct hg3dclass_s
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbdc_getUseVertexColours(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbdc_getUseVertexColours(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::BillboardChain * thisclass_cpp = static_cast<Ogre::BillboardChain*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardChain"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getUseVertexColours());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbdc_setDynamic(struct hg3dclass_struct * thisclass_c, int dyn_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbdc_setDynamic(struct hg3dclass_struct * thisclass_c, long dyn_c)
 {
   Ogre::BillboardChain * thisclass_cpp = static_cast<Ogre::BillboardChain*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardChain"));
   bool dyn_cpp = (bool)dyn_c;
@@ -154,16 +154,16 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbdc_setDynamic(struct hg3dclass_struct * t
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbdc_getDynamic(struct hg3dclass_struct * thisclass_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbdc_getDynamic(struct hg3dclass_struct * thisclass_c, long * result_c)
 {
   Ogre::BillboardChain * thisclass_cpp = static_cast<Ogre::BillboardChain*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardChain"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->getDynamic());
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbdc_removeChainElement(struct hg3dclass_struct * thisclass_c, int chainIndex_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbdc_removeChainElement(struct hg3dclass_struct * thisclass_c, long chainIndex_c)
 {
   Ogre::BillboardChain * thisclass_cpp = static_cast<Ogre::BillboardChain*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardChain"));
   size_t chainIndex_cpp = (size_t)chainIndex_c;
@@ -171,17 +171,17 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbdc_removeChainElement(struct hg3dclass_st
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbdc_getNumChainElements(struct hg3dclass_struct * thisclass_c, int chainIndex_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbdc_getNumChainElements(struct hg3dclass_struct * thisclass_c, long chainIndex_c, long * result_c)
 {
   Ogre::BillboardChain * thisclass_cpp = static_cast<Ogre::BillboardChain*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardChain"));
   size_t chainIndex_cpp = (size_t)chainIndex_c;
   size_t result_cpp;
   result_cpp = (thisclass_cpp->getNumChainElements(chainIndex_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbdc_clearChain(struct hg3dclass_struct * thisclass_c, int chainIndex_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbdc_clearChain(struct hg3dclass_struct * thisclass_c, long chainIndex_c)
 {
   Ogre::BillboardChain * thisclass_cpp = static_cast<Ogre::BillboardChain*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardChain"));
   size_t chainIndex_cpp = (size_t)chainIndex_c;
@@ -196,7 +196,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbdc_clearAllChains(struct hg3dclass_struct
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbdc_setFaceCamera(struct hg3dclass_struct * thisclass_c, int faceCamera_c, struct vector3_struct * normalVector_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbdc_setFaceCamera(struct hg3dclass_struct * thisclass_c, long faceCamera_c, struct vector3_struct * normalVector_c)
 {
   Ogre::BillboardChain * thisclass_cpp = static_cast<Ogre::BillboardChain*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardChain"));
   bool faceCamera_cpp = (bool)faceCamera_c;
@@ -268,13 +268,13 @@ extern "C" Ogre_LIB_EXPORT void ogre_bbdc_getMovableType(struct hg3dclass_struct
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_bbdc_preRender(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * sm_c, struct hg3dclass_struct * rsys_c, int * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_bbdc_preRender(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * sm_c, struct hg3dclass_struct * rsys_c, long * result_c)
 {
   Ogre::BillboardChain * thisclass_cpp = static_cast<Ogre::BillboardChain*> (getHG3DClassPtr(*thisclass_c, "Ogre::BillboardChain"));
   Ogre::SceneManager * sm_cpp = static_cast<Ogre::SceneManager*> (getHG3DClassPtr(*sm_c, "Ogre::SceneManager"));
   Ogre::RenderSystem * rsys_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*rsys_c, "Ogre::RenderSystem"));
   bool result_cpp;
   result_cpp = (thisclass_cpp->preRender(sm_cpp, rsys_cpp));
-  *result_c = (int)result_cpp;
+  *result_c = (long)result_cpp;
 };
 

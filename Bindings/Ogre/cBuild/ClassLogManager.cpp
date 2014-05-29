@@ -51,7 +51,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_lmgr_destruct(struct hg3dclass_struct * thi
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_lmgr_createLog(struct hg3dclass_struct * thisclass_c, char * name_c, int defaultLog_c, int debuggerOutput_c, int suppressFileOutput_c, struct hg3dclass_struct * result_c)
+extern "C" Ogre_LIB_EXPORT void ogre_lmgr_createLog(struct hg3dclass_struct * thisclass_c, char * name_c, long defaultLog_c, long debuggerOutput_c, long suppressFileOutput_c, struct hg3dclass_struct * result_c)
 {
   Ogre::LogManager * thisclass_cpp = static_cast<Ogre::LogManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::LogManager"));
   Ogre::String name_cpp = Ogre::String((const char*) name_c);
@@ -113,7 +113,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_lmgr_setDefaultLog(struct hg3dclass_struct 
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_lmgr_logMessage(struct hg3dclass_struct * thisclass_c, char * message_c, enum EnumLogMessageLevel lml_c, int maskDebug_c)
+extern "C" Ogre_LIB_EXPORT void ogre_lmgr_logMessage(struct hg3dclass_struct * thisclass_c, char * message_c, enum EnumLogMessageLevel lml_c, long maskDebug_c)
 {
   Ogre::LogManager * thisclass_cpp = static_cast<Ogre::LogManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::LogManager"));
   Ogre::String message_cpp = Ogre::String((const char*) message_c);
@@ -123,7 +123,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_lmgr_logMessage(struct hg3dclass_struct * t
 };
 
 // 
-extern "C" Ogre_LIB_EXPORT void ogre_lmgr_logMessage2(struct hg3dclass_struct * thisclass_c, enum EnumLogMessageLevel lml_c, char * message_c, int maskDebug_c)
+extern "C" Ogre_LIB_EXPORT void ogre_lmgr_logMessage2(struct hg3dclass_struct * thisclass_c, enum EnumLogMessageLevel lml_c, char * message_c, long maskDebug_c)
 {
   Ogre::LogManager * thisclass_cpp = static_cast<Ogre::LogManager*> (getHG3DClassPtr(*thisclass_c, "Ogre::LogManager"));
   enum Ogre::LogMessageLevel lml_cpp = (enum Ogre::LogMessageLevel)lml_c;

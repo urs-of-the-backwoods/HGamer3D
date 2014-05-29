@@ -16,6 +16,7 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
+import HGamer3D.Data
 import HGamer3D.Graphics3D
 
 white :: Colour
@@ -23,8 +24,8 @@ white = (Colour 1.0 1.0 1.0 1.0)
 
 renderLoop cube g3ds = do
    -- rotate 
-  yaw3D cube (Rad 0.005) 
-  roll3D cube (Rad 0.002)
+  yaw cube (Rad 0.005) 
+  roll cube (Rad 0.002)
   quit <- loopHGamer3D g3ds
   if quit then return () else renderLoop cube g3ds
    
@@ -35,7 +36,7 @@ main = do
         
 	-- camera position
 	let pos = Vec3 5.0 5.0 400.0
-        positionTo3D camera pos
+        positionTo camera pos
 	let at = Vec3 0.0 0.0 (-300.0)
         cameraLookAt camera at
 	
@@ -45,9 +46,10 @@ main = do
 	pointLight g3ds (Colour 0.3 0.3 1.0 1.0) (Vec3 (-100.0) 10.0 0.0)
 	pointLight g3ds (Colour 1.0 0.3 0.3 1.0) (Vec3 100.0 10.0 0.0)
         let cube = resourceMesh "knot.mesh"
-        cube <- object3DFromMesh g3ds cube (Just (ResourceMaterial "OffsetMapping/IntegratedShadows") ) True
+        let bumpMaterial = resourceMaterial "OffsetMapping/IntegratedShadows"
+        cube <- object3DFromMesh g3ds cube (Just bumpMaterial ) True
 
-        positionTo3D cube (Vec3 0.0 0.0 0.0)
+        positionTo cube (Vec3 0.0 0.0 0.0)
         
 	-- start render loop
 	renderLoop cube g3ds 
