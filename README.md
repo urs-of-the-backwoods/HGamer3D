@@ -9,5 +9,6 @@ Documentation is on: http://www.hgamer3d.org
 
 News
 ----
+- Started investigating 4bit Linux, first fix in branch "feature-4bit"
 - Fixes of various build problems, April 2014, see new install instructions on http://www.hgamer3d.org/Install.html
 - Version 0.3.x published on master, changes keep 0.3.x compatibility
