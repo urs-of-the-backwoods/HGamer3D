@@ -38,6 +38,10 @@ def linkSO(target, source, env):
     os.system(cmd)
 
 
+def patch_findfreetype(target, source, env):
+    os.system("patch -N -r- ogre_src_v1-8-1/CMake/Packages/FindFreetype.cmake FindFreetype.patch")
+    return 0
+
 # download pre-build binaries or source and extract
 if env["PLATFORM"] == "win32":
    # download and extract pre-build binaries
@@ -63,7 +67,9 @@ else:
 	 "md5sum -c md5-ogre || (rm -f ogre-1.8.1.tar.bz2 && exit 1)"
 	 ])
    # extract all files
-   env.Command("ogre_src_v1-8-1/OgreMain/src", "ogre-1.8.1.tar.bz2", "tar xjf ogre-1.8.1.tar.bz2")
+   env.Command("ogre_src_v1-8-1/OgreMain/src", "ogre-1.8.1.tar.bz2", [
+   					       			     "tar xjf ogre-1.8.1.tar.bz2",
+								     patch_findfreetype ])
 
    # configure and create Makefile
    env.Command("ogre_src_v1-8-1/Makefile", "ogre_src_v1-8-1/OgreMain/src", [

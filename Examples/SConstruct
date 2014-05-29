@@ -27,7 +27,9 @@ for (p, s) in [
     ("Games", "Cuboid2"),
     ("Games", "YWing-Flight")
 ]:
-    env.Command("build/" + s, p + "/" + s + ".hs", "rm -f build/*.o && " + "ghc --make -odir build -hidir build -i" + p + " -o build/" + s + " " + p + "/" + s)
+    env.Command("build/" + s, [p + "/" + s + ".hs",
+                               "build/.HGamer3D"
+                               ] , "rm -f build/*.o && " + "ghc --make -odir build -hidir build -i" + p + " -o build/" + s + " " + p + "/" + s)
 
 # the media files need to be copied to .HGamer3D
 env.Command("build/.HGamer3D", "MediaFiles", [

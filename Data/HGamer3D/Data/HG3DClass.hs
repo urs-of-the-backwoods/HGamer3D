@@ -29,6 +29,7 @@ module HGamer3D.Data.HG3DClass where
 import Foreign
 import Foreign.Ptr
 import Foreign.C
+import Foreign.Storable
 
 
 import Data.Bits
@@ -40,17 +41,17 @@ data HG3DClass = HG3DClass {
 
 instance Storable HG3DClass where
   alignment _ = alignment (undefined :: CDouble)
-  sizeOf _ = 8
+  sizeOf _ = 2 * (sizeOf nullPtr)
   
   peek p = do
 	ptr <- (\ptr -> do {peekByteOff ptr 0 ::IO (Ptr ())}) p
-	fptr <- (\ptr -> do {peekByteOff ptr 4 ::IO (Ptr ())}) p
+	fptr <- (\ptr -> do {peekByteOff ptr (sizeOf nullPtr) ::IO (Ptr ())}) p
 	let hc = HG3DClass (ptr) (fptr)
 	return hc
 	
   poke p (HG3DClass ptr fptr) = do
     (\ptr val -> do {pokeByteOff ptr 0 (val::(Ptr ()))}) p (ptr)
-    (\ptr val -> do {pokeByteOff ptr 4 (val::(Ptr ()))}) p (fptr)
+    (\ptr val -> do {pokeByteOff ptr (sizeOf nullPtr) (val::(Ptr ()))}) p (fptr)
     
 
 
