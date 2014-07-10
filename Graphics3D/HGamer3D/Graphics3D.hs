@@ -42,7 +42,7 @@ module HGamer3D.Graphics3D
   cube,
   cuboid,
 
-    -- * Light
+  -- * Light
   Light,
   HGamer3D.Graphics3D.Internal.Light.setAmbientLight,
   pointLight,
@@ -51,28 +51,8 @@ module HGamer3D.Graphics3D
   setSpotLightAngle,
   directionalLight,
 
-  {-
-  -- * Materials
-  resourceMaterial,
-
-  -- * Meshes
-  sphereMesh,
-  cubeMesh,
-  planeMesh,
-  resourceMesh,
-        
-  colouredCubeMesh,
-  colouredLineMesh,
-  rainbowCubeMesh,
-	
-  ikosaederMesh,
-  dodekaederMesh,
-
-  -- * Graphics Objects
-  object3DFromMesh,
-  object3DFromObjects,
-
--}
+  -- * Material
+  Material (..),
   
   -- * Misc Functions
 
@@ -92,6 +72,9 @@ where
   import HGamer3D.Graphics3D.Internal.Base
   import HGamer3D.Graphics3D.Internal.Light
   import HGamer3D.Graphics3D.Internal.Shapes
+  
+  import HGamer3D.Graphics3D.Schema.Material
+  
 --  import HGamer3D.Graphics3D.Internal.PlatonShapes
   
 

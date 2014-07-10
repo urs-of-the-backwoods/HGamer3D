@@ -45,4 +45,5 @@ module HGamer3D.BaseAPI
   import HGamer3D.WinEvent
   import HGamer3D.GUI
 
-  import HGamer3D.Internal.GameLoop 
+  import HGamer3D.Internal.GameLoop
+  import HGamer3D.Internal.Event

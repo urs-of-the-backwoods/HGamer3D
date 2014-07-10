@@ -83,27 +83,30 @@ printEvent outbox event = do
 
 
 checkEvents outtext g3ds guis = do
-  (evt, qFlag) <- stepHGamer3D g3ds guis
+  (evts, qFlag) <- stepHGamer3D g3ds guis
   if qFlag then
     return False
-    else
-    case evt of
-      Just (EventGUI evts) -> do    
-        mapM (printEvent outtext) evts
-        return True
-      Just (EventWindow (EvtQuit ts)) -> return False
-      _ -> return True
+    else do
+      qList <- mapM (\evt -> do
+             case evt of
+               (GUIEvt guiEvt) -> do    
+                 printEvent outtext guiEvt
+                 return False
+               (WindowEvt (EvtQuit ts)) -> return True
+               _ -> return False
+             ) evts
+      return $ length (filter id qList) == 0
       
-renderLoop cube outtext g3ds guis = do
+renderLoop cubeF outtext g3ds guis = do
    -- rotate 
-  yaw cube (Rad 0.005) 
-  roll cube (Rad 0.002)
+  orientation cubeF >>= \o -> return (yaw o (Rad 0.005)) >>= orientationTo cubeF
+  orientation cubeF >>= \o -> return (roll o (Rad 0.002)) >>= orientationTo cubeF
   proceed <- checkEvents outtext g3ds guis
-  if proceed then renderLoop cube outtext g3ds guis else return ()
+  if proceed then renderLoop cubeF outtext g3ds guis else return ()
    
 main = do 
   
-        (g3ds, guis, camera, viewport) <- initHGamer3D "HGamer3D - GUI Widgets Example" True False True
+        (g3ds, guis, camera, viewport) <- initHGamer3D "HGamer3D - GUI Widgets Example" True True True
   
 	-- camera position
 	let pos = Vec3 5.0 5.0 80.0
@@ -117,11 +120,9 @@ main = do
 	pointLight g3ds white (Vec3 10.0 10.0 20.0)
         
 	-- create a shiny blue cube
-        let cube = cubeMesh
-        let blueMat = resourceMaterial "Colours/Blue"
-        cube <- object3DFromMesh g3ds cube (Just blueMat) False
-        positionTo cube (Vec3 0.0 0.0 0.0)
-        scale cube (Vec3 0.2 0.2 0.2)
+        cubeFigure <- cube g3ds 0.2 (ResourceMaterial "Colours/Blue")
+        positionTo cubeFigure (Vec3 0.0 0.0 0.0)
+        sizeTo cubeFigure (Vec3 0.2 0.2 0.2)
         
 	-- GUI Code starts here, display hg3d logo
 	loadGuiScheme guis "hg3d.scheme"
@@ -193,6 +194,6 @@ main = do
         registerGUIEvent guis combobox "ListSelectionAccepted" "combo-done"
 
 	-- start render loop
-	renderLoop cube outtext g3ds guis
+	renderLoop cubeFigure outtext g3ds guis
         freeHGamer3D g3ds guis
         return ()
