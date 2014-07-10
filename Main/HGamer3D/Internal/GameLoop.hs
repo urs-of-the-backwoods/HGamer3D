@@ -37,44 +37,52 @@ module HGamer3D.Internal.GameLoop
   import HGamer3D.Graphics3D
   import HGamer3D.WinEvent
   import HGamer3D.GUI
+  
+  import HGamer3D.Internal.Event
 
   -- need a couple of internal functions from base modules, to implement game loop
   import HGamer3D.Graphics3D.Internal.Base (renderOneFrame, graphics3DPumpWindowMessages, checkQuitReceived)
-  import HGamer3D.GUI.Internal.Base (pollGUIEvents, initGUI, injectWinEventToGUI)
+  import HGamer3D.GUI.Internal.Base (pollGUIEvent, initGUI, injectWinEventToGUI)
   import HGamer3D.WinEvent.Internal.Base (attachToWindow)
 
   import qualified System.Info as SI
-
-  data HG3DEvent = EventWindow SDLEvent | EventGUI [GUIEvent]
 
   freeHGamer3D :: Graphics3DSystem -> GUISystem -> IO ()
   freeHGamer3D g3ds guis = do 
      freeGraphics3D g3ds
 
 
-  -- the game loops works in a way, that window events are much faster processed then 
+  -- | Game Loop
+  -- The game loop works in a way, that window events are much faster processed then 
   -- update of rendering -> all events needs to be cleared, then next renderOneFrame is processed
-
-  stepHGamer3D :: Graphics3DSystem -> GUISystem -> IO (Maybe HG3DEvent, Bool)
+  -- after that the call returns.
+  stepHGamer3D :: Graphics3DSystem -- ^ the Graphics System
+                  -> GUISystem     -- ^ the GUI System
+                  -> IO ([HG3DEvent], Bool) -- ^ list of Events received, quit flag (True if quit received)
+                  
   stepHGamer3D g3ds guis = do
-
+    
+    let oneStep quitReceived events = do
         -- this one is quite tricky, on Linux we need to call the message loop in addition to WinEvent!
         if SI.os /= "mingw32" then graphics3DPumpWindowMessages else return ()
         i <- checkQuitReceived
-
-        evt <- pollWinEvent
-        case evt of
-           Just sdlEvt -> do
-                             injectWinEventToGUI guis sdlEvt  -- inject event into gui
-                             return (Just (EventWindow sdlEvt), (i == 1) )
-           _ -> do
-                  gevts <- pollGUIEvents guis
-                  if length gevts > 0 then
-                     return (Just (EventGUI gevts), (i == 1) )
-                     else do
-                        renderOneFrame g3ds
-                        return (Nothing, (i == 1) )
-
+        let quitReceived' = quitReceived || (i == 1)
+        mWinEvt <- pollWinEvent
+        case mWinEvt of
+           Just winEvt -> do
+             injectWinEventToGUI guis winEvt  -- inject event into gui
+             let events' = events ++ [WindowEvt winEvt]
+             oneStep quitReceived' events'
+           Nothing -> do
+             mGuiEvt <- pollGUIEvent guis
+             case mGuiEvt of
+               Just guiEvt -> do
+                 let events' = events ++ [GUIEvt guiEvt]
+                 oneStep quitReceived' events'
+               Nothing -> do
+                 renderOneFrame g3ds
+                 return (events, quitReceived')
+    oneStep False []
 
   initHGamer3D :: String -- ^ Window Title
                   -> Bool -- ^ Flag show config dialogue

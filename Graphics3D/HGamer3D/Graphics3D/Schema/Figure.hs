@@ -1,10 +1,10 @@
-{-# LANGUAGE FlexibleContexts, StandaloneDeriving, TemplateHaskell #-}
+{-# Language StandaloneDeriving, DeriveDataTypeable #-}
 
 -- This source file is part of HGamer3D
 -- (A project to enable 3D game development in Haskell)
 -- For the latest info, see http://www.hgamer3d.org
 --
--- (c) 2011-2013 Peter Althainz
+-- (c) 2011-2014 Peter Althainz
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -18,28 +18,22 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- Camera.hs
+-- HGamer3D/Graphics3D/Schema/Figure.hs
 
--- | Types which describe the Scene, the high level of a Scene Tree
-module HGamer3D.Schema.Camera
+-- | data types which describe a combined geometry together with materials, a complete figure
+
+module HGamer3D.Graphics3D.Schema.Figure
 
 where
 
-import HGamer3D.Data as Dat
-import HGamer3D.Util
-import Control.Lens
+import Data.Typeable
+import qualified HGamer3D.Data as D
 
--- | The camera type
-data Camera = Camera { 
-  _frustum :: Frustum  -- ^ Frustum of the camera 
-                     } deriving (Eq, Show)
+import HGamer3D.Graphics3D.Schema.Geometry
+import HGamer3D.Graphics3D.Schema.Material
 
-data Frustum = Frustum {
-  _nearDistance :: Float,
-  _farDistance :: Float,
-  _fieldOfViewHorizontal :: Dat.Angle } deriving (Eq, Show)
-               
-$(makeLenses ''Camera)
-$(makeLenses ''Frustum)
-  
+data Figure = SimpleFigure Geometry Material
+            | ResourceFigure String
+            | CombinedFigure [(D.Position, D.Orientation, D.Size, Figure)]
+           deriving (Eq, Show, Typeable)
 

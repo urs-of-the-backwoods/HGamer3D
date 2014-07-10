@@ -30,14 +30,10 @@ Flag InputSystem
   Description: Enable Joystick, Mouse, Keyboard Polling
   Default: True
 
-Flag Extensions
-  Description: API extensions
-  Default: True
-
 Library
-  Build-Depends:     base >= 3 && < 5, HGamer3D-Data >= 0.4.0 && < 0.5.0, HGamer3D-Graphics3D >= 0.4.0 && < 0.5.0, HGamer3D-WinEvent >= 0.4.0 && < 0.5.0, HGamer3D-GUI >= 0.4.0 && < 0.5.0 
+  Build-Depends:     base >= 3 && < 5, clock, containers, hashtables, hashable, HGamer3D-Data >= 0.4.0 && < 0.5.0, HGamer3D-Graphics3D >= 0.4.0 && < 0.5.0, HGamer3D-WinEvent >= 0.4.0 && < 0.5.0, HGamer3D-GUI >= 0.4.0 && < 0.5.0 
 
-  Exposed-modules:   HGamer3D.Internal.GameLoop, HGamer3D.BaseAPI
+  Exposed-modules:   HGamer3D.Internal.ECS.Component, HGamer3D.Internal.ECS.ComponentType, HGamer3D.Internal.ECS.Entity, HGamer3D.Internal.ECS.System, HGamer3D.Internal.ECS.SystemGraphics3D, HGamer3D.Internal.GameLoop, HGamer3D.Internal.Event, HGamer3D.BaseAPI
   Other-modules:     
 
   c-sources:         
@@ -51,16 +47,13 @@ Library
 
   if flag(audio)
     build-depends: HGamer3D-Audio >= 0.4 && < 0.5
-    exposed-modules: HGamer3D.Modules.Audio
+    exposed-modules: HGamer3D.AudioModule.BaseAPI
 
   if flag(network)
     build-depends: HGamer3D-Network >= 0.4 && < 0.5
-    exposed-modules: HGamer3D.Modules.Network
+    exposed-modules: HGamer3D.NetworkModule.BaseAPI
 
   if flag(inputsystem)
     build-depends: HGamer3D-InputSystem >= 0.4 && < 0.5
-    exposed-modules: HGamer3D.Modules.InputSystem
+    exposed-modules: HGamer3D.InputSystemModule.BaseAPI
 
-  if flag(extensions)
-    build-depends: HGamer3D-Wire >= 0.4.0 && < 0.5.0, HGamer3D-Schema >= 0.4.0 && < 0.5.0
-    exposed-modules: HGamer3D.Extensions.Schema, HGamer3D.Extensions.Wire

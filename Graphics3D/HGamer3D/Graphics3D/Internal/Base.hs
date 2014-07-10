@@ -4,7 +4,7 @@
 -- (A project to enable 3D game development in Haskell)
 -- For the latest info, see http://www.hgamer3d.org
 --
--- (c) 2011-2013 Peter Althainz
+-- (c) 2011-2014 Peter Althainz
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -23,16 +23,27 @@
 -- | Basic Types, Initialization and some global functions for the Graphics3D module. This is the internal implementation module. The external API is in HGamer3D.Graphics3D.
 module HGamer3D.Graphics3D.Internal.Base (
 
-  -- * Fundamental Types
-  
+  -- * The Graphics and 3D Object System
+  Graphics3DSystem (..),
   Object3D (..),
-  Material (..),
-  resourceMaterial,
 
-  Mesh (..),
-  Camera (..),
+  -- * Initialization of Graphics3D and Game Loop Functions
+  initGraphics3D,
+  freeGraphics3D,
+  stepGraphics3D,
   
-  -- * Internal Types, handling of Ogre Engine
+  -- * some global functions
+  HGamer3D.Graphics3D.Internal.Base.setBackgroundColour,
+  addResourceLocationMedia,
+  addResourceZipfileMedia,
+  addResourceLocationGUI,
+
+  -- * Camera functionality
+  
+  Camera (..),
+  cameraLookAt,
+  
+  -- * Internal Types, handling of the Ogre Engine
   SceneManager (..),
   ResourceGroupManager (..),
   RootObject (..),
@@ -40,28 +51,19 @@ module HGamer3D.Graphics3D.Internal.Base (
   LogManager (..),
   TextureManager (..),
   RenderTarget (..),
-  
-  -- * The Graphics System
-  Graphics3DSystem (..),
 
-
-  -- * Initialization of Graphics3D and Game Loop Functions
-  initGraphics3D,
-  freeGraphics3D,
-  stepGraphics3D,
-  
-  -- * global functions
-  cameraLookAt,
-  HGamer3D.Graphics3D.Internal.Base.setBackgroundColour,
-  addResourceLocationMedia,
-  addResourceZipfileMedia,
-  addResourceLocationGUI,
+  -- * Internal Types 3D Object System
+  Engine3DItem (..),
+  OEntity (..),
+  ONode (..),
+  EngineData (..),
   
   -- * Internal Functionality  
   graphics3DPumpWindowMessages,
   renderOneFrame,
   checkQuitReceived,
-  _getNode
+  _getNode,
+
 ) 
 
 where
@@ -105,80 +107,14 @@ import Data.Maybe
 import HGamer3D.Data
 import HGamer3D.Util
 
--- | The material. Define how an object is looking. Currently we have materials from resources
-data Material = ResourceMaterial String -- ^ a named material, already installed as a resource
-
--- | give back a resource Material
-resourceMaterial :: String           -- ^ the name of the Material as a resource
-                    -> Material   -- ^ the created material
-resourceMaterial name = ResourceMaterial name
-
--- | The mesh. A mesh in HGamer3D is just that, a mesh loaded from a template, a manual mesh, or loaded from file. It comes with default
--- material, but 3D objects based on this can get other materials individually.
-data Mesh = CubeMesh | -- ^ Cube Mesh-Type
-            PlaneMesh | -- ^ Plane Mesh-Type
-            SphereMesh | -- ^ Sphere Mesh-Type
-            ResourceMesh String | -- ^ Mesh resource loaded from file
-            ManualMesh String  -- ^ Manual Mesh-Type, identified by name
-
--- | The basic 3D object. Each object is a single instance, which can be displayed, moved, scaled, rotated, ...
--- Objects are created cloned from meshes (templates for ojbects) or manually, by manual object creation methods.
-data Object3D = SingleObject3D Mesh HG3DClass | -- ^ a single object, consisting of a Mesh and a Node (Ogre)
-                CombinedObject3D [Object3D] HG3DClass -- ^ a combined object,consisting of many objects and a node for the combined one
-				
-instance Position Object3D where
-
-	position obj = do
-		pos <- Node.getPosition (_getNode obj)
-		return (pos)
-		
-	positionTo obj pos = do
-		Node.setPosition  (_getNode obj) pos
-		return ()
-	
-instance Size Object3D where
-
-	size obj = do
-		pos <- Node.getScale  (_getNode obj)
-		return (pos)
-		
-	sizeTo obj pos = do
-		Node.setScale  (_getNode obj) pos
-		return ()
-	
-instance Orientation Object3D where
-
-	orientation obj = do
-		q <- Node.getOrientation  (_getNode obj)
-		let uq = mkNormal q
-		return uq
-	
-	orientationTo obj uq = do
-		Node.setOrientation  (_getNode obj) (fromNormal uq)
-		return ()
-
-instance Position Camera where
-
-	position (Camera c) = do
-		pos <- Camera.getPosition c
-		return (pos)
-		
-	positionTo (Camera c) pos = do
-		Camera.setPosition2 c  pos
-		return ()
-	
-instance Orientation Camera where
-
-	orientation (Camera c) = do
-		q <- Camera.getOrientation c
-		let uq = mkNormal q
-		return uq
-	
-	orientationTo (Camera c) uq = do
-		Camera.setOrientation c (fromNormal uq)
-		return ()
+import HGamer3D.Graphics3D.Schema.Material
+import HGamer3D.Graphics3D.Schema.Geometry
+import HGamer3D.Graphics3D.Schema.Figure
 
 
+{- ------------------------------------------------------
+   The Graphics3D Basic Types and Initilization
+   ------------------------------------------------------ -}
 
 data SceneManager = SceneManager HG3DClass
 data ResourceGroupManager = ResourceGroupManager HG3DClass
@@ -332,16 +268,108 @@ initGraphics3D windowName sceneManagerType fConfig fLog  = do
 	return $ (Graphics3DSystem (RootObject root) (SceneManager sceneManager) (ResourceGroupManager rgm) (LogManager lmgr) (TextureManager tm) (RenderTarget renderWindow) uniqueName, (Camera camera), (Viewport viewport), (Window windowHandle)) 
 
 
+{- ------------------------------------------------------
+   The Type Class for the 3D objects,
+   implemented from pure data
+   ------------------------------------------------------ -}
+
+-- | Typed Ogre Classes: Entity
+data OEntity = OE HG3DClass  -- this object is an Ogre Entity
+
+-- | Typed Ogre Classes: Node
+data ONode = ON HG3DClass    -- this object is an Ogre Node
+
+-- | Data Tree for Engine Specific Data
+data EngineData = EDEntityNode OEntity ONode
+              | EDNodeAndSub ONode [EngineData]
+
+-- | 3D Object is implemented as NodeTree of Ogre Classes and Pure Data representation.
+--   This is the entity, which is living in the 3D engine.
+data Object3D a = Object3D EngineData a
+
+-- | A type class which defines transformations from data to engine entities and back
+class Engine3DItem a where
+  object3D :: Graphics3DSystem -> a -> IO (Object3D a)
+  update3D :: Graphics3DSystem -> Object3D a -> a -> IO (Object3D a)
+  remove3D :: Graphics3DSystem -> (Object3D a) -> IO ()
+
+_getNode :: EngineData -> ONode
+_getNode edata = case edata of
+  (EDEntityNode _ node) -> node
+  (EDNodeAndSub node _) -> node
+
+_getNode' :: Object3D a -> HG3DClass
+_getNode' (Object3D edata _) = case edata of
+  (EDEntityNode (OE entity) (ON node)) -> node
+  (EDNodeAndSub (ON node) _) -> node
+
+instance HasPosition (Object3D a)  where
+
+	position obj = do
+		pos <- Node.getPosition (_getNode' obj)
+		return (pos)
+		
+	positionTo obj pos = do
+		Node.setPosition  (_getNode' obj) pos
+		return ()
+	
+instance HasSize (Object3D a) where
+
+	size obj = do
+		pos <- Node.getScale  (_getNode' obj)
+		return (pos)
+		
+	sizeTo obj pos = do
+		Node.setScale  (_getNode' obj) pos
+		return ()
+	
+instance HasOrientation (Object3D a) where
+
+	orientation obj = do
+		q <- Node.getOrientation  (_getNode' obj)
+		let uq = mkNormal q
+		return uq
+	
+	orientationTo obj uq = do
+		Node.setOrientation  (_getNode' obj) (fromNormal uq)
+		return ()
+
+{- ------------------------------------------------------
+   The Camera and its functions
+   ------------------------------------------------------ -}
+
+instance HasPosition Camera where
+
+	position (Camera c) = do
+		pos <- Camera.getPosition c
+		return (pos)
+		
+	positionTo (Camera c) pos = do
+		Camera.setPosition2 c  pos
+		return ()
+	
+instance HasOrientation Camera where
+
+	orientation (Camera c) = do
+		q <- Camera.getOrientation c
+		let uq = mkNormal q
+		return uq
+	
+	orientationTo (Camera c) uq = do
+		Camera.setOrientation c (fromNormal uq)
+		return ()
+
 -- | set the direction in a way, that the camera looks toward a specified point
-        
 cameraLookAt :: Camera -> Vec3 -> IO ()
 cameraLookAt (Camera c) v = do
 	Camera.lookAt c v
 	return ()
 
 
--- specific single function
---
+{- ------------------------------------------------------
+   Misc global functions
+   ------------------------------------------------------ -}
+
 
 -- | sets the background colour of the 3d drawing window
 setBackgroundColour :: Viewport -> Colour -> IO ()
@@ -378,8 +406,4 @@ addResourceLocationGUI g3ds path category = do
         let (ResourceGroupManager rgm) = (g3dsResourceGroupManager g3ds)
 	ResourceGroupManager.addResourceLocation rgm path "FileSystem" category False
 	ResourceGroupManager.initialiseResourceGroup rgm category
-
-_getNode :: Object3D -> HG3DClass
-_getNode (SingleObject3D entity node) = node
-_getNode (CombinedObject3D objects node) = node
 

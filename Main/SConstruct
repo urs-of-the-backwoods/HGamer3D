@@ -17,7 +17,9 @@ dependsOn = [
 	  "HGamer3D/BaseAPI.hs",
           Glob("HGamer3D/Modules/*"),
           Glob("HGamer3D/Extensions/*"),
+	  Glob("HGamer3D/Schema/*"),
           Glob("HGamer3D/Internal/*"),
+          Glob("HGamer3D/Internal/ECS/*"),
 	  Glob("*.cabal"),
 	  "LICENSE",
 

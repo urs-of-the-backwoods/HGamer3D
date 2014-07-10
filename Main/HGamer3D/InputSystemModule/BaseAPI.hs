@@ -16,13 +16,13 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- HGamer3D Extensions/Wire Module
+-- HGamer3D Modules/InputSystem Module
 --
 
-module HGamer3D.Extensions.Wire
+module HGamer3D.InputSystemModule.BaseAPI
 
 (
-  module HGamer3D.Wire
+  module HGamer3D.InputSystem
 ) where
 
-  import HGamer3D.Wire
+  import HGamer3D.InputSystem

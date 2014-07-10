@@ -23,9 +23,9 @@
 module HGamer3D.Data.Transform3D
 (
         -- * Types
-	Position (..),
-	Size (..),
-	Orientation (..),
+	HasPosition (..),
+	HasSize (..),
+	HasOrientation (..),
         
         -- * Functions
 	translate,
@@ -39,64 +39,58 @@ where
 
 import HGamer3D.Data.Vector
 import HGamer3D.Data.Angle
+import HGamer3D.Data.TypeSynonyms
 
--- | a type with a Position instance has a position
-class Position t where
+-- | a type with a HasPosition instance has a Position
+class HasPosition t where
 
         -- | get position function
-	position :: t -> IO Vec3
+	position :: t -> IO Position
         -- | set position function
-	positionTo :: t -> Vec3 -> IO ()
-	
--- | move the position 
-translate :: Position t => t -> Vec3 -> IO ()
-translate t v = do
-	p <- position t
-	positionTo t ( v &+ p )
-	return ()
+	positionTo :: t -> Position -> IO ()
 
--- | a type with a Size instance has a size
-class Size t where	
+-- | a type with a HasSize instance has a Size
+class HasSize t where	
 	
         -- | get scale function
-	size :: t -> IO Vec3
+	size :: t -> IO Size
         -- | set scale function
-	sizeTo :: t -> Vec3 -> IO ()
+	sizeTo :: t -> Size -> IO ()
+
+-- | a type with an HasOrientation instance has an oriented in space
+class HasOrientation t where
+        -- | get orientation function
+	orientation :: t -> IO Orientation
+        -- | set orientation function
+	orientationTo :: t -> Orientation -> IO ()
+
+
+-- | move the position 
+translate :: Position -> Position -> Position
+translate = (&+)
 
 -- | scale the size
-scale :: Size t => t -> Vec3 -> IO ()
-scale t v = do
-	s <- size t
-	sizeTo t ( v &! s )
-	return ()
-
--- | a type with an Orientation instance has an oriented in space
-class Orientation t where
-        -- | get orientation function
-	orientation :: t -> IO UnitQuaternion
-        -- | set orientation function
-	orientationTo :: t -> UnitQuaternion -> IO ()
+scale :: Size -> Vec3 -> Size
+scale  = (&!)
 
 -- yaw, roll, pitch functions
 -- functions, to rotate on axis, relative to object
-rotRelativeToObjectAxis :: Orientation t => t -> Vec3 -> Float -> IO ()
-rotRelativeToObjectAxis object axis val = do
-	qob <- orientation object
-	let odir = actU qob axis
-	let qrot = rotU odir val
-	let nrot = qrot .*. qob
-	orientationTo object nrot
-	return ()
+rotRelativeToObjectAxis :: Orientation -> Vec3 -> Float -> Orientation
+rotRelativeToObjectAxis ori axis val = let
+  odir = actU ori axis
+  qrot = rotU odir val
+  nrot = qrot .*. ori
+  in nrot
 	
 -- | rotate object on own axis (yaw) by angle
-yaw :: Orientation t => t -> Angle -> IO ()
-yaw object val = rotRelativeToObjectAxis object vec3Y (fromAngle val)
+yaw :: Orientation -> Angle -> Orientation
+yaw ori val = rotRelativeToObjectAxis ori vec3Y (fromAngle val)
 
 -- | rotate object on own axis (roll) by angle
-roll :: Orientation t => t -> Angle -> IO ()
-roll object val = rotRelativeToObjectAxis object vec3Z (fromAngle val)
+roll :: Orientation -> Angle -> Orientation
+roll ori val = rotRelativeToObjectAxis ori vec3Z (fromAngle val)
 
 -- | rotate object on own axis (pitch) by angle
-pitch :: Orientation t => t -> Angle -> IO ()
-pitch object val = rotRelativeToObjectAxis object vec3X (fromAngle val)
+pitch :: Orientation -> Angle -> Orientation
+pitch ori val = rotRelativeToObjectAxis ori vec3X (fromAngle val)
 

@@ -1,8 +1,10 @@
+{-# Language StandaloneDeriving, DeriveDataTypeable #-}
+
 -- This source file is part of HGamer3D
 -- (A project to enable 3D game development in Haskell)
--- For the latest info, see http://www.althainz.de/HGamer3D.html
+-- For the latest info, see http://www.hgamer3d.org
 --
--- (c) 2014 Peter Althainz
+-- (c) 2011-2014 Peter Althainz
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -16,13 +18,34 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- HGamer3D Modules/Network Module
---
+-- HGamer3D/Graphics3D/Schema/Geometry.hs
 
-module HGamer3D.Modules.Network
+-- | data types which describe the Geometry 
 
-(
-  module HGamer3D.Network
-) where
+module HGamer3D.Graphics3D.Schema.Geometry
 
-  import HGamer3D.Network
+where
+
+import Data.Typeable
+import qualified HGamer3D.Data as D
+
+data Geometry = 
+
+  -- loaded from resources
+  ResourceGeometry String
+
+  -- Primitive 3D Geometries
+  | Cube
+  | Sphere
+  | Cylinder
+
+  -- Platon Geometries
+  | Ikosaeder
+  | Dodekaeder
+
+  -- 2D Geometries
+  | Plane
+  | Line
+
+  deriving (Eq, Show, Typeable)
+  

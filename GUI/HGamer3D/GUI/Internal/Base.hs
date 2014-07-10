@@ -46,7 +46,7 @@ module HGamer3D.GUI.Internal.Base
         -- * Initialization, Game Loop
         initGUI,
         freeGUI,
-        pollGUIEvents,
+        pollGUIEvent,
 
         -- * Event Handling
         registerGUIEvent,
@@ -459,15 +459,14 @@ registerGUIEvent guis (GUIElement el _) eventToRegister registrationTag = do
   
 data GUIEvent = GUIEvent String String (GUIElement ())
 
-pollGUIEvents :: GUISystem -> IO [GUIEvent]
-pollGUIEvents guis = do
+pollGUIEvent :: GUISystem -> IO (Maybe GUIEvent)
+pollGUIEvent guis = do
         let eventController = guiEventController guis
         processEvents <- HG3DEventController.eventsAvailable eventController
-        if processEvents then do
-                (name, sender, window) <- HG3DEventController.popEvent eventController
-                let evt = GUIEvent name sender (GUIElement window ())
-                moreEvents <- pollGUIEvents guis
-                return $ (evt : moreEvents)
-                else do
-                        return []
+        if processEvents
+          then do
+            (name, sender, window) <- HG3DEventController.popEvent eventController
+            let evt = GUIEvent name sender (GUIElement window ())
+            return $ Just evt
+          else return Nothing
 

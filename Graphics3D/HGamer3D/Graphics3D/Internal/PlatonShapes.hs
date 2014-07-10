@@ -23,8 +23,8 @@
 -- | Create platonic shapes, ikosaeder and dodekaeder, implementation module. Public API is in HGamer3D.Graphics3D.
 module HGamer3D.Graphics3D.Internal.PlatonShapes (
 
-	ikosaederMesh,
-	dodekaederMesh
+	ikosaeder,
+	dodekaeder
 ) 
 
 where
@@ -75,7 +75,6 @@ import Control.Monad.Trans
 import Control.Monad.IO.Class
 import Control.Monad.State.Class
 
-
 vminus = Vec3 (-1.0) (-1.0) (-1.0)
 
 getNormOfFace vertices (a, b, c) = normalize cross
@@ -124,10 +123,10 @@ _createPlatonObject g3ds colour vertices faces iColor = do
 	
 
 -- | create an ikoaeder mesh - from the mesh more objects can be created
-ikosaederMesh :: Graphics3DSystem -- ^ the Graphics3D system object, returned by initGraphics3D
-                       -> Colour -- ^ colour of the ikosaeder
-                       -> IO Mesh -- ^ created mesh object
-ikosaederMesh g3ds colour = do
+ikosaeder :: Graphics3DSystem -- ^ the Graphics3D system object, returned by initGraphics3D
+                       -> Colour      -- ^ colour of the ikosaeder
+                       -> IO HG3DClass  -- ^ created mesh object as entity
+ikosaeder g3ds colour = do
 	let (SceneManager scm) = (g3dsSceneManager g3ds)
 	uid <- nextUniqueName (g3dsUniqueName g3ds)
 
@@ -163,14 +162,15 @@ ikosaederMesh g3ds colour = do
 		
 	mo <- _createPlatonObject g3ds colour vertices faces 0
 	ManualObject.convertToMesh mo meshName "General"
-        return $ ManualMesh meshName
+        entity <- SceneManager.createEntity3 scm meshName
+        return $ entity
 	
 
 -- | create a dodekaeder mesh
-dodekaederMesh :: Graphics3DSystem -- ^ the Graphics3D system object, returned by initGraphics3D
+dodekaeder :: Graphics3DSystem -- ^ the Graphics3D system object, returned by initGraphics3D
                         -> Colour -- ^ colour of the dodekaeder
-                        -> IO Mesh -- ^ created dodekaeder mesh
-dodekaederMesh g3ds colour = do
+                        -> IO HG3DClass -- ^ created dodekaeder mesh as entity
+dodekaeder g3ds colour = do
 	let (SceneManager scm) = (g3dsSceneManager g3ds)
 	uid <- nextUniqueName (g3dsUniqueName g3ds)
 
@@ -228,5 +228,5 @@ dodekaederMesh g3ds colour = do
 
 	mo <- _createPlatonObject g3ds colour vertices faces2 0
 	ManualObject.convertToMesh mo meshName "General"
-        mesh <- SceneManager.createEntity3 scm meshName
-        return $ ManualMesh meshName
+        entity <- SceneManager.createEntity3 scm meshName
+        return $ entity

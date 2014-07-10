@@ -1,8 +1,10 @@
+{-# LANGUAGE DeriveDataTypeable #-}
+
 -- This source file is part of HGamer3D
 -- (A project to enable 3D game development in Haskell)
 -- For the latest info, see http://www.hgamer3d.org
 --
--- (c) 2011-2013 Peter Althainz
+-- (c) 2011-2014 Peter Althainz
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -16,7 +18,25 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- Setup.hs
+-- HGamer3D/Graphics3D/Schema/Camera.hs
 
-import Distribution.Simple
-main = defaultMain
+-- | Types which describe the Scene, the high level of a Scene Tree
+module HGamer3D.Graphics3D.Schema.Camera
+
+where
+
+import Data.Typeable
+
+import HGamer3D.Data as Dat
+
+-- | The camera type
+data Camera = Camera { 
+  frustum :: Frustum  -- ^ Frustum of the camera 
+                     } deriving (Eq, Show, Typeable)
+
+data Frustum = Frustum {
+  nearDistance :: Float,
+  farDistance :: Float,
+  fieldOfViewHorizontal :: Dat.Angle } deriving (Eq, Show, Typeable)
+  
+

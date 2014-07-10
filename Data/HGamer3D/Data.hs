@@ -29,6 +29,7 @@ module HGamer3D.Data
     module HGamer3D.Data.TimeMS,
     module HGamer3D.Data.Vector,
     module HGamer3D.Data.Geometry2D,
+    module HGamer3D.Data.TypeSynonyms,
     Window,
 )
 
@@ -41,4 +42,5 @@ import HGamer3D.Data.TimeMS
 import HGamer3D.Data.Vector
 import HGamer3D.Data.Geometry2D
 import HGamer3D.Data.Window
+import HGamer3D.Data.TypeSynonyms
 

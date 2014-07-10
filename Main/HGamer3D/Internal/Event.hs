@@ -16,13 +16,18 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- HGamer3D Extensions/Schema Module
+-- HGamer3D/Internal/Event Module
 --
 
-module HGamer3D.Extensions.Schema
+module HGamer3D.Internal.Event
 
-(
-  module HGamer3D.Schema
-) where
+where
 
-  import HGamer3D.Schema
+import HGamer3D.WinEvent
+import HGamer3D.GUI
+  
+data HG3DEvent = WindowEvt SDLEvent
+               | GUIEvt GUIEvent
+                 
+
+  

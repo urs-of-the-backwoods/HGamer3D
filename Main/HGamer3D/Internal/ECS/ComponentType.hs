@@ -1,10 +1,8 @@
-{-# LANGUAGE FlexibleContexts, StandaloneDeriving, TemplateHaskell #-}
-
 -- This source file is part of HGamer3D
 -- (A project to enable 3D game development in Haskell)
--- For the latest info, see http://www.hgamer3d.org
+-- For the latest info, see http://www.althainz.de/HGamer3D.html
 --
--- (c) 2011-2013 Peter Althainz
+-- (c) 2014 Peter Althainz
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -18,22 +16,18 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- Texture.hs
+-- HGamer3D/Internal/ECS/ComponentType Module
+--
 
--- | Types which describe Textures
-module HGamer3D.Schema.Texture
+module HGamer3D.Internal.ECS.ComponentType
 
 where
 
-import qualified HGamer3D.Data as D
-import Control.Lens
+data ComponentType =   CTPos
+                     | CTOri
+                     | CTSiz
+                     | CTFig
 
--- | Slot, a name for a texture, to cross-reference materials in Nodes, ...
-type TextureSlot = String
+                       deriving (Eq, Ord, Show)
 
--- | The Texture itself
-data Texture = ResourceTexture String -- ^ the name given the material resource in the resource system
-              deriving (Eq, Show)
-
-$(makePrisms ''Texture)
   

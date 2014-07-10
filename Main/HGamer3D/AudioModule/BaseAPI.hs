@@ -16,13 +16,13 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- HGamer3D Modules/InputSystem Module
+-- HGamer3D Modules/Audio Module
 --
 
-module HGamer3D.Modules.InputSystem
+module HGamer3D.AudioModule.BaseAPI
 
 (
-  module HGamer3D.InputSystem
+  module HGamer3D.Audio
 ) where
 
-  import HGamer3D.InputSystem
+  import HGamer3D.Audio

@@ -19,7 +19,7 @@
 -- Parser.hs
 
 -- | The Parser to implement a DSL for describing the Scene inclusive all nodes in text
-module HGamer3D.Schema.Parser (
+module HGamer3D.Graphics3D.Schema.Parser (
 parseScene
 ) 
 

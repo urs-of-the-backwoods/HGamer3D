@@ -22,20 +22,25 @@
 module HGamer3D.Graphics3D
 
 (
-  -- * Fundamental Types
-  
-  Graphics3DSystem,
-  Object3D,
-  Material,
-  Mesh,
+  -- * The Graphics System
+  Graphics3DSystem (..),
   Camera,
   Viewport,
-  
-  -- * Initialization and Game Loop Functions
 
+  -- * Initialization of Graphics3D and Game Loop Functions
   initGraphics3D,
   freeGraphics3D,
   stepGraphics3D,
+  
+  -- * The typeclass of (data) items, which can be put into the engine
+  Engine3DItem (..),
+
+  -- * The 3D object as outer visible part of it
+  Object3D (..),
+
+  sphere,
+  cube,
+  cuboid,
 
     -- * Light
   Light,
@@ -45,7 +50,8 @@ module HGamer3D.Graphics3D
   spotLightSetDirection,
   setSpotLightAngle,
   directionalLight,
-  
+
+  {-
   -- * Materials
   resourceMaterial,
 
@@ -66,6 +72,8 @@ module HGamer3D.Graphics3D
   object3DFromMesh,
   object3DFromObjects,
 
+-}
+  
   -- * Misc Functions
 
   cameraLookAt,
@@ -84,7 +92,7 @@ where
   import HGamer3D.Graphics3D.Internal.Base
   import HGamer3D.Graphics3D.Internal.Light
   import HGamer3D.Graphics3D.Internal.Shapes
-  import HGamer3D.Graphics3D.Internal.PlatonShapes
+--  import HGamer3D.Graphics3D.Internal.PlatonShapes
   
 
 

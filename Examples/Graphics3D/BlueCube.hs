@@ -16,20 +16,19 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
-import HGamer3D.Data
-import HGamer3D.Graphics3D
+import HGamer3D.BaseAPI
 
-renderLoop cube g3ds = do
+renderLoop cube g3ds guis = do
    -- rotate 
   yaw cube (Rad 0.005) 
   roll cube (Rad 0.002)
-  quit <- stepGraphics3D g3ds
-  if quit then return () else renderLoop cube g3ds
+  (ev, quit) <- stepHGamer3D g3ds guis
+  if quit then return () else renderLoop cube g3ds guis
    
 main :: IO ()
 main = do
   
-        (g3ds, camera, viewport, window) <- initGraphics3D "HGamer3D - BlueCube Example" "DefaultSceneManager" True True
+        (g3ds, guis, camera, viewport) <- initHGamer3D "HGamer3D - BlueCube Example" True True True
         
 	-- camera position
 	let pos = Vec3 5.0 5.0 80.0
@@ -44,12 +43,13 @@ main = do
         
 	-- create a shiny blue cube        
         let blueMaterial = resourceMaterial "Colours/Blue"
-        cube <- object3DFromMesh g3ds cubeMesh (Just blueMaterial) False
+--        cube <- object3DFromMesh g3ds cubeMesh (Just blueMaterial) False
+        cube <- object3DFromMesh g3ds cubeMesh Nothing False
         positionTo cube (Vec3 0.0 0.0 0.0)
         scale cube (Vec3 0.2 0.2 0.2)
         
 	-- start render loop
-	renderLoop cube g3ds 
-        freeGraphics3D g3ds
+	renderLoop cube g3ds guis
+        freeHGamer3D g3ds guis
         return ()
 

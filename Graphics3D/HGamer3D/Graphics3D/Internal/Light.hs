@@ -93,7 +93,7 @@ import Control.Monad.State.Class
 -- | The light.
 data Light = Light HG3DClass deriving (Show)
 
-instance Position Light where
+instance HasPosition Light where
 
 	position (Light l) = do
 		pos <- Light.getPosition l
