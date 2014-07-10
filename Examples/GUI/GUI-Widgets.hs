@@ -21,7 +21,6 @@
 
 module Main where
 
--- import HGamer3D                              -- this import HGamer3D with GUI and Graphics3d and WinEvents
 import HGamer3D.BaseAPI
 
 import Control.Monad.Trans
@@ -31,48 +30,56 @@ printEvent :: GUIElement a -> GUIEvent -> IO ()
 printEvent outbox event = do
         case event of
                 GUIEvent tag sender window -> do
-                        oldtext <- getGuiElProperty outbox "Text"
-                        let evttext = tag
-                        details <- case sender of
-                                "CheckboxWidget" -> do
-                                        sel <- getGuiElProperty window "Selected"
-                                        return (sel)
-                                "CheckboxWidget2" -> do
-                                        sel <- getGuiElProperty window "Selected"
-                                        return (sel)
-                                "EditboxWidget" -> do
-                                        sel <- getGuiElProperty window "Text"
-                                        return ("\n " ++ sel)
-                                "RadiobuttonWidget" -> do
-                                        sel <- getGuiElProperty window "Selected"
-                                        return (sel)
-                                "RadiobuttonWidget2" -> do
-                                        sel <- getGuiElProperty window "Selected"
-                                        return (sel)
-                                "SpinnerWidget" -> do
-                                        sel <- getGuiElProperty window "CurrentValue"
-                                        return (sel)
-                                "SliderWidget" -> do
-                                        sel <- getGuiElProperty window "CurrentValue"
-                                        return (sel)
-                                "ListboxWidget" -> do
-                                        mlb <- toListBox window
-                                        sel <- case mlb of
-                                          Just lb -> listboxGetSelectedText lb
-                                          Nothing -> return [""]
-                                        let sel' = if length sel>0 then foldl (\s1 s2 -> (s1 ++ "\n " ++ s2)) [] sel else ""
-                                        return (sel')
-                                "ComboboxWidget" -> do
-                                        sel <- getGuiElProperty window "Text"
-                                        return (sel)
-                                "ButtonWidget" -> do
-                                        return "Button clicked"
-                                _ -> return "no details"
-                                        
-                        let oldtext' = if length oldtext > 250 then drop 50 oldtext else oldtext
-                        setGuiElProperty outbox "Text" (oldtext' ++ "\n" ++ evttext ++ ": " ++ details)
-                        return ()
-                _ -> do return ()
+                  newtext <- case tag of
+                                  
+                              "reset-click" -> do
+                                 return "Reset Button Click"
+                              "checkbox-one" -> do
+                                 cb <- toCheckBox window
+                                 sel <- getP cb pSelected
+                                 return ("Checkbox One: " ++ (show sel) ++ "\n")
+                              "checkbox-two" -> do
+                                 cb <- toCheckBox window
+                                 sel <- getP cb pSelected
+                                 return ("Checkbox Two: " ++ (show sel) ++ "\n")
+                              "editbox-done" -> do
+                                 sel <- getP window pText
+                                 return ("Edittext (Done): " ++ sel ++ "\n")
+                              "editbox-change" -> do
+                                 sel <- getP window pText
+                                 return ("Edittext (Change): " ++ sel ++ "\n")
+                              "radio-one" -> do
+                                 rb <- toRadioButton window
+                                 sel <- getP rb pSelected
+                                 return ("Radiobutton One: " ++ (show sel) ++ "\n")
+                              "radio-two" -> do
+                                 rb <- toRadioButton window
+                                 sel <- getP rb pSelected
+                                 return ("Radiobutton Two: " ++ (show sel) ++ "\n")
+                              "spinner-value" -> do
+                                 sp <- toSpinner window
+                                 sel <- getP sp pValue
+                                 return ("Spinner: " ++ (show sel) ++ "\n")
+                              "slider-value" -> do
+                                 sl <- toSlider window
+                                 sel <- getP sl pValue
+                                 return ("Slider: " ++ (show sel) ++ "\n")
+                              "listbox-change" -> do
+                                  lb <- toListBox window
+                                  sel <- listboxGetSelectedText lb
+                                  let sel' = if length sel>0 then foldl (\s1 s2 -> (s1 ++ "\n " ++ s2)) [] sel else ""
+                                  return ("Listbox:\n" ++ sel' ++ "\n")
+                              "combo-done" -> do
+                                  sel <- getP window pText
+                                  return ("Combobox: " ++ sel ++ "\n")
+                                 
+                  
+                  oldtext <- getP outbox pText
+                  let oldtext' = if length oldtext > 250 then drop 50 oldtext else oldtext
+                  setP outbox [ pText =: (oldtext' ++ newtext)]
+                  return ()
+                _ -> do
+                       return ()
 
 
 checkEvents outtext g3ds guis = do
@@ -82,7 +89,7 @@ checkEvents outtext g3ds guis = do
     else
     case evt of
       Just (EventGUI evts) -> do    
-        mapM (\evt -> printEvent outtext evt) evts
+        mapM (printEvent outtext) evts
         return True
       Just (EventWindow (EvtQuit ts)) -> return False
       _ -> return True
@@ -94,16 +101,6 @@ renderLoop cube outtext g3ds guis = do
   proceed <- checkEvents outtext g3ds guis
   if proceed then renderLoop cube outtext g3ds guis else return ()
    
-                                                         
-registerWidgetEvent guis rootWindow widgetName eventName tagName = do
-        widget <- findChildGuiElRecursive rootWindow widgetName
-        case widget of
-                Just widgetOk -> do
-                        registerGUIEvent guis widgetOk eventName tagName
-                        return ()
-                Nothing -> do
-                        return ()                                                         
-                                                         
 main = do 
   
         (g3ds, guis, camera, viewport) <- initHGamer3D "HGamer3D - GUI Widgets Example" True False True
@@ -136,41 +133,65 @@ main = do
 	guiwidgets <- loadGuiLayoutFromFile guis "gui-widgets.layout" ""
 	sttext <- loadGuiLayoutFromFile guis "statictext.layout" ""
 	addGuiElToDisplay guis guiwidgets
-        
-        -- add lists to listbox and combobox
+
+{-
+        -- test element creation
+        b1 <- button guis "TaharezLook" [pX =: (GUIDim 0.0 100.0), 
+                                         pY =: (GUIDim 0.0 100.0), 
+                                         pWidth =: (GUIDim 0.0 100.0), 
+                                         pHeight =: (GUIDim 0.0 20.0), 
+                                         pText =: "Cooler Button", 
+                                         pVisible =: True, 
+                                         pAlpha =: 1.0]
+	addGuiElToDisplay guis b1
+        registerGUIEvent guis b1 "Clicked" "coolclick"
+-}        
+
+        -- handling of single GUI elements
+        ----------------------------------
+
+        -- Outtext, output of events
+        outtext <- findEditText "OuttextWidget" guiwidgets
+
+        -- Reset Button
+        resetButton <- findButton "ButtonWidget" guiwidgets
+        registerGUIEvent guis resetButton "Clicked" "reset-click"
+
+        -- Checkbox One and Two
+        checkboxOne <- findCheckBox "CheckboxWidget" guiwidgets
+        checkboxTwo <- findCheckBox "CheckboxWidget2" guiwidgets
+        registerGUIEvent guis checkboxOne "CheckStateChanged" "checkbox-one"
+        registerGUIEvent guis checkboxTwo "CheckStateChanged" "checkbox-two"
+
+        -- Editbox Widgets
+        editText <- findEditText "EditboxWidget" guiwidgets
+        registerGUIEvent guis editText "TextAccepted" "editbox-done"
+        registerGUIEvent guis editText "TextChanged" "editbox-change"
+
+        -- Radiobutton One and Two
+        radioOne <- findRadioButton "RadiobuttonWidget" guiwidgets
+        radioTwo <- findRadioButton "RadiobuttonWidget2" guiwidgets
+        registerGUIEvent guis radioOne "SelectStateChanged" "radio-one"
+        registerGUIEvent guis radioTwo "SelectStateChanged" "radio-two"
+
+        -- Spinner and Slider
+        spinner <- findSpinner "SpinnerWidget" guiwidgets
+        slider <- findSlider "SliderWidget" guiwidgets
+        registerGUIEvent guis spinner "ValueChanged" "spinner-value"
+        registerGUIEvent guis slider "ValueChanged" "slider-value"
+
+        -- Listbox, Entry one, two, three, ...
 	listbox <- findListBox "ListboxWidget" guiwidgets
-        outtext <- fmap fromJust ( findChildGuiElRecursive guiwidgets "OuttextWidget")
-        
-	case listbox of
-		Just widgetOk -> do
-                        setGuiElProperty widgetOk "MultiSelect" "True"
-			mapM (listboxAddText widgetOk) ["Entry One", "Entry Two", "Entry Three", "Entry Four", "Entry Five", "Entry Six"]
-			return ()
-		Nothing -> do
-			return ()
-                        
+        setGuiElProperty listbox "MultiSelect" "True"
+        mapM (listboxAddText listbox) ["Entry One", "Entry Two", "Entry Three", "Entry Four", "Entry Five", "Entry Six"]
+        registerGUIEvent guis listbox "ItemSelectionChanged" "listbox-change"
+
+        -- Combobox, Choice one, two, three                        
 	combobox <- findComboBox "ComboboxWidget" guiwidgets
-	case combobox of
-		Just widgetOk -> do
-			mapM (comboboxAddText widgetOk) ["Choice One", "Choice Two", "Choice Three"]
-                        setGuiElProperty widgetOk "ReadOnly" "True"
-			return ()
-		Nothing -> do
-			return ()
-        
-        -- register the events needed
-        registerWidgetEvent guis guiwidgets "ButtonWidget" "Clicked" "bw click"
-        registerWidgetEvent guis guiwidgets "CheckboxWidget" "CheckStateChanged" "cbw"
-        registerWidgetEvent guis guiwidgets "CheckboxWidget2" "CheckStateChanged" "cbw2"
-        registerWidgetEvent guis guiwidgets "EditboxWidget" "TextAccepted" "ebw"
-        registerWidgetEvent guis guiwidgets "EditboxWidget" "TextChanged" "wbw2"
-        registerWidgetEvent guis guiwidgets "RadiobuttonWidget" "SelectStateChanged" "rbw"
-        registerWidgetEvent guis guiwidgets "RadiobuttonWidget2" "SelectStateChanged" "rbw2"
-        registerWidgetEvent guis guiwidgets "SpinnerWidget" "ValueChanged" "spw"
-        registerWidgetEvent guis guiwidgets "SliderWidget" "ValueChanged" "slw"
-        registerWidgetEvent guis guiwidgets "ListboxWidget" "ItemSelectionChanged" "lbw"
-        registerWidgetEvent guis guiwidgets "ComboboxWidget" "ListSelectionAccepted" "cbw"
-                        
+	mapM (comboboxAddText combobox) ["Choice One", "Choice Two", "Choice Three"]
+        setGuiElProperty combobox "ReadOnly" "True"
+        registerGUIEvent guis combobox "ListSelectionAccepted" "combo-done"
+
 	-- start render loop
 	renderLoop cube outtext g3ds guis
         freeHGamer3D g3ds guis

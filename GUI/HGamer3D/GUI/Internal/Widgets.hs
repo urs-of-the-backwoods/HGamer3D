@@ -25,25 +25,30 @@ module HGamer3D.GUI.Internal.Widgets
 (
   
         GUIButton (..),
+        GUIEditText (..), 
+
+        GUIHasSelection (..),
         GUIRadioButton (..),
         GUICheckBox (..),
-        GUIEditText (..), 
+
         GUIListBox (..),
         GUIComboBox (..),
+
+        GUIHasValue (..),
         GUISlider (..),
         GUISpinner (..),
 
-        GEButton (..),
-        GERadioButton (..),
-        GECheckBox (..),
-        GEEditText (..),
-        GEListBox (..),
-        GEComboBox (..),
-        GESlider (..),
-        GESpinner (..),
-
         typeOfGuiEl,
         toGuiType,
+
+        button,
+        radioButton,
+        checkBox,
+        editText,
+        comboBox,
+        listBox,
+        spinner,
+        slider,
 
         toButton,
         toRadioButton,
@@ -101,6 +106,7 @@ import HGamer3D.Bindings.CEGUI.ClassWindowManagerHG3D as HG3DWindowManager
 
 import GHC.Ptr
 import Data.List.Split
+import Data.Maybe
 
 import HGamer3D.Data
 import HGamer3D.Util
@@ -130,28 +136,20 @@ import HGamer3D.Bindings.CEGUI.ClassHG3DEventStaticFunctions as EvtSF
 import HGamer3D.Bindings.CEGUI.EnumMouseButton as CEGUIButton
 
 import HGamer3D.GUI.Internal.Base
+import HGamer3D.GUI.Internal.Properties
 import HGamer3D.Data.HG3DClass
-
-data GEButton = GEButton
-data GERadioButton = GERadioButton
-data GECheckBox = GECheckBox
-
-data GEEditText = GEEditText
-
-data GEListBox = GEListBox
-data GEComboBox = GEComboBox
-
-data GESlider = GESlider
-data GESpinner = GESpinner
 
 -- | GUI Element, Sybtype Button
 type GUIButton = GUIElement GEButton
 
--- | GUI Element, Sybtype RadioButton
-type GUIRadioButton = GUIElement GERadioButton
+-- | GUI Elements, which have a selection
+type GUIHasSelection a = GUIElement a
 
 -- | GUI Element, Sybtype CheckBox
-type GUICheckBox = GUIElement GECheckBox
+type GUICheckBox = GUIHasSelection GECheckBox
+
+-- | GUI Element, Sybtype RadioButton
+type GUIRadioButton = GUIHasSelection GERadioButton
 
 -- | GUI Element, Sybtype EditText
 type GUIEditText = GUIElement GEEditText
@@ -162,11 +160,14 @@ type GUIListBox = GUIElement GEListBox
 -- | GUI Element, Sybtype Combobox
 type GUIComboBox = GUIElement GEComboBox
 
+-- | GUI Element, which have a value
+type GUIHasValue a = GUIElement a
+
 -- | GUI Element, Sybtype Slider
-type GUISlider = GUIElement GESlider
+type GUISlider = GUIHasValue GESlider
 
 -- | GUI Element, Sybtype Spinner
-type GUISpinner = GUIElement GESpinner
+type GUISpinner = GUIHasValue GESpinner
 
 
 -- | get Type of GUI element as string
@@ -175,15 +176,50 @@ typeOfGuiEl :: GUIElement a -- ^ GUI element to enable
 typeOfGuiEl (GUIElement window _) = do
 	Window.getType window
 
-toGuiType :: String -> b -> GUIElement a -> IO (Maybe (GUIElement b))
+toGuiType :: String -> b -> GUIElement a -> IO (GUIElement b)
 toGuiType typestr cons guiel@(GUIElement window _) = do
           tp <- typeOfGuiEl guiel
           -- CEGUI Types as String have the format "WindowLook/Button" for example
           let tp' = (splitOn "/" tp) !! 1  
           let guiel' = case tp' of
-                         typestr -> Just $ GUIElement window cons
-                         _ -> Nothing
+                         typestr -> GUIElement window cons
+                         _ -> error ("HGamer3D.GUI.Internal.Widgets.toGuiType: " ++ typestr ++ " not found!")
           return guiel'
+
+_createElement :: String -> (GUIElement a -> IO (GUIElement b)) -> GUISystem -> String -> [GUIElement b -> IO ()] -> IO (GUIElement b)
+_createElement elType convFunc guis style proplist = do
+  let winMgr = guiWindowManager guis
+  let uname = guiUniqueName guis
+  elName <- nextUniqueName uname
+  window <- WindowManager.createWindow winMgr (style ++ "/" ++ elType) elName
+  el <- convFunc (GUIElement window undefined)
+  -- set the properties
+  setP el proplist 
+  return el
+
+button :: GUISystem -> String -> [GUIButton -> IO ()] -> IO GUIButton
+button = _createElement "Button" toButton
+
+radioButton :: GUISystem -> String -> [GUIRadioButton -> IO ()] -> IO GUIRadioButton
+radioButton = _createElement "RadioButton" toRadioButton
+
+checkBox :: GUISystem -> String -> [GUICheckBox -> IO ()] -> IO GUICheckBox
+checkBox = _createElement "Checkbox" toCheckBox
+
+editText :: GUISystem -> String -> [GUIEditText -> IO ()] -> IO GUIEditText
+editText = _createElement "EditText" toEditText
+
+comboBox :: GUISystem -> String -> [GUIComboBox -> IO ()] -> IO GUIComboBox
+comboBox = _createElement "Combobox" toComboBox
+
+listBox :: GUISystem -> String -> [GUIListBox -> IO ()] -> IO GUIListBox
+listBox = _createElement "Listbox" toListBox
+
+spinner :: GUISystem -> String -> [GUISpinner -> IO ()] -> IO GUISpinner
+spinner = _createElement "Spinner" toSpinner
+
+slider :: GUISystem -> String -> [GUISlider -> IO ()] -> IO GUISlider
+slider = _createElement "Slider" toSlider
 
 toButton = toGuiType "Button" GEButton
 toRadioButton = toGuiType "RadioButton" GERadioButton
@@ -197,15 +233,14 @@ toListBox = toGuiType "Listbox" GEListBox
 toSlider = toGuiType "Slider" GESlider
 toSpinner = toGuiType "Spinner" GESpinner
 
-findElement :: (GUIElement a -> IO (Maybe (GUIElement b))) 
+findElement :: (GUIElement a -> IO (GUIElement b))
                ->String 
                -> GUIElement a 
-               -> IO (Maybe (GUIElement b))
+               -> IO (GUIElement b)
 findElement toNewType name topel = do
   mFound <- findChildGuiElRecursive topel name
-  case mFound of
-    Nothing -> return Nothing
-    Just guiel -> toNewType guiel
+  el <- toNewType (fromJust mFound)
+  return el  
 
 findButton = findElement toButton
 findRadioButton = findElement toRadioButton

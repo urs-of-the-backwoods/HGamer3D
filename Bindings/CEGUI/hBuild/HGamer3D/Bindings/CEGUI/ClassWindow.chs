@@ -656,6 +656,85 @@ import HGamer3D.Data.Angle
  withCString* `String' ,
  withCString* `String' } -> `()'  #}
 
+{- function setArea -}
+{#fun cegui_wnd_setArea as setArea 
+{ withHG3DClass* `HG3DClass' ,
+ withHG3DClass* `HG3DClass' ,
+ withHG3DClass* `HG3DClass' ,
+ withHG3DClass* `HG3DClass' ,
+ withHG3DClass* `HG3DClass' } -> `()'  #}
+
+{- function setArea2 -}
+{#fun cegui_wnd_setArea2 as setArea2 
+{ withHG3DClass* `HG3DClass' ,
+ withHG3DClass* `HG3DClass' ,
+ withHG3DClass* `HG3DClass' } -> `()'  #}
+
+{- function setPosition -}
+{#fun cegui_wnd_setPosition as setPosition 
+{ withHG3DClass* `HG3DClass' ,
+ withHG3DClass* `HG3DClass' } -> `()'  #}
+
+{- function setXPosition -}
+{#fun cegui_wnd_setXPosition as setXPosition 
+{ withHG3DClass* `HG3DClass' ,
+ withHG3DClass* `HG3DClass' } -> `()'  #}
+
+{- function setYPosition -}
+{#fun cegui_wnd_setYPosition as setYPosition 
+{ withHG3DClass* `HG3DClass' ,
+ withHG3DClass* `HG3DClass' } -> `()'  #}
+
+{- function setSize -}
+{#fun cegui_wnd_setSize as setSize 
+{ withHG3DClass* `HG3DClass' ,
+ withHG3DClass* `HG3DClass' } -> `()'  #}
+
+{- function setWidth -}
+{#fun cegui_wnd_setWidth as setWidth 
+{ withHG3DClass* `HG3DClass' ,
+ withHG3DClass* `HG3DClass' } -> `()'  #}
+
+{- function setHeight -}
+{#fun cegui_wnd_setHeight as setHeight 
+{ withHG3DClass* `HG3DClass' ,
+ withHG3DClass* `HG3DClass' } -> `()'  #}
+
+{- function setMaxSize -}
+{#fun cegui_wnd_setMaxSize as setMaxSize 
+{ withHG3DClass* `HG3DClass' ,
+ withHG3DClass* `HG3DClass' } -> `()'  #}
+
+{- function setMinSize -}
+{#fun cegui_wnd_setMinSize as setMinSize 
+{ withHG3DClass* `HG3DClass' ,
+ withHG3DClass* `HG3DClass' } -> `()'  #}
+
+{- function getPosition -}
+{#fun cegui_wnd_getPosition as getPosition 
+{ withHG3DClass* `HG3DClass' ,
+ alloca- `HG3DClass' peek*} -> `()'  #}
+
+{- function getXPosition -}
+{#fun cegui_wnd_getXPosition as getXPosition 
+{ withHG3DClass* `HG3DClass' ,
+ alloca- `HG3DClass' peek*} -> `()'  #}
+
+{- function getYPosition -}
+{#fun cegui_wnd_getYPosition as getYPosition 
+{ withHG3DClass* `HG3DClass' ,
+ alloca- `HG3DClass' peek*} -> `()'  #}
+
+{- function getMaxSize -}
+{#fun cegui_wnd_getMaxSize as getMaxSize 
+{ withHG3DClass* `HG3DClass' ,
+ alloca- `HG3DClass' peek*} -> `()'  #}
+
+{- function getMinSize -}
+{#fun cegui_wnd_getMinSize as getMinSize 
+{ withHG3DClass* `HG3DClass' ,
+ alloca- `HG3DClass' peek*} -> `()'  #}
+
 {- function render -}
 {#fun cegui_wnd_render as render 
 { withHG3DClass* `HG3DClass' } -> `()'  #}

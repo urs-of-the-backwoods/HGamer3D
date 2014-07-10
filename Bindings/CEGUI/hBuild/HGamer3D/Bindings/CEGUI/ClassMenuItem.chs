@@ -76,6 +76,16 @@ import HGamer3D.Data.Angle
 { withHG3DClass* `HG3DClass' ,
  realToFrac `Float' } -> `()'  #}
 
+{- function getPopupOffset -}
+{#fun cegui_mnitm_getPopupOffset as getPopupOffset 
+{ withHG3DClass* `HG3DClass' ,
+ alloca- `HG3DClass' peek*} -> `()'  #}
+
+{- function setPopupOffset -}
+{#fun cegui_mnitm_setPopupOffset as setPopupOffset 
+{ withHG3DClass* `HG3DClass' ,
+ withHG3DClass* `HG3DClass' } -> `()'  #}
+
 {- function openPopupMenu -}
 {#fun cegui_mnitm_openPopupMenu as openPopupMenu 
 { withHG3DClass* `HG3DClass' ,

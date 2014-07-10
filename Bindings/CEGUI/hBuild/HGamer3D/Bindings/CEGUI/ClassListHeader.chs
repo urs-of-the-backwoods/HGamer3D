@@ -164,6 +164,29 @@ import HGamer3D.Data.Angle
 { withHG3DClass* `HG3DClass' ,
  fromBool `Bool' } -> `()'  #}
 
+{- function addColumn -}
+{#fun cegui_lsthdr_addColumn as addColumn 
+{ withHG3DClass* `HG3DClass' ,
+ withCString* `String' ,
+ fromIntegral `Int' ,
+ withHG3DClass* `HG3DClass' } -> `()'  #}
+
+{- function insertColumn -}
+{#fun cegui_lsthdr_insertColumn as insertColumn 
+{ withHG3DClass* `HG3DClass' ,
+ withCString* `String' ,
+ fromIntegral `Int' ,
+ withHG3DClass* `HG3DClass' ,
+ fromIntegral `Int' } -> `()'  #}
+
+{- function insertColumn2 -}
+{#fun cegui_lsthdr_insertColumn2 as insertColumn2 
+{ withHG3DClass* `HG3DClass' ,
+ withCString* `String' ,
+ fromIntegral `Int' ,
+ withHG3DClass* `HG3DClass' ,
+ withHG3DClass* `HG3DClass' } -> `()'  #}
+
 {- function removeColumn -}
 {#fun cegui_lsthdr_removeColumn as removeColumn 
 { withHG3DClass* `HG3DClass' ,
@@ -202,6 +225,12 @@ import HGamer3D.Data.Angle
 {#fun cegui_lsthdr_setSegmentOffset as setSegmentOffset 
 { withHG3DClass* `HG3DClass' ,
  realToFrac `Float' } -> `()'  #}
+
+{- function setColumnWidth -}
+{#fun cegui_lsthdr_setColumnWidth as setColumnWidth 
+{ withHG3DClass* `HG3DClass' ,
+ fromIntegral `Int' ,
+ withHG3DClass* `HG3DClass' } -> `()'  #}
 
 {- function ListHeader -}
 {#fun cegui_lsthdr_construct as new 

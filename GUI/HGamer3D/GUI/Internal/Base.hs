@@ -32,6 +32,17 @@ module HGamer3D.GUI.Internal.Base
         GUIEvent (..),
         EventFunction,
         
+        GEButton (..),
+        GERadioButton (..),
+        GECheckBox (..),
+        GEEditText (..),
+
+        GEListBox (..),
+        GEComboBox (..),
+
+        GESlider (..),
+        GESpinner (..),
+
         -- * Initialization, Game Loop
         initGUI,
         freeGUI,
@@ -54,6 +65,10 @@ module HGamer3D.GUI.Internal.Base
 	findChildGuiElRecursive,
         addGuiElToDisplay,
 	removeGuiElFromDisplay,
+
+        -- * Change Gui Element Tree
+        addChildGuiEl,
+        removeChildGuiEl,
 
         -- * Set specific GUI Element properties
 	getGuiElProperty,
@@ -135,6 +150,19 @@ data GUISystem = GUISystem {
     guiUniqueName::UniqueName
 } 
 
+-- type constructors for phantom types
+
+data GEButton = GEButton
+data GERadioButton = GERadioButton
+data GECheckBox = GECheckBox
+data GEEditText = GEEditText
+
+data GEListBox = GEListBox
+data GEComboBox = GEComboBox
+
+data GESlider = GESlider
+data GESpinner = GESpinner
+
 type EventFunction = IO ()
 
 -- | The GUI Element, a window, a button, any widget or widget element, organized in a hierarchy
@@ -206,6 +234,20 @@ hideGuiEl :: GUIElement a -- ^ GUI element to hide
              -> IO ()
 hideGuiEl (GUIElement window _) = do
 	Window.hide window
+
+-- | add a GUI element as a child to another GUI element
+addChildGuiEl :: GUIElement a -- ^ parent GUI element
+                 -> GUIElement b -- ^ child GUI element
+                 -> IO ()
+addChildGuiEl (GUIElement parentW _) (GUIElement childW _) = do
+	Window.addChildWindow2 parentW childW
+
+-- | remove a GUI element as a child from the parent GUI element
+removeChildGuiEl :: GUIElement a -- ^ parent GUI element
+                 -> GUIElement b -- ^ child GUI element
+                 -> IO ()
+removeChildGuiEl (GUIElement parentW _) (GUIElement childW _) = do
+	Window.removeChildWindow2 parentW childW
 
 -- | get child gui element, throws an exception, if element not found in children, only searches the direct children of element.
 getChildGuiEl :: GUIElement a -- ^ GUI element, which childrens are searched for child element

@@ -420,6 +420,27 @@ extern "C" CEGUI_LIB_EXPORT void cegui_mltclmlst_resetList(struct hg3dclass_stru
   (thisclass_cpp->resetList());
 };
 
+// Add a column to the list box. 
+extern "C" CEGUI_LIB_EXPORT void cegui_mltclmlst_addColumn(struct hg3dclass_struct * thisclass_c, char * text_c, unsigned int col_id_c, struct hg3dclass_struct * width_c)
+{
+  CEGUI::MultiColumnList * thisclass_cpp = static_cast<CEGUI::MultiColumnList*> (getHG3DClassPtr(*thisclass_c, "CEGUI::MultiColumnList"));
+  CEGUI::String text_cpp = CEGUI::String((const char*) text_c);
+  uint col_id_cpp = (uint)col_id_c;
+  const CEGUI::UDim * width_cpp = static_cast<CEGUI::UDim*> (getHG3DClassPtr(*width_c, "CEGUI::UDim"));
+  (thisclass_cpp->addColumn(text_cpp, col_id_cpp, *width_cpp));
+};
+
+// Insert a new column in the list. 
+extern "C" CEGUI_LIB_EXPORT void cegui_mltclmlst_insertColumn(struct hg3dclass_struct * thisclass_c, char * text_c, unsigned int col_id_c, struct hg3dclass_struct * width_c, unsigned int position_c)
+{
+  CEGUI::MultiColumnList * thisclass_cpp = static_cast<CEGUI::MultiColumnList*> (getHG3DClassPtr(*thisclass_c, "CEGUI::MultiColumnList"));
+  CEGUI::String text_cpp = CEGUI::String((const char*) text_c);
+  uint col_id_cpp = (uint)col_id_c;
+  const CEGUI::UDim * width_cpp = static_cast<CEGUI::UDim*> (getHG3DClassPtr(*width_c, "CEGUI::UDim"));
+  uint position_cpp = (uint)position_c;
+  (thisclass_cpp->insertColumn(text_cpp, col_id_cpp, *width_cpp, position_cpp));
+};
+
 // Removes a column from the list box. This will cause any ListboxItem
 extern "C" CEGUI_LIB_EXPORT void cegui_mltclmlst_removeColumn(struct hg3dclass_struct * thisclass_c, unsigned int col_idx_c)
 {
@@ -611,6 +632,15 @@ extern "C" CEGUI_LIB_EXPORT void cegui_mltclmlst_handleUpdatedItemData(struct hg
 {
   CEGUI::MultiColumnList * thisclass_cpp = static_cast<CEGUI::MultiColumnList*> (getHG3DClassPtr(*thisclass_c, "CEGUI::MultiColumnList"));
   (thisclass_cpp->handleUpdatedItemData());
+};
+
+// Set the width of the specified column header (and therefore the column itself). 
+extern "C" CEGUI_LIB_EXPORT void cegui_mltclmlst_setColumnHeaderWidth(struct hg3dclass_struct * thisclass_c, unsigned int col_idx_c, struct hg3dclass_struct * width_c)
+{
+  CEGUI::MultiColumnList * thisclass_cpp = static_cast<CEGUI::MultiColumnList*> (getHG3DClassPtr(*thisclass_c, "CEGUI::MultiColumnList"));
+  uint col_idx_cpp = (uint)col_idx_c;
+  const CEGUI::UDim * width_cpp = static_cast<CEGUI::UDim*> (getHG3DClassPtr(*width_c, "CEGUI::UDim"));
+  (thisclass_cpp->setColumnHeaderWidth(col_idx_cpp, *width_cpp));
 };
 
 // Set whether user manipulation of the sort column and direction are enabled. 

@@ -29,6 +29,9 @@ module HGamer3D.GUI
         GUIElement,
         GUIEvent (..),
         EventFunction,
+
+        GUIDim (..),
+        GUIVec2 (..),
         
         -- initGUI,
         -- freeGUI,
@@ -40,8 +43,8 @@ module HGamer3D.GUI
         -- * Event Handling
         registerGUIEvent,
 
-        -- * Configuration: Layout, Font, Scheme, MouseCursor, Tooltip
-	loadGuiLayoutFromFile,
+        -- * Configuration: Font, Scheme, MouseCursor, Tooltip
+
 	loadGuiScheme,
 	loadGuiFont,
 	setGuiDefaultFont,
@@ -54,6 +57,10 @@ module HGamer3D.GUI
         addGuiElToDisplay,
 	removeGuiElFromDisplay,
 	
+        -- * Change Gui Element Tree
+        addChildGuiEl,
+        removeChildGuiEl,
+
         -- * Set specific GUI Element properties
 	getGuiElProperty,
 	setGuiElProperty,
@@ -74,6 +81,21 @@ module HGamer3D.GUI
         GUIComboBox,
         GUISlider,
         GUISpinner,
+
+        -- * Create Widgets programmatically
+
+        button,
+        radioButton,
+        checkBox,
+        editText,
+        comboBox,
+        listBox,
+        spinner,
+        slider,
+
+        -- * Load Widgets from layout file
+
+	loadGuiLayoutFromFile,
 
         toButton,
         toRadioButton,
@@ -105,11 +127,14 @@ module HGamer3D.GUI
 	comboboxRemoveAllText,
         
  -- * Property Types
+
 GUIElementProperty, 
 GUIButtonProperty,
-GUIRadioButtonProperty, 
+GUIRadioButtonProperty,
+GUIHasSelectionProperty, 
 GUICheckBoxProperty,
 GUIEditTextProperty,
+GUIHasValueProperty,
 GUISliderProperty,
 GUISpinnerProperty,
 
@@ -118,14 +143,24 @@ GUISpinnerProperty,
 setP,
 getP,
 
--- * GUI Element Properties, for all GUI elements
+-- * GUI Widget General Properties
+
 pText,
 pDisabled,
 pVisible,
 pAlpha,
 pTooltip,
 pAlwaysOnTop,
-	
+
+pX,
+pY,
+pWidth,
+pHeight,
+
+pSelected,
+pValue,
+
+
 )
 
 where

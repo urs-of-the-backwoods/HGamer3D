@@ -157,3 +157,61 @@ extern "C" CEGUI_LIB_EXPORT void cegui_hg3dwsfs_castWindowToMultiColumnList(stru
 ;
 };
 
+// 
+extern "C" CEGUI_LIB_EXPORT void cegui_hg3dwsfs_udScale(struct hg3dclass_struct * ud_c, float * result_c)
+{
+  const CEGUI::UDim * ud_cpp = static_cast<CEGUI::UDim*> (getHG3DClassPtr(*ud_c, "CEGUI::UDim"));
+  float result_cpp;
+  result_cpp = (HG3DWindowStaticFunctions::udScale(ud_cpp));
+  *result_c = (float)result_cpp;
+};
+
+// 
+extern "C" CEGUI_LIB_EXPORT void cegui_hg3dwsfs_udOffset(struct hg3dclass_struct * ud_c, float * result_c)
+{
+  const CEGUI::UDim * ud_cpp = static_cast<CEGUI::UDim*> (getHG3DClassPtr(*ud_c, "CEGUI::UDim"));
+  float result_cpp;
+  result_cpp = (HG3DWindowStaticFunctions::udOffset(ud_cpp));
+  *result_c = (float)result_cpp;
+};
+
+// 
+extern "C" CEGUI_LIB_EXPORT void cegui_hg3dwsfs_v2X(struct hg3dclass_struct * uv2_c, struct hg3dclass_struct * result_c)
+{
+  const CEGUI::UVector2 * uv2_cpp = static_cast<CEGUI::UVector2*> (getHG3DClassPtr(*uv2_c, "CEGUI::UVector2"));
+  CEGUI::UDim * result_cpp;
+  result_cpp = (HG3DWindowStaticFunctions::v2X(uv2_cpp));
+  *result_c = getHG3DClass_UDim((void *) result_cpp);
+;
+};
+
+// 
+extern "C" CEGUI_LIB_EXPORT void cegui_hg3dwsfs_v2Y(struct hg3dclass_struct * uv2_c, struct hg3dclass_struct * result_c)
+{
+  const CEGUI::UVector2 * uv2_cpp = static_cast<CEGUI::UVector2*> (getHG3DClassPtr(*uv2_c, "CEGUI::UVector2"));
+  CEGUI::UDim * result_cpp;
+  result_cpp = (HG3DWindowStaticFunctions::v2Y(uv2_cpp));
+  *result_c = getHG3DClass_UDim((void *) result_cpp);
+;
+};
+
+// 
+extern "C" CEGUI_LIB_EXPORT void cegui_hg3dwsfs_getWindowWidth(struct hg3dclass_struct * window_c, struct hg3dclass_struct * result_c)
+{
+  const CEGUI::Window * window_cpp = static_cast<CEGUI::Window*> (getHG3DClassPtr(*window_c, "CEGUI::Window"));
+  CEGUI::UDim * result_cpp;
+  result_cpp = (HG3DWindowStaticFunctions::getWindowWidth(window_cpp));
+  *result_c = getHG3DClass_UDim((void *) result_cpp);
+;
+};
+
+// 
+extern "C" CEGUI_LIB_EXPORT void cegui_hg3dwsfs_getWindowHeight(struct hg3dclass_struct * window_c, struct hg3dclass_struct * result_c)
+{
+  const CEGUI::Window * window_cpp = static_cast<CEGUI::Window*> (getHG3DClassPtr(*window_c, "CEGUI::Window"));
+  CEGUI::UDim * result_cpp;
+  result_cpp = (HG3DWindowStaticFunctions::getWindowHeight(window_cpp));
+  *result_c = getHG3DClass_UDim((void *) result_cpp);
+;
+};
+

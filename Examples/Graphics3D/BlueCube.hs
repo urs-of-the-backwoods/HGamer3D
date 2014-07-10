@@ -23,13 +23,13 @@ renderLoop cube g3ds = do
    -- rotate 
   yaw cube (Rad 0.005) 
   roll cube (Rad 0.002)
-  quit <- loopHGamer3D g3ds
+  quit <- stepGraphics3D g3ds
   if quit then return () else renderLoop cube g3ds
    
 main :: IO ()
 main = do
   
-        (g3ds, camera, viewport) <- initHGamer3D "HGamer3D - BlueCube Example" "DefaultSceneManager" True True
+        (g3ds, camera, viewport, window) <- initGraphics3D "HGamer3D - BlueCube Example" "DefaultSceneManager" True True
         
 	-- camera position
 	let pos = Vec3 5.0 5.0 80.0
@@ -50,6 +50,6 @@ main = do
         
 	-- start render loop
 	renderLoop cube g3ds 
-        exitHGamer3D g3ds
+        freeGraphics3D g3ds
         return ()
 

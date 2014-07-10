@@ -1349,6 +1349,50 @@ hg3dclass_struct getHG3DClass_Tree(void *ptrIn)
 };
 
 //
+// CEGUI::UDim
+//
+
+// Ptr Caster
+void *internalHG3D_UDim_PtrCaster(const char* className, void* ptrIn) {
+	if (strcmp(className, "CEGUI::UDim") == 0) {
+		return ptrIn;
+	};
+	printf("PtrCaster not successful, Class: CEGUI::UDim is not a subclass of %s!\n",className);
+	return (void *)0;
+};
+
+// getHG3DClass
+hg3dclass_struct getHG3DClass_UDim(void *ptrIn)
+{
+	hg3dclass_struct st;
+	st.ptr = ptrIn;
+	st.fptr = (void *)(&internalHG3D_UDim_PtrCaster);
+	return st;
+};
+
+//
+// CEGUI::UVector2
+//
+
+// Ptr Caster
+void *internalHG3D_UVector2_PtrCaster(const char* className, void* ptrIn) {
+	if (strcmp(className, "CEGUI::UVector2") == 0) {
+		return ptrIn;
+	};
+	printf("PtrCaster not successful, Class: CEGUI::UVector2 is not a subclass of %s!\n",className);
+	return (void *)0;
+};
+
+// getHG3DClass
+hg3dclass_struct getHG3DClass_UVector2(void *ptrIn)
+{
+	hg3dclass_struct st;
+	st.ptr = ptrIn;
+	st.fptr = (void *)(&internalHG3D_UVector2_PtrCaster);
+	return st;
+};
+
+//
 // CEGUI::WidgetLookManager
 //
 

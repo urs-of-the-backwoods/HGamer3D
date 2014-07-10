@@ -27,11 +27,16 @@ module HGamer3D.GUI.Internal.Properties
  -- * Property Types
 GUIElementProperty, 
 GUIButtonProperty,
+GUIHasSelectionProperty,
 GUIRadioButtonProperty, 
 GUICheckBoxProperty,
 GUIEditTextProperty,
+GUIHasValueProperty,
 GUISliderProperty,
 GUISpinnerProperty,
+
+GUIDim (..),
+GUIVec2 (..),
 
 -- * Property Functions
 (=:),
@@ -46,6 +51,14 @@ pAlpha,
 pTooltip,
 pAlwaysOnTop,
 
+pX,
+pY,
+pWidth,
+pHeight,
+
+pValue,
+pSelected,
+
 )        
 
 where
@@ -59,16 +72,33 @@ import HGamer3D.Data
 import HGamer3D.Util
 
 import HGamer3D.GUI.Internal.Base
-import HGamer3D.GUI.Internal.Widgets
+--import HGamer3D.GUI.Internal.Widgets
 import HGamer3D.Data.HG3DClass
+import qualified HGamer3D.Bindings.CEGUI.ClassHG3DWindowStaticFunctions as WinStat
+import qualified HGamer3D.Bindings.CEGUI.ClassWindow as Win
+import qualified HGamer3D.Bindings.CEGUI.ClassUDim as Ud
+
+data GUIDim = GUIDim {
+      gdScale :: Float,
+      gdOffset :: Float 
+}
+
+data GUIVec2 = GUIVec2 {
+      gv2X :: GUIDim,
+      gv2Y :: GUIDim 
+}
 
 type GUIElementProperty a b = (GUIElement a -> IO b, GUIElement a -> b -> IO ())
 type GUIButtonProperty b = GUIElementProperty GEButton b
-type GUIRadioButtonProperty b = GUIElementProperty GERadioButton b
-type GUICheckBoxProperty b = GUIElementProperty GECheckBox b
 type GUIEditTextProperty b = GUIElementProperty GEEditText b
-type GUISliderProperty b = GUIElementProperty GESlider b
-type GUISpinnerProperty b = GUIElementProperty GESpinner b
+
+type GUIHasSelectionProperty a b = GUIElementProperty a b
+type GUIRadioButtonProperty b = GUIHasSelectionProperty GERadioButton b
+type GUICheckBoxProperty b = GUIHasSelectionProperty GECheckBox b
+
+type GUIHasValueProperty a b = GUIElementProperty a b
+type GUISliderProperty b = GUIHasValueProperty GESlider b
+type GUISpinnerProperty b = GUIHasValueProperty GESpinner b
 
 (=:) :: (GUIElementProperty a b) -> b -> (GUIElement a -> IO ())
 (=:) prop val = (\val' guiel -> (snd prop) guiel val') val  
@@ -132,4 +162,68 @@ pAlwaysOnTop = _boolProp "AlwaysOnTop"
 
 pTooltip :: GUIElementProperty a String
 pTooltip = _stringProp "Tooltip"
+
+pFont :: GUIElementProperty a String
+pFont = _stringProp "Font"
+
+pX :: GUIElementProperty a GUIDim
+pX = (getProp, setProp) where
+    getProp (GUIElement window _) = do
+      ud <- Win.getXPosition window
+      scale <- WinStat.udScale ud
+      offset <- WinStat.udOffset ud
+      return $ GUIDim scale offset
+    setProp (GUIElement window _) (GUIDim scale offset) = do
+      ud <- Ud.new scale offset
+      Win.setXPosition window ud
+      Ud.delete ud
+      return ()
+
+pY :: GUIElementProperty a GUIDim
+pY = (getProp, setProp) where
+    getProp (GUIElement window _) = do
+      ud <- Win.getYPosition window
+      scale <- WinStat.udScale ud
+      offset <- WinStat.udOffset ud
+      return $ GUIDim scale offset
+    setProp (GUIElement window _) (GUIDim scale offset) = do
+      ud <- Ud.new scale offset
+      Win.setYPosition window ud
+      Ud.delete ud
+      return ()
+
+pWidth :: GUIElementProperty a GUIDim
+pWidth = (getProp, setProp) where
+    getProp (GUIElement window _) = do
+      ud <- WinStat.getWindowWidth window
+      scale <- WinStat.udScale ud
+      offset <- WinStat.udOffset ud
+      Ud.delete ud
+      return $ GUIDim scale offset
+    setProp (GUIElement window _) (GUIDim scale offset) = do
+      ud <- Ud.new scale offset
+      Win.setWidth window ud
+      Ud.delete ud
+      return ()
+
+pHeight :: GUIElementProperty a GUIDim
+pHeight = (getProp, setProp) where
+    getProp (GUIElement window _) = do
+      ud <- WinStat.getWindowHeight window
+      scale <- WinStat.udScale ud
+      offset <- WinStat.udOffset ud
+      Ud.delete ud
+      return $ GUIDim scale offset
+    setProp (GUIElement window _) (GUIDim scale offset) = do
+      ud <- Ud.new scale offset
+      Win.setHeight window ud
+      Ud.delete ud
+      return ()
+
+pSelected :: GUIHasSelectionProperty a Bool
+pSelected = _boolProp "Selected"
+
+pValue :: GUIHasValueProperty a Float
+pValue = _floatProp "Value"
+
 

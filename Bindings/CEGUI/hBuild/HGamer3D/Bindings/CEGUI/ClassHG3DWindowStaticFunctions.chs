@@ -96,3 +96,33 @@ import HGamer3D.Data.Angle
 { withHG3DClass* `HG3DClass' ,
  alloca- `HG3DClass' peek*} -> `()'  #}
 
+{- function udScale -}
+{#fun cegui_hg3dwsfs_udScale as udScale 
+{ withHG3DClass* `HG3DClass' ,
+ alloca- `Float' peekFloatConv*} -> `()'  #}
+
+{- function udOffset -}
+{#fun cegui_hg3dwsfs_udOffset as udOffset 
+{ withHG3DClass* `HG3DClass' ,
+ alloca- `Float' peekFloatConv*} -> `()'  #}
+
+{- function v2X -}
+{#fun cegui_hg3dwsfs_v2X as v2X 
+{ withHG3DClass* `HG3DClass' ,
+ alloca- `HG3DClass' peek*} -> `()'  #}
+
+{- function v2Y -}
+{#fun cegui_hg3dwsfs_v2Y as v2Y 
+{ withHG3DClass* `HG3DClass' ,
+ alloca- `HG3DClass' peek*} -> `()'  #}
+
+{- function getWindowWidth -}
+{#fun cegui_hg3dwsfs_getWindowWidth as getWindowWidth 
+{ withHG3DClass* `HG3DClass' ,
+ alloca- `HG3DClass' peek*} -> `()'  #}
+
+{- function getWindowHeight -}
+{#fun cegui_hg3dwsfs_getWindowHeight as getWindowHeight 
+{ withHG3DClass* `HG3DClass' ,
+ alloca- `HG3DClass' peek*} -> `()'  #}
+

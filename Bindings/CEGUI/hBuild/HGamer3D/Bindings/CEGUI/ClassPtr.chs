@@ -138,6 +138,10 @@ import HGamer3D.Data.Angle
 {#pointer *ClassTooltip as ClassTooltip#}
 {- class ClassTree -}
 {#pointer *ClassTree as ClassTree#}
+{- class ClassUDim -}
+{#pointer *ClassUDim as ClassUDim#}
+{- class ClassUVector2 -}
+{#pointer *ClassUVector2 as ClassUVector2#}
 {- class ClassWidgetLookManager -}
 {#pointer *ClassWidgetLookManager as ClassWidgetLookManager#}
 {- class ClassWindow -}

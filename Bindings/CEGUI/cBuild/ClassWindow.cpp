@@ -1138,6 +1138,140 @@ extern "C" CEGUI_LIB_EXPORT void cegui_wnd_setUserString(struct hg3dclass_struct
   (thisclass_cpp->setUserString(name_cpp, value_cpp));
 };
 
+// Set the window area. 
+extern "C" CEGUI_LIB_EXPORT void cegui_wnd_setArea(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * xpos_c, struct hg3dclass_struct * ypos_c, struct hg3dclass_struct * width_c, struct hg3dclass_struct * height_c)
+{
+  CEGUI::Window * thisclass_cpp = static_cast<CEGUI::Window*> (getHG3DClassPtr(*thisclass_c, "CEGUI::Window"));
+  const CEGUI::UDim * xpos_cpp = static_cast<CEGUI::UDim*> (getHG3DClassPtr(*xpos_c, "CEGUI::UDim"));
+  const CEGUI::UDim * ypos_cpp = static_cast<CEGUI::UDim*> (getHG3DClassPtr(*ypos_c, "CEGUI::UDim"));
+  const CEGUI::UDim * width_cpp = static_cast<CEGUI::UDim*> (getHG3DClassPtr(*width_c, "CEGUI::UDim"));
+  const CEGUI::UDim * height_cpp = static_cast<CEGUI::UDim*> (getHG3DClassPtr(*height_c, "CEGUI::UDim"));
+  (thisclass_cpp->setArea(*xpos_cpp, *ypos_cpp, *width_cpp, *height_cpp));
+};
+
+// Set the window area. 
+extern "C" CEGUI_LIB_EXPORT void cegui_wnd_setArea2(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * pos_c, struct hg3dclass_struct * size_c)
+{
+  CEGUI::Window * thisclass_cpp = static_cast<CEGUI::Window*> (getHG3DClassPtr(*thisclass_c, "CEGUI::Window"));
+  const CEGUI::UVector2 * pos_cpp = static_cast<CEGUI::UVector2*> (getHG3DClassPtr(*pos_c, "CEGUI::UVector2"));
+  const CEGUI::UVector2 * size_cpp = static_cast<CEGUI::UVector2*> (getHG3DClassPtr(*size_c, "CEGUI::UVector2"));
+  (thisclass_cpp->setArea(*pos_cpp, *size_cpp));
+};
+
+// Set the window's position. 
+extern "C" CEGUI_LIB_EXPORT void cegui_wnd_setPosition(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * pos_c)
+{
+  CEGUI::Window * thisclass_cpp = static_cast<CEGUI::Window*> (getHG3DClassPtr(*thisclass_c, "CEGUI::Window"));
+  const CEGUI::UVector2 * pos_cpp = static_cast<CEGUI::UVector2*> (getHG3DClassPtr(*pos_c, "CEGUI::UVector2"));
+  (thisclass_cpp->setPosition(*pos_cpp));
+};
+
+// Set the window's X position. 
+extern "C" CEGUI_LIB_EXPORT void cegui_wnd_setXPosition(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * x_c)
+{
+  CEGUI::Window * thisclass_cpp = static_cast<CEGUI::Window*> (getHG3DClassPtr(*thisclass_c, "CEGUI::Window"));
+  const CEGUI::UDim * x_cpp = static_cast<CEGUI::UDim*> (getHG3DClassPtr(*x_c, "CEGUI::UDim"));
+  (thisclass_cpp->setXPosition(*x_cpp));
+};
+
+// Set the window's Y position. 
+extern "C" CEGUI_LIB_EXPORT void cegui_wnd_setYPosition(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * y_c)
+{
+  CEGUI::Window * thisclass_cpp = static_cast<CEGUI::Window*> (getHG3DClassPtr(*thisclass_c, "CEGUI::Window"));
+  const CEGUI::UDim * y_cpp = static_cast<CEGUI::UDim*> (getHG3DClassPtr(*y_c, "CEGUI::UDim"));
+  (thisclass_cpp->setYPosition(*y_cpp));
+};
+
+// Set the window's size. 
+extern "C" CEGUI_LIB_EXPORT void cegui_wnd_setSize(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * size_c)
+{
+  CEGUI::Window * thisclass_cpp = static_cast<CEGUI::Window*> (getHG3DClassPtr(*thisclass_c, "CEGUI::Window"));
+  const CEGUI::UVector2 * size_cpp = static_cast<CEGUI::UVector2*> (getHG3DClassPtr(*size_c, "CEGUI::UVector2"));
+  (thisclass_cpp->setSize(*size_cpp));
+};
+
+// Set the window's width. 
+extern "C" CEGUI_LIB_EXPORT void cegui_wnd_setWidth(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * width_c)
+{
+  CEGUI::Window * thisclass_cpp = static_cast<CEGUI::Window*> (getHG3DClassPtr(*thisclass_c, "CEGUI::Window"));
+  const CEGUI::UDim * width_cpp = static_cast<CEGUI::UDim*> (getHG3DClassPtr(*width_c, "CEGUI::UDim"));
+  (thisclass_cpp->setWidth(*width_cpp));
+};
+
+// Set the window's height. 
+extern "C" CEGUI_LIB_EXPORT void cegui_wnd_setHeight(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * height_c)
+{
+  CEGUI::Window * thisclass_cpp = static_cast<CEGUI::Window*> (getHG3DClassPtr(*thisclass_c, "CEGUI::Window"));
+  const CEGUI::UDim * height_cpp = static_cast<CEGUI::UDim*> (getHG3DClassPtr(*height_c, "CEGUI::UDim"));
+  (thisclass_cpp->setHeight(*height_cpp));
+};
+
+// Set the window's maximum size. 
+extern "C" CEGUI_LIB_EXPORT void cegui_wnd_setMaxSize(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * size_c)
+{
+  CEGUI::Window * thisclass_cpp = static_cast<CEGUI::Window*> (getHG3DClassPtr(*thisclass_c, "CEGUI::Window"));
+  const CEGUI::UVector2 * size_cpp = static_cast<CEGUI::UVector2*> (getHG3DClassPtr(*size_c, "CEGUI::UVector2"));
+  (thisclass_cpp->setMaxSize(*size_cpp));
+};
+
+// Set the window's minimum size. 
+extern "C" CEGUI_LIB_EXPORT void cegui_wnd_setMinSize(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * size_c)
+{
+  CEGUI::Window * thisclass_cpp = static_cast<CEGUI::Window*> (getHG3DClassPtr(*thisclass_c, "CEGUI::Window"));
+  const CEGUI::UVector2 * size_cpp = static_cast<CEGUI::UVector2*> (getHG3DClassPtr(*size_c, "CEGUI::UVector2"));
+  (thisclass_cpp->setMinSize(*size_cpp));
+};
+
+// Get the window's position. 
+extern "C" CEGUI_LIB_EXPORT void cegui_wnd_getPosition(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c)
+{
+  CEGUI::Window * thisclass_cpp = static_cast<CEGUI::Window*> (getHG3DClassPtr(*thisclass_c, "CEGUI::Window"));
+  const CEGUI::UVector2 * result_cpp;
+  result_cpp = &(thisclass_cpp->getPosition());
+  *result_c = getHG3DClass_UVector2((void *) result_cpp);
+;
+};
+
+// Get the window's X position. 
+extern "C" CEGUI_LIB_EXPORT void cegui_wnd_getXPosition(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c)
+{
+  CEGUI::Window * thisclass_cpp = static_cast<CEGUI::Window*> (getHG3DClassPtr(*thisclass_c, "CEGUI::Window"));
+  const CEGUI::UDim * result_cpp;
+  result_cpp = &(thisclass_cpp->getXPosition());
+  *result_c = getHG3DClass_UDim((void *) result_cpp);
+;
+};
+
+// Get the window's Y position. 
+extern "C" CEGUI_LIB_EXPORT void cegui_wnd_getYPosition(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c)
+{
+  CEGUI::Window * thisclass_cpp = static_cast<CEGUI::Window*> (getHG3DClassPtr(*thisclass_c, "CEGUI::Window"));
+  const CEGUI::UDim * result_cpp;
+  result_cpp = &(thisclass_cpp->getYPosition());
+  *result_c = getHG3DClass_UDim((void *) result_cpp);
+;
+};
+
+// Get the window's maximum size. 
+extern "C" CEGUI_LIB_EXPORT void cegui_wnd_getMaxSize(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c)
+{
+  CEGUI::Window * thisclass_cpp = static_cast<CEGUI::Window*> (getHG3DClassPtr(*thisclass_c, "CEGUI::Window"));
+  const CEGUI::UVector2 * result_cpp;
+  result_cpp = &(thisclass_cpp->getMaxSize());
+  *result_c = getHG3DClass_UVector2((void *) result_cpp);
+;
+};
+
+// Get the window's minimum size. 
+extern "C" CEGUI_LIB_EXPORT void cegui_wnd_getMinSize(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c)
+{
+  CEGUI::Window * thisclass_cpp = static_cast<CEGUI::Window*> (getHG3DClassPtr(*thisclass_c, "CEGUI::Window"));
+  const CEGUI::UVector2 * result_cpp;
+  result_cpp = &(thisclass_cpp->getMinSize());
+  *result_c = getHG3DClass_UVector2((void *) result_cpp);
+;
+};
+
 // Causes the Window
 extern "C" CEGUI_LIB_EXPORT void cegui_wnd_render(struct hg3dclass_struct * thisclass_c)
 {

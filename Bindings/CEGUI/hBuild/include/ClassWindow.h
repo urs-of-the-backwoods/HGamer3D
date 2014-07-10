@@ -30,6 +30,8 @@
 #include "EnumVerticalAlignment.h"
 #include "EnumHorizontalAlignment.h"
 #include "ClassDragContainer.h"
+#include "ClassUDim.h"
+#include "ClassUVector2.h"
 #include "EnumWindowUpdateMode.h"
 
 
@@ -395,6 +397,51 @@ void cegui_wnd_performChildWindowLayout(struct hg3dclass_struct * thisclass_c);
 
 // Sets the value a named user string, creating it as required. 
 void cegui_wnd_setUserString(struct hg3dclass_struct * thisclass_c, char * name_c, char * value_c);
+
+// Set the window area. 
+void cegui_wnd_setArea(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * xpos_c, struct hg3dclass_struct * ypos_c, struct hg3dclass_struct * width_c, struct hg3dclass_struct * height_c);
+
+// Set the window area. 
+void cegui_wnd_setArea2(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * pos_c, struct hg3dclass_struct * size_c);
+
+// Set the window's position. 
+void cegui_wnd_setPosition(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * pos_c);
+
+// Set the window's X position. 
+void cegui_wnd_setXPosition(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * x_c);
+
+// Set the window's Y position. 
+void cegui_wnd_setYPosition(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * y_c);
+
+// Set the window's size. 
+void cegui_wnd_setSize(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * size_c);
+
+// Set the window's width. 
+void cegui_wnd_setWidth(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * width_c);
+
+// Set the window's height. 
+void cegui_wnd_setHeight(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * height_c);
+
+// Set the window's maximum size. 
+void cegui_wnd_setMaxSize(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * size_c);
+
+// Set the window's minimum size. 
+void cegui_wnd_setMinSize(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * size_c);
+
+// Get the window's position. 
+void cegui_wnd_getPosition(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
+
+// Get the window's X position. 
+void cegui_wnd_getXPosition(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
+
+// Get the window's Y position. 
+void cegui_wnd_getYPosition(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
+
+// Get the window's maximum size. 
+void cegui_wnd_getMaxSize(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
+
+// Get the window's minimum size. 
+void cegui_wnd_getMinSize(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
 
 // Causes the Window
 void cegui_wnd_render(struct hg3dclass_struct * thisclass_c);

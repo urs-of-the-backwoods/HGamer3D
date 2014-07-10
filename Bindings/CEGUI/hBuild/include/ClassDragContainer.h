@@ -26,6 +26,7 @@
 
 #include "ClassPtr.h"
 #include "ClassWindow.h"
+#include "ClassUVector2.h"
 
 
 // Constructor for DragContainer
@@ -69,6 +70,12 @@ void cegui_drgcnt_setStickyModeEnabled(struct hg3dclass_struct * thisclass_c, in
 
 // Immediately pick up the DragContainer
 void cegui_drgcnt_pickUp(struct hg3dclass_struct * thisclass_c, const int force_sticky_c, int * result_c);
+
+// Set the fixed mouse cursor dragging offset to be used for this DragContainer
+void cegui_drgcnt_setFixedDragOffset(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * offset_c);
+
+// Return the fixed mouse cursor dragging offset to be used for this DragContainer
+void cegui_drgcnt_getFixedDragOffset(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
 
 // Set whether the fixed dragging offset - as set with the setFixedDragOffset - function will be used, or whether the built-in positioning will be used. 
 void cegui_drgcnt_setUsingFixedDragOffset(struct hg3dclass_struct * thisclass_c, const int enable_c);

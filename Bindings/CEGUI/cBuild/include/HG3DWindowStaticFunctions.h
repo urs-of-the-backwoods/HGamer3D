@@ -40,5 +40,14 @@ class HG3DWindowStaticFunctions
 	static CEGUI::Slider* castWindowToSlider(CEGUI::Window * window);
 	static CEGUI::Spinner* castWindowToSpinner(CEGUI::Window * window);
 	static CEGUI::MultiColumnList* castWindowToMultiColumnList(CEGUI::Window * window);
+
+	// utility functions for UDims and UVectors
+	static float udScale( const CEGUI::UDim* ud);
+	static float udOffset( const CEGUI::UDim* ud);
+	static CEGUI::UDim* v2X( const CEGUI::UVector2* uv2);
+	static CEGUI::UDim* v2Y( const CEGUI::UVector2* uv2);
+
+	static CEGUI::UDim* getWindowWidth(const CEGUI::Window* window);
+	static CEGUI::UDim* getWindowHeight(const CEGUI::Window* window);
 };
 
