@@ -26,7 +26,7 @@ module HGamer3D.AudioModule.EcsAPI
   AudioSource (..),
   AudioSourceParameter (..),
 
-  runECSAudio,
+  runSystemAudio
   
 ) where
 

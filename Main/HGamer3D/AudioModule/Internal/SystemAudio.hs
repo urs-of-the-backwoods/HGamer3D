@@ -41,7 +41,7 @@ import HGamer3D.Internal.ECS.Component
 import HGamer3D.Internal.ECS.ComponentType
 import HGamer3D.Internal.ECS.System
 
-import qualified HGamer3D.Audio as A
+import qualified HGamer3D.Audio.Internal.Base as A
 import qualified HGamer3D.Audio.Schema.AudioSource as AS
 import qualified HGamer3D.Audio.Schema.AudioListener as AL
 
@@ -56,6 +56,19 @@ data ECSAudio = ECSAudio {
      Maybe (StampedValue D.Position)
      )
   }
+
+_handleEvent map evt = do
+      case evt of
+        AudioEvt (PlaySound slot) -> do
+          let mAS = (M.lookup slot map)
+          case mAS of
+            Just as -> A.playAudioSource as
+            Nothing -> return ()
+        AudioEvt (StopSound slot) -> do
+          let mAS = (M.lookup slot map)
+          case mAS of
+            Just as -> A.stopAudioSource as
+            Nothing -> return ()
 
 instance System ECSAudio where
 
@@ -90,10 +103,15 @@ instance System ECSAudio where
       -- update audio objects
       cList <- takeMVar (audioSlots system)
       mapM (\(com, mcp) -> do
+               mOldCache <- HT.lookup (audioSlotsCache system) (idC com)
+               -- handle events
+               evts <- _popEvents com
+               case mOldCache of
+                 Just (A.AudioSlots map _, _, _) -> mapM (_handleEvent map) evts >> return ()
+                 Nothing -> return ()
                -- handle changes per single entity item
                comTVal <- readC com >>= return . fromJust
                let newCom = fromStamped comTVal
-               mOldCache <- HT.lookup (audioSlotsCache system) (idC com)
                -- first create/update the audiosource object
                newOb <- case mOldCache of
                  Nothing -> A.audioSlots newCom
@@ -116,7 +134,7 @@ instance System ECSAudio where
 
     shutdownSystem system = return ()
 
-runECSAudio :: D.TimeMS -> IO ECSAudio
-runECSAudio sleepT = runSystem sleepT
+runSystemAudio :: D.TimeMS -> IO ECSAudio
+runSystemAudio sleepT = runSystem sleepT
 
 
