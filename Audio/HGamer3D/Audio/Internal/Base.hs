@@ -29,6 +29,7 @@ module HGamer3D.Audio.Internal.Base
 	module HGamer3D.Bindings.SFML.EnumSoundSourceStatus,
 	
 	AudioSource (..), 
+        AudioSlots (..),
 	
 	-- * Audio Listener Functions
 	setAudioMainVolume,
@@ -66,8 +67,11 @@ module HGamer3D.Audio.Internal.Base
 	setAudioSourceMinDistance,
 
 	setAudioSourcePositionDependent,
-	isAudioSourcePositionDependent
-	
+	isAudioSourcePositionDependent,
+
+        -- * Audio Source ECS functions
+	audioSlots,
+        updateAudioSlots
 )
 
 where
@@ -93,13 +97,18 @@ import qualified HGamer3D.Bindings.SFML.ClassSoundStream as SoundStream
 import HGamer3D.Bindings.SFML.EnumSoundSourceStatus
 import HGamer3D.Bindings.SFML.EnumSoundSourceStatus
 
+import qualified HGamer3D.Audio.Schema.AudioSource as AS
+import qualified HGamer3D.Audio.Schema.AudioListener as AL
+
 import Control.Monad
+import qualified Data.Map as M
+import Data.Maybe
 
 
 -- Source types
 
 data AudioSource = Music HG3DClass | Sound HG3DClass HG3DClass
-
+data AudioSlots = AudioSlots (M.Map String AudioSource) AS.AudioSlots
 
 -- Listener Functions
 
@@ -300,4 +309,39 @@ setAudioSourcePositionDependent (Sound s b) isR = SoundSource.setRelativeToListe
 isAudioSourcePositionDependent :: AudioSource -> IO Bool
 isAudioSourcePositionDependent (Music s) = SoundSource.isRelativeToListener s
 isAudioSourcePositionDependent (Sound s b) = SoundSource.isRelativeToListener s
+
+
+-- | create AudioSlots from pure data definition out of Schema
+audioSlots :: AS.AudioSlots -> IO AudioSlots
+audioSlots schema@(AS.AudioSlots asList) = do
+  let makeSource asource = do
+        -- create source
+        (source, parameter) <- case asource of
+          AS.MusicSource name parameter -> musicAudioSource name >>= \s -> return (fromJust s, parameter)
+          AS.SoundSource name parameter -> soundAudioSource name >>= \s -> return (fromJust s, parameter)
+        -- set all parameters
+        setAudioSourceVolume source (AS.volume parameter)
+        setAudioSourceLoop source (AS.loopFlag parameter)
+        setAudioSourcePositionDependent source (AS.positionFlag parameter)
+        setAudioSourcePitch source (AS.pitch parameter)
+        setAudioSourceAttenuation source (AS.attenuation parameter)
+        setAudioSourceMinDistance source (AS.minDistance parameter)
+        return source
+
+  obList <- mapM (\(s, as) -> makeSource as >>= \ob -> return (s, ob)) asList
+  return $ AudioSlots (M.fromList obList) schema
+
+-- | update AudioSlots from change in data definition
+updateAudioSlots :: AudioSlots -> AS.AudioSlots -> IO AudioSlots
+updateAudioSlots inSlots newSlots = return inSlots
+
+
+instance HasPosition AudioSource where
+  position = getAudioSourcePosition 
+  positionTo = setAudioSourcePosition
+	
+instance HasPosition AudioSlots where
+  position (AudioSlots map _) = position (snd ((M.toList map) !! 0))
+  positionTo (AudioSlots map _) pos = (mapM (\as -> positionTo as pos) (fmap snd (M.toList map))) >> return ()
+	
 

@@ -26,6 +26,7 @@ module HGamer3D.Audio
 	-- * Audio Data Types
 	module HGamer3D.Bindings.SFML.EnumSoundSourceStatus,
 	AudioSource, 
+        AudioSlots,
 	
 	-- * Audio Listener Functions
 	setAudioMainVolume,
@@ -63,7 +64,11 @@ module HGamer3D.Audio
 	setAudioSourceMinDistance,
 
 	setAudioSourcePositionDependent,
-	isAudioSourcePositionDependent
+	isAudioSourcePositionDependent,
+
+      	audioSlots,
+        updateAudioSlots
+
 	
 )
 

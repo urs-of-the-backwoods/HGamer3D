@@ -16,23 +16,20 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- HGamer3D/Internal/ECS/ComponentType Module
+-- HGamer3D/AudioModule/EcsAPI
 --
 
-module HGamer3D.Internal.ECS.ComponentType
+module HGamer3D.AudioModule.EcsAPI
 
-where
+(
+  AudioListener (..),
+  AudioSource (..),
+  AudioSourceParameter (..),
 
--- | Possible Component Types, which are known, this list needs to be extended, if
---   additional components are introduced. Each component can occur only once in
---   an Entity.
-data ComponentType =   CTPos    -- ^ Position
-                     | CTOri    -- ^ Orientation
-                     | CTSiz    -- ^ Size
-                     | CTFig    -- ^ Figure
-                     | CTASl    -- ^ Audio Slots
-                     | CTALs    -- ^ Audio Listener
-
-                       deriving (Eq, Ord, Show)
-
+  runECSAudio,
   
+) where
+
+  import HGamer3D.Audio.Schema.AudioListener
+  import HGamer3D.Audio.Schema.AudioSource
+  import HGamer3D.AudioModule.Internal.SystemAudio

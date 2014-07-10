@@ -1,8 +1,10 @@
+{-# LANGUAGE StandaloneDeriving, DeriveDataTypeable #-}
+
 -- This source file is part of HGamer3D
 -- (A project to enable 3D game development in Haskell)
--- For the latest info, see http://www.althainz.de/HGamer3D.html
+-- For the latest info, see http://www.hgamer3d.org
 --
--- (c) 2014 Peter Althainz
+-- (c) 2011-2014 Peter Althainz
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -16,22 +18,17 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- HGamer3D/Internal/Event Module
---
+-- HGamer3D/Audio/Schema/AudioListener.hs
 
-module HGamer3D.Internal.Event
+-- | data types which describes the one Audio Listener
+module HGamer3D.Audio.Schema.AudioListener
 
 where
 
-import HGamer3D.WinEvent
-import HGamer3D.GUI
+import qualified HGamer3D.Data as D
+import Data.Typeable
 
-data AudioEvent = PlaySound String
-                | StopSound String
-
-data HG3DEvent = WindowEvt SDLEvent
-               | GUIEvt GUIEvent
-               | AudioEvt AudioEvent
-                 
-
-  
+-- | The Source itself
+data AudioListener = AudioListener {
+  mainVolume :: Float  -- ^ Main Volume
+}

@@ -47,7 +47,7 @@ Library
 
   if flag(audio)
     build-depends: HGamer3D-Audio >= 0.4 && < 0.5
-    exposed-modules: HGamer3D.AudioModule.BaseAPI
+    exposed-modules: HGamer3D.AudioModule.Internal.SystemAudio, HGamer3D.AudioModule.BaseAPI, HGamer3D.AudioModule.EcsAPI
 
   if flag(network)
     build-depends: HGamer3D-Network >= 0.4 && < 0.5

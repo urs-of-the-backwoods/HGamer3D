@@ -18,68 +18,59 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- HGamer3D/Internal/ECS/SystemGraphics3D.hs
+-- HGamer3D/AudioModule/Internal/SystemAudio.hs
 
--- | the Graphics3D System of the Entity-Component-System World
 
 module HGamer3D.AudioModule.Internal.SystemAudio
 
 where
 
 import Control.Concurrent.MVar
-import HGamer3D.Internal.ECS.Component
 import qualified Data.Map as M
 import Data.Maybe
 import Data.Typeable
 import Data.Dynamic
+import Data.Hashable
+import qualified Data.HashTable.IO as HT
 
+import qualified HGamer3D.Data as D
+
+import HGamer3D.Internal.Event
 import HGamer3D.Internal.ECS.Entity
 import HGamer3D.Internal.ECS.Component
 import HGamer3D.Internal.ECS.ComponentType
 import HGamer3D.Internal.ECS.System
 
-import Data.Hashable
-import qualified Data.HashTable.IO as HT
-
-import qualified HGamer3D.BaseAPI as BA
-
-import HGamer3D.Graphics3D.Schema.Figure
-import HGamer3D.Graphics3D.Schema.Geometry
-import HGamer3D.Graphics3D.Schema.Material
-
-
--- the system of entity component system, in general a system has internal state
--- entities can be added to it and the system has a step function, to run it
--- Systems are self-contained, so they can be run in a thread and manage their state themselves
+import qualified HGamer3D.Audio as A
+import qualified HGamer3D.Audio.Schema.AudioSource as AS
+import qualified HGamer3D.Audio.Schema.AudioListener as AL
 
 type IdHashTable v = HT.BasicHashTable ComponentId v
 
-data ECSGraphics3D = ECSGraphics3D {
-      g3d :: (BA.Graphics3DSystem, BA.GUISystem, BA.Camera, BA.Viewport),
-      figures :: MVar [(Component, Maybe Component, Maybe Component, Maybe Component)], -- MVar [(fig, pos, ori, size)]
-      figCache :: IdHashTable (
-        BA.Object3D Figure,
-        StampedValue Figure,
-        Maybe (StampedValue BA.Position),
-        Maybe (StampedValue BA.Orientation),
-        Maybe (StampedValue BA.Size)
-        )
-      }
+-- | the Audio System of the Entity-Component-System World
+data ECSAudio = ECSAudio {
+  audioSlots :: MVar [(Component, Maybe Component)], -- AudioSlots, Position
+  audioSlotsCache :: IdHashTable (
+     A.AudioSlots,
+     StampedValue AS.AudioSlots,
+     Maybe (StampedValue D.Position)
+     )
+  }
 
-instance System ECSGraphics3D where
+instance System ECSAudio where
 
-    addEntity ecsg3d entity = do
-      oldList <- takeMVar (figures ecsg3d)
-      let mFig = entity #? CTFig
-      let newList = case mFig of
-            Just fig -> let
-              (p, o, s) = (entity #? CTPos, entity #? CTOri, entity #? CTSiz)
-              in ((fig, p, o, s) : oldList)
+    addEntity system entity = do
+      oldList <- takeMVar (audioSlots system)
+      let mCom = entity #? CTASl
+      let newList = case mCom of
+            Just com -> let
+              p = entity #? CTPos
+              in ((com, p) : oldList)
             Nothing -> oldList
-      putMVar (figures ecsg3d) newList
-      return ecsg3d
+      putMVar (audioSlots system) newList
+      return system
 
-    removeEntity ecsg3d entity = return ecsg3d
+    removeEntity system entity = return system
     
 {-
     removeEntity ecsg3d entity = do
@@ -91,89 +82,41 @@ instance System ECSGraphics3D where
 -}
 
     initializeSystem = do
-        g3d <- BA.initHGamer3D "HGamer3D - System" True True True
-        setupBasicCamera g3d
-        figures <- newMVar []
-        figCache <- HT.new
-        return $ (ECSGraphics3D g3d figures figCache)
+        audioSlots <- newMVar []
+        audioSlotsCache <- HT.new
+        return $ (ECSAudio audioSlots audioSlotsCache)
 
-
-    stepSystem ecsg3d = do
-      let (g3ds, guis, camera, viewport) = (g3d ecsg3d)
-      -- update 3d objects
-      cList <- takeMVar (figures ecsg3d)
-      mapM (\(cf, mcp, mco, mcs) -> do
+    stepSystem system = do
+      -- update audio objects
+      cList <- takeMVar (audioSlots system)
+      mapM (\(com, mcp) -> do
                -- handle changes per single entity item
-               figTVal <- readC cf >>= return . fromJust
-               let newFig = fromStamped figTVal
-               mCache <- HT.lookup (figCache ecsg3d) (idC cf)
-               -- first create/update the figure object
-               newOb <- case mCache of
-                 Nothing -> BA.object3D g3ds newFig
-                 Just (oldOb, oldFig, mPos, mOri, mSiz) -> if oldFig /= figTVal then BA.update3D g3ds oldOb newFig else return oldOb
-               -- then handle the POS information - Position
+               comTVal <- readC com >>= return . fromJust
+               let newCom = fromStamped comTVal
+               mOldCache <- HT.lookup (audioSlotsCache system) (idC com)
+               -- first create/update the audiosource object
+               newOb <- case mOldCache of
+                 Nothing -> A.audioSlots newCom
+                 Just (oldOb, oldComTVal, mPos) -> if oldComTVal /= comTVal then A.updateAudioSlots oldOb newCom else return oldOb
+               -- then handle the PO information - Position
                newPos <- case mcp of
                  Just cp -> do
-                   cpTVal <- readC cp >>= return . fromJust
-                   let cpVal = fromStamped cpTVal
-                   case mCache of
-                     Nothing -> BA.positionTo newOb cpVal
-                     Just (oldOb, oldFig, mPos, mOri, mSiz) -> if (fromJust mPos) /= cpTVal then BA.positionTo newOb cpVal else return ()
-                   return $ Just cpTVal
-                 Nothing -> return Nothing
-               -- then handle the POS information - Orientation
-               newOri <- case mco of
-                 Just co -> do
-                   coTVal <- readC co >>= return . fromJust
-                   let coVal = fromStamped coTVal
-                   case mCache of
-                     Nothing -> BA.orientationTo newOb coVal
-                     Just (oldOb, oldFig, mPos, mOri, mSiz) -> if (fromJust mOri) /= coTVal then BA.orientationTo newOb coVal else return ()
-                   return $ Just coTVal
-                 Nothing -> return Nothing
-               -- then handle the POS information - Size
-               newSiz <- case mcs of
-                 Just cs -> do
-                   csTVal <- readC cs >>= return . fromJust
-                   let csVal = fromStamped csTVal
-                   case mCache of
-                     Nothing -> BA.sizeTo newOb csVal
-                     Just (oldOb, oldFig, mPos, mOri, mSiz) -> if (fromJust mSiz) /= csTVal then BA.sizeTo newOb csVal else return ()
-                   return $ Just csTVal
+                   posTVal <- readC cp >>= return . fromJust
+                   let posVal = fromStamped posTVal
+                   case mOldCache of
+                     Nothing -> D.positionTo newOb posVal
+                     Just (oldOb, oldComTVal, mPos) -> if (fromJust mPos) /= posTVal then D.positionTo newOb posVal else return ()
+                   return $ Just posTVal
                  Nothing -> return Nothing
                -- insert new values into cache
-               HT.insert (figCache ecsg3d) (idC cf) (newOb, figTVal, newPos, newOri, newSiz)
+               HT.insert (audioSlotsCache system) (idC com) (newOb, comTVal, newPos)
            ) cList
-      putMVar (figures ecsg3d) cList
-      -- run graphics
-      (evt, qFlag) <- BA.stepHGamer3D g3ds guis
-      return (ecsg3d, qFlag)
+      putMVar (audioSlots system) cList
+      return (system, False)
 
-    shutdownSystem ecsg3d = do
-      let (g3ds, guis, camera, viewport) = (g3d ecsg3d)
-      BA.freeHGamer3D g3ds guis
-      return ()
+    shutdownSystem system = return ()
 
-runECSGraphics3D :: BA.TimeMS -> IO ECSGraphics3D
-runECSGraphics3D sleepT = runSystem sleepT
+runECSAudio :: D.TimeMS -> IO ECSAudio
+runECSAudio sleepT = runSystem sleepT
 
 
-setupBasicCamera g3d = do
-  let (g3ds, guis, camera, viewport) = g3d
-  -- camera position
-  let pos = BA.Vec3 5.0 5.0 80.0
-  BA.positionTo camera pos
-  let at = BA.Vec3 0.0 0.0 (-300.0)
-  BA.cameraLookAt camera at
-                                           
-  -- define light
-            
-  BA.setAmbientLight g3ds BA.white
-  BA.pointLight g3ds BA.white (BA.Vec3 10.0 10.0 20.0)
-        
-  -- GUI Code starts here, display hg3d logo
-  BA.loadGuiScheme guis "hg3d.scheme"
-  logo <- BA.loadGuiLayoutFromFile guis "hgamer3d.layout" ""
-  BA.addGuiElToDisplay guis logo
-  
-  return ()
