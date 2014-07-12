@@ -14,18 +14,16 @@ env["ENV"]["HOME"] = os.environ.get("HOME")
 ##########################
 
 dependsOn = [
-	  "HGamer3D/BaseAPI.hs",
-          Glob("HGamer3D/Modules/*"),
-          Glob("HGamer3D/Extensions/*"),
-	  Glob("HGamer3D/Schema/*"),
           Glob("HGamer3D/Internal/*"),
           Glob("HGamer3D/Internal/ECS/*"),
-          Glob("HGamer3D/AudioModule/*"),
-          Glob("HGamer3D/AudioModule/Internal/*"),
-          Glob("HGamer3D/InputSystemModule/*"),
-          Glob("HGamer3D/InputSystemModule/Internal/*"),
-          Glob("HGamer3D/NetworkModule/*"),
-          Glob("HGamer3D/NetworkModule/Internal/*"),
+          Glob("HGamer3D/Audio/*"),
+          Glob("HGamer3D/Audio/Internal/*"),
+          Glob("HGamer3D/InputSystem/*"),
+          Glob("HGamer3D/InputSystem/Internal/*"),
+          Glob("HGamer3D/Network/*"),
+          Glob("HGamer3D/Network/Internal/*"),
+          Glob("HGamer3D/Engine/*"),
+          Glob("HGamer3D/Engine/Internal/*"),
 	  Glob("*.cabal"),
 	  "LICENSE",
 

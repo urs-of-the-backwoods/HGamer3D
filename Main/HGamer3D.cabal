@@ -33,7 +33,7 @@ Flag InputSystem
 Library
   Build-Depends:     base >= 3 && < 5, clock, containers, hashtables, hashable, HGamer3D-Data >= 0.4.0 && < 0.5.0, HGamer3D-Graphics3D >= 0.4.0 && < 0.5.0, HGamer3D-WinEvent >= 0.4.0 && < 0.5.0, HGamer3D-GUI >= 0.4.0 && < 0.5.0 
 
-  Exposed-modules:   HGamer3D.Internal.ECS.Component, HGamer3D.Internal.ECS.ComponentType, HGamer3D.Internal.ECS.Entity, HGamer3D.Internal.ECS.System, HGamer3D.Internal.ECS.SystemGraphics3D, HGamer3D.Internal.GameLoop, HGamer3D.Internal.Event, HGamer3D.BaseAPI
+  Exposed-modules:   HGamer3D.Engine.Internal.Component, HGamer3D.Engine.Internal.ComponentType, HGamer3D.Engine.Internal.Entity, HGamer3D.Engine.Internal.System, HGamer3D.Engine.Internal.SystemGraphics3D, HGamer3D.Engine.Internal.GameLoop, HGamer3D.Engine.Internal.Event, HGamer3D.Engine.EcsAPI, HGamer3D.Engine.BaseAPI, HGamer3D.Internal.Engine
   Other-modules:     
 
   c-sources:         
@@ -47,13 +47,13 @@ Library
 
   if flag(audio)
     build-depends: HGamer3D-Audio >= 0.4 && < 0.5
-    exposed-modules: HGamer3D.AudioModule.Internal.SystemAudio, HGamer3D.AudioModule.BaseAPI, HGamer3D.AudioModule.EcsAPI
+    exposed-modules: HGamer3D.Audio.Internal.SystemAudio, HGamer3D.Audio.EcsAPI, HGamer3D.Internal.AudioModule
 
   if flag(network)
     build-depends: HGamer3D-Network >= 0.4 && < 0.5
-    exposed-modules: HGamer3D.NetworkModule.BaseAPI
+    exposed-modules: HGamer3D.Network.EcsAPI
 
   if flag(inputsystem)
     build-depends: HGamer3D-InputSystem >= 0.4 && < 0.5
-    exposed-modules: HGamer3D.InputSystemModule.BaseAPI
+    exposed-modules: HGamer3D.InputSystem.EcsAPI
 

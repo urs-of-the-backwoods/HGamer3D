@@ -1,6 +1,6 @@
 -- This source file is part of HGamer3D
 -- (A project to enable 3D game development in Haskell)
--- For the latest info, see http://www.althainz.de/HGamer3D.html
+-- For the latest info, see http://www.hgamer3d.org
 --
 -- (c) 2014 Peter Althainz
 --
@@ -16,20 +16,21 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- HGamer3D/AudioModule/EcsAPI
---
+-- Graphics.hs
 
-module HGamer3D.AudioModule.EcsAPI
+-- | Internal API of Graphics3D (Implementation)
+module HGamer3D.Internal.Graphics3D
 
 (
-  AudioListener (..),
-  AudioSource (..),
-  AudioSourceParameter (..),
+  module HGamer3D.Graphics3D.Internal.Base,
+  module HGamer3D.Graphics3D.Internal.Shapes,
+  module HGamer3D.Graphics3D.Internal.Light,
+  module HGamer3D.Graphics3D.Internal.PlatonShapes
+)
 
-  runSystemAudio
-  
-) where
+where
 
-  import HGamer3D.Audio.Schema.AudioListener
-  import HGamer3D.Audio.Schema.AudioSource
-  import HGamer3D.AudioModule.Internal.SystemAudio
+import HGamer3D.Graphics3D.Internal.Base
+import HGamer3D.Graphics3D.Internal.Shapes
+import HGamer3D.Graphics3D.Internal.Light
+import HGamer3D.Graphics3D.Internal.PlatonShapes

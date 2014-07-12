@@ -2,7 +2,7 @@
 -- (A project to enable 3D game development in Haskell)
 -- For the latest info, see http://www.hgamer3d.org
 --
--- (c) 2011-2013 Peter Althainz
+-- (c) 2011-2014 Peter Althainz
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -19,28 +19,34 @@
 -- Graphics.hs
 
 -- | 3D Graphics for HGamer3D, public API.
-module HGamer3D.Graphics3D
+module HGamer3D.Graphics3D.BaseAPI
 
 (
-  -- * The Graphics System
-  Graphics3DSystem (..),
+  -- * Basic Types for the Graphics3D System
+  Graphics3DSystem,
+  Object3D,
   Camera,
   Viewport,
 
-  -- * Initialization of Graphics3D and Game Loop Functions
-  initGraphics3D,
-  freeGraphics3D,
-  stepGraphics3D,
+  -- * Initializing the Graphics3D Subsystem
   
-  -- * The typeclass of (data) items, which can be put into the engine
-  Engine3DItem (..),
+  -- |
+  -- The initialization, step and free functions are called from the HGamer3D corresponding functions, therefore
+  -- they do not need to be called in code, which includes HGamer3D - BaseAPI.
+  
+  initGraphics3D,
+  stepGraphics3D,
+  freeGraphics3D,
 
-  -- * The 3D object as outer visible part of it
-  Object3D (..),
-
+  -- * Creating, Updating and Removing of 3D Objects
+  Graphics3DItem (..),
+  
+  -- * Creating simple 3D objects
   sphere,
   cube,
   cuboid,
+  ikosaeder,
+  dodekaeder,
 
   -- * Light
   Light,

@@ -1,4 +1,5 @@
-{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# OPTIONS_HADDOCK hide #-}
 
 -- This source file is part of HGamer3D
 -- (A project to enable 3D game development in Haskell)
@@ -21,31 +22,7 @@
 -- Graphics3D/Internal/Object3D.hs
 
 -- | Creating and managing 3D objects functionality for Graphics3D module, internal implemenatation module. Public API is HGamer3D.Graphics3D.
-module HGamer3D.Graphics3D.Internal.Shapes (
-  
-    -- * helpers to construct simple geometries
-    sphere,
-    cube,
-    cuboid
-
-    -- * 
-{-
-    -- * Mesh creation functions, standard meshes
-	sphereMesh,
-	cubeMesh,
-        planeMesh,
-	resourceMesh,
-        
-    -- * Mesh creation functions, special meshes    
-	colouredCubeMesh,
-	colouredLineMesh,
-	rainbowCubeMesh,
-	
-    -- * clone objects from meshes    
-        object3DFromMesh,
-        object3DFromObjects,
--}      
-) 
+module HGamer3D.Graphics3D.Internal.Shapes 
 
 where
 
@@ -98,7 +75,6 @@ import Control.Monad.State.Class
 import HGamer3D.Graphics3D.Schema.Material
 import HGamer3D.Graphics3D.Schema.Geometry
 import HGamer3D.Graphics3D.Schema.Figure
-
 import HGamer3D.Graphics3D.Internal.PlatonShapes
 
 
@@ -115,8 +91,8 @@ _createGeometry g3ds geo = do
     ResourceGeometry s -> SceneManager.createEntity3 scm s
     Cube -> SceneManager.createEntity6 scm PT_CUBE
     Sphere -> SceneManager.createEntity6 scm PT_SPHERE
-    Ikosaeder -> ikosaeder g3ds white
-    Dodekaeder -> dodekaeder g3ds white
+    Ikosaeder -> ikosaederE g3ds white
+    Dodekaeder -> dodekaederE g3ds white
     Plane -> SceneManager.createEntity6 scm PT_PLANE
     _ -> error "HGamer3D.Graphics3D.Internal.Shapes._createMesh: Geo not implemented"
   return $ OE entity
@@ -151,34 +127,6 @@ _removeEntityAndNode g3ds (ON parent) (OE meshEntity ) (ON meshNode) = do
   SceneManager.destroyEntity scm meshEntity
   Node.removeChild2 parent meshNode
   SceneManager.destroySceneNode2 scm meshNode
-
--- instance definition
-
-instance Engine3DItem Geometry where
-  
-  object3D g3ds geo = do
-    meshEntity <- _createGeometry g3ds geo
-    meshNode <- (_getRootNode g3ds >>= _createSubNode)
-    _addEntityToNode g3ds meshNode meshEntity
-    _buildTV meshEntity
-    return (Object3D (EDEntityNode meshEntity meshNode) geo)
-
-  update3D g3ds (Object3D (EDEntityNode meshEntity meshNode) oldGeo) geo = do
-    let (ON node) = meshNode
-    meshEntity' <- if oldGeo /= geo
-                   then do
-                     newMeshEntity <- _createGeometry g3ds geo
-                     _exchangeEntityInNode g3ds meshNode meshEntity newMeshEntity
-                     return newMeshEntity
-                   else
-                     return meshEntity
-    return (Object3D (EDEntityNode meshEntity' meshNode) geo)
-
-  remove3D g3ds (Object3D (EDEntityNode meshEntity meshNode) geo) = do
-    rootNode <- _getRootNode g3ds
-    _removeEntityAndNode g3ds rootNode meshEntity meshNode
-
-
 
 {- -------------------------------------------------------------------------------
    EngineItem for Figure
@@ -343,7 +291,7 @@ _removeFigure g3ds parent edata = do
     EDEntityNode e n -> _removeEntityAndNode g3ds parent e n
     EDNodeAndSub n subs -> (mapM (\edata' -> _removeFigure g3ds n edata') subs) >> return ()
       
-instance Engine3DItem Figure where
+instance Graphics3DItem Figure where
   
   object3D g3ds fig = do
     rootNode <- _getRootNode g3ds
@@ -381,7 +329,31 @@ cuboid :: Graphics3DSystem -> Vec3 -> Material -> IO (Object3D Figure)
 cuboid g3ds vec material = object3D g3ds (CombinedFigure [
                  (zeroVec3, unitU, vec, SimpleFigure Cube material) ])
                            
-
+dodekaeder :: Graphics3DSystem -> Float -> Material -> IO (Object3D Figure)
+dodekaeder g3ds len material = object3D g3ds (CombinedFigure [
+                 (zeroVec3, unitU, Vec3 len len len, SimpleFigure Dodekaeder material) ])
+                           
+ikosaeder :: Graphics3DSystem -> Float -> Material -> IO (Object3D Figure)
+ikosaeder g3ds len material = object3D g3ds (CombinedFigure [
+                 (zeroVec3, unitU, Vec3 len len len, SimpleFigure Ikosaeder material) ])
+                           
+instance HasPosition (Object3D Figure)  where
+	position obj = Node.getPosition (_getNode' obj)
+	positionTo obj pos = Node.setPosition  (_getNode' obj) pos
+	
+instance HasSize (Object3D Figure) where
+	size obj = Node.getScale  (_getNode' obj)
+	sizeTo obj pos = Node.setScale  (_getNode' obj) pos
+	
+instance HasOrientation (Object3D Figure) where
+	orientation obj = do
+		q <- Node.getOrientation  (_getNode' obj)
+		let uq = mkNormal q
+		return uq
+	orientationTo obj uq = do
+		Node.setOrientation  (_getNode' obj) (fromNormal uq)
+		return ()
+                           
 {-
 
 -- | creates a Sphere Mesh, from which Spheres can be cloned

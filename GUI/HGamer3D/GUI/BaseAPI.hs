@@ -18,9 +18,9 @@
 
 -- GUI.hs
 
--- |GUI functionality of HGamer3D, public API. Currently not usefule standalone, but used inside HGamer3D (main module).
+-- |GUI functionality of HGamer3D, public API. 
 
-module HGamer3D.GUI
+module HGamer3D.GUI.BaseAPI
 
 (
         -- * Data Definitions, Types
@@ -164,57 +164,6 @@ pValue,
 )
 
 where
-
-import HGamer3D.Bindings.CEGUI.ClassOgreRenderer as CEGUIOgreRenderer
-import HGamer3D.Bindings.CEGUI.ClassSystem as CEGUISystem
-import HGamer3D.Bindings.CEGUI.ClassSystemHG3D as CEGUISystemHG3D
-import HGamer3D.Bindings.CEGUI.ClassWindowManagerHG3D as CEGUIWindowManagerHG3D
-import HGamer3D.Bindings.CEGUI.ClassWindowManager as CEGUIWindowManager
-import HGamer3D.Bindings.CEGUI.ClassResourceProvider as CEGUIResourceProvider
-import HGamer3D.Bindings.CEGUI.ClassDefaultResourceProvider as CEGUIDefaultResourceProvider
-import HGamer3D.Bindings.CEGUI.ClassImageset as CEGUIImageset
-import HGamer3D.Bindings.CEGUI.ClassFont as CEGUIFont
-import HGamer3D.Bindings.CEGUI.ClassScheme as CEGUIScheme
-import HGamer3D.Bindings.CEGUI.ClassWidgetLookManager as CEGUIWidgetLookManager
-import HGamer3D.Bindings.CEGUI.ClassScriptModule as CEGUIScriptModule
-import HGamer3D.Bindings.CEGUI.ClassLogger as CEGUILogger
-import HGamer3D.Bindings.CEGUI.EnumLoggingLevel
-import HGamer3D.Bindings.CEGUI.EnumMouseButton as CEGUIButton
-import HGamer3D.Bindings.CEGUI.ClassFontManager as CEGUIFontManager
-import HGamer3D.Bindings.CEGUI.ClassSchemeManager as CEGUISchemeManager
-import HGamer3D.Bindings.CEGUI.ClassDefaultLogger as CEGUIDefaultLogger
-import HGamer3D.Bindings.CEGUI.ClassHG3DEventController as HG3DEventController
-import HGamer3D.Bindings.CEGUI.ClassWindowManagerHG3D as HG3DWindowManager
---import HGamer3D.Bindings.Ogre.ClassHG3DMessagePump as MessagePump
-
-
-import GHC.Ptr
-
-import HGamer3D.Data
-import HGamer3D.Util
-import HGamer3D.WinEvent
-
-import HGamer3D.Bindings.CEGUI.ClassPtr
-import HGamer3D.Bindings.CEGUI.Utils
-
-import HGamer3D.Bindings.CEGUI.ClassWindow as Window
-import HGamer3D.Bindings.CEGUI.ClassWindowManager as WindowManager
-import HGamer3D.Bindings.CEGUI.ClassWindowManagerHG3D as WindowManagerHG3D
-import HGamer3D.Bindings.CEGUI.ClassWindow as Window
-import HGamer3D.Bindings.CEGUI.ClassSystem as System
-import HGamer3D.Bindings.CEGUI.ClassSystemHG3D as SystemHG3D
-import HGamer3D.Bindings.CEGUI.ClassPropertySet as PropertySet
-import HGamer3D.Bindings.CEGUI.ClassHG3DEventStaticFunctions as EvtSF 
-import HGamer3D.Bindings.CEGUI.ClassHG3DListboxStaticFunctions as ListboxSF
-import HGamer3D.Bindings.CEGUI.ClassHG3DWindowStaticFunctions as WindowSF
-import HGamer3D.Bindings.CEGUI.ClassListbox as Listbox
-import HGamer3D.Bindings.CEGUI.ClassListboxItem as ListboxItem
-import HGamer3D.Bindings.CEGUI.ClassCombobox as Combobox
-import HGamer3D.Bindings.CEGUI.EnumKeyScan
-
-import HGamer3D.Bindings.CEGUI.ClassHG3DEventStaticFunctions as EvtSF 
-
-import HGamer3D.Bindings.CEGUI.EnumMouseButton as CEGUIButton
 
 import HGamer3D.GUI.Internal.Base
 import HGamer3D.GUI.Internal.Widgets

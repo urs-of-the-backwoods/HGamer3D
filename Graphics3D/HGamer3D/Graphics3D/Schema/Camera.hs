@@ -1,5 +1,4 @@
 {-# LANGUAGE DeriveDataTypeable #-}
-
 -- This source file is part of HGamer3D
 -- (A project to enable 3D game development in Haskell)
 -- For the latest info, see http://www.hgamer3d.org

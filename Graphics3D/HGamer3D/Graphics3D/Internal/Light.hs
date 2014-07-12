@@ -1,4 +1,5 @@
 {-# LANGUAGE FlexibleContexts #-}
+{-# OPTIONS_HADDOCK hide #-}
 
 -- This source file is part of HGamer3D
 -- (A project to enable 3D game development in Haskell)
@@ -23,20 +24,7 @@
 -- | Creating and managing Light in Base API. Internal implementation module. Public API is in HGamer3D.Graphics3D.
 
 
-module HGamer3D.Graphics3D.Internal.Light (
-
-    -- * Types
-	Light (..),
-        
-    -- * create and modify light sources
-	HGamer3D.Graphics3D.Internal.Light.setAmbientLight,
-	pointLight,
-	spotLight,
-	spotLightSetDirection,
-	setSpotLightAngle,
-	directionalLight
-) 
-
+module HGamer3D.Graphics3D.Internal.Light 
 where
 
 

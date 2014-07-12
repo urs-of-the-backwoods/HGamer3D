@@ -22,7 +22,7 @@
 -- | HGamer3D - A game engine for the Haskell Programmer, this module includes the common modules for the ECS API.
 --   ECS is the Entity - Component - System
 
-module HGamer3D.EcsAPI
+module HGamer3D.Engine.EcsAPI
 (
   -- $Ecs
 
@@ -58,8 +58,6 @@ The components of an ECS are describing the basic data building blocks, from whi
 The component implements something like the most granular modifiable state in the game engine world. This state is accessible by multiple threads and it has an associated id, with which it can be uniquely identified. (The id is implemented as a StableName). Since the overall mechanism is somehow poll based, we need a mechanism to determine changed values fast, this is done by the timestamp mechanism, which allows, to detect changed values fast in exchange to a small penalty on the cost of doing a change.
 -}
 
-
--}
 
 {- $System
 

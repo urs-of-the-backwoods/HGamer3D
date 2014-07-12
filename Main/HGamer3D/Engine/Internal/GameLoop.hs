@@ -1,3 +1,5 @@
+{-# OPTIONS_HADDOCK hide #-}
+
 -- This source file is part of HGamer3D
 -- (A project to enable 3D game development in Haskell)
 -- For the latest info, see http://www.althainz.de/HGamer3D.html
@@ -20,7 +22,7 @@
 --
 
 -- | HGamer3D - A game engine for the Haskell Programmer, this module includes the implementation of the gameloop and initialization routines. This is an internal module, the public API is in HGamer3D.BaseAPI.
-module HGamer3D.Internal.GameLoop
+module HGamer3D.Engine.Internal.GameLoop
 
 (
   HG3DEvent (..),
@@ -34,14 +36,14 @@ module HGamer3D.Internal.GameLoop
   import HGamer3D.Data
   import HGamer3D.Util
 
-  import HGamer3D.Graphics3D
-  import HGamer3D.WinEvent
-  import HGamer3D.GUI
+  import HGamer3D.Graphics3D.BaseAPI
+  import HGamer3D.WinEvent.BaseAPI
+  import HGamer3D.GUI.BaseAPI
   
-  import HGamer3D.Internal.Event
+  import HGamer3D.Engine.Internal.Event
 
   -- need a couple of internal functions from base modules, to implement game loop
-  import HGamer3D.Graphics3D.Internal.Base (renderOneFrame, graphics3DPumpWindowMessages, checkQuitReceived)
+  -- import HGamer3D.Internal.Graphics3D (renderOneFrame, graphics3DPumpWindowMessages, checkQuitReceived)
   import HGamer3D.GUI.Internal.Base (pollGUIEvent, initGUI, injectWinEventToGUI)
   import HGamer3D.WinEvent.Internal.Base (attachToWindow)
 
@@ -61,29 +63,24 @@ module HGamer3D.Internal.GameLoop
                   -> IO ([HG3DEvent], Bool) -- ^ list of Events received, quit flag (True if quit received)
                   
   stepHGamer3D g3ds guis = do
-    
-    let oneStep quitReceived events = do
-        -- this one is quite tricky, on Linux we need to call the message loop in addition to WinEvent!
-        if SI.os /= "mingw32" then graphics3DPumpWindowMessages else return ()
-        i <- checkQuitReceived
-        let quitReceived' = quitReceived || (i == 1)
+
+    let getEvents evts = do
         mWinEvt <- pollWinEvent
         case mWinEvt of
            Just winEvt -> do
              injectWinEventToGUI guis winEvt  -- inject event into gui
-             let events' = events ++ [WindowEvt winEvt]
-             oneStep quitReceived' events'
+             getEvents (evts ++ [WindowEvt winEvt])
            Nothing -> do
              mGuiEvt <- pollGUIEvent guis
              case mGuiEvt of
-               Just guiEvt -> do
-                 let events' = events ++ [GUIEvt guiEvt]
-                 oneStep quitReceived' events'
+               Just guiEvt -> getEvents (evts ++ [GUIEvt guiEvt])
                Nothing -> do
-                 renderOneFrame g3ds
-                 return (events, quitReceived')
-    oneStep False []
+                 return evts
 
+    qFlag <- stepGraphics3D g3ds
+    events <- getEvents []
+    return (events, qFlag)
+     
   initHGamer3D :: String -- ^ Window Title
                   -> Bool -- ^ Flag show config dialogue
                   -> Bool -- ^ Flag logging enabled

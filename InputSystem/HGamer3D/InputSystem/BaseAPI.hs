@@ -21,7 +21,7 @@
 
 -- | Mouse, Keyboard and Joystick functionality for HGamer3D, public API.
 
-module HGamer3D.InputSystem
+module HGamer3D.InputSystem.BaseAPI
 
 (
 	-- * Types

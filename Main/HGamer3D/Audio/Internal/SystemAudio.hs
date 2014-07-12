@@ -1,4 +1,5 @@
 {-# Language StandaloneDeriving #-}
+{-# OPTIONS_HADDOCK hide #-}
 
 -- This source file is part of HGamer3D
 -- (A project to enable 3D game development in Haskell)
@@ -18,10 +19,10 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- HGamer3D/AudioModule/Internal/SystemAudio.hs
+-- HGamer3D/Audio/Internal/SystemAudio.hs
 
 
-module HGamer3D.AudioModule.Internal.SystemAudio
+module HGamer3D.Audio.Internal.SystemAudio
 
 where
 
@@ -35,11 +36,11 @@ import qualified Data.HashTable.IO as HT
 
 import qualified HGamer3D.Data as D
 
-import HGamer3D.Internal.Event
-import HGamer3D.Internal.ECS.Entity
-import HGamer3D.Internal.ECS.Component
-import HGamer3D.Internal.ECS.ComponentType
-import HGamer3D.Internal.ECS.System
+import HGamer3D.Engine.Internal.Event
+import HGamer3D.Engine.Internal.Entity
+import HGamer3D.Engine.Internal.Component
+import HGamer3D.Engine.Internal.ComponentType
+import HGamer3D.Engine.Internal.System
 
 import qualified HGamer3D.Audio.Internal.Base as A
 import qualified HGamer3D.Audio.Schema.AudioSource as AS

@@ -1,4 +1,5 @@
 {-# Language StandaloneDeriving #-}
+{-# OPTIONS_HADDOCK hide #-}
 
 -- This source file is part of HGamer3D
 -- (A project to enable 3D game development in Haskell)
@@ -22,27 +23,14 @@
 
 -- | the Entity in Entity-Component-System
 
-module HGamer3D.Internal.ECS.Entity
-
-(
-  -- * Entity
-  Entity,
-  sendEvent,
-
-  entity,
-  (#:),
-  (#?),
-  (#)
-  
-)
-
+module HGamer3D.Engine.Internal.Entity
 where
 
-import HGamer3D.Internal.ECS.ComponentType
-import HGamer3D.Internal.Event
+import HGamer3D.Engine.Internal.Component
+import HGamer3D.Engine.Internal.ComponentType
+import HGamer3D.Engine.Internal.Event
 
 import Control.Concurrent.MVar
-import HGamer3D.Internal.ECS.Component
 import qualified Data.Map as M
 import Data.Maybe
 import Data.Typeable

@@ -20,7 +20,7 @@
 
 
 -- | Audio functionality for HGamer3D, public API.
-module HGamer3D.Audio
+module HGamer3D.Audio.BaseAPI
 
 (
 	-- * Audio Data Types

@@ -21,7 +21,7 @@ Extra-source-files:  Setup.hs
 Library
   Build-Depends:     base >= 3 && < 5, HGamer3D-Data >= 0.4.0 && < 0.5.0, HGamer3D-SFML-Binding >= 0.4.0 && < 0.5.0, HGamer3D-SDL2-Binding >= 0.4.0 && < 0.5.0
 
-  Exposed-modules:   HGamer3D.InputSystem.Internal.Base, HGamer3D.InputSystem
+  Exposed-modules:   HGamer3D.InputSystem.Internal.Base, HGamer3D.InputSystem.BaseAPI, HGamer3D.Internal.InputSystem
   Other-modules:     
 
   c-sources:         

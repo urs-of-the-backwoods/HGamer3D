@@ -1,3 +1,5 @@
+{-# OPTIONS_HADDOCK hide #-}
+
 -- This source file is part of HGamer3D
 -- (A project to enable 3D game development in Haskell)
 -- For the latest info, see http://www.hgamer3d.org
@@ -21,59 +23,7 @@
 
 
 -- | Audio functionality for HGamer3D, internal implementation. This module also exports internal data declarations, in case they are needed. Normally you should only use HGamer3D.Audio and import that, which exhibits the public API.
-
 module HGamer3D.Audio.Internal.Base
-
-(
-	-- * Types
-	module HGamer3D.Bindings.SFML.EnumSoundSourceStatus,
-	
-	AudioSource (..), 
-        AudioSlots (..),
-	
-	-- * Audio Listener Functions
-	setAudioMainVolume,
-	getAudioMainVolume,
-	setAudioListenerPosition,
-	setAudioListenerDirection,
-	
-	-- * Audio Source creation and delete Functions
-	musicAudioSource,
-	soundAudioSource,
-	freeAudioSource,
-	
-	-- * Audio Source play function
-	playAudioSource,
-	pauseAudioSource,
-	stopAudioSource,
-
-	-- * Audio Source property functions
-	setAudioSourceLoop,
-	getAudioSourceLoop,
-
-	getAudioSourceVolume,
-	setAudioSourceVolume,
-
-	getAudioSourcePitch,
-	setAudioSourcePitch,
-
-	getAudioSourcePosition,
-	setAudioSourcePosition,
-
-	getAudioSourceAttenuation,
-	setAudioSourceAttenuation,
-
-	getAudioSourceMinDistance,
-	setAudioSourceMinDistance,
-
-	setAudioSourcePositionDependent,
-	isAudioSourcePositionDependent,
-
-        -- * Audio Source ECS functions
-	audioSlots,
-        updateAudioSlots
-)
-
 where
 
 import GHC.Ptr

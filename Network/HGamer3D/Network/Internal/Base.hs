@@ -1,3 +1,4 @@
+{-# OPTIONS_HADDOCK hide #-}
 -- This source file is part of HGamer3D
 -- (A project to enable 3D game development in Haskell)
 -- For the latest info, see http://www.hgamer3d.org
@@ -20,30 +21,6 @@
 
 -- | Network functionality for HGamer3D, internal implementation, which exports also internal data structures. Public API is in module HGamer3D.Network.
 module HGamer3D.Network.Internal.Base
-
-(
-  
-       -- * Overview
-       -- $Overview  
-  
-        -- * Types
-        NetworkSystem (..),
-        NetworkClient (..),
-        NetworkServer (..),
-        NetworkPacket (..),
-        NetworkNode (..),
-                
-        -- * Library initialization
-        initNetwork,
-        freeNetwork,
-       
-        -- * Connection Handling
-        networkClient,
-        networkServer,
-        connectClientToServer,
-        disconnectClient
-)
-
 where
 
 import GHC.Ptr

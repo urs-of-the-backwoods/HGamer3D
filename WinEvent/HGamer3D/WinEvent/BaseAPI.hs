@@ -20,7 +20,7 @@
 
 
 -- | Windowing and Event functionality for HGamer3D, public API. This module abstracts the functionality needed to create a window and to handle events from this window over different platforms. This module currently is not useful standalone, but is used in HGamer3D (main module) to construct initialization and game loop functionality.
-module HGamer3D.WinEvent
+module HGamer3D.WinEvent.BaseAPI
 (
   -- * Basic Data Types and Enums
   EnumWinEventInit (..),

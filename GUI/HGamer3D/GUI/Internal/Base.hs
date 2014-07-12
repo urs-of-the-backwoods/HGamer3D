@@ -1,3 +1,4 @@
+{-# OPTIONS_HADDOCK hide #-}
 -- This source file is part of HGamer3D
 -- (A project to enable 3D game development in Haskell)
 -- For the latest info, see http://www.hgamer3d.org
@@ -21,67 +22,6 @@
 -- |Base functionality of the GUI. Implementation module with internal data structures exposed. Public API in HGamer3D.GUI.
 
 module HGamer3D.GUI.Internal.Base
-
-(
-  
-        -- * Data Definitions, Types
-  
-        GUISystem (..),
-        GUIElement (..), 
-
-        GUIEvent (..),
-        EventFunction,
-        
-        GEButton (..),
-        GERadioButton (..),
-        GECheckBox (..),
-        GEEditText (..),
-
-        GEListBox (..),
-        GEComboBox (..),
-
-        GESlider (..),
-        GESpinner (..),
-
-        -- * Initialization, Game Loop
-        initGUI,
-        freeGUI,
-        pollGUIEvent,
-
-        -- * Event Handling
-        registerGUIEvent,
-        injectWinEventToGUI,
-
-        -- * Layout, Scheme, Font, Mause, Tooltip
-	loadGuiLayoutFromFile,
-	loadGuiScheme,
-	loadGuiFont,
-	setGuiDefaultFont,
-	setGuiDefaultMouseCursor,
-	setGuiDefaultTooltip,
-	
-        -- * Find and display GUI Elements
-	getChildGuiEl,
-	findChildGuiElRecursive,
-        addGuiElToDisplay,
-	removeGuiElFromDisplay,
-
-        -- * Change Gui Element Tree
-        addChildGuiEl,
-        removeChildGuiEl,
-
-        -- * Set specific GUI Element properties
-	getGuiElProperty,
-	setGuiElProperty,
-	enableGuiEl,
-	disableGuiEl,
-	activateGuiEl,
-	deactivateGuiEl,
-	showGuiEl,
-	hideGuiEl,
-	
-)
-
 where
 
 import HGamer3D.Bindings.CEGUI.ClassOgreRenderer as CEGUIOgreRenderer
@@ -111,7 +51,7 @@ import GHC.Ptr
 
 import HGamer3D.Data
 import HGamer3D.Util
-import HGamer3D.WinEvent
+import HGamer3D.WinEvent.BaseAPI
 
 import HGamer3D.Bindings.CEGUI.ClassPtr
 import HGamer3D.Bindings.CEGUI.Utils

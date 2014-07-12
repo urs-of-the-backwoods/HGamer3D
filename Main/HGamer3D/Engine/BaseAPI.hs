@@ -16,13 +16,20 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- HGamer3D Modules/InputSystem Module
+-- HGamer3D BaseAPI Module
 --
 
-module HGamer3D.InputSystemModule.BaseAPI
+-- | Engine module - BaseAPI of HGamer3D
+module HGamer3D.Engine.BaseAPI
 
 (
-  module HGamer3D.InputSystem
-) where
+  HG3DEvent (..),
+  
+  initHGamer3D,
+  freeHGamer3D,
+  stepHGamer3D,
+  
+  ) where
 
-  import HGamer3D.InputSystem
+  import HGamer3D.Engine.Internal.GameLoop
+  import HGamer3D.Engine.Internal.Event

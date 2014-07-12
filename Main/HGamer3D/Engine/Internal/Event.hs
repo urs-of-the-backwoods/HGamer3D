@@ -1,3 +1,5 @@
+{-# OPTIONS_HADDOCK hide #-}
+
 -- This source file is part of HGamer3D
 -- (A project to enable 3D game development in Haskell)
 -- For the latest info, see http://www.althainz.de/HGamer3D.html
@@ -16,23 +18,22 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- HGamer3D/Internal/ECS/ComponentType Module
+-- HGamer3D/Internal/Event Module
 --
 
-module HGamer3D.Internal.ECS.ComponentType
+module HGamer3D.Engine.Internal.Event
 
 where
 
--- | Possible Component Types, which are known, this list needs to be extended, if
---   additional components are introduced. Each component can occur only once in
---   an Entity.
-data ComponentType =   CTPos    -- ^ Position
-                     | CTOri    -- ^ Orientation
-                     | CTSiz    -- ^ Size
-                     | CTFig    -- ^ Figure
-                     | CTASl    -- ^ Audio Slots
-                     | CTALs    -- ^ Audio Listener
+import HGamer3D.WinEvent.BaseAPI
+import HGamer3D.GUI.BaseAPI
 
-                       deriving (Eq, Ord, Show)
+data AudioEvent = PlaySound String
+                | StopSound String
+
+data HG3DEvent = WindowEvt SDLEvent
+               | GUIEvt GUIEvent
+               | AudioEvt AudioEvent
+                 
 
   

@@ -16,34 +16,13 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- Network.hs
+-- Audio.hs
 
--- | Network functionality for HGamer3D, public API.
-module HGamer3D.Network
 
+-- | Audio functionality for HGamer3D, internal API.
+module HGamer3D.Internal.Audio
 (
-  
-       -- * Overview
-       -- $Overview  
-  
-        -- * Types
-        NetworkSystem, 
-        NetworkClient,
-        NetworkServer,
-        NetworkPacket (..),
-        NetworkNode (..),
-                
-        -- * Library initialization
-        initNetwork,
-        freeNetwork,
-       
-        -- * Connection Handling
-        networkClient,
-        networkServer,
-        connectClientToServer,
-        disconnectClient
+  module HGamer3D.Audio.Internal.Base
 )
-
 where
-
-import HGamer3D.Network.Internal.Base
+import HGamer3D.Audio.Internal.Base

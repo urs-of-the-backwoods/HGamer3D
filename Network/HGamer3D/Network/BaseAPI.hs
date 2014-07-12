@@ -1,8 +1,8 @@
 -- This source file is part of HGamer3D
 -- (A project to enable 3D game development in Haskell)
--- For the latest info, see http://www.althainz.de/HGamer3D.html
+-- For the latest info, see http://www.hgamer3d.org
 --
--- (c) 2014 Peter Althainz
+-- (c) 2011-2013 Peter Althainz
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -16,34 +16,34 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- HGamer3D BaseAPI Module
---
+-- Network.hs
 
--- | HGamer3D - A game engine for the Haskell Programmer, this module includes the common modules for the basic API.
-module HGamer3D.BaseAPI
+-- | Network functionality for HGamer3D, public API.
+module HGamer3D.Network.BaseAPI
 
 (
-  module HGamer3D.Data,
-  module HGamer3D.Util,
-
-  module HGamer3D.Graphics3D,
-  module HGamer3D.WinEvent,
-  module HGamer3D.GUI,
-
-  HG3DEvent (..),
   
-  initHGamer3D,
-  freeHGamer3D,
-  stepHGamer3D,
+       -- * Overview
+       -- $Overview  
   
-  ) where
+        -- * Types
+        NetworkSystem, 
+        NetworkClient,
+        NetworkServer,
+        NetworkPacket (..),
+        NetworkNode (..),
+                
+        -- * Library initialization
+        initNetwork,
+        freeNetwork,
+       
+        -- * Connection Handling
+        networkClient,
+        networkServer,
+        connectClientToServer,
+        disconnectClient
+)
 
-  import HGamer3D.Data
-  import HGamer3D.Util
+where
 
-  import HGamer3D.Graphics3D
-  import HGamer3D.WinEvent
-  import HGamer3D.GUI
-
-  import HGamer3D.Internal.GameLoop
-  import HGamer3D.Internal.Event
+import HGamer3D.Network.Internal.Base

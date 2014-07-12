@@ -14,8 +14,9 @@ env["ENV"]["HOME"] = os.environ.get("HOME")
 ##########################
 
 dependsOn = [
-	  "HGamer3D/GUI.hs",
+	  "HGamer3D/GUI/BaseAPI.hs",
 	  Glob("HGamer3D/GUI/Internal/*"),
+	  Glob("HGamer3D/Internal/*"),
 	  Glob("*.cabal"),
 	  "LICENSE",
 

@@ -16,14 +16,13 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- HGamer3D Modules/Network Module
+-- HGamer3D/AudioModule/EcsAPI
 --
 
-module HGamer3D.NetworkModule.BaseAPI
+module HGamer3D.Internal.AudioModule
 
 (
-  module HGamer3D.Network
-
+  module HGamer3D.Audio.Internal.SystemAudio
 ) where
 
-  import HGamer3D.Network
+import HGamer3D.Audio.Internal.SystemAudio

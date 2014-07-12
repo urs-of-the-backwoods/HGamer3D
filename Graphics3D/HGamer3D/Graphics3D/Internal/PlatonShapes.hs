@@ -1,4 +1,5 @@
 {-# LANGUAGE FlexibleContexts #-}
+{-# OPTIONS_HADDOCK hide #-}
 
 -- This source file is part of HGamer3D
 -- (A project to enable 3D game development in Haskell)
@@ -21,12 +22,7 @@
 -- Graphics3D/Internal/PlatonShapes.hs
 
 -- | Create platonic shapes, ikosaeder and dodekaeder, implementation module. Public API is in HGamer3D.Graphics3D.
-module HGamer3D.Graphics3D.Internal.PlatonShapes (
-
-	ikosaeder,
-	dodekaeder
-) 
-
+module HGamer3D.Graphics3D.Internal.PlatonShapes 
 where
 
 
@@ -123,10 +119,10 @@ _createPlatonObject g3ds colour vertices faces iColor = do
 	
 
 -- | create an ikoaeder mesh - from the mesh more objects can be created
-ikosaeder :: Graphics3DSystem -- ^ the Graphics3D system object, returned by initGraphics3D
+ikosaederE :: Graphics3DSystem -- ^ the Graphics3D system object, returned by initGraphics3D
                        -> Colour      -- ^ colour of the ikosaeder
                        -> IO HG3DClass  -- ^ created mesh object as entity
-ikosaeder g3ds colour = do
+ikosaederE g3ds colour = do
 	let (SceneManager scm) = (g3dsSceneManager g3ds)
 	uid <- nextUniqueName (g3dsUniqueName g3ds)
 
@@ -167,10 +163,10 @@ ikosaeder g3ds colour = do
 	
 
 -- | create a dodekaeder mesh
-dodekaeder :: Graphics3DSystem -- ^ the Graphics3D system object, returned by initGraphics3D
+dodekaederE :: Graphics3DSystem -- ^ the Graphics3D system object, returned by initGraphics3D
                         -> Colour -- ^ colour of the dodekaeder
                         -> IO HG3DClass -- ^ created dodekaeder mesh as entity
-dodekaeder g3ds colour = do
+dodekaederE g3ds colour = do
 	let (SceneManager scm) = (g3dsSceneManager g3ds)
 	uid <- nextUniqueName (g3dsUniqueName g3ds)
 

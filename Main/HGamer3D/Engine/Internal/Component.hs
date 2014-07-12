@@ -1,4 +1,5 @@
 {-# Language StandaloneDeriving, DeriveDataTypeable, DeriveGeneric, PatternGuards #-}
+{-# OPTIONS_HADDOCK hide #-}
 
 -- This source file is part of HGamer3D
 -- (A project to enable 3D game development in Haskell)
@@ -22,28 +23,7 @@
 
 -- | the Component in Entity-Component-System
 
-module HGamer3D.Internal.ECS.Component
-
-(
-   -- * Time Stamp Mechanism
-   StampedValue,
-   fromStamped,
-
-   -- * The component
-   ComponentId,
-   Component (..),
-
-   newC,
-   readC,
-   updateC,
-   isTypeC,
-   idC,
-
-   _pushEvent,
-   _popEvents
-   
-)
-
+module HGamer3D.Engine.Internal.Component
 where
 
 import Data.Dynamic
@@ -54,7 +34,7 @@ import GHC.Generics (Generic)
 import Data.Hashable
 import System.Clock
 
-import HGamer3D.Internal.Event
+import HGamer3D.Engine.Internal.Event
 
 deriving instance Generic TimeSpec
 instance Hashable TimeSpec
