@@ -50,6 +50,7 @@ import qualified HGamer3D.GUI.BaseAPI as GU
 import HGamer3D.Graphics3D.Schema.Figure
 import HGamer3D.Graphics3D.Schema.Geometry
 import HGamer3D.Graphics3D.Schema.Material
+import HGamer3D.Graphics3D.Schema.Camera
 
 
 -- the system of entity component system, in general a system has internal state
@@ -59,7 +60,7 @@ import HGamer3D.Graphics3D.Schema.Material
 type IdHashTable v = HT.BasicHashTable ComponentId v
 
 data ECSGraphics3D = ECSGraphics3D {
-      g3d :: (BA.Graphics3DSystem, GU.GUISystem, BA.Camera, BA.Viewport),
+      g3d :: (BA.Graphics3DSystem, GU.GUISystem),
       figures :: MVar [(Component, Maybe Component, Maybe Component, Maybe Component)], -- MVar [(fig, pos, ori, size)]
       figCache :: IdHashTable (
         BA.Object3D Figure,
@@ -103,7 +104,7 @@ instance System ECSGraphics3D where
 
 
     stepSystem ecsg3d = do
-      let (g3ds, guis, camera, viewport) = (g3d ecsg3d)
+      let (g3ds, guis) = (g3d ecsg3d)
       -- update 3d objects
       cList <- takeMVar (figures ecsg3d)
       mapM (\(cf, mcp, mco, mcs) -> do
@@ -156,7 +157,7 @@ instance System ECSGraphics3D where
       return (ecsg3d, qFlag)
 
     shutdownSystem ecsg3d = do
-      let (g3ds, guis, camera, viewport) = (g3d ecsg3d)
+      let (g3ds, guis) = (g3d ecsg3d)
       E.freeHGamer3D g3ds guis
       return ()
 
@@ -165,12 +166,14 @@ runSystemGraphics3D sleepT = runSystem sleepT
 
 
 setupBasicCamera g3d = do
-  let (g3ds, guis, camera, viewport) = g3d
-  -- camera position
-  let pos = D.Vec3 5.0 5.0 80.0
-  D.positionTo camera pos
-  let at = D.Vec3 0.0 0.0 (-300.0)
-  BA.cameraLookAt camera at
+  let (g3ds, guis) = g3d
+  -- camera creation and position
+  camera <- BA.addCamera g3ds (
+        Camera
+           (Frustum 5.0 5000.0 (D.Deg 90))
+           (Viewport 0 (D.Rectangle 0.0 0.0 1.0 1.0) D.black) )
+  D.positionTo camera (D.Vec3 5.0 5.0 80.0)
+  BA.cameraLookAt camera (D.Vec3 0.0 0.0 (-300.0))
                                            
   -- define light
             

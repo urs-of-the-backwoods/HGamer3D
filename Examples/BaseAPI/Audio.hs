@@ -22,7 +22,7 @@
 
 module Main where
 
-import HGamer3D.Audio
+import HGamer3D.Audio.BaseAPI
 
 import Control.Monad
 

@@ -32,20 +32,20 @@ module HGamer3D.Data.Geometry2D
 import HGamer3D.Data.Vector
 
 -- | A point has two coordinates an x and y one
-data Point = Point {
-  ptX :: Int,
-  ptY :: Int
+data Point a = Point {
+  ptX :: a,
+  ptY :: a
   }
                       
 -- | A rectangle has an a position as x and y and widht and height
-data Rectangle = Rectangle {
-  rectX :: Int,
-  rectY :: Int,
-  rectWidth :: Int,
-  rectHeight :: Int } deriving (Eq, Show)
+data Num a => Rectangle a = Rectangle {
+  rectX :: a,
+  rectY :: a,
+  rectWidth :: a,
+  rectHeight :: a } deriving (Eq, Show)
 
 -- | derive a rectangle from upper left and lower right points
-rectFromPoints :: Point -> Point -> Rectangle
+rectFromPoints :: Num a => Point a -> Point a -> Rectangle a
 rectFromPoints upperLeft lowerRight = Rectangle rx ry rw rh where
   rx = ptX upperLeft
   ry = ptY upperLeft
@@ -53,7 +53,7 @@ rectFromPoints upperLeft lowerRight = Rectangle rx ry rw rh where
   rh = (ptY lowerRight) - ry
   
 -- | get upper left and lower right point from a rect
-pointsFromRect :: Rectangle -> (Point, Point)
+pointsFromRect :: Num a => Rectangle a -> (Point a, Point a)
 pointsFromRect rect = (ul, lr) where
   rx = rectX rect
   ry = rectY rect

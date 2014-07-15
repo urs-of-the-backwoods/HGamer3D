@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE DeriveDataTypeable, StandaloneDeriving #-}
 -- This source file is part of HGamer3D
 -- (A project to enable 3D game development in Haskell)
 -- For the latest info, see http://www.hgamer3d.org
@@ -25,17 +25,27 @@ module HGamer3D.Graphics3D.Schema.Camera
 where
 
 import Data.Typeable
-
 import HGamer3D.Data as Dat
 
--- | The camera type
+-- | The data to specify a camera
 data Camera = Camera { 
-  frustum :: Frustum  -- ^ Frustum of the camera 
+  frustum :: Frustum,     -- ^ Frustum of the camera ,
+  viewport :: Viewport    -- ^ Where to draw on the window
                      } deriving (Eq, Show, Typeable)
-
+                                
+-- | The frustum defines the area from which objects are rendered into the camera
 data Frustum = Frustum {
-  nearDistance :: Float,
-  farDistance :: Float,
-  fieldOfViewHorizontal :: Dat.Angle } deriving (Eq, Show, Typeable)
+  nearDistance :: Float,    -- ^ clipping distance near, objects which are nearer are not shown
+  farDistance :: Float,     -- ^ clipping distance far, objects, which are more away are not shown
+  fieldOfViewHorizontal :: Dat.Angle  -- ^ The field of view angle horizontally, the vertical direction is automatically determined by the aspect ratio of the final viewport window.
+  } deriving (Eq, Show, Typeable)
+
+deriving instance Typeable1 Dat.Rectangle
+
+data Viewport = Viewport {
+  zOrder :: Int,              -- ^ Z order in case of overlapping Viewports, higher ZOrders are on top
+  position :: Dat.Rectangle Float,   -- ^ position of viewport in Window, coordinates reaching from 0.0 to 1.0
+  backgroundColor :: Colour
+} deriving (Eq, Show, Typeable)
   
 

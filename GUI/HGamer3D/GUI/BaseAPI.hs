@@ -23,45 +23,48 @@
 module HGamer3D.GUI.BaseAPI
 
 (
-        -- * Data Definitions, Types
+  -- * General GUI Functionality
+  
+        -- ** Data Definitions, Types
   
         GUISystem,
-        GUIElement,
-        GUIEvent (..),
-        EventFunction,
 
-        GUIDim (..),
-        GUIVec2 (..),
+        -- ** Initializing
         
-        -- initGUI,
-        -- freeGUI,
-        -- pollGUIEvents,
+        initGUI,
+        freeGUI,
+        pollGUIEvent,
 
+        -- ** Configuration
         
-        -- injectWinEventToGUI,
-
-        -- * Event Handling
-        registerGUIEvent,
-
-        -- * Configuration: Font, Scheme, MouseCursor, Tooltip
-
 	loadGuiScheme,
 	loadGuiFont,
 	setGuiDefaultFont,
 	setGuiDefaultMouseCursor,
 	setGuiDefaultTooltip,
-	
-        -- * Find and display GUI Elements
+
+  -- * General Handling of GUI Elements
+
+        -- ** Data Definition, Types
+        
+        GUIElement,
+        GUIDim (..),
+        GUIVec2 (..),
+
+        -- ** Work on the GUI Element Tree
+
+        addChildGuiEl,
 	getChildGuiEl,
+        removeChildGuiEl,
 	findChildGuiElRecursive,
+
+        -- ** Add Elements to Display and Remove from Display
+        
         addGuiElToDisplay,
 	removeGuiElFromDisplay,
 	
-        -- * Change Gui Element Tree
-        addChildGuiEl,
-        removeChildGuiEl,
-
-        -- * Set specific GUI Element properties
+        -- ** Work with GUI Element Properties
+        
 	getGuiElProperty,
 	setGuiElProperty,
 	enableGuiEl,
@@ -70,54 +73,89 @@ module HGamer3D.GUI.BaseAPI
 	deactivateGuiEl,
 	showGuiEl,
 	hideGuiEl,
-	
-        -- * Widget Types and Conversions
 
+        -- ** Work with File Layouts
+
+        loadGuiLayoutFromFile,
+
+ -- * Event Handling
+        
+        injectWinEventToGUI,
+        GUIEvent (..),
+        registerGUIEvent,
+
+-- * Widget Properties
+
+ -- ** Property Types
+
+        GUIElementProperty, 
+        GUIHasValueProperty,
+
+-- ** Property Functions
+        (=:),
+        setP,
+        getP,
+
+-- ** GUI Widget General Properties
+
+        pText,
+        pDisabled,
+        pVisible,
+        pAlpha,
+        pTooltip,
+        pAlwaysOnTop,
+
+        pX,
+        pY,
+        pWidth,
+        pHeight,
+
+        pSelected,
+        pValue,
+        
+
+-- * Widget Specific Types, Functions and Properties
+
+        -- ** Button Widget
         GUIButton,
+        GUIButtonProperty,
+        button,
+        toButton,
+        findButton,
+
+        -- ** RadioButton Widget
         GUIRadioButton,
+        GUIRadioButtonProperty,
+        radioButton,
+        toRadioButton,
+        findRadioButton,
+
+        -- ** CheckBox Widget
         GUICheckBox,
+        GUICheckBoxProperty,
+        checkBox,
+        toCheckBox,
+        findCheckBox,
+
+        -- ** EditText Widget
         GUIEditText, 
+        GUIEditTextProperty,
+        editText,
+        toEditText,
+        findEditText,
+
+        -- ** Listbox/Combobox Widget        
         GUIListBox,
         GUIComboBox,
-        GUISlider,
-        GUISpinner,
-
-        -- * Create Widgets programmatically
-
-        button,
-        radioButton,
-        checkBox,
-        editText,
+        GUIHasSelectionProperty, 
         comboBox,
         listBox,
-        spinner,
-        slider,
-
-        -- * Load Widgets from layout file
-
-	loadGuiLayoutFromFile,
-
-        toButton,
-        toRadioButton,
-        toCheckBox,
-        toEditText,
         toComboBox,
         toListBox,
-        toSpinner, 
-        toSlider,
-	
-        findButton,
-        findRadioButton,
-        findCheckBox,
-        findEditText,
         findComboBox,
         findListBox,
-        findSpinner,
-        findSlider,
-	
-        -- * Widget Functions
 
-	listboxAddText,
+        listboxAddText,
 	listboxGetSelectedText,
 	listboxRemoveAllText,
         listboxInitialize,
@@ -125,41 +163,18 @@ module HGamer3D.GUI.BaseAPI
 
 	comboboxAddText,
 	comboboxRemoveAllText,
-        
- -- * Property Types
 
-GUIElementProperty, 
-GUIButtonProperty,
-GUIRadioButtonProperty,
-GUIHasSelectionProperty, 
-GUICheckBoxProperty,
-GUIEditTextProperty,
-GUIHasValueProperty,
-GUISliderProperty,
-GUISpinnerProperty,
-
--- * Property Functions
-(=:),
-setP,
-getP,
-
--- * GUI Widget General Properties
-
-pText,
-pDisabled,
-pVisible,
-pAlpha,
-pTooltip,
-pAlwaysOnTop,
-
-pX,
-pY,
-pWidth,
-pHeight,
-
-pSelected,
-pValue,
-
+        -- ** Slider/Spinner Widget
+        GUISlider,
+        GUISpinner,
+        GUISliderProperty,
+        GUISpinnerProperty,
+        slider,
+        spinner,
+        toSlider,
+        toSpinner, 
+        findSlider,
+        findSpinner,
 
 )
 

@@ -16,14 +16,16 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
-import HGamer3D.BaseAPI
+import HGamer3D.Data
+import HGamer3D.Engine.BaseAPI
+import HGamer3D.Graphics3D.BaseAPI
 
-renderLoop cube g3ds guis = do
+renderLoop cubeF g3ds guis = do
    -- rotate 
-  yaw cube (Rad 0.005) 
-  roll cube (Rad 0.002)
+  orientation cubeF >>= \o -> return (yaw o (Rad 0.005)) >>= orientationTo cubeF
+  orientation cubeF >>= \o -> return (roll o (Rad 0.002)) >>= orientationTo cubeF
   (ev, quit) <- stepHGamer3D g3ds guis
-  if quit then return () else renderLoop cube g3ds guis
+  if quit then return () else renderLoop cubeF g3ds guis
    
 main :: IO ()
 main = do
@@ -41,15 +43,13 @@ main = do
 	setAmbientLight g3ds white
 	pointLight g3ds white (Vec3 10.0 10.0 20.0)
         
-	-- create a shiny blue cube        
-        let blueMaterial = resourceMaterial "Colours/Blue"
---        cube <- object3DFromMesh g3ds cubeMesh (Just blueMaterial) False
-        cube <- object3DFromMesh g3ds cubeMesh Nothing False
-        positionTo cube (Vec3 0.0 0.0 0.0)
-        scale cube (Vec3 0.2 0.2 0.2)
+	-- create a shiny blue cube
+        cubeFigure <- cube g3ds 0.2 (ResourceMaterial "Colours/Blue")
+        positionTo cubeFigure (Vec3 0.0 0.0 0.0)
+        sizeTo cubeFigure (Vec3 0.5 0.5 0.5)
         
 	-- start render loop
-	renderLoop cube g3ds guis
+	renderLoop cubeFigure g3ds guis
         freeHGamer3D g3ds guis
         return ()
 

@@ -22,46 +22,6 @@
 -- |Properties functionality of the GUI. Implementation module with internal data structures exposed. Public API in HGamer3D.GUI.
 
 module HGamer3D.GUI.Internal.Properties
-
-(
-
- -- * Property Types
-GUIElementProperty, 
-GUIButtonProperty,
-GUIHasSelectionProperty,
-GUIRadioButtonProperty, 
-GUICheckBoxProperty,
-GUIEditTextProperty,
-GUIHasValueProperty,
-GUISliderProperty,
-GUISpinnerProperty,
-
-GUIDim (..),
-GUIVec2 (..),
-
--- * Property Functions
-(=:),
-setP,
-getP,
-
--- * GUI Element Properties, for all GUI elements
-pText,
-pDisabled,
-pVisible,
-pAlpha,
-pTooltip,
-pAlwaysOnTop,
-
-pX,
-pY,
-pWidth,
-pHeight,
-
-pValue,
-pSelected,
-
-)        
-
 where
 
 
@@ -225,6 +185,6 @@ pSelected :: GUIHasSelectionProperty a Bool
 pSelected = _boolProp "Selected"
 
 pValue :: GUIHasValueProperty a Float
-pValue = _floatProp "Value"
+pValue = _floatProp "CurrentValue"
 
 

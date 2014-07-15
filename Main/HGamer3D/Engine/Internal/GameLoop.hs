@@ -85,10 +85,10 @@ module HGamer3D.Engine.Internal.GameLoop
                   -> Bool -- ^ Flag show config dialogue
                   -> Bool -- ^ Flag logging enabled
                   -> Bool -- ^ show Graphics Cursor
-                  -> IO (Graphics3DSystem, GUISystem, Camera, Viewport)
+                  -> IO (Graphics3DSystem, GUISystem)
   initHGamer3D windowTitle fConfigDialogue fLog fGraphicsCursor = do
         success <- initWinEvent [WEV_INIT_EVENTS, WEV_INIT_TIMER, WEV_INIT_VIDEO]
-        (g3ds, camera, viewport, window) <- initGraphics3D windowTitle "DefaultSceneManager" fConfigDialogue fLog
+        (g3ds, window) <- initGraphics3D windowTitle "DefaultSceneManager" fConfigDialogue fLog
         win <- attachToWindow window
         guis <- initGUI fLog fGraphicsCursor
-        return (g3ds, guis, camera, viewport)
+        return (g3ds, guis)

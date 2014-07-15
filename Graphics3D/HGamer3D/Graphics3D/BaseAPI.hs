@@ -26,7 +26,6 @@ module HGamer3D.Graphics3D.BaseAPI
   Graphics3DSystem,
   Object3D,
   Camera,
-  Viewport,
 
   -- * Initializing the Graphics3D Subsystem
   
@@ -62,8 +61,11 @@ module HGamer3D.Graphics3D.BaseAPI
   
   -- * Misc Functions
 
+  addCamera,
+  removeCamera,
+  updateCamera,
   cameraLookAt,
-  HGamer3D.Graphics3D.Internal.Base.setBackgroundColour,
+
   addResourceLocationMedia,
   addResourceZipfileMedia,
   addResourceLocationGUI,

@@ -1,4 +1,4 @@
-{-# Language StandaloneDeriving #-}
+{-# Language StandaloneDeriving, ExistentialQuantification #-}
 {-# OPTIONS_HADDOCK hide #-}
 
 -- This source file is part of HGamer3D
@@ -79,7 +79,24 @@ class System a where
                      ) mv
         status' <- takeMVar mv
         return status'
-                       
-          
 
-      
+
+-- management of systems
+--
+        
+data SomeSystem = forall a . System a => SomeSystem a
+
+(#+) :: forall a. System a => a -> [SomeSystem] -> [SomeSystem]
+a #+ as = (SomeSystem a : as) 
+infixr #+
+
+-- ECS World functions, to manage entities in systems
+
+addToWorld :: [SomeSystem] -> Entity -> IO ()
+addToWorld systems e = mapM (f e) systems >> return () where
+  f e (SomeSystem s) = addEntity s e >> return ()
+
+removeFromWorld :: [SomeSystem] -> Entity -> IO ()
+removeFromWorld systems e = mapM (f e) systems >> return () where
+  f e (SomeSystem s) = removeEntity s e >> return ()
+    

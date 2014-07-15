@@ -21,7 +21,11 @@
 
 module Main where
 
-import HGamer3D.BaseAPI
+import HGamer3D.Data
+import HGamer3D.Engine.BaseAPI
+import HGamer3D.Graphics3D.BaseAPI
+import HGamer3D.WinEvent.BaseAPI
+import HGamer3D.GUI.BaseAPI
 
 import Control.Monad.Trans
 import Data.Maybe

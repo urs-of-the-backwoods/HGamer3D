@@ -79,6 +79,7 @@ import HGamer3D.Data.HG3DClass
 
 import HGamer3D.WinEvent.Internal.Base (showCursor)
 
+-- | the basic data item, carrying status information on implementation details for GUI system
 data GUISystem = GUISystem {
     guiRoot::HG3DClass,
     guiRenderer::HG3DClass,
@@ -102,8 +103,6 @@ data GEComboBox = GEComboBox
 
 data GESlider = GESlider
 data GESpinner = GESpinner
-
-type EventFunction = IO ()
 
 -- | The GUI Element, a window, a button, any widget or widget element, organized in a hierarchy
 data GUIElement a = GUIElement HG3DClass a -- ^ only one constructor, phantom type a, to allow GUIElement sub-typing

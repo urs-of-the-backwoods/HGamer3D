@@ -12,20 +12,23 @@ env["ENV"]["HOME"] = os.environ.get("HOME")
 # the output directory
 env.Command("build", "", Mkdir("build"))
 
-# the binaries
+
 for (p, s) in [
-    ("Audio", "Audio"),
-    ("Graphics3D", "BlueCube"),
-    ("Graphics3D", "BumpMappingCube"),
-    ("GUI", "GUI-Widgets"),
-    ("GUI", "GUI-Wire"),
-    ("InputSystem", "Joystick"),
-    ("InputSystem", "Keyboard"),
-    ("InputSystem", "Mouse"),
-    ("Network", "Network-Chat"),
-    ("WinEvent", "WinEvent"),
-    ("Games", "Cuboid2"),
-    ("Games", "YWing-Flight")
+
+    # the BaseAPI binaries
+
+    ("BaseAPI", "Audio"),
+    ("BaseAPI", "BlueCube"),
+#    ("BaseAPI", "BumpMappingCube"),
+    ("BaseAPI", "GUI-Widgets"),
+#    ("GUI", "GUI-Wire"),
+#    ("InputSystem", "Joystick"),
+#    ("InputSystem", "Keyboard"),
+#    ("InputSystem", "Mouse"),
+#    ("Network", "Network-Chat"),
+#    ("WinEvent", "WinEvent"),
+#    ("Games", "Cuboid2"),
+#    ("Games", "YWing-Flight")
 ]:
     env.Command("build/" + s, [p + "/" + s + ".hs",
                                "build/.HGamer3D"
