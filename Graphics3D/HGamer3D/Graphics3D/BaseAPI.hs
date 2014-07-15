@@ -49,11 +49,14 @@ module HGamer3D.Graphics3D.BaseAPI
 
   -- * Light
   Light,
+  addLight,
+  updateLight,
+  removeLight,
+  
   HGamer3D.Graphics3D.Internal.Light.setAmbientLight,
   pointLight,
   spotLight,
   spotLightSetDirection,
-  setSpotLightAngle,
   directionalLight,
 
   -- * Material

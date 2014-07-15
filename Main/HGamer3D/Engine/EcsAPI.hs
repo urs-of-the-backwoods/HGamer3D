@@ -32,6 +32,7 @@ module HGamer3D.Engine.EcsAPI
   ComponentType (..),
   newC,
   readC,
+  valC,
   isTypeC,
   updateC,
   idC,

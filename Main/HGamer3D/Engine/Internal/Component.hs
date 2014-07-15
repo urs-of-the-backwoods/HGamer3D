@@ -32,6 +32,7 @@ import Control.Concurrent.MVar
 import System.Mem.StableName
 import GHC.Generics (Generic)
 import Data.Hashable
+import Data.Maybe
 import System.Clock
 
 import HGamer3D.Engine.Internal.Event
@@ -82,6 +83,9 @@ readC (Component dyn _ _ _)
                     return $ Just val
     | otherwise = do
               return Nothing
+
+valC :: Typeable a => Component -> IO a
+valC c = readC c >>= return . fromStamped . fromJust
 
 isTypeC :: Typeable a => a -> Component -> Bool
 isTypeC val (Component dyn _ tr _) = (typeOf val == tr)

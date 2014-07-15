@@ -27,6 +27,7 @@
 module HGamer3D.Graphics3D.Internal.Light 
 where
 
+import Data.Maybe
 
 import HGamer3D.Data
 import HGamer3D.Data.HG3DClass
@@ -76,102 +77,114 @@ import Control.Monad.Trans
 import Control.Monad.IO.Class
 import Control.Monad.State.Class
 
+import qualified HGamer3D.Graphics3D.Schema.Light as L
 
 
 -- | The light.
-data Light = Light HG3DClass deriving (Show)
+data Light = Light (Maybe HG3DClass) L.Light
 
 instance HasPosition Light where
 
-	position (Light l) = do
-		pos <- Light.getPosition l
-		return (pos)
+	position (Light ml _) = case ml of
+            Just l -> Light.getPosition l
+            Nothing -> error "HGamer3D.Graphics3D.Internal.Light: this light does not have a position"
 		
-	positionTo (Light l) pos = do
-		let (Vec3 x y z) = pos
-		Light.setPosition l x y z
-		return ()
-	
-spotLightSetDirection l v = Light.setDirection2 l v
+	positionTo (Light ml _) (Vec3 x y z) = case ml of
+		Just l -> Light.setPosition l x y z
+		Nothing -> return ()
 
+addLight :: Graphics3DSystem -> L.Light -> IO Light
+addLight g3ds schema = do
+  let (SceneManager scm) = (g3dsSceneManager g3ds)
+  let (L.Light diffuse@(Colour r g b _) specular@(Colour r' g' b' _) ltype) = schema
+  case ltype of
+    L.AmbientLight -> do
+      SceneManager.setAmbientLight scm diffuse
+      return $ Light Nothing schema
+    _ -> do
+      lightName <- nextUniqueName (g3dsUniqueName g3ds)
+      light <- SceneManager.createLight scm lightName
+      Light.setDiffuseColour light r g b 
+      Light.setSpecularColour light r' g' b' 
+      case ltype of      
+        L.PointLight -> Light.setType light LT_POINT
+        L.DirectionalLight dir -> do
+          Light.setType light LT_DIRECTIONAL
+          Light.setDirection2 light dir
+        L.SpotLight dir inner outer -> do
+          Light.setType light LT_SPOTLIGHT
+          Light.setDirection2 light dir
+          Light.setSpotlightInnerAngle light (fromAngle inner)
+          Light.setSpotlightOuterAngle light (fromAngle outer)
+      return $ Light (Just light) schema
 
+removeLight :: Graphics3DSystem -> Light -> IO ()
+removeLight g3ds (Light ml schema) = do
+  let (SceneManager scm) = (g3dsSceneManager g3ds)
+  let (L.Light diffuse@(Colour r g b _) specular@(Colour r' g' b' _) ltype) = schema
+  case ltype of
+    L.AmbientLight -> SceneManager.setAmbientLight scm black  -- set to black -> no light
+    _ -> SceneManager.destroyLight2 scm (fromJust ml) -- remove light from scene
+
+updateLight :: Graphics3DSystem -> Light -> L.Light -> IO Light
+updateLight  g3ds l schema = do
+  let (SceneManager scm) = (g3dsSceneManager g3ds)
+  removeLight g3ds l
+  addLight g3ds schema
+    
 -- | Ambient light is present everywhere, this function creates it and sets the colour of it.
 -- There is no light object, since movement, rotation, scaling would make no sense anyhow.
-
 setAmbientLight :: Graphics3DSystem -- ^ the Graphics3D system object, returned by initGraphics3D
                    -> Colour -> IO () 
 setAmbientLight g3ds colour = do
 	let (SceneManager scm) = (g3dsSceneManager g3ds)
-	SceneManager.setAmbientLight scm colour
-	return ()
-	
+        SceneManager.setAmbientLight scm colour
 
 -- | creates a point light at a specific location
 pointLight :: Graphics3DSystem -- ^ the Graphics3D system object, returned by initGraphics3D
-                    -> Colour -- ^ Color of the light
+                    -> Colour -- ^ diffuse Color of the light
+                    -> Colour -- ^ specular Color of the light
                     -> Vec3 -- ^ Position, where light is created
                     -> IO (Light) -- ^ The light object
-		
-pointLight g3ds (Colour r g b al) (Vec3 x y z) = do
-	let (SceneManager scm) = (g3dsSceneManager g3ds)
-	lightName <- nextUniqueName (g3dsUniqueName g3ds)
-	
-        light <- SceneManager.createLight scm lightName
-	Light.setType light LT_POINT
-	Light.setPosition light x y z
-	Light.setDiffuseColour light r g b 
-	Light.setSpecularColour light r g b 
-	let eo = Light light
-	return eo
+pointLight g3ds diffuse specular pos = do
+  let schema = L.Light diffuse specular L.PointLight
+  light <- addLight g3ds schema
+  positionTo light pos
+  return $ light
 
 -- | creates a spot light at a specific location
 spotLight :: Graphics3DSystem -- ^ the Graphics3D system object, returned by initGraphics3D
-                    -> Colour -- ^ Color of the light
+                    -> Colour -- ^ diffuse Colour of the light
+                    -> Colour -- ^ specular Colour of the light
                     -> Vec3 -- ^ Position, where light is created
+                    -> Vec3 -- ^ Direction, where light points
+                    -> Angle -- ^ inner Angle of cone (5..355 degrees)
+                    -> Angle -- ^ outer Angle of cone (5..355 degrees)
                     -> IO Light -- ^ The light object
-spotLight g3ds (Colour r g b al) (Vec3 x y z) = do
-	let (SceneManager scm) = (g3dsSceneManager g3ds)
-	lightName <- nextUniqueName (g3dsUniqueName g3ds)
-	
-	light <- SceneManager.createLight scm lightName
-	Light.setType light LT_SPOTLIGHT
-	Light.setPosition light x y z
-	Light.setDiffuseColour light r g b 
-	Light.setSpecularColour light r g b 
-	let eo = Light light
-	return eo
+spotLight g3ds diffuse specular pos dir inner outer = do
+  let schema = L.Light diffuse specular (L.SpotLight dir inner outer)
+  light <- addLight g3ds schema
+  positionTo light pos
+  return $ light
 
--- | set the angle of a spotlight
-setSpotLightAngle :: Light -- ^ spotlight
-					-> Angle -- ^ angle of the light cone, should be between 5 and 355 degree
-					-> IO ()
-setSpotLightAngle (Light light) a = do
-	if (a >= (Deg 5)) && (a <= (Deg 355))
-		then do
-			let innerAngle = fromAngle $ a `subA` (Deg 4.5)
-			let outerAngle = fromAngle $ a `addA` (Deg 4.5)
-			Light.setSpotlightInnerAngle light innerAngle
-			Light.setSpotlightOuterAngle light outerAngle
-			return ()
-		else do
-			return ()
-			
+-- | sets spotlight direction
+spotLightSetDirection :: Graphics3DSystem -> Light -> Vec3 -> IO Light
+spotLightSetDirection g3ds light dir' = do
+  let (Light l schema) = light
+  let (L.Light diffuse@(Colour r g b _) specular@(Colour r' g' b' _) ltype) = schema
+  case ltype of
+    (L.SpotLight dir inner outer) -> updateLight g3ds light (L.Light diffuse specular (L.SpotLight dir' inner outer))
+    _ -> return light
 
 -- | creates a directional light at a specific location
 directionalLight :: Graphics3DSystem -- ^ the Graphics3D system object, returned by initGraphics3D
-                    -> Colour -- ^ Color of the light
-                    -> Vec3 -- ^ Position, where light is created
+                    -> Colour -- ^ diffuse Colour of the light
+                    -> Colour -- ^ specular Colour of light
+                    -> Vec3 -- ^ direction of light
                     -> IO (Light) -- ^ The light object
-		
-directionalLight g3ds (Colour r g b al) (Vec3 x y z) = do
-	let (SceneManager scm) = (g3dsSceneManager g3ds)
-	lightName <- nextUniqueName (g3dsUniqueName g3ds)
-	
-	light <- SceneManager.createLight scm lightName
-	Light.setType light LT_DIRECTIONAL
-	Light.setPosition light x y z
-	Light.setDiffuseColour light r g b 
-	Light.setSpecularColour light r g b 
-	let eo = Light light
-	return eo
+directionalLight g3ds diffuse specular dir = do
+  let schema = L.Light diffuse specular (L.DirectionalLight dir)
+  light <- addLight g3ds schema
+  return $ light
+  
 
