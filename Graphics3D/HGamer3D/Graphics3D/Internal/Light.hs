@@ -5,7 +5,7 @@
 -- (A project to enable 3D game development in Haskell)
 -- For the latest info, see http://www.hgamer3d.org
 --
--- (c) 2011-2013 Peter Althainz
+-- (c) 2011-2014 Peter Althainz
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -81,50 +81,55 @@ import qualified HGamer3D.Graphics3D.Schema.Light as L
 
 
 -- | The light.
-data Light = Light (Maybe HG3DClass) L.Light
+data Light = Light ONode OLight L.Light
+
+instance HasNode Light where
+  getNode (Light node _ _) = node
 
 instance HasPosition Light where
-
-	position (Light ml _) = case ml of
-            Just l -> Light.getPosition l
-            Nothing -> error "HGamer3D.Graphics3D.Internal.Light: this light does not have a position"
-		
-	positionTo (Light ml _) (Vec3 x y z) = case ml of
-		Just l -> Light.setPosition l x y z
-		Nothing -> return ()
+	position obj = Node.getPosition (getNode' obj)
+	positionTo obj pos = Node.setPosition  (getNode' obj) pos
+	
+instance HasOrientation Light where
+	orientation obj = do
+		q <- Node.getOrientation  (getNode' obj)
+		let uq = mkNormal q
+		return uq
+	orientationTo obj uq = do
+		Node.setOrientation  (getNode' obj) (fromNormal uq)
+		return ()
 
 addLight :: Graphics3DSystem -> L.Light -> IO Light
 addLight g3ds schema = do
   let (SceneManager scm) = (g3dsSceneManager g3ds)
   let (L.Light diffuse@(Colour r g b _) specular@(Colour r' g' b' _) ltype) = schema
-  case ltype of
-    L.AmbientLight -> do
-      SceneManager.setAmbientLight scm diffuse
-      return $ Light Nothing schema
-    _ -> do
-      lightName <- nextUniqueName (g3dsUniqueName g3ds)
-      light <- SceneManager.createLight scm lightName
-      Light.setDiffuseColour light r g b 
-      Light.setSpecularColour light r' g' b' 
-      case ltype of      
-        L.PointLight -> Light.setType light LT_POINT
-        L.DirectionalLight dir -> do
-          Light.setType light LT_DIRECTIONAL
-          Light.setDirection2 light dir
-        L.SpotLight dir inner outer -> do
-          Light.setType light LT_SPOTLIGHT
-          Light.setDirection2 light dir
-          Light.setSpotlightInnerAngle light (fromAngle inner)
-          Light.setSpotlightOuterAngle light (fromAngle outer)
-      return $ Light (Just light) schema
+  lightName <- nextUniqueName (g3dsUniqueName g3ds)
+  light <- SceneManager.createLight scm lightName
+  Light.setDiffuseColour light r g b 
+  Light.setSpecularColour light r' g' b' 
+  case ltype of      
+    L.PointLight -> Light.setType light LT_POINT
+    L.DirectionalLight dir -> do
+      Light.setType light LT_DIRECTIONAL
+      Light.setDirection2 light dir
+    L.SpotLight dir inner outer -> do
+      Light.setType light LT_SPOTLIGHT
+      Light.setDirection2 light dir
+      Light.setSpotlightInnerAngle light (fromAngle inner)
+      Light.setSpotlightOuterAngle light (fromAngle outer)
+  let l = OL light
+  rn <- _getRootNode g3ds
+  n <- _createSubNode rn
+  attachToNode l n
+  return $ Light n l schema
 
 removeLight :: Graphics3DSystem -> Light -> IO ()
-removeLight g3ds (Light ml schema) = do
+removeLight g3ds (Light n@(ON node) l@(OL light) schema) = do
   let (SceneManager scm) = (g3dsSceneManager g3ds)
-  let (L.Light diffuse@(Colour r g b _) specular@(Colour r' g' b' _) ltype) = schema
-  case ltype of
-    L.AmbientLight -> SceneManager.setAmbientLight scm black  -- set to black -> no light
-    _ -> SceneManager.destroyLight2 scm (fromJust ml) -- remove light from scene
+  detachFromNode l n
+  (ON rn) <- _getRootNode g3ds
+  Node.removeChild2 rn node
+  SceneManager.destroyLight2 scm light 
 
 updateLight :: Graphics3DSystem -> Light -> L.Light -> IO Light
 updateLight  g3ds l schema = do
@@ -170,7 +175,7 @@ spotLight g3ds diffuse specular pos dir inner outer = do
 -- | sets spotlight direction
 spotLightSetDirection :: Graphics3DSystem -> Light -> Vec3 -> IO Light
 spotLightSetDirection g3ds light dir' = do
-  let (Light l schema) = light
+  let (Light n l schema) = light
   let (L.Light diffuse@(Colour r g b _) specular@(Colour r' g' b' _) ltype) = schema
   case ltype of
     (L.SpotLight dir inner outer) -> updateLight g3ds light (L.Light diffuse specular (L.SpotLight dir' inner outer))

@@ -97,36 +97,9 @@ _createGeometry g3ds geo = do
     _ -> error "HGamer3D.Graphics3D.Internal.Shapes._createMesh: Geo not implemented"
   return $ OE entity
 
-_getRootNode :: Graphics3DSystem -> IO ONode
-_getRootNode g3ds = do
-  let (SceneManager scm) = (g3dsSceneManager g3ds)
-  rootNode <- SceneManager.getRootSceneNode scm
-  return (ON rootNode)
-
-_createSubNode :: ONode -> IO ONode
-_createSubNode (ON parent) = SceneNode.createChildSceneNode parent zeroVec3 unitQ >>= (return . ON)
-
 _buildTV :: OEntity -> IO ()
 _buildTV (OE entity) = HG3DUtils.buildTangentVectors entity
 
-_addEntityToNode :: Graphics3DSystem -> ONode -> OEntity -> IO ()
-_addEntityToNode g3ds(ON node) (OE meshEntity) = SceneNode.attachObject node meshEntity 
-
-_exchangeEntityInNode :: Graphics3DSystem -> ONode -> OEntity -> OEntity -> IO ()
-_exchangeEntityInNode g3ds (ON meshNode) (OE oldMeshEntity) (OE newMeshEntity) = do
-  let (SceneManager scm) = (g3dsSceneManager g3ds)
-  SceneNode.detachObject2 meshNode oldMeshEntity
-  SceneManager.destroyEntity scm oldMeshEntity
-  SceneNode.attachObject meshNode newMeshEntity
-
-_removeEntityAndNode :: Graphics3DSystem -> ONode -> OEntity -> ONode -> IO ()
-_removeEntityAndNode g3ds (ON parent) (OE meshEntity ) (ON meshNode) = do
-  let (SceneManager scm) = (g3dsSceneManager g3ds)
-  rootNode <- SceneManager.getRootSceneNode scm
-  SceneNode.detachObject2 meshNode meshEntity
-  SceneManager.destroyEntity scm meshEntity
-  Node.removeChild2 parent meshNode
-  SceneManager.destroySceneNode2 scm meshNode
 
 {- -------------------------------------------------------------------------------
    EngineItem for Figure
@@ -139,28 +112,6 @@ _createResourceFigure g3ds name = do
   entity <- SceneManager.createEntity3 scm name
   return $ OE entity
 
-_setNodeP :: EngineData -> Position -> IO ()
-_setNodeP edata pos = do
-  let (ON node) = _getNode edata
-  Node.setPosition node pos
-
-_setNodeO :: EngineData -> Orientation -> IO ()
-_setNodeO edata ori = do
-  let (ON node) = _getNode edata
-  Node.setOrientation node (fromNormal ori)
-
-_setNodeS :: EngineData -> Size -> IO ()
-_setNodeS edata size = do
-  let (ON node) = _getNode edata
-  Node.setScale node size
-
-_setNodePOS :: EngineData -> Position -> Orientation -> Size -> IO ()
-_setNodePOS edata pos ori size = do
-  let (ON node) = _getNode edata
-  Node.setPosition node pos
-  Node.setOrientation node (fromNormal ori)
-  Node.setScale node size
-  
 _setMaterial :: OEntity -> Material -> IO ()
 _setMaterial (OE entity) material = do
   case material of
@@ -168,6 +119,11 @@ _setMaterial (OE entity) material = do
 	Entity.setMaterialName entity name "General"
     _ -> error "HGamer3D.Graphics3D.Internal.Shapes._setMaterial: Material not implemented"
 
+_setNodePOS n pos ori siz = do
+  setNodePos n pos
+  setNodeOri n ori
+  setNodeSiz n siz
+  
 _createFigure :: Graphics3DSystem -> ONode -> Figure -> IO (EngineData)
 _createFigure g3ds parent fig = do
   node <- _createSubNode parent
@@ -202,7 +158,7 @@ data UpdateActions = ResetMaterial
 
 _updateFigure :: Graphics3DSystem -> ONode -> EngineData -> Figure -> Figure -> IO (EngineData)
 _updateFigure g3ds parent edata oldFig newFig = do
-  let node = _getNode edata
+  let node = getNode edata
 
   -- check, which action is needed
   
@@ -262,9 +218,9 @@ _updateFigure g3ds parent edata oldFig newFig = do
                let (EDNodeAndSub node' edOldArr) = edata
                outArr <- mapM ( \(oldED, (posO, oriO, sizeO, oldFig), (posN, oriN, sizeN, newFig)) -> do
                                    newED <- _updateFigure g3ds node' oldED oldFig newFig
-                                   if posO /= posN then _setNodeP newED posN else return ()
-                                   if oriO /= oriN then _setNodeO newED oriN else return ()
-                                   if sizeO /= sizeN then _setNodeS newED sizeN else return ()
+                                   if posO /= posN then setNodePos newED posN else return ()
+                                   if oriO /= oriN then setNodeOri newED oriN else return ()
+                                   if sizeO /= sizeN then setNodeSiz newED sizeN else return ()
                                    return newED
                               ) (zip3 edOldArr oldSubs newSubs)
                return (EDNodeAndSub node' outArr)
@@ -338,20 +294,20 @@ ikosaeder g3ds len material = object3D g3ds (CombinedFigure [
                  (zeroVec3, unitU, Vec3 len len len, SimpleFigure Ikosaeder material) ])
                            
 instance HasPosition (Object3D Figure)  where
-	position obj = Node.getPosition (_getNode' obj)
-	positionTo obj pos = Node.setPosition  (_getNode' obj) pos
+	position obj = Node.getPosition (getNode' obj)
+	positionTo obj pos = Node.setPosition  (getNode' obj) pos
 	
 instance HasSize (Object3D Figure) where
-	size obj = Node.getScale  (_getNode' obj)
-	sizeTo obj pos = Node.setScale  (_getNode' obj) pos
+	size obj = Node.getScale  (getNode' obj)
+	sizeTo obj pos = Node.setScale  (getNode' obj) pos
 	
 instance HasOrientation (Object3D Figure) where
 	orientation obj = do
-		q <- Node.getOrientation  (_getNode' obj)
+		q <- Node.getOrientation  (getNode' obj)
 		let uq = mkNormal q
 		return uq
 	orientationTo obj uq = do
-		Node.setOrientation  (_getNode' obj) (fromNormal uq)
+		Node.setOrientation  (getNode' obj) (fromNormal uq)
 		return ()
                            
 {-

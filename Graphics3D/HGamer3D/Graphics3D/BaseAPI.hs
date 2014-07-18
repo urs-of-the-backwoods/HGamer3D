@@ -83,6 +83,7 @@ where
   import HGamer3D.Graphics3D.Internal.Base
   import HGamer3D.Graphics3D.Internal.Light
   import HGamer3D.Graphics3D.Internal.Shapes
+  import HGamer3D.Graphics3D.Internal.Camera
   
   import HGamer3D.Graphics3D.Schema.Material
   

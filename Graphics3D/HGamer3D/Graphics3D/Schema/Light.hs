@@ -28,22 +28,21 @@ import Data.Typeable
 
 import HGamer3D.Data as Dat
 
-{-
-  Basic facts about light:
-  - Ambient light is just a colour value, which is the light, which is everywhere, when no other light is shining.
-  - pointlight does have a position and emitts equally from there
-  - spotlight has position, direction, inner and outer angle specifiyng the cone of the spotlight
--}
 
 -- | The Light data type
 
 
-data Light = Light Colour Colour LightType   -- ^ diffuse colour, specular colour, light type
+data Light = Light {
+  diffuseColour :: Colour,
+  specularColour :: Colour,
+  lightType :: LightType
+  } deriving (Eq, Show, Typeable)
 
-data LightType = AmbientLight                -- ^ Light which is magically everywhere (specular colour ignored)
-               | PointLight                  -- ^ A source shining from one location
-               | DirectionalLight Vec3       -- ^ A source shining from one direction (like hte sun)
-               | SpotLight Vec3 Angle Angle  -- ^ A source shining from one location into one direction with a cone, angles are inner angle, outer angle (a flashlight). Angles should be between 5 and 355 degrees.
+data LightType = PointLight                  -- ^ A source shining from one location
+               | DirectionalLight Vec3       -- ^ A source shining from one direction (like the sun)
+               | SpotLight Vec3 Angle Angle  -- ^ A source shining from one location into one direction with a cone,
+                                             --   angles are inner angle, outer angle (a flashlight).
+                                             --   Angles should be between 5 and 355 degrees.
            deriving (Eq, Show, Typeable)
   
 

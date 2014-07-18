@@ -281,10 +281,13 @@ audioSlots schema@(AS.AudioSlots asList) = do
   obList <- mapM (\(s, as) -> makeSource as >>= \ob -> return (s, ob)) asList
   return $ AudioSlots (M.fromList obList) schema
 
--- | update AudioSlots from change in data definition
+-- | update AudioSlots from change in data definition, tbd
 updateAudioSlots :: AudioSlots -> AS.AudioSlots -> IO AudioSlots
 updateAudioSlots inSlots newSlots = return inSlots
 
+-- | remove AudioSlots, tbd
+removeAudioSlots :: AudioSlots -> IO ()
+removeAudioSlots as = return ()
 
 instance HasPosition AudioSource where
   position = getAudioSourcePosition 

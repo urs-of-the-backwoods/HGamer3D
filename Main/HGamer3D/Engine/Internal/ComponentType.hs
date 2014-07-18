@@ -34,6 +34,7 @@ data ComponentType =   CTPos    -- ^ Position
                      | CTASl    -- ^ Audio Slots
                      | CTALs    -- ^ Audio Listener
                      | CTCam    -- ^ Cameras
+                     | CTLig    -- ^ Light
 
                        deriving (Eq, Ord, Show)
 

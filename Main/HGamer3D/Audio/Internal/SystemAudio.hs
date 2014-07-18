@@ -46,16 +46,11 @@ import qualified HGamer3D.Audio.Internal.Base as A
 import qualified HGamer3D.Audio.Schema.AudioSource as AS
 import qualified HGamer3D.Audio.Schema.AudioListener as AL
 
-type IdHashTable v = HT.BasicHashTable ComponentId v
 
 -- | the Audio System of the Entity-Component-System World
 data ECSAudio = ECSAudio {
-  audioSlots :: MVar [(Component, Maybe Component)], -- AudioSlots, Position
-  audioSlotsCache :: IdHashTable (
-     A.AudioSlots,
-     StampedValue AS.AudioSlots,
-     Maybe (StampedValue D.Position)
-     )
+  audioSlots :: ListAndCache AS.AudioSlots A.AudioSlots,
+  positions :: ListAndCache D.Position ()
   }
 
 _handleEvent map evt = do
@@ -74,65 +69,26 @@ _handleEvent map evt = do
 instance System ECSAudio where
 
     addEntity system entity = do
-      oldList <- takeMVar (audioSlots system)
-      let mCom = entity #? CTASl
-      let newList = case mCom of
-            Just com -> let
-              p = entity #? CTPos
-              in ((com, p) : oldList)
-            Nothing -> oldList
-      putMVar (audioSlots system) newList
+      lacAdd entity (audioSlots system)
+      lacAdd entity (positions system)
       return system
 
-    removeEntity system entity = return system
-    
-{-
-    removeEntity ecsg3d entity = do
-      let (g3ds, guis, camera, viewport) = g3d
-      let removeFunction mvList cache = do
-            oldList <- takeMVar mvList
-            
-            let newList = filter ( (/=) 
--}
+    removeEntity system entity = do
+      lacRemove entity (audioSlots system)
+      lacRemove entity (positions system)
+      return system
 
     initializeSystem = do
-        audioSlots <- newMVar []
-        audioSlotsCache <- HT.new
-        return $ (ECSAudio audioSlots audioSlotsCache)
+      audioSlots <- lacInitialize CTASl
+      positions <- lacInitialize CTPos
+      return $ (ECSAudio audioSlots positions)
 
     stepSystem system = do
-      -- update audio objects
-      cList <- takeMVar (audioSlots system)
-      mapM (\(com, mcp) -> do
-               mOldCache <- HT.lookup (audioSlotsCache system) (idC com)
-               -- handle events
-               evts <- _popEvents com
-               case mOldCache of
-                 Just (A.AudioSlots map _, _, _) -> mapM (_handleEvent map) evts >> return ()
-                 Nothing -> return ()
-               -- handle changes per single entity item
-               comTVal <- readC com >>= return . fromJust
-               let newCom = fromStamped comTVal
-               -- first create/update the audiosource object
-               newOb <- case mOldCache of
-                 Nothing -> A.audioSlots newCom
-                 Just (oldOb, oldComTVal, mPos) -> if oldComTVal /= comTVal then A.updateAudioSlots oldOb newCom else return oldOb
-               -- then handle the PO information - Position
-               newPos <- case mcp of
-                 Just cp -> do
-                   posTVal <- readC cp >>= return . fromJust
-                   let posVal = fromStamped posTVal
-                   case mOldCache of
-                     Nothing -> D.positionTo newOb posVal
-                     Just (oldOb, oldComTVal, mPos) -> if (fromJust mPos) /= posTVal then D.positionTo newOb posVal else return ()
-                   return $ Just posTVal
-                 Nothing -> return Nothing
-               -- insert new values into cache
-               HT.insert (audioSlotsCache system) (idC com) (newOb, comTVal, newPos)
-           ) cList
-      putMVar (audioSlots system) cList
+      lacApplyChanges (audioSlots system) A.audioSlots A.updateAudioSlots A.removeAudioSlots
+      let update' pos edata schema = D.positionTo edata pos 
+      lacApplyOtherChanges (positions system) (audioSlots system) update'
       return (system, False)
-
+      
     shutdownSystem system = return ()
 
 runSystemAudio :: D.TimeMS -> IO ECSAudio

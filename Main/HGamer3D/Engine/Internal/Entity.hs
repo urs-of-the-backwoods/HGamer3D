@@ -34,8 +34,10 @@ import Control.Concurrent.MVar
 import qualified Data.Map as M
 import Data.Maybe
 import Data.Typeable
+import System.Mem.StableName
 
-data Entity = Entity (M.Map ComponentType Component) 
+type EntityId = StableName (M.Map ComponentType Component)
+data Entity = Entity (M.Map ComponentType Component) EntityId
 
 --
 -- pure Data functions, creating, traversing and getting components from entities
@@ -46,16 +48,21 @@ entity inList  = do
   outList <- mapM (\(c, val) -> do
                      val' <- val
                      return (c, val')) inList
-  return $ Entity (M.fromList outList)
+  let cMap = M.fromList outList
+  eId <- makeStableName cMap
+  return $ Entity cMap eId
+
+idE :: Entity -> EntityId
+idE (Entity _ eId) = eId
 
 sendEvent :: Entity -> HG3DEvent -> IO ()
-sendEvent (Entity map) event = mapM (\(ct, c) -> _pushEvent c event) (M.toList map) >> return ()
+sendEvent (Entity map _) event = mapM (\(ct, c) -> _pushEvent c event) (M.toList map) >> return ()
 
 (#:) :: Typeable a => ComponentType -> a -> (ComponentType, IO Component)
 (#:) ec val = (ec, newC val)
 
 (#?) :: Entity -> ComponentType -> Maybe Component
-(Entity map) #? name = M.lookup name map
+(Entity map _) #? name = M.lookup name map
 infix 8 #?
 
 (#) :: Entity -> ComponentType -> Component

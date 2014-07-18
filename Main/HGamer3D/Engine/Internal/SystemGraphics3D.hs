@@ -43,7 +43,7 @@ import qualified Data.HashTable.IO as HT
 
 
 import qualified HGamer3D.Data as D
-import qualified HGamer3D.Graphics3D.BaseAPI as BA
+import qualified HGamer3D.Internal.Graphics3D as Gr
 import qualified HGamer3D.Engine.BaseAPI as E
 import qualified HGamer3D.GUI.BaseAPI as GU
 
@@ -51,169 +51,110 @@ import HGamer3D.Graphics3D.Schema.Figure
 import HGamer3D.Graphics3D.Schema.Geometry
 import HGamer3D.Graphics3D.Schema.Material
 import HGamer3D.Graphics3D.Schema.Camera
+import HGamer3D.Graphics3D.Schema.Light
+
 
 
 -- the system of entity component system, in general a system has internal state
 -- entities can be added to it and the system has a step function, to run it
 -- Systems are self-contained, so they can be run in a thread and manage their state themselves
 
-type IdHashTable v = HT.BasicHashTable ComponentId v
 
 data ECSGraphics3D = ECSGraphics3D {
       -- status of graphics engine
-      g3d :: (BA.Graphics3DSystem, GU.GUISystem),
-      -- system handling of figure components
-      figures :: MVar [(Component, Maybe Component, Maybe Component, Maybe Component)], -- MVar [(fig, pos, ori, size)]
-      figCache :: IdHashTable (
-        BA.Object3D Figure,
-        StampedValue Figure,
-        Maybe (StampedValue D.Position),
-        Maybe (StampedValue D.Orientation),
-        Maybe (StampedValue D.Size)
-        ),
-      -- system handling of camera components
-      cameras :: MVar [(Component, Maybe Component, Maybe Component)], -- MVar [(fig, pos, ori)]
-      camCache :: IdHashTable (
-        BA.Camera,
-        StampedValue Camera,
-        Maybe (StampedValue D.Position),
-        Maybe (StampedValue D.Orientation)
-        )
+      g3d :: (Gr.Graphics3DSystem, GU.GUISystem),
+
+      -- figures
+      figures :: ListAndCache Figure (Gr.Object3D Figure),
+      posfig :: ListAndCache D.Position (),
+      orifig :: ListAndCache D.Orientation (),
+
+      -- cameras
+      cameras :: ListAndCache Camera Gr.Camera,
+      poscam :: ListAndCache D.Position (),
+      oricam :: ListAndCache D.Orientation (),
+
+      -- lights
+      lights :: ListAndCache Light Gr.Light,
+      poslig :: ListAndCache D.Position (),
+      orilig :: ListAndCache D.Orientation ()
       }
 
 instance System ECSGraphics3D where
 
     addEntity ecsg3d entity = do
-      -- figures
-      oldList <- takeMVar (figures ecsg3d)
-      let mFig = entity #? CTFig
-      let newList = case mFig of
-            Just fig -> let
-              (p, o, s) = (entity #? CTPos, entity #? CTOri, entity #? CTSiz)
-              in ((fig, p, o, s) : oldList)
-            Nothing -> oldList
-      putMVar (figures ecsg3d) newList
-      -- cameras
-      oldList <- takeMVar (cameras ecsg3d)
-      let mCam = entity #? CTCam
-      let newList = case mCam of
-            Just cam -> let
-              (p, o) = (entity #? CTPos, entity #? CTOri)
-              in ((cam, p, o) : oldList)
-            Nothing -> oldList
-      putMVar (cameras ecsg3d) newList
+      lacAdd entity (figures ecsg3d)
+      lacAdd entity (posfig ecsg3d)
+      lacAdd entity (orifig ecsg3d)
+      
+      lacAdd entity (cameras ecsg3d)
+      lacAdd entity (poscam ecsg3d)
+      lacAdd entity (oricam ecsg3d)
+
+      lacAdd entity (lights ecsg3d)
+      lacAdd entity (poslig ecsg3d)
+      lacAdd entity (orilig ecsg3d)
+
       return ecsg3d
 
-    removeEntity ecsg3d entity = return ecsg3d
-    
-{-
     removeEntity ecsg3d entity = do
-      let (g3ds, guis, camera, viewport) = g3d
-      let removeFunction mvList cache = do
-            oldList <- takeMVar mvList
-            
-            let newList = filter ( (/=) 
--}
-
+      lacRemove entity (figures ecsg3d)
+      lacRemove entity (posfig ecsg3d)
+      lacRemove entity (orifig ecsg3d)
+      
+      lacRemove entity (cameras ecsg3d)
+      lacRemove entity (poscam ecsg3d)
+      lacRemove entity (oricam ecsg3d)
+      
+      lacRemove entity (lights ecsg3d)
+      lacRemove entity (poslig ecsg3d)
+      lacRemove entity (orilig ecsg3d)
+      
+      return ecsg3d
+    
     initializeSystem = do
-        g3d <- E.initHGamer3D "HGamer3D - System" True True True
---        setupBasicCamera g3d
-        figures <- newMVar []
-        figCache <- HT.new
-        cameras <- newMVar []
-        camCache <- HT.new
-        return $ (ECSGraphics3D g3d figures figCache cameras camCache)
+      g3d <- E.initHGamer3D "HGamer3D - System" True True True
+      let (g3ds, guis) = g3d
+      Gr.setAmbientLight g3ds D.white
 
+      figs <- lacInitialize CTFig
+      posfig <- lacInitialize CTPos
+      orifig <- lacInitialize CTOri
+
+      cams <- lacInitialize CTCam
+      poscam <- lacInitialize CTPos
+      oricam <- lacInitialize CTOri
+        
+      ligs <- lacInitialize CTLig
+      poslig <- lacInitialize CTPos
+      orilig <- lacInitialize CTOri
+        
+      return $ (ECSGraphics3D g3d figs posfig orifig cams poscam oricam ligs poslig orilig)
 
     stepSystem ecsg3d = do
       let (g3ds, guis) = (g3d ecsg3d)
-      -- update 3d objects - figures
-      cList <- takeMVar (figures ecsg3d)
-      mapM (\(cf, mcp, mco, mcs) -> do
-               -- empty event queues
-               _popEvents cf
-               -- handle changes per single entity item
-               figTVal <- readC cf >>= return . fromJust
-               let newFig = fromStamped figTVal
-               mCache <- HT.lookup (figCache ecsg3d) (idC cf)
-               -- first create/update the figure object
-               newOb <- case mCache of
-                 Nothing -> BA.object3D g3ds newFig
-                 Just (oldOb, oldFig, mPos, mOri, mSiz) -> if oldFig /= figTVal then BA.update3D g3ds oldOb newFig else return oldOb
-               -- then handle the POS information - Position
-               newPos <- case mcp of
-                 Just cp -> do
-                   cpTVal <- readC cp >>= return . fromJust
-                   let cpVal = fromStamped cpTVal
-                   case mCache of
-                     Nothing -> D.positionTo newOb cpVal
-                     Just (oldOb, oldFig, mPos, mOri, mSiz) -> if (fromJust mPos) /= cpTVal then D.positionTo newOb cpVal else return ()
-                   return $ Just cpTVal
-                 Nothing -> return Nothing
-               -- then handle the POS information - Orientation
-               newOri <- case mco of
-                 Just co -> do
-                   coTVal <- readC co >>= return . fromJust
-                   let coVal = fromStamped coTVal
-                   case mCache of
-                     Nothing -> D.orientationTo newOb coVal
-                     Just (oldOb, oldFig, mPos, mOri, mSiz) -> if (fromJust mOri) /= coTVal then D.orientationTo newOb coVal else return ()
-                   return $ Just coTVal
-                 Nothing -> return Nothing
-               -- then handle the POS information - Size
-               newSiz <- case mcs of
-                 Just cs -> do
-                   csTVal <- readC cs >>= return . fromJust
-                   let csVal = fromStamped csTVal
-                   case mCache of
-                     Nothing -> D.sizeTo newOb csVal
-                     Just (oldOb, oldFig, mPos, mOri, mSiz) -> if (fromJust mSiz) /= csTVal then D.sizeTo newOb csVal else return ()
-                   return $ Just csTVal
-                 Nothing -> return Nothing
-               -- insert new values into cache
-               HT.insert (figCache ecsg3d) (idC cf) (newOb, figTVal, newPos, newOri, newSiz)
-           ) cList
-      putMVar (figures ecsg3d) cList
-      -- update 3d objects - cameras
-      cList <- takeMVar (cameras ecsg3d)
-      mapM (\(cc, mcp, mco) -> do
-               -- empty event queues
-               _popEvents cc
-               -- handle changes per single entity item
-               camTVal <- readC cc >>= return . fromJust
-               let newCam = fromStamped camTVal
-               mCache <- HT.lookup (camCache ecsg3d) (idC cc)
-               -- first create/update the figure object
-               newOb <- case mCache of
-                 Nothing -> BA.addCamera g3ds newCam
-                 Just (oldOb, oldCam, mPos, mOri) -> if oldCam /= camTVal then BA.updateCamera g3ds oldOb newCam else return oldOb
-               -- then handle the POS information - Position
-               newPos <- case mcp of
-                 Just cp -> do
-                   cpTVal <- readC cp >>= return . fromJust
-                   let cpVal = fromStamped cpTVal
-                   case mCache of
-                     Nothing -> D.positionTo newOb cpVal
-                     Just (oldOb, oldCam, mPos, mOri) -> if (fromJust mPos) /= cpTVal then D.positionTo newOb cpVal else return ()
-                   return $ Just cpTVal
-                 Nothing -> return Nothing
-               -- then handle the POS information - Orientation
-               newOri <- case mco of
-                 Just co -> do
-                   coTVal <- readC co >>= return . fromJust
-                   let coVal = fromStamped coTVal
-                   case mCache of
-                     Nothing -> D.orientationTo newOb coVal
-                     Just (oldOb, oldCam, mPos, mOri) -> if (fromJust mOri) /= coTVal then D.orientationTo newOb coVal else return ()
-                   return $ Just coTVal
-                 Nothing -> return Nothing
-               -- insert new values into cache
-               HT.insert (camCache ecsg3d) (idC cc) (newOb, camTVal, newPos, newOri)
-           ) cList
-      putMVar (cameras ecsg3d) cList
-      -- run graphics
+          
+      -- figures
+      lacApplyChanges (figures ecsg3d) (Gr.object3D g3ds) (Gr.update3D g3ds) (Gr.remove3D g3ds)
+      let update' pos edata schema = D.positionTo edata pos 
+      lacApplyOtherChanges (posfig ecsg3d) (figures ecsg3d) update'
+      let update'' pos edata schema = D.orientationTo edata pos 
+      lacApplyOtherChanges (orifig ecsg3d) (figures ecsg3d) update''
+
+      -- cameras
+      lacApplyChanges (cameras ecsg3d) (Gr.addCamera g3ds) (Gr.updateCamera g3ds) (Gr.removeCamera g3ds)
+      lacApplyOtherChanges (poscam ecsg3d) (cameras ecsg3d) update'
+      lacApplyOtherChanges (orifig ecsg3d) (cameras ecsg3d) update''
+      
+      -- lights
+      lacApplyChanges (lights ecsg3d) (Gr.addLight g3ds) (Gr.updateLight g3ds) (Gr.removeLight g3ds)
+      lacApplyOtherChanges (poslig ecsg3d) (lights ecsg3d) update'
+      lacApplyOtherChanges (orilig ecsg3d) (lights ecsg3d) update''
+
+      -- step graphics system
       (evt, qFlag) <- E.stepHGamer3D g3ds guis
       return (ecsg3d, qFlag)
+     
 
     shutdownSystem ecsg3d = do
       let (g3ds, guis) = (g3d ecsg3d)
@@ -224,24 +165,3 @@ runSystemGraphics3D :: D.TimeMS -> IO ECSGraphics3D
 runSystemGraphics3D sleepT = runSystem sleepT
 
 
-setupBasicCamera g3d = do
-  let (g3ds, guis) = g3d
-  -- camera creation and position
-  camera <- BA.addCamera g3ds (
-        Camera
-           (Frustum 5.0 5000.0 (D.Deg 90))
-           (Viewport 0 (D.Rectangle 0.0 0.0 1.0 1.0) D.black) )
-  D.positionTo camera (D.Vec3 5.0 5.0 80.0)
-  BA.cameraLookAt camera (D.Vec3 0.0 0.0 (-300.0))
-                                           
-  -- define light
-            
-  BA.setAmbientLight g3ds D.white
-  BA.pointLight g3ds D.white (D.Vec3 10.0 10.0 20.0)
-        
-  -- GUI Code starts here, display hg3d logo
-  GU.loadGuiScheme guis "hg3d.scheme"
-  logo <- GU.loadGuiLayoutFromFile guis "hgamer3d.layout" ""
-  GU.addGuiElToDisplay guis logo
-  
-  return ()

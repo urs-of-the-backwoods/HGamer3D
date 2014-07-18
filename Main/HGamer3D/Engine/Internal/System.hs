@@ -32,15 +32,172 @@ import Control.Concurrent.MVar
 import qualified Data.Map as M
 import Data.Maybe
 import Data.Typeable
+import Data.IORef
 
 import HGamer3D.Data as D
 import HGamer3D.Engine.Internal.Component
+import HGamer3D.Engine.Internal.ComponentType
 import HGamer3D.Engine.Internal.Entity
 
 import System.Clock
 import System.Mem.StableName
 import Data.Hashable
+import qualified Data.HashTable.IO as HT
 
+
+-- the class of data types which have a pure and engine implementation and which can be updated
+
+
+
+-- utility functions for systems
+
+type IdHashTable v = HT.BasicHashTable EntityId v
+
+data ListAndCache schema engine = ListAndCache {
+  -- access from two threads
+  lacAddList :: MVar [(EntityId, Component)],      
+  lacRemoveList :: MVar [EntityId],   
+  -- access from g3ds thread only
+  lacList ::  IORef [(EntityId, Component)],    
+  lacCache :: IdHashTable (engine, StampedValue schema),
+  lacType :: ComponentType
+  }
+
+-- initialize
+lacInitialize :: (Typeable schema, Eq schema) => ComponentType -> IO (ListAndCache schema engine)
+lacInitialize ct = do
+  listAdd <- newMVar []
+  listRemove <- newMVar []
+  listIO <- newIORef []
+  cache <- HT.new
+  return (ListAndCache listAdd listRemove listIO cache ct)
+  
+-- add component for entry
+lacAdd :: (Typeable schema, Eq schema) => Entity -> ListAndCache schema engine -> IO ()
+lacAdd e lac = do
+  oldList <- takeMVar (lacAddList lac)
+  let mCom = e #? (lacType lac)
+  let newList = case mCom of
+        Just com -> ((idE e, com) : oldList)
+        Nothing -> oldList
+  putMVar (lacAddList lac) newList
+
+-- add component for delete
+lacRemove :: (Typeable schema, Eq schema) => Entity -> ListAndCache schema engine -> IO ()
+lacRemove e lac = do
+  oldList <- takeMVar (lacRemoveList lac)
+  putMVar (lacRemoveList lac) (idE e : oldList)
+
+
+-- step system, apply all changes, this is for main components, where direct responsibility exists
+lacApplyChanges :: (Typeable schema, Eq schema) =>
+                   ListAndCache schema engine          -- ^ list and cache data structure
+                   -> (schema -> IO engine)            -- ^ create function for new entries
+                   -> (engine -> schema -> IO engine)  -- ^ update function for changing entries
+                   -> (engine -> IO ())                -- ^ remove functions for removed entries
+                   -> IO ()
+lacApplyChanges lac create update remove = do
+  -- insert
+  insertList <- takeMVar (lacAddList lac)
+  mapM (\(eid, c) -> do
+           stampedVal <- readC c >>= return . fromJust
+           let val = fromStamped stampedVal
+           engineVal <- create val
+           HT.insert (lacCache lac) eid (engineVal, stampedVal)
+           modifyIORef (lacList lac) ( (:) (eid, c) )
+           ) insertList
+  putMVar (lacAddList lac) []
+  
+  -- remove
+  removeList <- takeMVar (lacRemoveList lac)
+  mapM (\eid -> do
+           -- get cached value and remove
+           mCacheVal <- HT.lookup (lacCache lac) eid
+           case mCacheVal of
+             Just (engineVal, stampedCacheVal) -> do
+               remove engineVal
+               HT.delete (lacCache lac) eid
+             Nothing -> error "HGamer3D.Engine.Internal.System.applyAnyChanges: cache value not found"
+           -- remove from current list
+           modifyIORef (lacList lac) (filter (\(eid', c) -> eid /= eid'))
+           ) removeList
+  putMVar (lacRemoveList lac) []
+
+  -- apply changes from compenents, taken from stamp
+  currList <- readIORef (lacList lac)
+  mapM (\(eid, c) -> do
+           -- handle Events
+           evts <- _popEvents c
+           mCacheVal <- HT.lookup (lacCache lac) eid
+           case mCacheVal of
+             Just (engineVal, stampedCacheVal) -> do
+               newStampedVal <- readC c >>= return . fromJust
+               if stampedCacheVal /= newStampedVal then do
+                 newEngineVal <- update engineVal (fromStamped newStampedVal)
+                 HT.insert (lacCache lac) eid (newEngineVal, newStampedVal)
+                 return ()
+                 else return ()
+             Nothing -> return (error "HGamer3D.Engine.Internal.System.applyAnyChanges: cache value not found")
+           return ()
+             ) currList
+  return ()
+
+-- step changes, apply all changes for supplementary components, where responsibility reside in other components
+lacApplyOtherChanges :: (Typeable schema, Eq schema) =>
+                        ListAndCache schema ()                   -- ^ this component, where add and remove functions are done (list ops only)
+                        -> ListAndCache schema' engine'              -- ^ the main component, which is influenced by this component
+                        -> (schema -> engine' -> schema' -> IO ())   -- ^ update function, updates from this component to main engine
+                        -> IO ()
+lacApplyOtherChanges lac lac' update' = do
+  -- insert
+  insertList <- takeMVar (lacAddList lac)
+  mapM (\(eid, c) -> do
+           stampedVal <- readC c >>= return . fromJust
+           let val = fromStamped stampedVal
+           HT.insert (lacCache lac) eid ((), stampedVal) -- empty engine value, only need to store stampedValue
+           modifyIORef (lacList lac) ( (:) (eid, c) )
+           ) insertList
+  putMVar (lacAddList lac) []
+  
+  -- remove
+  removeList <- takeMVar (lacRemoveList lac)
+  mapM (\eid -> do
+           -- get cached value and remove
+           mCacheVal <- HT.lookup (lacCache lac) eid
+           case mCacheVal of
+             Just (engineVal, stampedCacheVal) -> do
+               HT.delete (lacCache lac) eid
+             Nothing -> error "HGamer3D.Engine.Internal.System.applyAnyChanges: cache value not found"
+           -- remove from current list
+           modifyIORef (lacList lac) (filter (\(eid', c) -> eid /= eid'))
+           ) removeList
+  putMVar (lacRemoveList lac) []
+
+  -- apply changes from compenents, taken from stamp
+  currList <- readIORef (lacList lac)
+  mapM (\(eid, c) -> do
+           -- handle Events
+           evts <- _popEvents c
+           mCacheVal <- HT.lookup (lacCache lac) eid
+           case mCacheVal of
+             Just (engineVal, stampedCacheVal) -> do -- engineVal is ()
+               newStampedVal <- readC c >>= return . fromJust
+               if stampedCacheVal /= newStampedVal then do
+                 let newVal = fromStamped newStampedVal
+                 -- lookup engine val and val from main current value
+                 mMainCacheVal <- HT.lookup (lacCache lac') eid
+                 case mMainCacheVal of
+                   Just (engineMainVal, stampedMainCacheVal) -> update' newVal engineMainVal (fromStamped stampedMainCacheVal)
+                   Nothing -> return (error "HGamer3D.Engine.Internal.System.applyAnyChanges: cache value not found")
+                 HT.insert (lacCache lac) eid ((), newStampedVal)
+                 return ()
+                 else return ()
+             Nothing -> return (error "HGamer3D.Engine.Internal.System.applyAnyChanges: cache value not found")
+           return ()
+             ) currList
+  return ()
+
+  
 -- the system of entity component system, in general a system has internal state
 -- entities can be added to it and the system has a step function, to run it
 

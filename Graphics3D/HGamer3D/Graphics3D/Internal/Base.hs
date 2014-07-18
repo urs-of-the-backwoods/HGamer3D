@@ -50,6 +50,7 @@ import HGamer3D.Bindings.Ogre.EnumRenderOperationOperationType
 import HGamer3D.Bindings.Ogre.StructHG3DClass
 import HGamer3D.Bindings.Ogre.EnumSceneManagerPrefabType
 import HGamer3D.Bindings.Ogre.ClassWindowEventUtilities as WindowEventUtilities
+import HGamer3D.Bindings.Ogre.ClassSceneNode as SceneNode
 
 import Control.Monad
 import Control.Monad.Trans
@@ -209,108 +210,6 @@ freeGraphics3D g3ds = do
   Root.delete root
   return ()
 
-
-{- ----------------------------------------------------------------
-   Camera
-   ---------------------------------------------------------------- -}
-
--- |  Camera, internal data object for engine
-data Camera = Camera {
-  cameraCamObject :: HG3DClass,
-  cameraViewportObject :: HG3DClass,
-  cameraSchema :: Cam.Camera
- }
-
--- | add a camera, you probably want to do this at least once
-addCamera :: Graphics3DSystem -- ^ the graphics system
-             -> Cam.Camera   -- ^ the Schema data for the camera
-             -> IO Camera    -- ^ the resulting engine object
-addCamera g3ds schema = do
-  let (SceneManager sceneManager) = g3dsSceneManager g3ds
-  let uname = g3dsUniqueName g3ds
-  let (RenderTarget renderWindow) = g3dsRenderTarget g3ds
-  let Cam.Camera (Cam.Frustum nd fd fov) (Cam.Viewport z pos bgr) = schema
-  -- create camera
-  cameraName <- (nextUniqueName uname) >>= (\n -> return ("Camera"++n))
-  camera <- SceneManager.createCamera sceneManager cameraName
-  -- set Frustum parameters
-  Frustum.setNearClipDistance camera nd
-  Frustum.setFarClipDistance camera fd
-  Frustum.setFOVy camera (fromAngle fov)
-  -- add Viewport
-  viewport <- RenderTarget.addViewport renderWindow camera z (rectX pos) (rectY pos) (rectWidth pos) (rectHeight pos)
-  -- set Viewport parameters
-  Viewport.setBackgroundColour viewport bgr
-  -- create camera return value
-  let cam = Camera camera viewport schema
-  -- adapt aspect ratio
-  cameraAdaptAspectRatio cam
-
-  return cam
-
--- | remove a camera 
-removeCamera :: Graphics3DSystem -> Camera -> IO ()
-removeCamera g3ds (Camera camera viewport schema) = do
-  let (SceneManager sceneManager) = g3dsSceneManager g3ds
-  let (RenderTarget renderWindow) = g3dsRenderTarget g3ds
-  let Cam.Camera (Cam.Frustum nd fd fov) (Cam.Viewport z pos bgr) = schema
-  RenderTarget.removeViewport renderWindow z
-  SceneManager.destroyCamera sceneManager camera
-
--- | update an existing camera with new parameters
-updateCamera :: Graphics3DSystem -> Camera -> Cam.Camera -> IO Camera
-updateCamera g3ds cam@(Camera camera viewport schema) schema' = do
- 
-  let Cam.Camera (Cam.Frustum nd fd fov) (Cam.Viewport z pos bgr) = schema
-  let Cam.Camera (Cam.Frustum nd' fd' fov') (Cam.Viewport z' pos' bgr') = schema'
-  -- if zorder or position are not equal, we need to rebuild
-  if (z /= z') || (pos /= pos') then do
-    removeCamera g3ds cam
-    addCamera g3ds schema'
-    else do
-      -- adapt single values, as needed
-      if nd /= nd' then Frustum.setNearClipDistance camera nd' else return ()
-      if fd /= fd' then Frustum.setFarClipDistance camera fd' else return ()
-      if fov /= fov' then Frustum.setFOVy camera (fromAngle fov') else return ()
-      if bgr /= bgr' then Viewport.setBackgroundColour viewport bgr' else return ()
-      return (Camera camera viewport schema')
-  
--- | adapt the aspect ration, in case the window size and aspect ratio changes, this
---   is called inside the engine automatically.
-cameraAdaptAspectRatio :: Camera -> IO ()
-cameraAdaptAspectRatio cam = do
-  let (Camera camera viewport schema) = cam
-  height <- Viewport.getActualHeight viewport
-  width <- Viewport.getActualWidth viewport
-  Frustum.setAspectRatio camera ((fromIntegral width) / (fromIntegral height))
-  return ()
-	
-instance HasPosition Camera where
-	position (Camera c _ _) = Camera.getPosition c
-	positionTo (Camera c _ _) pos = Camera.setPosition2 c  pos
-	
-instance HasOrientation Camera where
-	orientation (Camera c _ _) = do
-		q <- Camera.getOrientation c
-		let uq = mkNormal q
-		return uq
-	orientationTo (Camera c _ _) uq = do
-		Camera.setOrientation c (fromNormal uq)
-		return ()
-
--- | set the direction in a way, that the camera looks toward a specified point
-cameraLookAt :: Camera -> Vec3 -> IO ()
-cameraLookAt (Camera c _ _) v = do
-	Camera.lookAt c v
-	return ()
-
--- | Background colour of the 3d drawing window
-setBackgroundColour :: Graphics3DSystem -> Camera -> Colour -> IO Camera
-setBackgroundColour g3ds cam@(Camera camera viewport schema) bgColour = do
-  let Cam.Camera (Cam.Frustum nd fd fov) (Cam.Viewport z pos bgr) = schema
-  let schema' = Cam.Camera (Cam.Frustum nd fd fov) (Cam.Viewport z pos bgColour)
-  updateCamera g3ds cam schema'
-
 -- | adds a resource location for 3D media (Ogre)
 addResourceLocationMedia :: Graphics3DSystem -- ^ the Graphics3D system object, returned by initGraphics3D
                             -> String -- ^ path to new resource location, the path should identify a directory
@@ -353,11 +252,55 @@ renderOneFrame g3ds = do
   Root.renderOneFrame root
   return ()
 
--- | Typed Ogre Classes: Entity
-data OEntity = OE HG3DClass  -- this object is an Ogre Entity
 
 -- | Typed Ogre Classes: Node
 data ONode = ON HG3DClass    -- this object is an Ogre Node
+
+-- | Typed Ogre Classes: Entity
+data OEntity = OE HG3DClass  -- this object is an Ogre Entity
+
+-- | Typed Ogre Classes: Light
+data OLight = OL HG3DClass -- this object is an Ogre Light
+
+-- | Typed Ogre Classes: Camera
+data OCamera = OC HG3DClass -- this object is an Ogre Camera
+
+-- | Typed Ogre Classes: Material
+data OMaterial = OM HG3DClass -- this object is an Ogre Material
+
+
+-- | Typeclass for types, which have a main Node
+class HasNode a where
+  getNode :: a -> ONode
+  getNode' :: a -> HG3DClass
+  getNode' = (\(ON n) -> n) . getNode
+  setNodePos :: a -> Position -> IO ()
+  setNodePos hn pos = Node.setPosition (getNode' hn) pos
+  setNodeOri :: a -> Orientation -> IO ()
+  setNodeOri hn ori = Node.setOrientation (getNode' hn) (fromNormal ori)
+  setNodeSiz :: a -> Size -> IO ()
+  setNodeSiz hn siz = Node.setScale (getNode' hn) siz
+
+instance HasNode ONode where
+  getNode n = n
+
+-- | Typeclass for objects which can be attached to Nodes
+class NodeContent a where
+  attachToNode :: a -> ONode -> IO ()
+  detachFromNode :: a -> ONode -> IO ()
+
+instance NodeContent OEntity where
+  attachToNode (OE en) (ON n) = SceneNode.attachObject n en
+  detachFromNode (OE en) (ON n) = SceneNode.detachObject2 n en
+
+instance NodeContent OCamera where
+  attachToNode (OC en) (ON n) = SceneNode.attachObject n en
+  detachFromNode (OC en) (ON n) = SceneNode.detachObject2 n en
+
+instance NodeContent OLight where
+  attachToNode (OL en) (ON n) = SceneNode.attachObject n en
+  detachFromNode (OL en) (ON n) = SceneNode.detachObject2 n en
+
 
 -- |
 -- For the data driven API, we need an internal representation, which
@@ -382,14 +325,39 @@ class Graphics3DItem a where
   update3D :: Graphics3DSystem -> Object3D a -> a -> IO (Object3D a)
   remove3D :: Graphics3DSystem -> (Object3D a) -> IO ()
 
-_getNode :: EngineData -> ONode
-_getNode edata = case edata of
-  (EDEntityNode _ node) -> node
-  (EDNodeAndSub node _) -> node
+instance HasNode EngineData where
+  getNode (EDEntityNode _ node) = node
+  getNode (EDNodeAndSub node _) = node
 
-_getNode' :: Object3D a -> HG3DClass
-_getNode' (Object3D edata _) = case edata of
-  (EDEntityNode (OE entity) (ON node)) -> node
-  (EDNodeAndSub (ON node) _) -> node
+instance HasNode (Object3D a) where
+  getNode (Object3D (EDEntityNode _ node) _) = node
+  getNode (Object3D (EDNodeAndSub node _) _) = node
 
+_getRootNode :: Graphics3DSystem -> IO ONode
+_getRootNode g3ds = do
+  let (SceneManager scm) = (g3dsSceneManager g3ds)
+  rootNode <- SceneManager.getRootSceneNode scm
+  return (ON rootNode)
+
+_createSubNode :: ONode -> IO ONode
+_createSubNode (ON parent) = SceneNode.createChildSceneNode parent zeroVec3 unitQ >>= (return . ON)
+
+_addEntityToNode :: Graphics3DSystem -> ONode -> OEntity -> IO ()
+_addEntityToNode g3ds(ON node) (OE meshEntity) = SceneNode.attachObject node meshEntity 
+
+_exchangeEntityInNode :: Graphics3DSystem -> ONode -> OEntity -> OEntity -> IO ()
+_exchangeEntityInNode g3ds (ON meshNode) (OE oldMeshEntity) (OE newMeshEntity) = do
+  let (SceneManager scm) = (g3dsSceneManager g3ds)
+  SceneNode.detachObject2 meshNode oldMeshEntity
+  SceneManager.destroyEntity scm oldMeshEntity
+  SceneNode.attachObject meshNode newMeshEntity
+
+_removeEntityAndNode :: Graphics3DSystem -> ONode -> OEntity -> ONode -> IO ()
+_removeEntityAndNode g3ds (ON parent) (OE meshEntity ) (ON meshNode) = do
+  let (SceneManager scm) = (g3dsSceneManager g3ds)
+  rootNode <- SceneManager.getRootSceneNode scm
+  SceneNode.detachObject2 meshNode meshEntity
+  SceneManager.destroyEntity scm meshEntity
+  Node.removeChild2 parent meshNode
+  SceneManager.destroySceneNode2 scm meshNode
 
