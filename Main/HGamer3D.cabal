@@ -33,7 +33,7 @@ Flag InputSystem
 Library
   Build-Depends:     base >= 3 && < 5, clock, containers, hashtables, hashable, HGamer3D-Data >= 0.4.0 && < 0.5.0, HGamer3D-Graphics3D >= 0.4.0 && < 0.5.0, HGamer3D-WinEvent >= 0.4.0 && < 0.5.0, HGamer3D-GUI >= 0.4.0 && < 0.5.0 
 
-  Exposed-modules:   HGamer3D.Engine.Internal.Component, HGamer3D.Engine.Internal.ComponentType, HGamer3D.Engine.Internal.Entity, HGamer3D.Engine.Internal.System, HGamer3D.Engine.Internal.SystemGraphics3D, HGamer3D.Engine.Internal.GameLoop, HGamer3D.Engine.Internal.Event, HGamer3D.Engine.EcsAPI, HGamer3D.Engine.BaseAPI, HGamer3D.Internal.Engine
+  Exposed-modules:   HGamer3D.Engine.Internal.Component, HGamer3D.Engine.Internal.ComponentType, HGamer3D.Engine.Internal.Entity, HGamer3D.Engine.Internal.System, HGamer3D.Engine.Internal.SystemGraphics3D, HGamer3D.Engine.Internal.SystemEvent, HGamer3D.Engine.Internal.GameLoop, HGamer3D.Engine.Internal.Event, HGamer3D.Engine.Schema.EventReceiver, HGamer3D.Engine.Schema.EventSender, HGamer3D.Engine.EcsAPI, HGamer3D.Engine.BaseAPI, HGamer3D.Internal.Engine
   Other-modules:     
 
   c-sources:         

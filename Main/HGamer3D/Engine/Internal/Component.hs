@@ -60,7 +60,8 @@ data Component = Component {
   componentData :: Dynamic,
   componentId :: ComponentId,
   componentType :: TypeRep,
-  componentEvents :: MVar [HG3DEvent]
+  componentU2CEvents :: MVar [HG3DEvent],
+  componentC2UEvents :: MVar [HG3DEvent]
 } 
 
 instance Eq Component where
@@ -72,11 +73,12 @@ newC val = do
   mv <- newMVar tval
   let dyn = toDyn mv
   ident <- makeStableName dyn
-  evts <- newMVar []
-  return (Component dyn ident (typeOf val) evts)
+  evtsU2C <- newMVar []
+  evtsC2U <- newMVar []
+  return (Component dyn ident (typeOf val) evtsU2C evtsC2U)
 
 readC :: Typeable a => Component -> IO (Maybe (StampedValue a))
-readC (Component dyn _ _ _)
+readC (Component dyn _ _ _ _)
     | Just mv  <- fromDynamic dyn = do
                     val <- takeMVar mv
                     putMVar mv val
@@ -88,10 +90,10 @@ valC :: Typeable a => Component -> IO a
 valC c = readC c >>= return . fromStamped . fromJust
 
 isTypeC :: Typeable a => a -> Component -> Bool
-isTypeC val (Component dyn _ tr _) = (typeOf val == tr)
+isTypeC val (Component dyn _ tr _ _) = (typeOf val == tr)
   
 updateC :: Typeable a => Component -> (a -> a) -> IO ()
-updateC (Component dyn _ _ _) f 
+updateC (Component dyn _ _ _ _) f 
     | Just mv  <- fromDynamic dyn = do
                     val <- (takeMVar mv >>= (return . fromStamped))
                     newTVal <- _stamp (f val)
@@ -101,17 +103,31 @@ updateC (Component dyn _ _ _) f
               return ()
     
 idC :: Component -> ComponentId
-idC (Component _ ident _ _) = ident
+idC (Component _ ident _ _ _) = ident
 
-_pushEvent :: Component -> HG3DEvent -> IO ()
-_pushEvent c evt = do
-  let mv = (componentEvents c)
+
+_pushU2CEvents :: Component -> [HG3DEvent] -> IO ()
+_pushU2CEvents c newEvts = do
+  let mv = (componentU2CEvents c)
   evts <- takeMVar mv
-  putMVar mv (evts ++ [evt])
+  putMVar mv (evts ++ newEvts)
 
-_popEvents :: Component -> IO [HG3DEvent]
-_popEvents c = do
-  let mv = (componentEvents c)
+_popU2CEvents :: Component -> IO [HG3DEvent]
+_popU2CEvents c = do
+  let mv = (componentU2CEvents c)
+  evts <- takeMVar mv
+  putMVar mv []
+  return evts
+
+_pushC2UEvents :: Component -> [HG3DEvent] -> IO ()
+_pushC2UEvents c newEvts = do
+  let mv = (componentC2UEvents c)
+  evts <- takeMVar mv
+  putMVar mv (evts ++ newEvts)
+
+_popC2UEvents :: Component -> IO [HG3DEvent]
+_popC2UEvents c = do
+  let mv = (componentC2UEvents c)
   evts <- takeMVar mv
   putMVar mv []
   return evts

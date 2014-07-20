@@ -38,6 +38,7 @@ import HGamer3D.Data as D
 import HGamer3D.Engine.Internal.Component
 import HGamer3D.Engine.Internal.ComponentType
 import HGamer3D.Engine.Internal.Entity
+import HGamer3D.Engine.Internal.Event
 
 import System.Clock
 import System.Mem.StableName
@@ -88,6 +89,12 @@ lacRemove e lac = do
   oldList <- takeMVar (lacRemoveList lac)
   putMVar (lacRemoveList lac) (idE e : oldList)
 
+-- empty event handling functions, for re-use in case no event handling is needed
+lacHandleU2CEvents :: [HG3DEvent] -> engine -> IO ()
+lacHandleU2CEvents evts eng= return ()
+
+lacHandleC2UEvents :: engine -> IO [HG3DEvent]
+lacHandleC2UEvents eng = return []
 
 -- step system, apply all changes, this is for main components, where direct responsibility exists
 lacApplyChanges :: (Typeable schema, Eq schema) =>
@@ -95,8 +102,10 @@ lacApplyChanges :: (Typeable schema, Eq schema) =>
                    -> (schema -> IO engine)            -- ^ create function for new entries
                    -> (engine -> schema -> IO engine)  -- ^ update function for changing entries
                    -> (engine -> IO ())                -- ^ remove functions for removed entries
+                   -> ([HG3DEvent] -> engine -> IO ()) -- ^ handle user events (U2C) function
+                   -> (engine -> IO [HG3DEvent] )      -- ^ handle component events (C2U) function
                    -> IO ()
-lacApplyChanges lac create update remove = do
+lacApplyChanges lac create update remove handleU2CEvents handleC2UEvents = do
   -- insert
   insertList <- takeMVar (lacAddList lac)
   mapM (\(eid, c) -> do
@@ -126,11 +135,15 @@ lacApplyChanges lac create update remove = do
   -- apply changes from compenents, taken from stamp
   currList <- readIORef (lacList lac)
   mapM (\(eid, c) -> do
-           -- handle Events
-           evts <- _popEvents c
+           -- handle Events, user event received
+           userEvts <- _popU2CEvents c
            mCacheVal <- HT.lookup (lacCache lac) eid
            case mCacheVal of
              Just (engineVal, stampedCacheVal) -> do
+               -- event handling
+               handleU2CEvents userEvts engineVal
+               comEvents <- handleC2UEvents engineVal
+               _pushC2UEvents c comEvents
                newStampedVal <- readC c >>= return . fromJust
                if stampedCacheVal /= newStampedVal then do
                  newEngineVal <- update engineVal (fromStamped newStampedVal)
@@ -177,7 +190,6 @@ lacApplyOtherChanges lac lac' update' = do
   currList <- readIORef (lacList lac)
   mapM (\(eid, c) -> do
            -- handle Events
-           evts <- _popEvents c
            mCacheVal <- HT.lookup (lacCache lac) eid
            case mCacheVal of
              Just (engineVal, stampedCacheVal) -> do -- engineVal is ()

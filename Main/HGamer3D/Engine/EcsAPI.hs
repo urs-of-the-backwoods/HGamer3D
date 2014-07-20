@@ -52,6 +52,9 @@ module HGamer3D.Engine.EcsAPI
   ECSGraphics3D,
   runSystemGraphics3D,
 
+  ECSEventQueues,
+  runSystemEvent,
+
   SomeSystem,
   (#+),
   addToWorld,

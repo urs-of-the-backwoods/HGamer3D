@@ -24,6 +24,7 @@ dependsOn = [
           Glob("HGamer3D/Network/Internal/*"),
           Glob("HGamer3D/Engine/*"),
           Glob("HGamer3D/Engine/Internal/*"),
+          Glob("HGamer3D/Engine/Schema/*"),
 	  Glob("*.cabal"),
 	  "LICENSE",
 

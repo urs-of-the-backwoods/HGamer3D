@@ -53,7 +53,8 @@ data ECSAudio = ECSAudio {
   positions :: ListAndCache D.Position ()
   }
 
-_handleEvent map evt = do
+_handleEvent aslots evt = do
+      let (A.AudioSlots map schema) = aslots
       case evt of
         AudioEvt (PlaySound slot) -> do
           let mAS = (M.lookup slot map)
@@ -84,7 +85,10 @@ instance System ECSAudio where
       return $ (ECSAudio audioSlots positions)
 
     stepSystem system = do
-      lacApplyChanges (audioSlots system) A.audioSlots A.updateAudioSlots A.removeAudioSlots
+      let handleUserEvents evts aslots = do
+            mapM (_handleEvent aslots) evts
+            return ()
+      lacApplyChanges (audioSlots system) A.audioSlots A.updateAudioSlots A.removeAudioSlots handleUserEvents lacHandleC2UEvents
       let update' pos edata schema = D.positionTo edata pos 
       lacApplyOtherChanges (positions system) (audioSlots system) update'
       return (system, False)

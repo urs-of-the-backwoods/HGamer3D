@@ -28,7 +28,8 @@ module HGamer3D.Internal.Engine
   module HGamer3D.Engine.Internal.Event,
   module HGamer3D.Engine.Internal.GameLoop,
   module HGamer3D.Engine.Internal.System,
-  module HGamer3D.Engine.Internal.SystemGraphics3D
+  module HGamer3D.Engine.Internal.SystemGraphics3D,
+  module HGamer3D.Engine.Internal.SystemEvent
 ) where
 
 import HGamer3D.Engine.Internal.Component
@@ -38,3 +39,4 @@ import HGamer3D.Engine.Internal.Event
 import HGamer3D.Engine.Internal.GameLoop
 import HGamer3D.Engine.Internal.System
 import HGamer3D.Engine.Internal.SystemGraphics3D
+import HGamer3D.Engine.Internal.SystemEvent

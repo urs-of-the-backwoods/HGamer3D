@@ -31,11 +31,13 @@ data ComponentType =   CTPos    -- ^ Position
                      | CTOri    -- ^ Orientation
                      | CTSiz    -- ^ Size
                      | CTFig    -- ^ Figure
-                     | CTASl    -- ^ Audio Slots
+                     | CTASl    -- ^ Audio Slots 
                      | CTALs    -- ^ Audio Listener
                      | CTCam    -- ^ Cameras
                      | CTLig    -- ^ Light
-
+                     | CTScP    -- ^ Scene Parameter
+                     | CTEvR    -- ^ Event Receiver (GUI, Window, Joystick, Channel, ...)
+                     | CTEvS    -- ^ Event Sender (Channel, ...)
                        deriving (Eq, Ord, Show)
 
   

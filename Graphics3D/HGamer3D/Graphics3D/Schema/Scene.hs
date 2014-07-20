@@ -27,16 +27,22 @@ where
 import Data.Typeable
 
 import HGamer3D.Data as Dat
+import HGamer3D.Graphics3D.Schema.Material
 
 data SceneParameter = SceneParameter {
   ambientLight :: Colour,
-  shadowType :: ShadowType
+  shadowType :: ShadowType,
+  skyType :: SkyType
   } deriving (Eq, Show, Typeable)
 
 data ShadowType = NoShadows
                 | TextureAdditive
-                | TextureModulativevi
+                | TextureModulative
                 | StencilAdditive
                 | StencilModulative
                   deriving (Eq, Show, Typeable)
-  
+
+data SkyType = NoSky
+             | SkyBox Material Float                 -- Distance
+             | SkyDome Material Float Float Float    -- Curvature, Tiling, Distance
+               deriving (Eq, Show, Typeable)

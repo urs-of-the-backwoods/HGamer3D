@@ -1,5 +1,4 @@
-{-# OPTIONS_HADDOCK hide #-}
-
+{-# Language StandaloneDeriving, DeriveDataTypeable #-}
 -- This source file is part of HGamer3D
 -- (A project to enable 3D game development in Haskell)
 -- For the latest info, see http://www.althainz.de/HGamer3D.html
@@ -18,24 +17,17 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- HGamer3D/Internal/Event Module
+-- HGamer3D/Engine/Schema/EventSender Module
 --
 
-module HGamer3D.Engine.Internal.Event
+-- | Schema for EventSender
+module HGamer3D.Engine.Schema.EventSender
 
 where
 
-import HGamer3D.WinEvent.BaseAPI
-import HGamer3D.GUI.BaseAPI
-import Data.Dynamic
+import Data.Typeable
+import qualified HGamer3D.Data as D
 
-data AudioEvent = PlaySound String
-                | StopSound String
-
-data HG3DEvent = WindowEvt SDLEvent
-               | GUIEvt GUIEvent
-               | AudioEvt AudioEvent
-               | UserEvt Dynamic
-                 
-
-  
+data EventSender = ChannelEventSender String
+                   deriving (Eq, Show, Typeable)
+                     

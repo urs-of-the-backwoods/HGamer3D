@@ -67,6 +67,7 @@ import HGamer3D.Util
 import HGamer3D.Graphics3D.Schema.Material
 import HGamer3D.Graphics3D.Schema.Geometry
 import HGamer3D.Graphics3D.Schema.Figure
+import qualified HGamer3D.Graphics3D.Schema.Scene as Sc
 import qualified HGamer3D.Graphics3D.Schema.Camera as Cam
 
 data SceneManager = SceneManager HG3DClass
@@ -361,3 +362,24 @@ _removeEntityAndNode g3ds (ON parent) (OE meshEntity ) (ON meshNode) = do
   Node.removeChild2 parent meshNode
   SceneManager.destroySceneNode2 scm meshNode
 
+setSceneParameter :: Graphics3DSystem -> Sc.SceneParameter -> IO ()
+setSceneParameter g3ds scene = do
+  let (SceneManager scm) = g3dsSceneManager g3ds
+  let (Sc.SceneParameter aLightColour shadow sky) = scene
+  -- set ambient Light
+  SceneManager.setAmbientLight scm aLightColour
+  -- set Shadow Mode to be done
+
+  -- set skybox
+  case sky of
+    Sc.NoSky -> do
+      SceneManager.setSkyBoxEnabled scm False
+      SceneManager.setSkyDomeEnabled scm False
+    Sc.SkyBox (ResourceMaterial mname) distance -> do
+      SceneManager.setSkyDomeEnabled scm False
+      SceneManager.setSkyBox scm True mname distance True unitQ "General"
+    Sc.SkyDome (ResourceMaterial mname) curvature tiling distance -> do
+      SceneManager.setSkyBoxEnabled scm False
+      SceneManager.setSkyDome scm True mname curvature tiling distance True unitQ 16 16 (-1) "General"
+
+  return ()

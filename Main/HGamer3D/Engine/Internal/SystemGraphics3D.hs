@@ -52,6 +52,7 @@ import HGamer3D.Graphics3D.Schema.Geometry
 import HGamer3D.Graphics3D.Schema.Material
 import HGamer3D.Graphics3D.Schema.Camera
 import HGamer3D.Graphics3D.Schema.Light
+import HGamer3D.Graphics3D.Schema.Scene
 
 
 
@@ -77,7 +78,10 @@ data ECSGraphics3D = ECSGraphics3D {
       -- lights
       lights :: ListAndCache Light Gr.Light,
       poslig :: ListAndCache D.Position (),
-      orilig :: ListAndCache D.Orientation ()
+      orilig :: ListAndCache D.Orientation (),
+
+      -- scene parameter
+      scenepars :: ListAndCache SceneParameter ()
       }
 
 instance System ECSGraphics3D where
@@ -95,6 +99,8 @@ instance System ECSGraphics3D where
       lacAdd entity (poslig ecsg3d)
       lacAdd entity (orilig ecsg3d)
 
+      lacAdd entity (scenepars ecsg3d)
+      
       return ecsg3d
 
     removeEntity ecsg3d entity = do
@@ -110,6 +116,7 @@ instance System ECSGraphics3D where
       lacRemove entity (poslig ecsg3d)
       lacRemove entity (orilig ecsg3d)
       
+      lacRemove entity (scenepars ecsg3d)
       return ecsg3d
     
     initializeSystem = do
@@ -128,31 +135,47 @@ instance System ECSGraphics3D where
       ligs <- lacInitialize CTLig
       poslig <- lacInitialize CTPos
       orilig <- lacInitialize CTOri
-        
-      return $ (ECSGraphics3D g3d figs posfig orifig cams poscam oricam ligs poslig orilig)
+
+      scpars <- lacInitialize CTScP
+
+      return $ (ECSGraphics3D g3d figs posfig orifig cams poscam oricam ligs poslig orilig scpars)
 
     stepSystem ecsg3d = do
       let (g3ds, guis) = (g3d ecsg3d)
+
+      -- small helper functions
+      let update' pos edata schema = D.positionTo edata pos 
+      let update'' pos edata schema = D.orientationTo edata pos
           
       -- figures
-      lacApplyChanges (figures ecsg3d) (Gr.object3D g3ds) (Gr.update3D g3ds) (Gr.remove3D g3ds)
-      let update' pos edata schema = D.positionTo edata pos 
+      lacApplyChanges (figures ecsg3d) (Gr.object3D g3ds) (Gr.update3D g3ds) (Gr.remove3D g3ds) lacHandleU2CEvents lacHandleC2UEvents
       lacApplyOtherChanges (posfig ecsg3d) (figures ecsg3d) update'
-      let update'' pos edata schema = D.orientationTo edata pos 
       lacApplyOtherChanges (orifig ecsg3d) (figures ecsg3d) update''
 
       -- cameras
-      lacApplyChanges (cameras ecsg3d) (Gr.addCamera g3ds) (Gr.updateCamera g3ds) (Gr.removeCamera g3ds)
+      lacApplyChanges (cameras ecsg3d) (Gr.addCamera g3ds) (Gr.updateCamera g3ds) (Gr.removeCamera g3ds) lacHandleU2CEvents lacHandleC2UEvents
       lacApplyOtherChanges (poscam ecsg3d) (cameras ecsg3d) update'
       lacApplyOtherChanges (orifig ecsg3d) (cameras ecsg3d) update''
       
       -- lights
-      lacApplyChanges (lights ecsg3d) (Gr.addLight g3ds) (Gr.updateLight g3ds) (Gr.removeLight g3ds)
+      lacApplyChanges (lights ecsg3d) (Gr.addLight g3ds) (Gr.updateLight g3ds) (Gr.removeLight g3ds) lacHandleU2CEvents lacHandleC2UEvents
       lacApplyOtherChanges (poslig ecsg3d) (lights ecsg3d) update'
       lacApplyOtherChanges (orilig ecsg3d) (lights ecsg3d) update''
 
+      -- scene parameters
+      let updateScene eng new = Gr.setSceneParameter g3ds new
+      let removeScene eng = return ()
+      lacApplyChanges (scenepars ecsg3d) (Gr.setSceneParameter g3ds) updateScene removeScene lacHandleU2CEvents lacHandleC2UEvents
+      
       -- step graphics system
-      (evt, qFlag) <- E.stepHGamer3D g3ds guis
+      (evts, qFlag) <- E.stepHGamer3D g3ds guis
+
+      -- handover evts towards the event system, map over
+
+      -- next steps, put Entity handling in system, (from SystemEvent)
+      -- then add also here to this system
+      -- then ad events to all Event Receiver components (C2U)
+      
       return (ecsg3d, qFlag)
      
 

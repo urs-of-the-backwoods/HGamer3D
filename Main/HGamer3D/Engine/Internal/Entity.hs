@@ -37,7 +37,12 @@ import Data.Typeable
 import System.Mem.StableName
 
 type EntityId = StableName (M.Map ComponentType Component)
-data Entity = Entity (M.Map ComponentType Component) EntityId
+data Entity = Entity {
+  entityCMap :: (M.Map ComponentType Component),
+  entityId :: EntityId ,
+  entityU2CEvents :: MVar [HG3DEvent],
+  entityC2UEvents :: MVar [HG3DEvent]
+}
 
 --
 -- pure Data functions, creating, traversing and getting components from entities
@@ -50,19 +55,40 @@ entity inList  = do
                      return (c, val')) inList
   let cMap = M.fromList outList
   eId <- makeStableName cMap
-  return $ Entity cMap eId
+  evtsU2C <- newMVar []
+  evtsC2U <- newMVar []
+  return $ Entity cMap eId evtsU2C evtsC2U
 
 idE :: Entity -> EntityId
-idE (Entity _ eId) = eId
+idE (Entity _ eId _ _) = eId
 
 sendEvent :: Entity -> HG3DEvent -> IO ()
-sendEvent (Entity map _) event = mapM (\(ct, c) -> _pushEvent c event) (M.toList map) >> return ()
+sendEvent (Entity map _ evtsU2C _) event = do
+  evts <- takeMVar evtsU2C
+  putMVar evtsU2C (evts ++ [event])
+
+_popEntityU2CEvents :: Entity -> IO [HG3DEvent]
+_popEntityU2CEvents (Entity map _ evtsU2C _) = do
+  evts <- takeMVar evtsU2C
+  putMVar evtsU2C []
+  return evts
+
+receiveEvents :: Entity -> IO [HG3DEvent]
+receiveEvents (Entity map _ _ evtsC2U) = do
+  evts <- takeMVar evtsC2U
+  putMVar evtsC2U []
+  return evts
+
+_pushEntityC2UEvents :: Entity -> [HG3DEvent] -> IO ()
+_pushEntityC2UEvents (Entity map _ _ evtsC2U) events = do
+  evts <- takeMVar evtsC2U
+  putMVar evtsC2U (evts ++ events)
 
 (#:) :: Typeable a => ComponentType -> a -> (ComponentType, IO Component)
 (#:) ec val = (ec, newC val)
 
 (#?) :: Entity -> ComponentType -> Maybe Component
-(Entity map _) #? name = M.lookup name map
+(Entity map _ _ _) #? name = M.lookup name map
 infix 8 #?
 
 (#) :: Entity -> ComponentType -> Component
