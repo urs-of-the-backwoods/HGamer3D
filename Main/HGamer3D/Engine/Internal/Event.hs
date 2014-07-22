@@ -22,18 +22,24 @@
 --
 
 module HGamer3D.Engine.Internal.Event
-
 where
 
 import HGamer3D.WinEvent.BaseAPI
 import HGamer3D.GUI.BaseAPI
+import qualified HGamer3D.GUI.Schema.Widget as W
 import Data.Dynamic
 
 data AudioEvent = PlaySound String
                 | StopSound String
 
+data GUIElementEvent = GELSetValue W.WidgetValue
+                     | GELSetProperty W.WidgetProperty
+                     | GELValueChange W.WidgetValue
+                     | GELButtonClick
+
 data HG3DEvent = WindowEvt SDLEvent
-               | GUIEvt GUIEvent
+               | GUIEvt GUIEvent                          -- ^ Low level GUI evts
+               | GELEvt W.WidgetName GUIElementEvent    -- ^ High level GUI evts
                | AudioEvt AudioEvent
                | UserEvt Dynamic
                  

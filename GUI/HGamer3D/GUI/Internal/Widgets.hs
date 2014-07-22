@@ -82,6 +82,10 @@ import HGamer3D.GUI.Internal.Base
 import HGamer3D.GUI.Internal.Properties
 import HGamer3D.Data.HG3DClass
 
+import qualified HGamer3D.GUI.Schema.Widget as ScW
+import qualified HGamer3D.GUI.Schema.Layout as ScL
+import qualified HGamer3D.GUI.Schema.Form as ScF
+
 -- | GUI Element, Sybtype Button
 type GUIButton = GUIElement GEButton
 
@@ -112,6 +116,21 @@ type GUISlider = GUIHasValue GESlider
 -- | GUI Element, Sybtype Spinner
 type GUISpinner = GUIHasValue GESpinner
 
+-- | GUI Element, Subtype FrameWindow
+type GUIWindow = GUIElement GEWindow
+
+-- | GUI Element, which is a layout container
+type GUILayout a = GUIElement a
+
+-- | GUI Element, vertical layout container
+type GUIVLayout = GUILayout GEVLayout
+
+-- | GUI Element, horizontal layout container
+type GUIHLayout = GUILayout GEHLayout
+
+-- | GUI Element, grid layout container
+type GUIGridLayout = GUILayout GEGridLayout
+
 
 -- | get Type of GUI element as string
 typeOfGuiEl :: GUIElement a -- ^ GUI element to enable
@@ -123,7 +142,8 @@ toGuiType :: String -> b -> GUIElement a -> IO (GUIElement b)
 toGuiType typestr cons guiel@(GUIElement window _) = do
           tp <- typeOfGuiEl guiel
           -- CEGUI Types as String have the format "WindowLook/Button" for example
-          let tp' = (splitOn "/" tp) !! 1  
+          -- sometimes they have no "xyzLook" part and no /
+          let tp' = last (splitOn "/" tp)  
           let guiel' = case tp' of
                          typestr -> GUIElement window cons
                          _ -> error ("HGamer3D.GUI.Internal.Widgets.toGuiType: " ++ typestr ++ " not found!")
@@ -135,6 +155,17 @@ _createElement elType convFunc guis style proplist = do
   let uname = guiUniqueName guis
   elName <- nextUniqueName uname
   window <- WindowManager.createWindow winMgr (style ++ "/" ++ elType) elName
+  el <- convFunc (GUIElement window undefined)
+  -- set the properties
+  setP el proplist 
+  return el
+
+_createElement' :: String -> (GUIElement a -> IO (GUIElement b)) -> GUISystem -> String -> [GUIElement b -> IO ()] -> IO (GUIElement b)
+_createElement' elType convFunc guis style proplist = do
+  let winMgr = guiWindowManager guis
+  let uname = guiUniqueName guis
+  elName <- nextUniqueName uname
+  window <- WindowManager.createWindow winMgr (elType) elName
   el <- convFunc (GUIElement window undefined)
   -- set the properties
   setP el proplist 
@@ -164,6 +195,18 @@ spinner = _createElement "Spinner" toSpinner
 slider :: GUISystem -> String -> [GUISlider -> IO ()] -> IO GUISlider
 slider = _createElement "Slider" toSlider
 
+window :: GUISystem -> String -> [GUIWindow -> IO ()] -> IO GUIWindow
+window = _createElement "FrameWindow" toWindow
+
+hLayout :: GUISystem -> String -> [GUIHLayout -> IO ()] -> IO GUIHLayout
+hLayout = _createElement' "HorizontalLayoutContainer" toHLayout
+
+vLayout :: GUISystem -> String -> [GUIVLayout -> IO ()] -> IO GUIVLayout
+vLayout = _createElement' "VerticalLayoutContainer" toVLayout
+
+gridLayout :: GUISystem -> String -> [GUIGridLayout -> IO ()] -> IO GUIGridLayout
+gridLayout = _createElement' "GridLayoutContainer" toGridLayout
+
 toButton = toGuiType "Button" GEButton
 toRadioButton = toGuiType "RadioButton" GERadioButton
 toCheckBox = toGuiType "Checkbox" GECheckBox
@@ -175,6 +218,11 @@ toListBox = toGuiType "Listbox" GEListBox
 
 toSlider = toGuiType "Slider" GESlider
 toSpinner = toGuiType "Spinner" GESpinner
+
+toHLayout = toGuiType "HorizontalLayoutContainer" GEHLayout
+toVLayout = toGuiType "VerticalLayoutContainer" GEVLayout
+toGridLayout = toGuiType "GridLayoutContainer" GEGridLayout
+toWindow = toGuiType "FrameWindow" GEWindow
 
 findElement :: (GUIElement a -> IO (GUIElement b))
                ->String 
@@ -272,3 +320,6 @@ listboxRemoveAllText (GUIElement window GEListBox) = do
 	reallistbox <- WindowSF.castWindowToListbox window
 	Listbox.resetList reallistbox
 	
+
+
+

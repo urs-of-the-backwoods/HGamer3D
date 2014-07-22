@@ -95,7 +95,7 @@ instance System ECSAudio where
       
     shutdownSystem system = return ()
 
-runSystemAudio :: D.TimeMS -> IO ECSAudio
+runSystemAudio :: D.GameTime -> IO ECSAudio
 runSystemAudio sleepT = runSystem sleepT
 
 

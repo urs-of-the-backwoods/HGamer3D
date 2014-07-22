@@ -60,10 +60,14 @@ module HGamer3D.Engine.Internal.GameLoop
   -- after that the call returns.
   stepHGamer3D :: Graphics3DSystem -- ^ the Graphics System
                   -> GUISystem     -- ^ the GUI System
-                  -> IO ([HG3DEvent], Bool) -- ^ list of Events received, quit flag (True if quit received)
+                  -> GameTime      -- ^ last time called
+                  -> IO ([HG3DEvent], GameTime, Bool) -- ^ list of Events received, quit flag (True if quit received)
                   
-  stepHGamer3D g3ds guis = do
+  stepHGamer3D g3ds guis lastTime = do
 
+    now <- getTime
+    let tdiff = now - lastTime
+    injectGUITimeDelta guis tdiff
     let getEvents evts = do
         mWinEvt <- pollWinEvent
         case mWinEvt of
@@ -74,21 +78,22 @@ module HGamer3D.Engine.Internal.GameLoop
              mGuiEvt <- pollGUIEvent guis
              case mGuiEvt of
                Just guiEvt -> getEvents (evts ++ [GUIEvt guiEvt])
-               Nothing -> do
-                 return evts
+               Nothing -> return evts
 
     qFlag <- stepGraphics3D g3ds
     events <- getEvents []
-    return (events, qFlag)
+    
+    return (events, now, qFlag)
      
   initHGamer3D :: String -- ^ Window Title
                   -> Bool -- ^ Flag show config dialogue
                   -> Bool -- ^ Flag logging enabled
                   -> Bool -- ^ show Graphics Cursor
-                  -> IO (Graphics3DSystem, GUISystem)
+                  -> IO (Graphics3DSystem, GUISystem, GameTime)
   initHGamer3D windowTitle fConfigDialogue fLog fGraphicsCursor = do
         success <- initWinEvent [WEV_INIT_EVENTS, WEV_INIT_TIMER, WEV_INIT_VIDEO]
         (g3ds, window) <- initGraphics3D windowTitle "DefaultSceneManager" fConfigDialogue fLog
         win <- attachToWindow window
         guis <- initGUI fLog fGraphicsCursor
-        return (g3ds, guis)
+        now <- getTime
+        return (g3ds, guis, now)

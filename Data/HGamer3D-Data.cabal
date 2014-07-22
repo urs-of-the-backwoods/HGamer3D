@@ -17,9 +17,9 @@ Category:            Game Engine
 Extra-source-files:  Setup.hs 
 
 Library
-  Build-Depends:     base >= 3 && < 5, FindBin, directory, filepath, vect
+  Build-Depends:     base >= 3 && < 5, FindBin, directory, filepath, vect, clock
 
-  Exposed-modules:   HGamer3D.Data.TypeSynonyms, HGamer3D.Data.Vector,HGamer3D.Data.Colour,HGamer3D.Data.HG3DClass,HGamer3D.Data.Angle,HGamer3D.Data.TimeMS,HGamer3D.Data.Transform3D,HGamer3D.Data.Geometry2D,HGamer3D.Data.Window,HGamer3D.Util.FileLocation, HGamer3D.Util.UniqueName, HGamer3D.Data, HGamer3D.Util
+  Exposed-modules:   HGamer3D.Data.TypeSynonyms, HGamer3D.Data.Vector,HGamer3D.Data.Colour,HGamer3D.Data.HG3DClass,HGamer3D.Data.Angle,HGamer3D.Data.GameTime,HGamer3D.Data.Transform3D,HGamer3D.Data.Geometry2D,HGamer3D.Data.Window,HGamer3D.Util.FileLocation, HGamer3D.Util.UniqueName, HGamer3D.Data, HGamer3D.Util
   Other-modules:     
 
   c-sources:         

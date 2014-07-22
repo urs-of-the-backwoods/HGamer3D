@@ -68,6 +68,7 @@ module HGamer3D.Graphics3D.BaseAPI
   removeCamera,
   updateCamera,
   cameraLookAt,
+  cameraAdaptAspectRatio,
 
   addResourceLocationMedia,
   addResourceZipfileMedia,

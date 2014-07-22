@@ -26,7 +26,7 @@ where
 import GHC.Ptr
 
 import HGamer3D.Data.HG3DClass
-import HGamer3D.Data.TimeMS
+import HGamer3D.Data.GameTime
 
 import HGamer3D.Bindings.Enet.ClassEnet as EnetClass
 import HGamer3D.Bindings.Enet.ClassEnetServer as EnetServer
@@ -96,7 +96,7 @@ class NetworkNode a where
         
     -- | receive pending messages
     receiveNetworkMessages :: a -- ^ the node itself
-                                  -> TimeMS -- ^ the time in ms, which the node waits for incoming messages. If zero only delivers pending messages.
+                                  -> GameTime -- ^ the time, which the node waits for incoming messages. If zero only delivers pending messages.
                                   -> IO [NetworkPacket] -- ^ array of received network packages
 
 
@@ -138,8 +138,8 @@ instance NetworkNode NetworkClient where
         EnetClient.send client message channel
         return ()
 
-    receiveNetworkMessages (NetworkClient client) (TimeMS ms) = do
-        allPs <- _receiveClient client ms []
+    receiveNetworkMessages (NetworkClient client) gtime = do
+        allPs <- _receiveClient client (msec gtime) []
         return allPs
 
 instance NetworkNode NetworkServer where
@@ -148,8 +148,8 @@ instance NetworkNode NetworkServer where
         EnetServer.send server clientname message channel
         return ()
 
-    receiveNetworkMessages (NetworkServer server) (TimeMS ms) = do
-        allPs <- _receiveServer server ms []
+    receiveNetworkMessages (NetworkServer server) gtime = do
+        allPs <- _receiveServer server (msec gtime) []
         return allPs
 
 

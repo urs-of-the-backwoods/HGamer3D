@@ -60,6 +60,7 @@ import qualified HGamer3D.Data as D
 import qualified HGamer3D.Internal.Graphics3D as Gr
 import qualified HGamer3D.Engine.BaseAPI as E
 import qualified HGamer3D.GUI.BaseAPI as GU
+import qualified HGamer3D.WinEvent.BaseAPI as WinEvt
 
 import HGamer3D.Graphics3D.Schema.Figure
 import HGamer3D.Graphics3D.Schema.Geometry
@@ -71,41 +72,33 @@ import HGamer3D.Engine.Schema.EventReceiver
 import HGamer3D.Engine.Schema.EventSender
 
 data ECSEventQueues = ECSEventQueues {
-  addList :: MVar [Entity],
-  removeList :: MVar [Entity],
-  entities :: IORef [Entity],
+  entList :: EntityList,
   namedQueues ::  HT.BasicHashTable String [HG3DEvent]
 }
 
 instance System ECSEventQueues where
 
     initializeSystem = do
-      al <- newMVar []
-      rl <- newMVar []
-      es <- newIORef []
+      el <- entInitialize
       nq <- HT.new
-      return $ (ECSEventQueues al rl es nq) 
+      return $ (ECSEventQueues el nq) 
 
     addEntity esys entity = do
-      al <- takeMVar (addList esys)
-      putMVar (addList esys) (al ++ [entity])
+      entAdd (entList esys) entity
       return esys
 
     removeEntity esys entity = do
-      rl <- takeMVar (removeList esys)
-      putMVar (removeList esys) (rl ++ [entity])
+      entRemove (entList esys) entity
       return esys
     
     stepSystem esys = do
 
       -- add/remove entities from other thread
-      al <- takeMVar (addList esys)
-      putMVar (addList esys) []
-      modifyIORef (entities esys) (\oldList -> oldList ++ al)
+      stepEntityList (entList esys)
 
       -- remove, to be done
 
-      es <- readIORef (entities esys)
+      es <- readIORef (entities (entList esys))
       -- map over all events and handle single events coming from
       -- user and from receiver components, send them to targets
       mapM (\entity -> do
@@ -147,7 +140,7 @@ instance System ECSEventQueues where
                    case (entity #? CTEvS) of
                      Nothing -> return ()
                      Just com -> _pushU2CEvents com evts
-
+                     
                -- Channel handling, sender to named channel
                case (entity #? CTEvS) of
                  Nothing -> return ()
@@ -192,7 +185,7 @@ instance System ECSEventQueues where
 
     shutdownSystem esys = return ()
 
-runSystemEvent :: D.TimeMS -> IO ECSEventQueues
+runSystemEvent :: D.GameTime -> IO ECSEventQueues
 runSystemEvent sleepT = runSystem sleepT
 
 

@@ -38,6 +38,7 @@ data ComponentType =   CTPos    -- ^ Position
                      | CTScP    -- ^ Scene Parameter
                      | CTEvR    -- ^ Event Receiver (GUI, Window, Joystick, Channel, ...)
                      | CTEvS    -- ^ Event Sender (Channel, ...)
+                     | CTGFo    -- ^ GUI Forms
                        deriving (Eq, Ord, Show)
 
   

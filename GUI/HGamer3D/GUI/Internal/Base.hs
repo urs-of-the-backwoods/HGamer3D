@@ -104,6 +104,11 @@ data GEComboBox = GEComboBox
 data GESlider = GESlider
 data GESpinner = GESpinner
 
+data GEWindow = GEWindow
+data GEHLayout = GEHLayout
+data GEVLayout = GEVLayout
+data GEGridLayout = GEGridLayout
+
 -- | The GUI Element, a window, a button, any widget or widget element, organized in a hierarchy
 data GUIElement a = GUIElement HG3DClass a -- ^ only one constructor, phantom type a, to allow GUIElement sub-typing
 
@@ -409,3 +414,7 @@ pollGUIEvent guis = do
             return $ Just evt
           else return Nothing
 
+injectGUITimeDelta :: GUISystem -> GameTime -> IO ()
+injectGUITimeDelta guis gtime = do
+  CEGUISystem.injectTimePulse (guiRoot guis) ((fromIntegral . msec) gtime)
+  return ()

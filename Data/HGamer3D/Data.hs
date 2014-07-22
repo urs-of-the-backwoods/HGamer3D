@@ -26,7 +26,7 @@ module HGamer3D.Data
     module HGamer3D.Data.Angle,
     module HGamer3D.Data.Colour,
     module HGamer3D.Data.Transform3D,
-    module HGamer3D.Data.TimeMS,
+    module HGamer3D.Data.GameTime,
     module HGamer3D.Data.Vector,
     module HGamer3D.Data.Geometry2D,
     module HGamer3D.Data.TypeSynonyms,
@@ -38,7 +38,7 @@ where
 import HGamer3D.Data.Angle
 import HGamer3D.Data.Colour
 import HGamer3D.Data.Transform3D
-import HGamer3D.Data.TimeMS
+import HGamer3D.Data.GameTime
 import HGamer3D.Data.Vector
 import HGamer3D.Data.Geometry2D
 import HGamer3D.Data.Window

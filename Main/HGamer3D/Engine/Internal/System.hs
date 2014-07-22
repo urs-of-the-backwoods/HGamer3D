@@ -40,7 +40,6 @@ import HGamer3D.Engine.Internal.ComponentType
 import HGamer3D.Engine.Internal.Entity
 import HGamer3D.Engine.Internal.Event
 
-import System.Clock
 import System.Mem.StableName
 import Data.Hashable
 import qualified Data.HashTable.IO as HT
@@ -49,8 +48,51 @@ import qualified Data.HashTable.IO as HT
 -- the class of data types which have a pure and engine implementation and which can be updated
 
 
+{- ----------------------------------------------------------
+               utility functions for systems
+   ---------------------------------------------------------- -}
 
--- utility functions for systems
+-- Entity List
+
+data EntityList = EntityList {
+  entAddList :: MVar [Entity],
+  entRemoveList :: MVar [Entity],
+  entities :: IORef [Entity]
+}
+
+entInitialize :: IO EntityList 
+entInitialize = do
+      al <- newMVar []
+      rl <- newMVar []
+      es <- newIORef []
+      return $ EntityList al rl es
+
+entAdd :: EntityList -> Entity -> IO EntityList
+entAdd esys entity = do
+      al <- takeMVar (entAddList esys)
+      putMVar (entAddList esys) (al ++ [entity])
+      return esys
+
+entRemove :: EntityList -> Entity -> IO EntityList
+entRemove esys entity = do
+      rl <- takeMVar (entRemoveList esys)
+      putMVar (entRemoveList esys) (rl ++ [entity])
+      return esys
+
+stepEntityList :: EntityList -> IO EntityList
+stepEntityList esys = do
+      -- add/remove entities from other thread
+      al <- takeMVar (entAddList esys)
+      putMVar (entAddList esys) []
+      modifyIORef (entities esys) (\oldList -> oldList ++ al)
+
+      -- remove, to be done
+
+      return esys
+
+  
+
+-- List and Cache
 
 type IdHashTable v = HT.BasicHashTable EntityId v
 
@@ -220,27 +262,23 @@ class System a where
       initializeSystem :: IO a
       shutdownSystem :: a -> IO ()
 
-      runSystem :: D.TimeMS -> IO a
+      runSystem :: D.GameTime -> IO a
       runSystem stepT = do
         mv <- newEmptyMVar
         forkOS $ (\mv' -> do
                      status <- initializeSystem
                      putMVar mv' status
                      let runS s = do
-                            let (TimeMS msecStepT) = stepT
-                            nowT <- getTime Monotonic
+                            nowT <- getTime
                             (s', qFlag) <- stepSystem s
                             if qFlag then do
                               shutdownSystem s'
                               return ()
                               else do
-                                nowT' <- getTime Monotonic
-                                let diffSec = (fromIntegral ((sec nowT') - (sec nowT)))::Integer
-                                let diffNSec = (fromIntegral ((nsec nowT') - (nsec nowT)))::Integer
-                                let diffMSec = diffSec * 1000 + (diffNSec `div` 1000000)
-                                let msecDelay = (fromIntegral msecStepT) - diffMSec
-                                if msecDelay > 0 then do
-                                  threadDelay ((fromIntegral msecDelay) * 1000)
+                                nowT' <- getTime
+                                let timeUsed = nowT' - nowT
+                                if timeUsed < stepT then do
+                                  threadDelay ((fromIntegral . usec) (stepT - timeUsed) )
                                   else do
                                     return ()
                                 runS s'

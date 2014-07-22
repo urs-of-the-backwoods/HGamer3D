@@ -38,6 +38,7 @@ import HGamer3D.Engine.Internal.Component
 import HGamer3D.Engine.Internal.ComponentType
 import HGamer3D.Engine.Internal.System
 
+import Data.IORef
 import Data.Hashable
 import qualified Data.HashTable.IO as HT
 
@@ -46,6 +47,7 @@ import qualified HGamer3D.Data as D
 import qualified HGamer3D.Internal.Graphics3D as Gr
 import qualified HGamer3D.Engine.BaseAPI as E
 import qualified HGamer3D.GUI.BaseAPI as GU
+import qualified HGamer3D.WinEvent.BaseAPI as WinEvt
 
 import HGamer3D.Graphics3D.Schema.Figure
 import HGamer3D.Graphics3D.Schema.Geometry
@@ -53,6 +55,8 @@ import HGamer3D.Graphics3D.Schema.Material
 import HGamer3D.Graphics3D.Schema.Camera
 import HGamer3D.Graphics3D.Schema.Light
 import HGamer3D.Graphics3D.Schema.Scene
+import HGamer3D.Engine.Schema.EventReceiver
+import HGamer3D.GUI.Schema.Form
 
 
 
@@ -64,6 +68,7 @@ import HGamer3D.Graphics3D.Schema.Scene
 data ECSGraphics3D = ECSGraphics3D {
       -- status of graphics engine
       g3d :: (Gr.Graphics3DSystem, GU.GUISystem),
+      receivers :: ListAndCache EventReceiver (),
 
       -- figures
       figures :: ListAndCache Figure (Gr.Object3D Figure),
@@ -80,13 +85,21 @@ data ECSGraphics3D = ECSGraphics3D {
       poslig :: ListAndCache D.Position (),
       orilig :: ListAndCache D.Orientation (),
 
+      -- gui forms
+      guiforms :: ListAndCache Form GU.GUIEngineData,
+
       -- scene parameter
-      scenepars :: ListAndCache SceneParameter ()
+      scenepars :: ListAndCache SceneParameter (),
+
+      -- gametime
+      gt :: IORef D.GameTime
       }
 
 instance System ECSGraphics3D where
 
     addEntity ecsg3d entity = do
+      lacAdd entity (receivers ecsg3d)
+      
       lacAdd entity (figures ecsg3d)
       lacAdd entity (posfig ecsg3d)
       lacAdd entity (orifig ecsg3d)
@@ -99,11 +112,14 @@ instance System ECSGraphics3D where
       lacAdd entity (poslig ecsg3d)
       lacAdd entity (orilig ecsg3d)
 
+      lacAdd entity (guiforms ecsg3d)
       lacAdd entity (scenepars ecsg3d)
       
       return ecsg3d
 
     removeEntity ecsg3d entity = do
+      lacRemove entity (receivers ecsg3d)
+      
       lacRemove entity (figures ecsg3d)
       lacRemove entity (posfig ecsg3d)
       lacRemove entity (orifig ecsg3d)
@@ -116,14 +132,17 @@ instance System ECSGraphics3D where
       lacRemove entity (poslig ecsg3d)
       lacRemove entity (orilig ecsg3d)
       
+      lacRemove entity (guiforms ecsg3d)
       lacRemove entity (scenepars ecsg3d)
       return ecsg3d
     
     initializeSystem = do
       g3d <- E.initHGamer3D "HGamer3D - System" True True True
-      let (g3ds, guis) = g3d
+      let (g3ds, guis, gtime) = g3d
       Gr.setAmbientLight g3ds D.white
 
+      recv <- lacInitialize CTEvR
+      
       figs <- lacInitialize CTFig
       posfig <- lacInitialize CTPos
       orifig <- lacInitialize CTOri
@@ -136,9 +155,12 @@ instance System ECSGraphics3D where
       poslig <- lacInitialize CTPos
       orilig <- lacInitialize CTOri
 
+      gfos <- lacInitialize CTGFo
       scpars <- lacInitialize CTScP
 
-      return $ (ECSGraphics3D g3d figs posfig orifig cams poscam oricam ligs poslig orilig scpars)
+      mgt <- newIORef gtime
+
+      return $ (ECSGraphics3D (g3ds, guis) recv figs posfig orifig cams poscam oricam ligs poslig orilig gfos scpars mgt)
 
     stepSystem ecsg3d = do
       let (g3ds, guis) = (g3d ecsg3d)
@@ -147,13 +169,22 @@ instance System ECSGraphics3D where
       let update' pos edata schema = D.positionTo edata pos 
       let update'' pos edata schema = D.orientationTo edata pos
           
+      -- receivers
+      lacApplyChanges (receivers ecsg3d) (\s -> return ()) (\s e -> return ()) (\e -> return ()) lacHandleU2CEvents lacHandleC2UEvents
+          
       -- figures
       lacApplyChanges (figures ecsg3d) (Gr.object3D g3ds) (Gr.update3D g3ds) (Gr.remove3D g3ds) lacHandleU2CEvents lacHandleC2UEvents
       lacApplyOtherChanges (posfig ecsg3d) (figures ecsg3d) update'
       lacApplyOtherChanges (orifig ecsg3d) (figures ecsg3d) update''
 
       -- cameras
-      lacApplyChanges (cameras ecsg3d) (Gr.addCamera g3ds) (Gr.updateCamera g3ds) (Gr.removeCamera g3ds) lacHandleU2CEvents lacHandleC2UEvents
+      let handleU2CEvents evts cam = do
+            mapM (\evt -> case evt of
+                     (E.WindowEvt (WinEvt.EvtWindow _ _ WinEvt.SDL_WINDOWEVENT_SIZE_CHANGED x y)) -> Gr.cameraAdaptAspectRatio cam
+                     _ -> return ()
+                 ) evts
+            return ()
+      lacApplyChanges (cameras ecsg3d) (Gr.addCamera g3ds) (Gr.updateCamera g3ds) (Gr.removeCamera g3ds) handleU2CEvents lacHandleC2UEvents
       lacApplyOtherChanges (poscam ecsg3d) (cameras ecsg3d) update'
       lacApplyOtherChanges (orifig ecsg3d) (cameras ecsg3d) update''
       
@@ -162,20 +193,33 @@ instance System ECSGraphics3D where
       lacApplyOtherChanges (poslig ecsg3d) (lights ecsg3d) update'
       lacApplyOtherChanges (orilig ecsg3d) (lights ecsg3d) update''
 
+      -- gui forms
+      lacApplyChanges (guiforms ecsg3d) (GU.createForm guis) (GU.updateForm guis) (GU.removeForm guis) lacHandleU2CEvents lacHandleC2UEvents
+      
       -- scene parameters
       let updateScene eng new = Gr.setSceneParameter g3ds new
       let removeScene eng = return ()
       lacApplyChanges (scenepars ecsg3d) (Gr.setSceneParameter g3ds) updateScene removeScene lacHandleU2CEvents lacHandleC2UEvents
       
       -- step graphics system
-      (evts, qFlag) <- E.stepHGamer3D g3ds guis
+      t <- readIORef (gt ecsg3d)
+      (evts, nt, qFlag) <- E.stepHGamer3D g3ds guis t
+      writeIORef (gt ecsg3d) nt
 
-      -- handover evts towards the event system, map over
+      -- handover evts towards the event system
+      inList <- readIORef (lacList (receivers ecsg3d))
+      mapM (\(eid, com) -> do
+               _pushC2UEvents com evts
+           ) inList
 
-      -- next steps, put Entity handling in system, (from SystemEvent)
-      -- then add also here to this system
-      -- then ad events to all Event Receiver components (C2U)
-      
+
+      -- send camera resize events
+      let camEvts = filter (\evt -> case evt of
+                                            (E.WindowEvt (WinEvt.EvtWindow _ _ WinEvt.SDL_WINDOWEVENT_SIZE_CHANGED x y)) -> True
+                                            _ -> False) evts
+      camList <- readIORef (lacList (cameras ecsg3d))
+      mapM (\cam -> _pushU2CEvents (snd cam) camEvts) camList
+                             
       return (ecsg3d, qFlag)
      
 
@@ -184,7 +228,7 @@ instance System ECSGraphics3D where
       E.freeHGamer3D g3ds guis
       return ()
 
-runSystemGraphics3D :: D.TimeMS -> IO ECSGraphics3D
+runSystemGraphics3D :: D.GameTime -> IO ECSGraphics3D
 runSystemGraphics3D sleepT = runSystem sleepT
 
 

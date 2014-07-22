@@ -38,16 +38,7 @@ import HGamer3D.Data.HG3DClass
 import qualified HGamer3D.Bindings.CEGUI.ClassHG3DWindowStaticFunctions as WinStat
 import qualified HGamer3D.Bindings.CEGUI.ClassWindow as Win
 import qualified HGamer3D.Bindings.CEGUI.ClassUDim as Ud
-
-data GUIDim = GUIDim {
-      gdScale :: Float,
-      gdOffset :: Float 
-}
-
-data GUIVec2 = GUIVec2 {
-      gv2X :: GUIDim,
-      gv2Y :: GUIDim 
-}
+import HGamer3D.GUI.Schema.GUIDim
 
 type GUIElementProperty a b = (GUIElement a -> IO b, GUIElement a -> b -> IO ())
 type GUIButtonProperty b = GUIElementProperty GEButton b

@@ -81,6 +81,7 @@ module HGamer3D.GUI.BaseAPI
  -- * Event Handling
         
         injectWinEventToGUI,
+        injectGUITimeDelta,
         GUIEvent (..),
         registerGUIEvent,
 
@@ -176,6 +177,24 @@ module HGamer3D.GUI.BaseAPI
         findSlider,
         findSpinner,
 
+        -- ** Layout Container Widgets
+        GUIHLayout,
+        GUIVLayout,
+        GUIGridLayout,
+
+        hLayout,
+        vLayout,
+        gridLayout,
+
+        toHLayout,
+        toVLayout,
+        toGridLayout,
+
+        -- ** CRUD for Form based GUIs
+        GUIEngineData,
+        createForm,
+        updateForm,
+        removeForm,
 )
 
 where
@@ -183,4 +202,5 @@ where
 import HGamer3D.GUI.Internal.Base
 import HGamer3D.GUI.Internal.Widgets
 import HGamer3D.GUI.Internal.Properties
-
+import HGamer3D.GUI.Internal.Form
+import HGamer3D.GUI.Schema.GUIDim
