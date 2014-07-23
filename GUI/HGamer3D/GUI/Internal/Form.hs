@@ -44,10 +44,15 @@ data GUIEngineDataWidget  = GEDButton GUIButton
                            | GEDRadioButton GUIRadioButton
                            | GEDCheckBox GUICheckBox
                            | GEDComboBox GUIComboBox
+                           | GEDListBox GUIListBox
+                           | GEDSpinner GUISpinner
+                           | GEDSlider GUISlider
+                           | GEDEditText GUIEditText
                              
 data GUIEngineDataLayout = GEDHLayout GUIHLayout
                             | GEDVLayout GUIVLayout
                             | GEDGridLayout GUIGridLayout
+                            | GEDWindow GUIWindow
 
 data GUIEngineData = GUIEngineData GUIEngineDataElement Form
 
@@ -63,17 +68,23 @@ _getWidget (GEDSingleElement (GEDButton w)) = _toUndef w
 _getWidget (GEDSingleElement (GEDRadioButton w)) = _toUndef w
 _getWidget (GEDSingleElement (GEDCheckBox w)) = _toUndef w
 _getWidget (GEDSingleElement (GEDComboBox w)) = _toUndef w
+_getWidget (GEDSingleElement (GEDListBox w)) = _toUndef w
+_getWidget (GEDSingleElement (GEDSpinner w)) = _toUndef w
+_getWidget (GEDSingleElement (GEDSlider w)) = _toUndef w
+_getWidget (GEDSingleElement (GEDEditText w)) = _toUndef w
 
 _getWidget (GEDCombinedElement (GEDHLayout l) _) = _toUndef l
 _getWidget (GEDCombinedElement (GEDVLayout l) _) = _toUndef l
 _getWidget (GEDCombinedElement (GEDGridLayout l) _) = _toUndef l
+_getWidget (GEDCombinedElement (GEDWindow l) _) = _toUndef l
 
-_createLayout :: GUISystem -> Layout -> IO GUIEngineDataLayout
-_createLayout guis layout = do
+_createLayout :: GUISystem -> Layout -> String -> IO GUIEngineDataLayout
+_createLayout guis layout typename = do
         case layout of
-          Layout VerticalLayout props -> vLayout guis "Taharez" (_createLayoutProps props) >>= return . GEDVLayout
-          Layout HorizontalLayout props -> hLayout guis "Taharez" (_createLayoutProps props) >>= return . GEDHLayout
-          Layout (GridLayout x y) props -> gridLayout guis "Taharez" (_createLayoutProps props) >>= return . GEDGridLayout
+          VerticalLayout props -> vLayout guis (_createProps props) >>= return . GEDVLayout
+          HorizontalLayout props -> hLayout guis (_createProps props) >>= return . GEDHLayout
+          GridLayout x y props -> gridLayout guis (_createProps props) >>= return . GEDGridLayout
+          Window name props -> window guis typename (_createProps props) >>= return . GEDWindow
 
 _createProps :: [WidgetProperty] -> [GUIElement a -> IO ()]
 _createProps props = 
@@ -85,39 +96,39 @@ _createProps props =
         Visible v -> pVisible =: v
         Alpha f -> pAlpha =: f
         Text t -> pText =: t
+        Margin m -> pMargin =: m
+        Tooltip t -> pTooltip =: t
+--        MaxSize w h -> pMaxSize =: (w, h)
+--        MinSize w h -> pMinSize =: (w, h)
   in map oneProp props
 
-_createLayoutProps :: [LayoutParameter] -> [GUIElement a -> IO ()]
-_createLayoutProps paras =
-  
-  let onePara para = case para of
-        (WP widgetProperty) -> Just (head (_createProps [widgetProperty]))
-        _ -> Nothing
-  in map fromJust (filter isJust (map onePara paras))
-
-_createWidget :: GUISystem -> Widget -> IO GUIEngineDataElement
-_createWidget guis widget = do
+_createWidget :: GUISystem -> Widget -> String -> IO GUIEngineDataElement
+_createWidget guis widget typename = do
         case widget of
-          Widget name Button val props -> button guis "TaharezLook" (_createProps props) >>= return . GEDSingleElement . GEDButton
-          Widget name RadioButton val props -> radioButton guis "TaharezLook" (_createProps props) >>= return . GEDSingleElement . GEDRadioButton
-          Widget name CheckBox val props -> checkBox guis "TaharezLook" (_createProps props) >>= return . GEDSingleElement . GEDCheckBox
-          Widget name ComboBox val props -> comboBox guis "TaharezLook" (_createProps props) >>= return . GEDSingleElement . GEDComboBox
-          
+          Button name props -> button guis typename (_createProps props) >>= return . GEDSingleElement . GEDButton
+          RadioButton name val props -> radioButton guis typename (_createProps props) >>= return . GEDSingleElement . GEDRadioButton
+          CheckBox name val props -> checkBox guis typename (_createProps props) >>= return . GEDSingleElement . GEDCheckBox
+          ComboBox name val props -> comboBox guis typename (_createProps props) >>= return . GEDSingleElement . GEDComboBox
+          ListBox name val props -> listBox guis typename (_createProps props) >>= return . GEDSingleElement . GEDListBox
+          Spinner name val props -> spinner guis typename (_createProps props) >>= return . GEDSingleElement . GEDSpinner
+          Slider name val props -> slider guis typename (_createProps props) >>= return . GEDSingleElement . GEDSlider
+          EditText name val props -> editText guis typename (_createProps props) >>= return . GEDSingleElement . GEDEditText
+
 createForm :: GUISystem -> Form -> IO GUIEngineData
 createForm guis form = do
-  let (Form typename formelement) = form
+  let (Form typename formcontent) = form
      
-  let createFormElement formelement = do
-        case formelement of
-          WidgetFE widget -> _createWidget guis widget
-          LayoutFE layout formList -> do
-            layoutW <- _createLayout guis layout
-            widgetsW <- mapM createFormElement formList
+  let createFormContent formcontent = do
+        case formcontent of
+          WidgetFC widget -> _createWidget guis widget typename
+          LayoutFC layout formList -> do
+            layoutW <- _createLayout guis layout typename
+            widgetsW <- mapM createFormContent formList
             let cl = GEDCombinedElement layoutW widgetsW
             mapM (\f -> addChildGuiEl (_getWidget cl) (_getWidget f)) widgetsW
             return $ cl
             
-  formW <- createFormElement formelement
+  formW <- createFormContent formcontent
   addGuiElToDisplay guis (_getWidget formW)
   return $ GUIEngineData formW form
 

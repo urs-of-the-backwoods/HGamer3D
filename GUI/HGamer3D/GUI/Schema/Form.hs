@@ -29,9 +29,9 @@ import HGamer3D.GUI.Schema.GUIDim
 import HGamer3D.GUI.Schema.Widget
 import HGamer3D.GUI.Schema.Layout
 
-data Form = Form String FormElement deriving (Eq, Show, Typeable)
+data Form = Form String FormContent deriving (Eq, Show, Typeable)
 
-data FormElement = WidgetFE Widget
-                 | LayoutFE Layout [FormElement]
+data FormContent = WidgetFC Widget
+                 | LayoutFC Layout [FormContent]
                  deriving (Eq, Show, Typeable)
               

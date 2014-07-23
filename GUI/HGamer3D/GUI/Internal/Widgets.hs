@@ -160,8 +160,8 @@ _createElement elType convFunc guis style proplist = do
   setP el proplist 
   return el
 
-_createElement' :: String -> (GUIElement a -> IO (GUIElement b)) -> GUISystem -> String -> [GUIElement b -> IO ()] -> IO (GUIElement b)
-_createElement' elType convFunc guis style proplist = do
+_createElement' :: String -> (GUIElement a -> IO (GUIElement b)) -> GUISystem -> [GUIElement b -> IO ()] -> IO (GUIElement b)
+_createElement' elType convFunc guis proplist = do
   let winMgr = guiWindowManager guis
   let uname = guiUniqueName guis
   elName <- nextUniqueName uname
@@ -181,7 +181,7 @@ checkBox :: GUISystem -> String -> [GUICheckBox -> IO ()] -> IO GUICheckBox
 checkBox = _createElement "Checkbox" toCheckBox
 
 editText :: GUISystem -> String -> [GUIEditText -> IO ()] -> IO GUIEditText
-editText = _createElement "EditText" toEditText
+editText = _createElement "Editbox" toEditText
 
 comboBox :: GUISystem -> String -> [GUIComboBox -> IO ()] -> IO GUIComboBox
 comboBox = _createElement "Combobox" toComboBox
@@ -198,13 +198,13 @@ slider = _createElement "Slider" toSlider
 window :: GUISystem -> String -> [GUIWindow -> IO ()] -> IO GUIWindow
 window = _createElement "FrameWindow" toWindow
 
-hLayout :: GUISystem -> String -> [GUIHLayout -> IO ()] -> IO GUIHLayout
+hLayout :: GUISystem -> [GUIHLayout -> IO ()] -> IO GUIHLayout
 hLayout = _createElement' "HorizontalLayoutContainer" toHLayout
 
-vLayout :: GUISystem -> String -> [GUIVLayout -> IO ()] -> IO GUIVLayout
+vLayout :: GUISystem -> [GUIVLayout -> IO ()] -> IO GUIVLayout
 vLayout = _createElement' "VerticalLayoutContainer" toVLayout
 
-gridLayout :: GUISystem -> String -> [GUIGridLayout -> IO ()] -> IO GUIGridLayout
+gridLayout :: GUISystem -> [GUIGridLayout -> IO ()] -> IO GUIGridLayout
 gridLayout = _createElement' "GridLayoutContainer" toGridLayout
 
 toButton = toGuiType "Button" GEButton

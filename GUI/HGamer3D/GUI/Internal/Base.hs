@@ -418,3 +418,8 @@ injectGUITimeDelta :: GUISystem -> GameTime -> IO ()
 injectGUITimeDelta guis gtime = do
   CEGUISystem.injectTimePulse (guiRoot guis) ((fromIntegral . msec) gtime)
   return ()
+
+notifyDisplaySizeChanged :: GUISystem -> Float -> Float -> IO ()
+notifyDisplaySizeChanged guis width height = do
+  WindowSF.setNewWindowSize (guiRoot guis) width height
+  return ()

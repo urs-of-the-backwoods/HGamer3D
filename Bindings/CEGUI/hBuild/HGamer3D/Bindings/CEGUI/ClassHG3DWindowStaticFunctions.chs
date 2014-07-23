@@ -126,3 +126,19 @@ import HGamer3D.Data.Angle
 { withHG3DClass* `HG3DClass' ,
  alloca- `HG3DClass' peek*} -> `()'  #}
 
+{- function setNewWindowSize -}
+{#fun cegui_hg3dwsfs_setNewWindowSize as setNewWindowSize 
+{ withHG3DClass* `HG3DClass' ,
+ realToFrac `Float' ,
+ realToFrac `Float' } -> `()'  #}
+
+{- function getWindowMargin -}
+{#fun cegui_hg3dwsfs_getWindowMargin as getWindowMargin 
+{ withHG3DClass* `HG3DClass' ,
+ alloca- `HG3DClass' peek*} -> `()'  #}
+
+{- function setWindowMargin -}
+{#fun cegui_hg3dwsfs_setWindowMargin as setWindowMargin 
+{ withHG3DClass* `HG3DClass' ,
+ withHG3DClass* `HG3DClass' } -> `()'  #}
+

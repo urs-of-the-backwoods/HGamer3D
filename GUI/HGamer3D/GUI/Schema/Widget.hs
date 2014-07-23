@@ -27,21 +27,16 @@ import Data.Typeable
 import HGamer3D.Data as Dat
 import HGamer3D.GUI.Schema.GUIDim
 
-type WidgetName = String
-
 -- | The data to specify a widget
-data Widget = Widget WidgetName WidgetType WidgetValue [WidgetProperty] deriving (Eq, Show, Typeable)
-
--- | Widget Types
-data WidgetType = Button
-                | RadioButton
-                | CheckBox
-                | ComboBox
-                | ListBox
-                | EditText
-                | Spinner
-                | Slider
-                  deriving (Eq, Show, Typeable)
+data Widget = Button String [WidgetProperty]
+            | RadioButton String Bool [WidgetProperty]
+            | CheckBox String Bool [WidgetProperty]
+            | ComboBox String [String] [WidgetProperty]
+            | ListBox String [String] [WidgetProperty]
+            | EditText String String [WidgetProperty]
+            | Spinner String Float [WidgetProperty]
+            | Slider String Float [WidgetProperty]
+            deriving (Eq, Show, Typeable)
 
 -- | Widget Properties
 data WidgetProperty = XPos GUIDim
@@ -50,14 +45,11 @@ data WidgetProperty = XPos GUIDim
                     | Height GUIDim
                     | Visible Bool
                     | Alpha Float
-                    | Choice [String]
                     | Text String
+                    | Margin GUIDim
+                    | Tooltip String
+--                    | MaxSize GUIDim GUIDim
+--                    | MinSize GUIDim GUIDim
                       deriving (Eq, Show, Typeable)
 
--- | The editable value a widget represents
-data WidgetValue =  TextValue String
-                    | FloatValue Float
-                    | BoolValue Bool
-                    | StringListValue [String]
-                      deriving (Eq, Show, Typeable)
 

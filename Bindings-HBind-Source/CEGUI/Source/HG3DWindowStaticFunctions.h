@@ -49,5 +49,12 @@ class HG3DWindowStaticFunctions
 
 	static CEGUI::UDim* getWindowWidth(const CEGUI::Window* window);
 	static CEGUI::UDim* getWindowHeight(const CEGUI::Window* window);
+
+	// utility function to set new window positions
+        static void setNewWindowSize(CEGUI::System* system, float width, float height);
+
+	// utility functions to get and set margin (only one parameter)
+        static CEGUI::UDim* getWindowMargin(const CEGUI::Window* window);
+        static void setWindowMargin (CEGUI::Window* window, const CEGUI::UDim* margin);
 };
 

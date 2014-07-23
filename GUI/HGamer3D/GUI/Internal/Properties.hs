@@ -172,6 +172,20 @@ pHeight = (getProp, setProp) where
       Ud.delete ud
       return ()
 
+pMargin :: GUIElementProperty a GUIDim
+pMargin = (getProp, setProp) where
+    getProp (GUIElement window _) = do
+      ud <- WinStat.getWindowMargin window
+      scale <- WinStat.udScale ud
+      offset <- WinStat.udOffset ud
+      Ud.delete ud
+      return $ GUIDim scale offset
+    setProp (GUIElement window _) (GUIDim scale offset) = do
+      ud <- Ud.new scale offset
+      WinStat.setWindowMargin window ud
+      Ud.delete ud
+      return ()
+
 pSelected :: GUIHasSelectionProperty a Bool
 pSelected = _boolProp "Selected"
 

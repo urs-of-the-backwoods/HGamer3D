@@ -213,12 +213,15 @@ instance System ECSGraphics3D where
            ) inList
 
 
-      -- send camera resize events
+      -- send camera resize events, set gui size
       let camEvts = filter (\evt -> case evt of
                                             (E.WindowEvt (WinEvt.EvtWindow _ _ WinEvt.SDL_WINDOWEVENT_SIZE_CHANGED x y)) -> True
                                             _ -> False) evts
-      camList <- readIORef (lacList (cameras ecsg3d))
-      mapM (\cam -> _pushU2CEvents (snd cam) camEvts) camList
+      if length camEvts > 0 then do
+        camList <- readIORef (lacList (cameras ecsg3d))
+        mapM (\cam -> _pushU2CEvents (snd cam) camEvts) camList
+        mapM (\(E.WindowEvt (WinEvt.EvtWindow _ _ WinEvt.SDL_WINDOWEVENT_SIZE_CHANGED x y)) -> GU.notifyDisplaySizeChanged guis (fromIntegral x) (fromIntegral y)) camEvts
+        else return [()]
                              
       return (ecsg3d, qFlag)
      

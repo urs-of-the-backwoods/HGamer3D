@@ -118,3 +118,23 @@ CEGUI::UDim* HG3DWindowStaticFunctions::getWindowHeight(const CEGUI::Window* win
   *pud = window->getHeight();
   return pud;
 }
+
+void HG3DWindowStaticFunctions::setNewWindowSize(CEGUI::System* system, float width, float height)
+{
+  CEGUI::Size new_size = CEGUI::Size(width, height);
+  system->notifyDisplaySizeChanged(new_size); 	
+}
+
+CEGUI::UDim* HG3DWindowStaticFunctions::getWindowMargin(const CEGUI::Window* window)
+{
+  CEGUI::UBox margin;
+  CEGUI::UDim* pud = new CEGUI::UDim(0.0, 0.0);
+  margin = window->getMargin();
+  *pud = margin.d_top;
+  return pud;
+}
+
+void HG3DWindowStaticFunctions::setWindowMargin (CEGUI::Window* window, const CEGUI::UDim* margin)
+{
+  window->setMargin(CEGUI::UBox(*margin, *margin, CEGUI::UDim(0.0,0.0), CEGUI::UDim(0.0,0.0)));
+}

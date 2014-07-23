@@ -39,6 +39,7 @@
 #include "ClassMultiColumnList.h"
 #include "ClassUDim.h"
 #include "ClassUVector2.h"
+#include "ClassSystem.h"
 
 
 // 
@@ -91,5 +92,14 @@ void cegui_hg3dwsfs_getWindowWidth(struct hg3dclass_struct * window_c, struct hg
 
 // 
 void cegui_hg3dwsfs_getWindowHeight(struct hg3dclass_struct * window_c, struct hg3dclass_struct * result_c);
+
+// 
+void cegui_hg3dwsfs_setNewWindowSize(struct hg3dclass_struct * system_c, float width_c, float height_c);
+
+// 
+void cegui_hg3dwsfs_getWindowMargin(struct hg3dclass_struct * window_c, struct hg3dclass_struct * result_c);
+
+// 
+void cegui_hg3dwsfs_setWindowMargin(struct hg3dclass_struct * window_c, struct hg3dclass_struct * margin_c);
 
 #endif 

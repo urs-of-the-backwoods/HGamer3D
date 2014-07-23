@@ -82,6 +82,7 @@ module HGamer3D.GUI.BaseAPI
         
         injectWinEventToGUI,
         injectGUITimeDelta,
+        notifyDisplaySizeChanged,
         GUIEvent (..),
         registerGUIEvent,
 
@@ -105,6 +106,7 @@ module HGamer3D.GUI.BaseAPI
         pAlpha,
         pTooltip,
         pAlwaysOnTop,
+        pMargin,
 
         pX,
         pY,
@@ -189,6 +191,12 @@ module HGamer3D.GUI.BaseAPI
         toHLayout,
         toVLayout,
         toGridLayout,
+
+        -- ** Window Widget
+        GUIWindow,
+        window,
+        toWindow,
+        
 
         -- ** CRUD for Form based GUIs
         GUIEngineData,

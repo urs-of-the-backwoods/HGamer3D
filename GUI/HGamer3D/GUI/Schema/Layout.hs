@@ -28,19 +28,11 @@ import HGamer3D.Data as Dat
 import HGamer3D.GUI.Schema.GUIDim
 import HGamer3D.GUI.Schema.Widget
 
-data Layout = Layout LayoutType [LayoutParameter]
+data Layout = VerticalLayout  [WidgetProperty]
+              | HorizontalLayout [WidgetProperty]
+              | GridLayout Int Int [WidgetProperty]
+              | Window String [WidgetProperty]
               deriving (Eq, Show, Typeable)
 
-data LayoutType = VerticalLayout
-                | HorizontalLayout
-                | GridLayout Int Int  -- ^ x y dimensions of grid units
-              deriving (Eq, Show, Typeable)
-
-data LayoutParameter = VerticalSpace Float
-                     | HorizontalSpace Float
-                     | WP WidgetProperty
-                     | MaxSize GUIDim GUIDim
-                     | MinSize GUIDim GUIDim
-                       deriving (Eq, Show, Typeable)
                        
 

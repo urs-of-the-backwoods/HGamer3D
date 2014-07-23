@@ -215,3 +215,30 @@ extern "C" CEGUI_LIB_EXPORT void cegui_hg3dwsfs_getWindowHeight(struct hg3dclass
 ;
 };
 
+// 
+extern "C" CEGUI_LIB_EXPORT void cegui_hg3dwsfs_setNewWindowSize(struct hg3dclass_struct * system_c, float width_c, float height_c)
+{
+  CEGUI::System * system_cpp = static_cast<CEGUI::System*> (getHG3DClassPtr(*system_c, "CEGUI::System"));
+  float width_cpp = (float)width_c;
+  float height_cpp = (float)height_c;
+  (HG3DWindowStaticFunctions::setNewWindowSize(system_cpp, width_cpp, height_cpp));
+};
+
+// 
+extern "C" CEGUI_LIB_EXPORT void cegui_hg3dwsfs_getWindowMargin(struct hg3dclass_struct * window_c, struct hg3dclass_struct * result_c)
+{
+  const CEGUI::Window * window_cpp = static_cast<CEGUI::Window*> (getHG3DClassPtr(*window_c, "CEGUI::Window"));
+  CEGUI::UDim * result_cpp;
+  result_cpp = (HG3DWindowStaticFunctions::getWindowMargin(window_cpp));
+  *result_c = getHG3DClass_UDim((void *) result_cpp);
+;
+};
+
+// 
+extern "C" CEGUI_LIB_EXPORT void cegui_hg3dwsfs_setWindowMargin(struct hg3dclass_struct * window_c, struct hg3dclass_struct * margin_c)
+{
+  CEGUI::Window * window_cpp = static_cast<CEGUI::Window*> (getHG3DClassPtr(*window_c, "CEGUI::Window"));
+  const CEGUI::UDim * margin_cpp = static_cast<CEGUI::UDim*> (getHG3DClassPtr(*margin_c, "CEGUI::UDim"));
+  (HG3DWindowStaticFunctions::setWindowMargin(window_cpp, margin_cpp));
+};
+
