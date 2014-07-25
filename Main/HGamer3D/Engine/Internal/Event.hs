@@ -31,6 +31,7 @@ import Data.Dynamic
 
 data AudioEvent = PlaySound String
                 | StopSound String
+                  deriving (Show)
 
 {-
 data GUIElementEvent = GELSetValue W.WidgetValue
@@ -43,6 +44,7 @@ data HG3DEvent = WindowEvt SDLEvent
 --               | GELEvt W.WidgetName GUIElementEvent    -- ^ High level GUI evts
                | AudioEvt AudioEvent
                | UserEvt Dynamic
+                 deriving (Show)
                  
 
   

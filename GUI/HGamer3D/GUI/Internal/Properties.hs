@@ -33,14 +33,15 @@ import HGamer3D.Data
 import HGamer3D.Util
 
 import HGamer3D.GUI.Internal.Base
---import HGamer3D.GUI.Internal.Widgets
+import HGamer3D.GUI.Internal.Widgets
+
 import HGamer3D.Data.HG3DClass
 import qualified HGamer3D.Bindings.CEGUI.ClassHG3DWindowStaticFunctions as WinStat
 import qualified HGamer3D.Bindings.CEGUI.ClassWindow as Win
 import qualified HGamer3D.Bindings.CEGUI.ClassUDim as Ud
 import HGamer3D.GUI.Schema.GUIDim
 
-type GUIElementProperty a b = (GUIElement a -> IO b, GUIElement a -> b -> IO ())
+
 type GUIButtonProperty b = GUIElementProperty GEButton b
 type GUIEditTextProperty b = GUIElementProperty GEEditText b
 
@@ -52,14 +53,8 @@ type GUIHasValueProperty a b = GUIElementProperty a b
 type GUISliderProperty b = GUIHasValueProperty GESlider b
 type GUISpinnerProperty b = GUIHasValueProperty GESpinner b
 
-(=:) :: (GUIElementProperty a b) -> b -> (GUIElement a -> IO ())
-(=:) prop val = (\val' guiel -> (snd prop) guiel val') val  
-
-setP :: GUIElement a -> [GUIElement a -> IO ()] -> IO [()]
-setP guiel ps = sequence $ fmap (\f -> f guiel) ps
-
-getP :: GUIElement a -> GUIElementProperty a b -> IO b
-getP guiel p = (fst p) guiel
+type GUIListBoxProperty b = GUIElementProperty GEListBox b
+type GUIComboBoxProperty b = GUIElementProperty GEComboBox b
 
 _stringProp :: String -> GUIElementProperty a String
 _stringProp name = ( 
@@ -192,4 +187,15 @@ pSelected = _boolProp "Selected"
 pValue :: GUIHasValueProperty a Float
 pValue = _floatProp "CurrentValue"
 
+pTextSelection :: GUIListBoxProperty [(String, Bool)]
+pTextSelection = (listboxStatus, listboxInitialize)
+
+pTextChoice :: GUIComboBoxProperty [String]
+pTextChoice = (getProp, setProp) where
+  setProp w strings = do
+    comboboxRemoveAllText w
+    mapM (comboboxAddText w) strings
+    return ()
+  getProp w = do
+    comboboxStatus w
 

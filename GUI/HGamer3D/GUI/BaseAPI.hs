@@ -115,6 +115,9 @@ module HGamer3D.GUI.BaseAPI
 
         pSelected,
         pValue,
+
+        pTextSelection,
+        pTextChoice,
         
 
 -- * Widget Specific Types, Functions and Properties
@@ -147,6 +150,12 @@ module HGamer3D.GUI.BaseAPI
         toEditText,
         findEditText,
 
+        -- ** MultilineText Widget
+        GUIMultilineText, 
+        multilineText,
+        toMultilineText,
+        findMultilineText,
+
         -- ** Listbox/Combobox Widget        
         GUIListBox,
         GUIComboBox,
@@ -166,6 +175,7 @@ module HGamer3D.GUI.BaseAPI
 
 	comboboxAddText,
 	comboboxRemoveAllText,
+        comboboxStatus,
 
         -- ** Slider/Spinner Widget
         GUISlider,

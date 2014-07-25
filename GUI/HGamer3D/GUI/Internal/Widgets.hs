@@ -79,7 +79,7 @@ import HGamer3D.Bindings.CEGUI.ClassHG3DEventStaticFunctions as EvtSF
 import HGamer3D.Bindings.CEGUI.EnumMouseButton as CEGUIButton
 
 import HGamer3D.GUI.Internal.Base
-import HGamer3D.GUI.Internal.Properties
+-- import HGamer3D.GUI.Internal.Properties
 import HGamer3D.Data.HG3DClass
 
 import qualified HGamer3D.GUI.Schema.Widget as ScW
@@ -100,6 +100,9 @@ type GUIRadioButton = GUIHasSelection GERadioButton
 
 -- | GUI Element, Sybtype EditText
 type GUIEditText = GUIElement GEEditText
+
+-- | GUI Element, Sybtype MultilineText
+type GUIMultilineText = GUIElement GEMultilineText
 
 -- | GUI Element, Sybtype Listbox
 type GUIListBox = GUIElement GEListBox
@@ -183,6 +186,9 @@ checkBox = _createElement "Checkbox" toCheckBox
 editText :: GUISystem -> String -> [GUIEditText -> IO ()] -> IO GUIEditText
 editText = _createElement "Editbox" toEditText
 
+multilineText :: GUISystem -> String -> [GUIMultilineText -> IO ()] -> IO GUIMultilineText
+multilineText = _createElement "MultiLineEditbox" toMultilineText
+
 comboBox :: GUISystem -> String -> [GUIComboBox -> IO ()] -> IO GUIComboBox
 comboBox = _createElement "Combobox" toComboBox
 
@@ -211,7 +217,8 @@ toButton = toGuiType "Button" GEButton
 toRadioButton = toGuiType "RadioButton" GERadioButton
 toCheckBox = toGuiType "Checkbox" GECheckBox
 
-toEditText = toGuiType "EditText" GEEditText
+toEditText = toGuiType "Editbox" GEEditText
+toMultilineText = toGuiType "MultiLineEditbox" GEMultilineText
 
 toComboBox = toGuiType "Combobox" GEComboBox
 toListBox = toGuiType "Listbox" GEListBox
@@ -237,6 +244,7 @@ findButton = findElement toButton
 findRadioButton = findElement toRadioButton
 findCheckBox = findElement toCheckBox
 findEditText = findElement toEditText
+findMultilineText = findElement toMultilineText
 findComboBox = findElement toComboBox
 findListBox = findElement toListBox
 findSpinner = findElement toSpinner
@@ -257,6 +265,18 @@ comboboxRemoveAllText (GUIElement window GEComboBox) = do
 	realcombo <- WindowSF.castWindowToCombobox window
 	Combobox.resetList realcombo
 	
+comboboxStatus :: GUIComboBox -- ^ GUI element, needs to be a listbox
+                         -> IO [String] -- ^ list of entry, selected pairs
+comboboxStatus (GUIElement window GEComboBox) = do
+	realbox <- WindowSF.castWindowToCombobox window
+        count <- Combobox.getItemCount realbox
+        outlist <- mapM ( \ind -> do
+                        item <- Combobox.getListboxItemFromIndex realbox ind
+                        txt <- ListboxItem.getText item
+                        return txt
+                  ) [0..(count-1)]
+        return outlist
+
 -- | add one line of text as a selectable entry to a listbox
 listboxAddText :: GUIListBox -- ^ GUI element, needs to be a listbox
                   -> String -- ^ the entry string to add

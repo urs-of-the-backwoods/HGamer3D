@@ -97,6 +97,7 @@ data GEButton = GEButton
 data GERadioButton = GERadioButton
 data GECheckBox = GECheckBox
 data GEEditText = GEEditText
+data GEMultilineText = GEMultilineText
 
 data GEListBox = GEListBox
 data GEComboBox = GEComboBox
@@ -403,6 +404,9 @@ registerGUIEvent guis (GUIElement el _) eventToRegister registrationTag = do
   
 data GUIEvent = GUIEvent String String (GUIElement ())
 
+instance Show GUIEvent where
+  show (GUIEvent str1 str2 _) = "GUI Event - " ++ str1 ++ " " ++ str2
+
 pollGUIEvent :: GUISystem -> IO (Maybe GUIEvent)
 pollGUIEvent guis = do
         let eventController = guiEventController guis
@@ -423,3 +427,15 @@ notifyDisplaySizeChanged :: GUISystem -> Float -> Float -> IO ()
 notifyDisplaySizeChanged guis width height = do
   WindowSF.setNewWindowSize (guiRoot guis) width height
   return ()
+
+type GUIElementProperty a b = (GUIElement a -> IO b, GUIElement a -> b -> IO ())
+
+(=:) :: (GUIElementProperty a b) -> b -> (GUIElement a -> IO ())
+(=:) prop val = (\val' guiel -> (snd prop) guiel val') val  
+
+setP :: GUIElement a -> [GUIElement a -> IO ()] -> IO [()]
+setP guiel ps = sequence $ fmap (\f -> f guiel) ps
+
+getP :: GUIElement a -> GUIElementProperty a b -> IO b
+getP guiel p = (fst p) guiel
+

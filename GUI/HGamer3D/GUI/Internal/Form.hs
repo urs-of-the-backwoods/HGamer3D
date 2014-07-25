@@ -34,20 +34,22 @@ import HGamer3D.GUI.Schema.Form
 import HGamer3D.GUI.Schema.GUIDim
 
 import Data.Maybe
+import Control.Monad
 
           
 {- ----------------------------------------------------------------
            Functions for ECS API
    ---------------------------------------------------------------- -}
 
-data GUIEngineDataWidget  = GEDButton GUIButton
-                           | GEDRadioButton GUIRadioButton
-                           | GEDCheckBox GUICheckBox
-                           | GEDComboBox GUIComboBox
-                           | GEDListBox GUIListBox
-                           | GEDSpinner GUISpinner
-                           | GEDSlider GUISlider
-                           | GEDEditText GUIEditText
+data GUIEngineDataWidget  = GEDButton GUIButton String
+                           | GEDRadioButton GUIRadioButton String
+                           | GEDCheckBox GUICheckBox String
+                           | GEDComboBox GUIComboBox String
+                           | GEDListBox GUIListBox String
+                           | GEDSpinner GUISpinner String
+                           | GEDSlider GUISlider String
+                           | GEDEditText GUIEditText String
+                           | GEDMultilineText GUIMultilineText String
                              
 data GUIEngineDataLayout = GEDHLayout GUIHLayout
                             | GEDVLayout GUIVLayout
@@ -64,14 +66,15 @@ _toUndef :: GUIElement a -> GUIElement b
 _toUndef (GUIElement window _) = (GUIElement window undefined)
 
 _getWidget :: GUIEngineDataElement -> GUIElement a
-_getWidget (GEDSingleElement (GEDButton w)) = _toUndef w
-_getWidget (GEDSingleElement (GEDRadioButton w)) = _toUndef w
-_getWidget (GEDSingleElement (GEDCheckBox w)) = _toUndef w
-_getWidget (GEDSingleElement (GEDComboBox w)) = _toUndef w
-_getWidget (GEDSingleElement (GEDListBox w)) = _toUndef w
-_getWidget (GEDSingleElement (GEDSpinner w)) = _toUndef w
-_getWidget (GEDSingleElement (GEDSlider w)) = _toUndef w
-_getWidget (GEDSingleElement (GEDEditText w)) = _toUndef w
+_getWidget (GEDSingleElement (GEDButton w _)) = _toUndef w
+_getWidget (GEDSingleElement (GEDRadioButton w _)) = _toUndef w
+_getWidget (GEDSingleElement (GEDCheckBox w _)) = _toUndef w
+_getWidget (GEDSingleElement (GEDComboBox w _)) = _toUndef w
+_getWidget (GEDSingleElement (GEDListBox w _)) = _toUndef w
+_getWidget (GEDSingleElement (GEDSpinner w _)) = _toUndef w
+_getWidget (GEDSingleElement (GEDSlider w _)) = _toUndef w
+_getWidget (GEDSingleElement (GEDEditText w _)) = _toUndef w
+_getWidget (GEDSingleElement (GEDMultilineText w _)) = _toUndef w
 
 _getWidget (GEDCombinedElement (GEDHLayout l) _) = _toUndef l
 _getWidget (GEDCombinedElement (GEDVLayout l) _) = _toUndef l
@@ -105,14 +108,52 @@ _createProps props =
 _createWidget :: GUISystem -> Widget -> String -> IO GUIEngineDataElement
 _createWidget guis widget typename = do
         case widget of
-          Button name props -> button guis typename (_createProps props) >>= return . GEDSingleElement . GEDButton
-          RadioButton name val props -> radioButton guis typename (_createProps props) >>= return . GEDSingleElement . GEDRadioButton
-          CheckBox name val props -> checkBox guis typename (_createProps props) >>= return . GEDSingleElement . GEDCheckBox
-          ComboBox name val props -> comboBox guis typename (_createProps props) >>= return . GEDSingleElement . GEDComboBox
-          ListBox name val props -> listBox guis typename (_createProps props) >>= return . GEDSingleElement . GEDListBox
-          Spinner name val props -> spinner guis typename (_createProps props) >>= return . GEDSingleElement . GEDSpinner
-          Slider name val props -> slider guis typename (_createProps props) >>= return . GEDSingleElement . GEDSlider
-          EditText name val props -> editText guis typename (_createProps props) >>= return . GEDSingleElement . GEDEditText
+          Button name props -> do
+            w <- button guis typename (_createProps props)
+            registerGUIEvent guis w "Clicked" name
+            return (GEDSingleElement (GEDButton w name))
+          RadioButton name val props -> do
+            w <- radioButton guis typename (_createProps props)
+            setP w [pSelected =: val]
+            registerGUIEvent guis w "SelectStateChanged" name
+            return (GEDSingleElement (GEDRadioButton w name))
+          CheckBox name val props -> do
+            w <- checkBox guis typename (_createProps props)
+            setP w [pSelected =: val]
+            registerGUIEvent guis w "CheckStateChanged" name
+            return (GEDSingleElement (GEDCheckBox w name))
+          ComboBox name val props -> do
+            w <- comboBox guis typename (_createProps props)
+            mapM (comboboxAddText w) val
+            registerGUIEvent guis w "ListSelectionAccepted" name
+            return (GEDSingleElement (GEDComboBox w name))
+          ListBox name val props -> do
+            w <- listBox guis typename (_createProps props)
+            mapM (listboxAddText w) val
+            registerGUIEvent guis w "ItemSelectionChanged" name
+            return (GEDSingleElement (GEDListBox w name))
+          Spinner name val props -> do
+            w <- spinner guis typename (_createProps props)
+            setP w [pValue =: val]
+            registerGUIEvent guis w "ValueChanged" name
+            return (GEDSingleElement (GEDSpinner w name))
+          Slider name val props -> do
+            w <- slider guis typename (_createProps props)
+            setP w [pValue =: val]
+            registerGUIEvent guis w "ValueChanged" name
+            return (GEDSingleElement (GEDSlider w name))
+          EditText name val props -> do
+            w <- editText guis typename (_createProps props)
+            setP w [pText =: val]
+            registerGUIEvent guis w "TextAccepted" name
+            registerGUIEvent guis w "TextChanged" name
+            return (GEDSingleElement (GEDEditText w name))
+          MultilineText name val props -> do
+            w <- multilineText guis typename (_createProps props)
+            setP w [pText =: val]
+            registerGUIEvent guis w "TextAccepted" name
+            registerGUIEvent guis w "TextChanged" name
+            return (GEDSingleElement (GEDMultilineText w name))
 
 createForm :: GUISystem -> Form -> IO GUIEngineData
 createForm guis form = do
@@ -131,6 +172,34 @@ createForm guis form = do
   formW <- createFormContent formcontent
   addGuiElToDisplay guis (_getWidget formW)
   return $ GUIEngineData formW form
+
+getFormValues :: GUIEngineData -> IO [(String, FormValue)]
+getFormValues (GUIEngineData elem form) = do
+
+  let addTo oldList n con = return . (flip (:)) oldList . (,) n . con
+        
+  let getItem oldList eitem = case eitem of
+        GEDSingleElement widget -> case widget of
+          GEDButton w n -> return oldList
+          GEDRadioButton w n -> getP w pSelected >>= addTo oldList n FVB
+          GEDCheckBox w n -> getP w pSelected >>= addTo oldList n FVB
+          GEDComboBox w n -> getP w pText >>= addTo oldList n FVS
+          GEDListBox w n -> getP w pTextSelection >>= addTo oldList n FVTS
+          GEDSpinner w n -> getP w pValue >>= addTo oldList n FVF
+          GEDSlider w n -> getP w pValue >>= addTo oldList n FVF
+          GEDEditText w n -> getP w pText >>= addTo oldList n FVS
+          GEDMultilineText w n -> getP w pText >>= addTo oldList n FVS
+
+  let foldEitems oldList eitem = case eitem of
+        GEDSingleElement widget -> getItem oldList eitem
+        GEDCombinedElement _ widgetList -> foldM foldEitems oldList widgetList
+          
+  foldEitems [] elem
+
+--setFormValues :: GUIEngineData ->  [(String, FormValue)] -> IO ()
+--setFormValues (GUIEngineData elem form) valueList = do
+
+  
 
 removeForm :: GUISystem -> GUIEngineData -> IO ()
 removeForm guis form = do

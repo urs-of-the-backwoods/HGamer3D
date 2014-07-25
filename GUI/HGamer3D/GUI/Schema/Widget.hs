@@ -34,6 +34,7 @@ data Widget = Button String [WidgetProperty]
             | ComboBox String [String] [WidgetProperty]
             | ListBox String [String] [WidgetProperty]
             | EditText String String [WidgetProperty]
+            | MultilineText String String [WidgetProperty]
             | Spinner String Float [WidgetProperty]
             | Slider String Float [WidgetProperty]
             deriving (Eq, Show, Typeable)

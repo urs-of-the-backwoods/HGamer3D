@@ -35,3 +35,9 @@ data FormContent = WidgetFC Widget
                  | LayoutFC Layout [FormContent]
                  deriving (Eq, Show, Typeable)
               
+data FormValue = FVF Float
+               | FVS String
+               | FVTC [String]          -- Text Choice
+               | FVTS [(String, Bool)]  -- Text Selection
+               | FVB Bool
+                 deriving (Eq, Show, Typeable)
