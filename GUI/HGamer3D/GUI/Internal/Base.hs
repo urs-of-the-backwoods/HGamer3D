@@ -33,6 +33,7 @@ import HGamer3D.Bindings.CEGUI.ClassResourceProvider as CEGUIResourceProvider
 import HGamer3D.Bindings.CEGUI.ClassDefaultResourceProvider as CEGUIDefaultResourceProvider
 import HGamer3D.Bindings.CEGUI.ClassImageset as CEGUIImageset
 import HGamer3D.Bindings.CEGUI.ClassFont as CEGUIFont
+import HGamer3D.Bindings.CEGUI.ClassEventSet as EventSet
 import HGamer3D.Bindings.CEGUI.ClassScheme as CEGUIScheme
 import HGamer3D.Bindings.CEGUI.ClassWidgetLookManager as CEGUIWidgetLookManager
 import HGamer3D.Bindings.CEGUI.ClassScriptModule as CEGUIScriptModule
@@ -167,6 +168,14 @@ deactivateGuiEl :: GUIElement a -- ^ GUI element to deactivate
                    -> IO ()
 deactivateGuiEl (GUIElement window _) = do
 	Window.deactivate window
+
+-- | delete a GUI element, do not process events send to it
+deleteGuiEl :: GUISystem -> GUIElement a -- ^ GUI element to deactivate
+                   -> IO ()
+deleteGuiEl guis (GUIElement window _) = do
+        let wmgr = guiWindowManager guis
+        EventSet.removeAllEvents window
+	CEGUIWindowManager.destroyWindow wmgr window
 
 -- | show GUI element
 showGuiEl :: GUIElement a -- ^ GUI element to show

@@ -71,6 +71,7 @@ module HGamer3D.GUI.BaseAPI
 	disableGuiEl,
 	activateGuiEl,
 	deactivateGuiEl,
+        deleteGuiEl,
 	showGuiEl,
 	hideGuiEl,
 
@@ -213,6 +214,9 @@ module HGamer3D.GUI.BaseAPI
         createForm,
         updateForm,
         removeForm,
+
+        getFormValues,
+        setFormValues
 )
 
 where

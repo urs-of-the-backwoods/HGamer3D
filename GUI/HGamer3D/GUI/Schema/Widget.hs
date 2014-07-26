@@ -29,14 +29,14 @@ import HGamer3D.GUI.Schema.GUIDim
 
 -- | The data to specify a widget
 data Widget = Button String [WidgetProperty]
-            | RadioButton String Bool [WidgetProperty]
-            | CheckBox String Bool [WidgetProperty]
-            | ComboBox String [String] [WidgetProperty]
-            | ListBox String [String] [WidgetProperty]
-            | EditText String String [WidgetProperty]
-            | MultilineText String String [WidgetProperty]
-            | Spinner String Float [WidgetProperty]
-            | Slider String Float [WidgetProperty]
+            | RadioButton String [WidgetProperty]
+            | CheckBox String [WidgetProperty]
+            | ComboBox String [WidgetProperty]
+            | ListBox String [WidgetProperty]
+            | EditText String [WidgetProperty]
+            | MultilineText String [WidgetProperty]
+            | Spinner String [WidgetProperty]
+            | Slider String [WidgetProperty]
             deriving (Eq, Show, Typeable)
 
 -- | Widget Properties
@@ -49,8 +49,10 @@ data WidgetProperty = XPos GUIDim
                     | Text String
                     | Margin GUIDim
                     | Tooltip String
---                    | MaxSize GUIDim GUIDim
---                    | MinSize GUIDim GUIDim
+                    | TextChoice [String]               -- only ComboBox
+                    | TextSelection [(String, Bool)]    -- only ListBox
+                    | Value Float                       -- only Spinner, Slider
+                    | Selected Bool                     -- only CheckBox, RadioButton
                       deriving (Eq, Show, Typeable)
 
 

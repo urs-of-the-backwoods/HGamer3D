@@ -89,8 +89,20 @@ _createLayout guis layout typename = do
           GridLayout x y props -> gridLayout guis (_createProps props) >>= return . GEDGridLayout
           Window name props -> window guis typename (_createProps props) >>= return . GEDWindow
 
-_createProps :: [WidgetProperty] -> [GUIElement a -> IO ()]
-_createProps props = 
+-- the following routine assume same typename for new layout, it only modify props
+_updateLayoutProps :: GUIEngineDataLayout -> Layout -> IO ()
+_updateLayoutProps edata layout = do
+  -- check assumptions
+  case (edata, layout) of
+    (GEDHLayout hLayout, HorizontalLayout props) -> setP hLayout (_createProps props)
+    (GEDVLayout vLayout, VerticalLayout props) -> setP vLayout (_createProps props)
+    (GEDGridLayout gLayout, GridLayout x y props) -> setP gLayout (_createProps props)
+    (GEDWindow window, Window n props) -> setP window (_createProps props)
+    _ -> error "HGamer3D.GUI.Internal.Form._updateLayoutProps: update parameters not matching!"
+  return ()
+      
+_createProps' :: (WidgetProperty -> GUIElement a -> IO ()) -> [WidgetProperty] -> [GUIElement a -> IO ()]
+_createProps' addOn props = 
   let oneProp prop = case prop of
         XPos gd -> pX =: gd
         YPos gd -> pY =: gd
@@ -101,9 +113,38 @@ _createProps props =
         Text t -> pText =: t
         Margin m -> pMargin =: m
         Tooltip t -> pTooltip =: t
---        MaxSize w h -> pMaxSize =: (w, h)
---        MinSize w h -> pMinSize =: (w, h)
+        _ -> addOn prop
   in map oneProp props
+
+_createProps = _createProps' (\w -> (const (return ())))
+
+_createPropsCB :: [WidgetProperty] -> [GUIComboBox -> IO ()]
+_createPropsCB props =
+  let addOn prop = case prop of
+        TextChoice tc -> pTextChoice =: tc
+        _ -> const (return ())
+  in _createProps' addOn props
+
+_createPropsLB :: [WidgetProperty] -> [GUIListBox -> IO ()]
+_createPropsLB props =
+  let addOn prop = case prop of
+        TextSelection ts -> pTextSelection =: ts
+        _ -> const (return ())
+  in _createProps' addOn props
+
+_createPropsHV :: [WidgetProperty] -> [GUIHasValue a -> IO ()]
+_createPropsHV props =
+  let addOn prop = case prop of
+        Value v -> pValue =: v
+        _ -> const (return ())
+  in _createProps' addOn props
+
+_createPropsHS :: [WidgetProperty] -> [GUIHasSelection a -> IO ()]
+_createPropsHS props =
+  let addOn prop = case prop of
+        Selected s -> pSelected =: s
+        _ -> const (return ())
+  in _createProps' addOn props
 
 _createWidget :: GUISystem -> Widget -> String -> IO GUIEngineDataElement
 _createWidget guis widget typename = do
@@ -112,48 +153,55 @@ _createWidget guis widget typename = do
             w <- button guis typename (_createProps props)
             registerGUIEvent guis w "Clicked" name
             return (GEDSingleElement (GEDButton w name))
-          RadioButton name val props -> do
-            w <- radioButton guis typename (_createProps props)
-            setP w [pSelected =: val]
+          RadioButton name props -> do
+            w <- radioButton guis typename (_createPropsHS props)
             registerGUIEvent guis w "SelectStateChanged" name
             return (GEDSingleElement (GEDRadioButton w name))
-          CheckBox name val props -> do
-            w <- checkBox guis typename (_createProps props)
-            setP w [pSelected =: val]
+          CheckBox name props -> do
+            w <- checkBox guis typename (_createPropsHS props)
             registerGUIEvent guis w "CheckStateChanged" name
             return (GEDSingleElement (GEDCheckBox w name))
-          ComboBox name val props -> do
-            w <- comboBox guis typename (_createProps props)
-            mapM (comboboxAddText w) val
+          ComboBox name props -> do
+            w <- comboBox guis typename (_createPropsCB props)
             registerGUIEvent guis w "ListSelectionAccepted" name
             return (GEDSingleElement (GEDComboBox w name))
-          ListBox name val props -> do
-            w <- listBox guis typename (_createProps props)
-            mapM (listboxAddText w) val
+          ListBox name props -> do
+            w <- listBox guis typename (_createPropsLB props)
             registerGUIEvent guis w "ItemSelectionChanged" name
             return (GEDSingleElement (GEDListBox w name))
-          Spinner name val props -> do
-            w <- spinner guis typename (_createProps props)
-            setP w [pValue =: val]
+          Spinner name props -> do
+            w <- spinner guis typename (_createPropsHV props)
             registerGUIEvent guis w "ValueChanged" name
             return (GEDSingleElement (GEDSpinner w name))
-          Slider name val props -> do
-            w <- slider guis typename (_createProps props)
-            setP w [pValue =: val]
+          Slider name props -> do
+            w <- slider guis typename (_createPropsHV props)
             registerGUIEvent guis w "ValueChanged" name
             return (GEDSingleElement (GEDSlider w name))
-          EditText name val props -> do
+          EditText name props -> do
             w <- editText guis typename (_createProps props)
-            setP w [pText =: val]
             registerGUIEvent guis w "TextAccepted" name
             registerGUIEvent guis w "TextChanged" name
             return (GEDSingleElement (GEDEditText w name))
-          MultilineText name val props -> do
+          MultilineText name props -> do
             w <- multilineText guis typename (_createProps props)
-            setP w [pText =: val]
             registerGUIEvent guis w "TextAccepted" name
             registerGUIEvent guis w "TextChanged" name
             return (GEDSingleElement (GEDMultilineText w name))
+
+_updateWidgetProps :: GUIEngineDataElement -> Widget -> IO ()
+_updateWidgetProps edata widget = do
+  case (edata, widget) of
+    (GEDSingleElement (GEDButton w _), Button name props) -> setP w (_createProps props)
+    (GEDSingleElement (GEDRadioButton w _), RadioButton name props) -> setP w (_createPropsHS props)
+    (GEDSingleElement (GEDCheckBox w _), CheckBox name props) -> setP w (_createPropsHS props)
+    (GEDSingleElement (GEDComboBox w _), ComboBox name props) -> setP w (_createPropsCB props)
+    (GEDSingleElement (GEDListBox w _), ListBox name props) -> setP w (_createPropsLB props)
+    (GEDSingleElement (GEDSpinner w _), Spinner name props) -> setP w (_createPropsHV props)
+    (GEDSingleElement (GEDSlider w _), Slider name props) -> setP w (_createPropsHV props)
+    (GEDSingleElement (GEDEditText w _), EditText name props) -> setP w (_createProps props)
+    (GEDSingleElement (GEDMultilineText w _), MultilineText name props) -> setP w (_createProps props)
+    _ -> error "HGamer3D.GUI.Internal.Form._updateWidgetProps: update parameters not matching!"
+  return ()
 
 createForm :: GUISystem -> Form -> IO GUIEngineData
 createForm guis form = do
@@ -196,16 +244,117 @@ getFormValues (GUIEngineData elem form) = do
           
   foldEitems [] elem
 
---setFormValues :: GUIEngineData ->  [(String, FormValue)] -> IO ()
---setFormValues (GUIEngineData elem form) valueList = do
-
+_getFormStructure :: Form -> [String]
+_getFormStructure (Form typename content) = 
   
+  let getItem oldList eitem = case eitem of
+        WidgetFC widget -> case widget of
+          Button n _ -> ("Button/" ++ n) : oldList
+          RadioButton n _  -> ("RadioButton/" ++ n) : oldList
+          CheckBox n _ -> ("CheckBox/" ++ n) : oldList
+          ComboBox n _ -> ("ComboBox/" ++ n) : oldList
+          ListBox n _ -> ("ListBox/" ++ n) : oldList
+          Spinner n _ -> ("Spinner/" ++ n) : oldList
+          Slider n _ -> ("Slider/" ++ n) : oldList
+          EditText n _ -> ("EditText/" ++ n) : oldList
+          MultilineText n _ -> ("MultilineText/" ++ n) : oldList
+        LayoutFC layout itemList -> let
+          subList = foldl getItem [] itemList
+          in case layout of
+            VerticalLayout props -> ["VLStart"] ++ subList ++ ["VLEnd"] ++ oldList
+            HorizontalLayout props -> ["HLStart"] ++ subList ++ ["HLEnd"] ++ oldList
+            GridLayout _ _ props -> ["GridStart"] ++ subList ++ ["GridEnd"] ++ oldList
+            Window n props -> ["WStart"] ++ subList ++ ["WEnd"] ++ oldList
+            
+  in getItem [typename] content
+
+
+setFormValues :: GUIEngineData ->  [(String, FormValue)] -> IO ()
+setFormValues (GUIEngineData elem form) valueList = do
+
+  let filterItemSet w n prop valueList = do
+        case filter (\(name, value) -> name == n) valueList of
+          [] -> return ()
+          ((n', v') : _) -> do
+            setP w [prop v']
+            return ()
+          
+  let setItem valueList eitem = case eitem of
+        GEDSingleElement widget -> case widget of
+          GEDButton w n -> return ()
+          GEDRadioButton w n -> filterItemSet w n (\v -> let (FVB v') = v in pSelected =: v') valueList
+          GEDCheckBox w n -> filterItemSet w n (\v -> let (FVB v') = v in pSelected =: v') valueList
+          GEDComboBox w n -> filterItemSet w n (\v -> let (FVS v') = v in pText =: v') valueList
+          GEDListBox w n -> filterItemSet w n (\v -> let (FVTS v') = v in pTextSelection =: v') valueList
+          GEDSpinner w n -> filterItemSet w n (\v -> let (FVF v') = v in pValue =: v') valueList
+          GEDSlider w n -> filterItemSet w n (\v -> let (FVF v') = v in pValue =: v') valueList
+          GEDEditText w n -> filterItemSet w n (\v -> let (FVS v') = v in pText =: v') valueList
+          GEDMultilineText w n -> filterItemSet w n (\v -> let (FVS v') = v in pText =: v') valueList
+        GEDCombinedElement _ widgetList -> mapM (setItem valueList) widgetList >> return ()
+
+  setItem valueList elem
+  return ()
 
 removeForm :: GUISystem -> GUIEngineData -> IO ()
 removeForm guis form = do
+  let (GUIEngineData elem schema) = form
+      
+  -- first detach from screen
+  removeGuiElFromDisplay guis (_getWidget elem)
+
+  -- then delete the elements in order
+  let deleteSingleItem elem = case elem of
+        GEDSingleElement w -> deleteGuiEl guis (_getWidget elem)
+        GEDCombinedElement layout widgetList -> do
+          -- remove childs from parent, then delete
+          mapM (\el -> removeChildGuiEl (_getWidget elem) (_getWidget el)) widgetList
+          mapM deleteSingleItem widgetList
+          deleteGuiEl guis (_getWidget elem)
+
+  deleteSingleItem elem
   return ()
+
+
+-- update form with same structure, apply properties again for all elements, which are different
+_updateFormElement :: GUISystem -> GUIEngineDataElement -> FormContent -> FormContent -> IO ()
+_updateFormElement guis elem oldFC newFC = do
+  case (elem, oldFC, newFC) of
+    (GEDSingleElement w, WidgetFC (Button _ oldProps), WidgetFC wid@(Button _ newProps)) -> do
+      if oldProps /= newProps then _updateWidgetProps elem wid else return ()
+    (GEDSingleElement w, WidgetFC (RadioButton _ oldProps), WidgetFC wid@(RadioButton _ newProps))  -> do
+      if oldProps /= newProps then _updateWidgetProps elem wid else return ()
+    (GEDSingleElement w, WidgetFC (CheckBox _ oldProps), WidgetFC wid@(CheckBox _ newProps))  -> do
+      if oldProps /= newProps then _updateWidgetProps elem wid else return ()
+    (GEDSingleElement w, WidgetFC (ComboBox _ oldProps), WidgetFC wid@(ComboBox _ newProps))  -> do
+      if oldProps /= newProps then _updateWidgetProps elem wid else return ()
+    (GEDSingleElement w, WidgetFC (ListBox _ oldProps), WidgetFC wid@(ListBox _ newProps))  -> do
+      if oldProps /= newProps then _updateWidgetProps elem wid else return ()
+    (GEDSingleElement w, WidgetFC (Spinner _ oldProps), WidgetFC wid@(Spinner _ newProps))  -> do
+      if oldProps /= newProps then _updateWidgetProps elem wid else return ()
+    (GEDSingleElement w, WidgetFC (Slider _ oldProps), WidgetFC wid@(Slider _ newProps))  -> do
+      if oldProps /= newProps then _updateWidgetProps elem wid else return ()
+    (GEDSingleElement w, WidgetFC (EditText _ oldProps), WidgetFC wid@(EditText _ newProps))  -> do
+      if oldProps /= newProps then _updateWidgetProps elem wid else return ()
+    (GEDSingleElement w, WidgetFC (MultilineText _ oldProps), WidgetFC wid@(MultilineText _ newProps))  -> do
+      if oldProps /= newProps then _updateWidgetProps elem wid else return ()
+    (GEDCombinedElement layout elems, LayoutFC oldLayout oldContentList, LayoutFC newLayout newContentList)  -> do
+      if oldLayout /= newLayout then _updateLayoutProps layout newLayout else return ()
+      mapM (\(elem, oldContent, newContent) -> _updateFormElement guis elem oldContent newContent) (zip3 elems oldContentList newContentList)
+      return ()
+      
+
 
 updateForm :: GUISystem -> GUIEngineData -> Form -> IO GUIEngineData
 updateForm guis edata form = do
-  return edata
+  -- check if different structure, then redo
+  let ed@(GUIEngineData elem oldForm) = edata
+  if (_getFormStructure oldForm) /= (_getFormStructure form) then do
+    removeForm guis ed
+    createForm guis form
+    -- if structure is the same, only update properties
+    else do
+      let (Form typename content) = form
+      let (Form typename oldContent) = oldForm
+      _updateFormElement guis elem oldContent content
+      return edata
 
