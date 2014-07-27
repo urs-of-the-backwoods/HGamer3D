@@ -15,7 +15,7 @@ env.Command("build", "", Mkdir("build"))
 
 for (p, s) in [
 
-    # the BaseAPI binaries
+    # the BaseAPI examples
 
     ("BaseAPI", "Audio"),
     ("BaseAPI", "BlueCube"),
@@ -25,12 +25,16 @@ for (p, s) in [
     ("BaseAPI", "Keyboard"),
     ("BaseAPI", "Mouse"),
     ("BaseAPI", "Network-Chat"),
-    ("BaseAPI", "WinEvent")
+    ("BaseAPI", "WinEvent"),
+
+    # first EcsAPI examples
+
+    ("EcsAPI", "GUI-Switch")
 
 ]:
     env.Command("build/" + s, [p + "/" + s + ".hs",
                                "build/.HGamer3D"
-                               ] , "rm -f build/*.o && " + "ghc --make -odir build -hidir build -i" + p + " -o build/" + s + " " + p + "/" + s)
+                               ] , "rm -f build/*.o && " + "ghc --make -threaded -odir build -hidir build -i" + p + " -o build/" + s + " " + p + "/" + s)
 
 # the media files need to be copied to .HGamer3D
 env.Command("build/.HGamer3D", "MediaFiles", [
