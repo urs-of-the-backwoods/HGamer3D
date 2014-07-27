@@ -26,6 +26,7 @@ import HGamer3D.Engine.BaseAPI
 import HGamer3D.Graphics3D.BaseAPI
 import HGamer3D.WinEvent.BaseAPI
 import HGamer3D.GUI.BaseAPI
+import HGamer3D.Graphics3D.Schema.Camera
 
 import Control.Monad.Trans
 import Data.Maybe
@@ -86,10 +87,10 @@ printEvent outbox event = do
                        return ()
 
 
-checkEvents outtext g3ds guis = do
-  (evts, qFlag) <- stepHGamer3D g3ds guis
+checkEvents outtext g3ds guis last = do
+  (evts, last', qFlag) <- stepHGamer3D g3ds guis last
   if qFlag then
-    return False
+    return (False, last')
     else do
       qList <- mapM (\evt -> do
              case evt of
@@ -99,20 +100,21 @@ checkEvents outtext g3ds guis = do
                (WindowEvt (EvtQuit ts)) -> return True
                _ -> return False
              ) evts
-      return $ length (filter id qList) == 0
+      return (length (filter id qList) == 0, last')
       
-renderLoop cubeF outtext g3ds guis = do
+renderLoop cubeF outtext g3ds guis last = do
    -- rotate 
   orientation cubeF >>= \o -> return (yaw o (Rad 0.005)) >>= orientationTo cubeF
   orientation cubeF >>= \o -> return (roll o (Rad 0.002)) >>= orientationTo cubeF
-  proceed <- checkEvents outtext g3ds guis
-  if proceed then renderLoop cubeF outtext g3ds guis else return ()
+  (proceed, last') <- checkEvents outtext g3ds guis last
+  if proceed then renderLoop cubeF outtext g3ds guis last' else return ()
    
 main = do 
   
-        (g3ds, guis, camera, viewport) <- initHGamer3D "HGamer3D - GUI Widgets Example" True True True
+        (g3ds, guis, last) <- initHGamer3D "HGamer3D - GUI Widgets Example" True True True
   
 	-- camera position
+        camera <- addCamera g3ds (Camera (Frustum 5.0 5000.0 (Deg 60)) (Viewport 0 (Rectangle 0.0 0.0 1.0 1.0) black))
 	let pos = Vec3 5.0 5.0 80.0
         positionTo camera pos
 	let at = Vec3 0.0 0.0 (-300.0)
@@ -121,7 +123,7 @@ main = do
 	-- define light
             
 	setAmbientLight g3ds white
-	pointLight g3ds white (Vec3 10.0 10.0 20.0)
+	pointLight g3ds white white (Vec3 10.0 10.0 20.0)
         
 	-- create a shiny blue cube
         cubeFigure <- cube g3ds 0.2 (ResourceMaterial "Colours/Blue")
@@ -139,18 +141,6 @@ main = do
 	sttext <- loadGuiLayoutFromFile guis "statictext.layout" ""
 	addGuiElToDisplay guis guiwidgets
 
-{-
-        -- test element creation
-        b1 <- button guis "TaharezLook" [pX =: (GUIDim 0.0 100.0), 
-                                         pY =: (GUIDim 0.0 100.0), 
-                                         pWidth =: (GUIDim 0.0 100.0), 
-                                         pHeight =: (GUIDim 0.0 20.0), 
-                                         pText =: "Cooler Button", 
-                                         pVisible =: True, 
-                                         pAlpha =: 1.0]
-	addGuiElToDisplay guis b1
-        registerGUIEvent guis b1 "Clicked" "coolclick"
--}        
 
         -- handling of single GUI elements
         ----------------------------------
@@ -198,6 +188,6 @@ main = do
         registerGUIEvent guis combobox "ListSelectionAccepted" "combo-done"
 
 	-- start render loop
-	renderLoop cubeFigure outtext g3ds guis
+	renderLoop cubeFigure outtext g3ds guis last
         freeHGamer3D g3ds guis
         return ()

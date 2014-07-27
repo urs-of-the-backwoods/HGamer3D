@@ -21,7 +21,7 @@
 
 module Main where
 
-import HGamer3D.InputSystem
+import HGamer3D.InputSystem.BaseAPI
 import Control.Monad
 
 loop = do

@@ -19,16 +19,14 @@ for (p, s) in [
 
     ("BaseAPI", "Audio"),
     ("BaseAPI", "BlueCube"),
-#    ("BaseAPI", "BumpMappingCube"),
+    ("BaseAPI", "BumpMappingCube"),
     ("BaseAPI", "GUI-Widgets"),
-#    ("GUI", "GUI-Wire"),
-#    ("InputSystem", "Joystick"),
-#    ("InputSystem", "Keyboard"),
-#    ("InputSystem", "Mouse"),
-#    ("Network", "Network-Chat"),
-#    ("WinEvent", "WinEvent"),
-#    ("Games", "Cuboid2"),
-#    ("Games", "YWing-Flight")
+    ("BaseAPI", "Joystick"),
+    ("BaseAPI", "Keyboard"),
+    ("BaseAPI", "Mouse"),
+    ("BaseAPI", "Network-Chat"),
+    ("BaseAPI", "WinEvent")
+
 ]:
     env.Command("build/" + s, [p + "/" + s + ".hs",
                                "build/.HGamer3D"

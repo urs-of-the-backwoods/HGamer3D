@@ -1,6 +1,9 @@
 module Main where
 
-import HGamer3D.WinEvent
+-- remark this example shows WinEvent in isolation, which is not very useful
+-- see BlueCube example for basic HGamer3D window creation
+
+import HGamer3D.WinEvent.BaseAPI
 
 loopEvents = do
   evt <- pollWinEvent

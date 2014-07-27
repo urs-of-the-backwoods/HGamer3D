@@ -1,7 +1,7 @@
 module Main where
 
-import HGamer3D.Data.TimeMS
-import HGamer3D.Network
+import HGamer3D.Data.GameTime
+import HGamer3D.Network.BaseAPI
 
 --import Control.Monad.Trans
 
@@ -12,7 +12,7 @@ doClientWork client = do
 	
 
 serverLoop server clients = do
-	pkgs <- receiveNetworkMessages server (TimeMS 100)
+	pkgs <- receiveNetworkMessages server (msecT 100)
 	mapM (print . message) pkgs
 	serverLoop server clients
 

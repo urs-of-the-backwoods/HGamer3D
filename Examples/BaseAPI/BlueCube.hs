@@ -19,37 +19,37 @@
 import HGamer3D.Data
 import HGamer3D.Engine.BaseAPI
 import HGamer3D.Graphics3D.BaseAPI
+import HGamer3D.Graphics3D.Schema.Camera
 
-renderLoop cubeF g3ds guis = do
+renderLoop cubeF g3ds guis last = do
    -- rotate 
   orientation cubeF >>= \o -> return (yaw o (Rad 0.005)) >>= orientationTo cubeF
   orientation cubeF >>= \o -> return (roll o (Rad 0.002)) >>= orientationTo cubeF
-  (ev, quit) <- stepHGamer3D g3ds guis
-  if quit then return () else renderLoop cubeF g3ds guis
+  (ev, last', quit) <- stepHGamer3D g3ds guis last
+  if quit then return () else renderLoop cubeF g3ds guis last'
    
 main :: IO ()
 main = do
   
-        (g3ds, guis, camera, viewport) <- initHGamer3D "HGamer3D - BlueCube Example" True True True
+        (g3ds, guis, last) <- initHGamer3D "HGamer3D - BlueCube Example" True True True
         
 	-- camera position
+        camera <- addCamera g3ds (Camera (Frustum 5.0 5000.0 (Deg 60)) (Viewport 0 (Rectangle 0.0 0.0 1.0 1.0) black))
 	let pos = Vec3 5.0 5.0 80.0
         positionTo camera pos
 	let at = Vec3 0.0 0.0 (-300.0)
         cameraLookAt camera at
 	
 	-- define light
-            
 	setAmbientLight g3ds white
-	pointLight g3ds white (Vec3 10.0 10.0 20.0)
+	pointLight g3ds white white (Vec3 10.0 10.0 20.0)
         
 	-- create a shiny blue cube
         cubeFigure <- cube g3ds 0.2 (ResourceMaterial "Colours/Blue")
         positionTo cubeFigure (Vec3 0.0 0.0 0.0)
-        sizeTo cubeFigure (Vec3 0.5 0.5 0.5)
         
 	-- start render loop
-	renderLoop cubeFigure g3ds guis
+	renderLoop cubeFigure g3ds guis last
         freeHGamer3D g3ds guis
         return ()
 

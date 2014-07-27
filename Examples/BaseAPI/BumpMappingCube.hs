@@ -17,24 +17,27 @@
 -- limitations under the License.
 
 import HGamer3D.Data
-import HGamer3D.Graphics3D
+import HGamer3D.Engine.BaseAPI
+import HGamer3D.Graphics3D.BaseAPI
+import HGamer3D.Graphics3D.Schema.Camera
+import HGamer3D.Graphics3D.Schema.Figure
+import HGamer3D.Graphics3D.Schema.Geometry
 
-white :: Colour
-white = (Colour 1.0 1.0 1.0 1.0)
 
-renderLoop cube g3ds = do
+renderLoop cubeF g3ds guis last = do
    -- rotate 
-  yaw cube (Rad 0.005) 
-  roll cube (Rad 0.002)
-  quit <- loopHGamer3D g3ds
-  if quit then return () else renderLoop cube g3ds
+  orientation cubeF >>= \o -> return (yaw o (Rad 0.005)) >>= orientationTo cubeF
+  orientation cubeF >>= \o -> return (roll o (Rad 0.002)) >>= orientationTo cubeF
+  (ev, last', quit) <- stepHGamer3D g3ds guis last
+  if quit then return () else renderLoop cubeF g3ds guis last'
    
 main :: IO ()
 main = do
   
-        (g3ds, camera, viewport) <- initHGamer3D "HGamer3D - BumpMapping Example" "DefaultSceneManager" True True
+        (g3ds, guis, last) <- initHGamer3D "HGamer3D - BumpMapping Example" True True True
         
 	-- camera position
+        camera <- addCamera g3ds (Camera (Frustum 5.0 5000.0 (Deg 60)) (Viewport 0 (Rectangle 0.0 0.0 1.0 1.0) black))
 	let pos = Vec3 5.0 5.0 400.0
         positionTo camera pos
 	let at = Vec3 0.0 0.0 (-300.0)
@@ -43,16 +46,16 @@ main = do
 	-- define light
             
 	setAmbientLight g3ds (Colour 1.0 1.0 1.0 1.0)
-	pointLight g3ds (Colour 0.3 0.3 1.0 1.0) (Vec3 (-100.0) 10.0 0.0)
-	pointLight g3ds (Colour 1.0 0.3 0.3 1.0) (Vec3 100.0 10.0 0.0)
-        let cube = resourceMesh "knot.mesh"
-        let bumpMaterial = resourceMaterial "OffsetMapping/IntegratedShadows"
-        cube <- object3DFromMesh g3ds cube (Just bumpMaterial ) True
+	pointLight g3ds white (Colour 0.3 0.3 1.0 1.0) (Vec3 (-100.0) 10.0 0.0)
+	pointLight g3ds white (Colour 1.0 0.3 0.3 1.0) (Vec3 100.0 10.0 0.0)
+
+        
+        cube <- object3D g3ds (SimpleFigure (ResourceGeometry "knot.mesh") (ResourceMaterial "OffsetMapping/IntegratedShadows"))
 
         positionTo cube (Vec3 0.0 0.0 0.0)
         
 	-- start render loop
-	renderLoop cube g3ds 
-        exitHGamer3D g3ds
+	renderLoop cube g3ds guis last
+        freeHGamer3D g3ds guis
         return ()
 
