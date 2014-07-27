@@ -40,6 +40,8 @@ import HGamer3D.Engine.Internal.ComponentType
 import HGamer3D.Engine.Internal.Entity
 import HGamer3D.Engine.Internal.Event
 
+import HGamer3D.Engine.Schema.EventReceiver
+
 import System.Mem.StableName
 import Data.Hashable
 import qualified Data.HashTable.IO as HT
@@ -81,12 +83,15 @@ entRemove esys entity = do
 
 stepEntityList :: EntityList -> IO EntityList
 stepEntityList esys = do
-      -- add/remove entities from other thread
+      -- add entities from other thread
       al <- takeMVar (entAddList esys)
       putMVar (entAddList esys) []
       modifyIORef (entities esys) (\oldList -> oldList ++ al)
 
-      -- remove, to be done
+      -- remove entities from other thread
+      rl <- takeMVar (entRemoveList esys)
+      putMVar (entRemoveList esys) []
+      modifyIORef (entities esys) (filter (\el -> not (el `elem` rl))) 
 
       return esys
 
@@ -307,3 +312,26 @@ removeFromWorld :: [SomeSystem] -> Entity -> IO ()
 removeFromWorld systems e = mapM (f e) systems >> return () where
   f e (SomeSystem s) = removeEntity s e >> return ()
     
+filterEventType :: [EventType] -> [HG3DEvent] -> [HG3DEvent]
+filterEventType types events = let
+  filterOneType evt evttype = case evttype of
+    AudioEvents -> case evt of
+      (AudioEvt _) -> True
+      _ -> False
+    WinEvents -> case evt of
+      (WindowEvt _) -> True
+      _ -> False
+    GUIEvents -> case evt of
+      (GUIEvt _) -> True
+      _ -> False
+    FormEvents -> case evt of
+      (FormEvt _) -> True
+      _ -> False
+    UserEvents -> case evt of
+      (UserEvt _ ) -> True
+      _ -> False
+    AllEvents -> True
+    _ -> False
+  filterAllTypes evttypes evt = length (filter id (map (filterOneType evt) evttypes)) > 0
+  in filter (filterAllTypes types) events
+

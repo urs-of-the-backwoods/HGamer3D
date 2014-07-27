@@ -228,7 +228,7 @@ getFormValues (GUIEngineData elem form) = do
         
   let getItem oldList eitem = case eitem of
         GEDSingleElement widget -> case widget of
-          GEDButton w n -> return oldList
+          GEDButton w n -> return ( (n, FVE) : oldList)
           GEDRadioButton w n -> getP w pSelected >>= addTo oldList n FVB
           GEDCheckBox w n -> getP w pSelected >>= addTo oldList n FVB
           GEDComboBox w n -> getP w pText >>= addTo oldList n FVS

@@ -28,12 +28,14 @@ where
 import Data.Typeable
 import qualified HGamer3D.Data as D
 
-data EventReceiver = ChannelEventReceiver String
-                   | WinEventReceiver 
-                   | GUIEventReceiver
-                   | JoystickEventReceiver
-                   | UserEventReceiver
-                   | AllEventsReceiver
-                     
-                   deriving (Eq, Show, Typeable)
+data EventReceiver = EventReceiver [EventType] deriving (Eq, Show, Typeable)
+data EventType = ChannelEvents
+               | AudioEvents
+               | WinEvents 
+               | GUIEvents
+               | FormEvents
+               | JoystickEvents
+               | UserEvents
+               | AllEvents
+               deriving (Eq, Show, Typeable)
                      

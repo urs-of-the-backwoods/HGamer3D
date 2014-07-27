@@ -59,6 +59,9 @@ entity inList  = do
   evtsC2U <- newMVar []
   return $ Entity cMap eId evtsU2C evtsC2U
 
+instance Eq Entity where
+  e1 == e2 = (entityId e1) == (entityId e2)
+
 idE :: Entity -> EntityId
 idE (Entity _ eId _ _) = eId
 

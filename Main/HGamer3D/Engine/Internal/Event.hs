@@ -27,21 +27,21 @@ where
 import HGamer3D.WinEvent.BaseAPI
 import HGamer3D.GUI.BaseAPI
 import qualified HGamer3D.GUI.Schema.Widget as W
+import qualified HGamer3D.GUI.Schema.Form as F
 import Data.Dynamic
 
 data AudioEvent = PlaySound String
                 | StopSound String
                   deriving (Show)
 
-{-
-data GUIElementEvent = GELSetValue W.WidgetValue
-                     | GELSetProperty W.WidgetProperty
-                     | GELValueChange W.WidgetValue
-                     | GELButtonClick
--}
+data GUIFormEvent = FormSetValue [(String, F.FormValue)]
+                  | FormValueChange String [(String, F.FormValue)]
+                  | FormButtonClick String
+                    deriving (Show)
+
 data HG3DEvent = WindowEvt SDLEvent
-               | GUIEvt GUIEvent                          -- ^ Low level GUI evts
---               | GELEvt W.WidgetName GUIElementEvent    -- ^ High level GUI evts
+               | GUIEvt GUIEvent                         -- ^ Low level GUI evts
+               | FormEvt GUIFormEvent                    -- ^ High level GUI evts, directly form related
                | AudioEvt AudioEvent
                | UserEvt Dynamic
                  deriving (Show)

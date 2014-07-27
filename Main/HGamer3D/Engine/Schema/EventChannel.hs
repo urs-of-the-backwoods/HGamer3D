@@ -21,13 +21,13 @@
 --
 
 -- | Schema for EventSender
-module HGamer3D.Engine.Schema.EventSender
+module HGamer3D.Engine.Schema.EventChannel
 
 where
 
 import Data.Typeable
 import qualified HGamer3D.Data as D
 
-data EventSender = ChannelEventSender String
+data EventChannel = EventChannel String
                    deriving (Eq, Show, Typeable)
                      

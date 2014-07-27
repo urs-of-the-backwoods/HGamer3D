@@ -41,6 +41,7 @@ import HGamer3D.Engine.Internal.System
 import Data.IORef
 import Data.Hashable
 import qualified Data.HashTable.IO as HT
+import Data.List.Split
 
 
 import qualified HGamer3D.Data as D
@@ -194,7 +195,26 @@ instance System ECSGraphics3D where
       lacApplyOtherChanges (orilig ecsg3d) (lights ecsg3d) update''
 
       -- gui forms
-      lacApplyChanges (guiforms ecsg3d) (GU.createForm guis) (GU.updateForm guis) (GU.removeForm guis) lacHandleU2CEvents lacHandleC2UEvents
+      newFormEvents <- newIORef []
+      let handleU2CEvents evts form = do
+            mapM (\evt -> case evt of
+                     (E.FormEvt (E.FormSetValue values)) -> GU.setFormValues form values
+                     (E.GUIEvt (GU.GUIEvent tag sender window)) -> do
+                       values <- GU.getFormValues form
+                       strType <- GU.typeOfGuiEl window >>= return . last . (splitOn "/")
+                       if tag `elem` (map fst values) then do
+                         -- check if button
+                         let newEvt = if strType == "Button"
+                                        then E.FormEvt (E.FormButtonClick tag)
+                                        else E.FormEvt (E.FormValueChange tag values)
+                         -- show for testing
+                         modifyIORef newFormEvents (\oldList -> (newEvt : oldList))
+                         return ()
+                         else return ()
+                     _ -> return ()
+                 ) evts
+            return ()
+      lacApplyChanges (guiforms ecsg3d) (GU.createForm guis) (GU.updateForm guis) (GU.removeForm guis) handleU2CEvents lacHandleC2UEvents
       
       -- scene parameters
       let updateScene eng new = Gr.setSceneParameter g3ds new
@@ -208,11 +228,13 @@ instance System ECSGraphics3D where
 
       -- handover evts towards the event system
       inList <- readIORef (lacList (receivers ecsg3d))
+      evts' <- readIORef newFormEvents
       mapM (\(eid, com) -> do
                _pushC2UEvents com evts
+               _pushC2UEvents com evts'
            ) inList
 
-
+      
       -- send camera resize events, set gui size
       let camEvts = filter (\evt -> case evt of
                                             (E.WindowEvt (WinEvt.EvtWindow _ _ WinEvt.SDL_WINDOWEVENT_SIZE_CHANGED x y)) -> True
@@ -222,7 +244,13 @@ instance System ECSGraphics3D where
         mapM (\cam -> _pushU2CEvents (snd cam) camEvts) camList
         mapM (\(E.WindowEvt (WinEvt.EvtWindow _ _ WinEvt.SDL_WINDOWEVENT_SIZE_CHANGED x y)) -> GU.notifyDisplaySizeChanged guis (fromIntegral x) (fromIntegral y)) camEvts
         else return [()]
-                             
+
+      -- handle GUI events, create high level gui events, push GUI events to gfos
+      let guiEvts = filterEventType [GUIEvents] evts
+      gfoList <- readIORef (lacList (guiforms ecsg3d))
+      mapM (\gfo -> _pushU2CEvents (snd gfo) guiEvts) gfoList
+
+      
       return (ecsg3d, qFlag)
      
 

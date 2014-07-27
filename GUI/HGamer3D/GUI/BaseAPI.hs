@@ -74,6 +74,7 @@ module HGamer3D.GUI.BaseAPI
         deleteGuiEl,
 	showGuiEl,
 	hideGuiEl,
+        typeOfGuiEl,
 
         -- ** Work with File Layouts
 

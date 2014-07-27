@@ -24,7 +24,9 @@ module HGamer3D.Engine.BaseAPI
 
 (
   HG3DEvent (..),
-  
+  AudioEvent (..),
+  GUIFormEvent (..),
+
   initHGamer3D,
   freeHGamer3D,
   stepHGamer3D,

@@ -21,20 +21,26 @@
 
 -- HGamer3D/Internal/ECS/SystemEvent.hs
 
--- | the Event System of the Entity-Component-System World
--- The event system is handling the event distribution and is responsible to send incoming events and distribute them to the receivers. The following scenarios explain the event distribution in detail:
--- ** From user to component
--- The event is placed in the incoming event queue of the entity by the sendEvent function. The event systems distributes them towards the target component of the same entity. Example: play audio sound, receiving component is the audio component.
--- ** From component to user
--- The component places incoming events into the component event queue, from there the event system puts them into the entity event queue, from where they can be received by the user. Example: joystick component, window event component.
--- ** Signal/Slot/Channels to facilitate entity - entity communication
--- A channel component is a simple name, the event system holds for each channel an event list and all events, which are received by the entity are distributed to all other entities, which subscribe to the same channel. The mechanism works for incoming events from users and for incoming events from components alike.
--- ** GUI events
--- GUI elements needs events in two directions, one direction, to set element value and another one, to receive changes in the element value. Therefore also the components need two different event queues, each.
--- ** Naming conventions
--- All queues holding events in the chain user to component communication are named with U2C the queues in the direction component to user have the names C2U, this holds for the queues in the components and in the entities as well as in the event system.
+{- | the Event System of the Entity-Component-System World
+The event system is handling the event distribution and is responsible to send incoming events and distribute them to the receivers. The guidelines how this works are along the main ideas of an ECS in general, each component should be separated from each other. The event system is the only one, which knows about more than one component with regards to events. Also the user interface in the end should be simple. 
 
+* User Interface Functionality
 
+Users receive and send events over the entity interface with the functions receiveEvents and sendEvent. Sent events are distributed to the components in the entity as needed. Events coming from components are only processed if a ReceiveEvent component is added to the entity with the filter criteria, which events should be received. An additional channel component is existing, which allows sending events to a channel and receiving events from a channel.
+
+* Scenarios, how the Event System works in detail
+
+In general users are only interacting with the entity functions, which fill and empty the U2C and C2U queues of the entity. Component systems (with the exception of the EventSystem itself) are only receiving and sending into the component queues. The distribution of events between entities and components are done by the EventSystem, based on two principle mechanisms: 
+
+** From user to component (U2C)
+U2C events are placed into the appropriate components directly. The event is placed in the incoming event queue of the entity by the sendEvent function. The event systems distributes them towards the target component of the same entity. into the U2C queue. The target component picks it up from the U2C queue and handles it. Examples: play audio sound, receiving component is the audio component. GUI Form set values, receiving component is the GUI component (within Graphics3D), which handles it.
+
+** From component to user (C2U)
+C2U events are not automatically placed into the entity for receipt by the user. Instead all C2U events are placed into an exising receiving component. From this component only the events of the current filter criteria are put into the entity C2U event queue. Besides of that processing is similar as in the U2C case. The component places incoming events into the component event queue, the C2U queue, from there the event system puts them into the receiving component queue. 
+
+** Channels
+Channels are just separate components, which work the following: user events are put in the component channel U2C queue. From there they are stored into a cross entity channel storage structure. All the events in the channel structure are distributed to the channel components in the C2U queue. From there they might be picked up by receiving components, as done in the case of other components also.
+-}
 
 module HGamer3D.Engine.Internal.SystemEvent
 
@@ -69,7 +75,7 @@ import HGamer3D.Graphics3D.Schema.Camera
 import HGamer3D.Graphics3D.Schema.Light
 import HGamer3D.Graphics3D.Schema.Scene
 import HGamer3D.Engine.Schema.EventReceiver
-import HGamer3D.Engine.Schema.EventSender
+import HGamer3D.Engine.Schema.EventChannel
 
 data ECSEventQueues = ECSEventQueues {
   entList :: EntityList,
@@ -96,88 +102,76 @@ instance System ECSEventQueues where
       -- add/remove entities from other thread
       stepEntityList (entList esys)
 
-      -- remove, to be done
-
       es <- readIORef (entities (entList esys))
-      -- map over all events and handle single events coming from
-      -- user and from receiver components, send them to targets
+      
+      -- map over all entities and handle the events
       mapM (\entity -> do
-               -- User Events to specific components, which want them
+
+               -- U2C mechanism, distribute incoming user events to components which wants them
+               
                u2cEvts <- _popEntityU2CEvents entity
                -- audio evts
-               let audioEvts = filter (\evt -> case evt of
-                                          (AudioEvt _) -> True
-                                          _ -> False) u2cEvts
+               let audioEvts = filterEventType [AudioEvents] u2cEvts
                case (entity #? CTASl) of
                  Nothing -> return ()
                  Just com -> _pushU2CEvents com audioEvts
-               -- sender channels
-               case (entity #? CTEvS) of
+               -- channels
+               case (entity #? CTEvC) of
                  Nothing -> return ()
                  Just com -> _pushU2CEvents com u2cEvts
+               -- GUI Forms
+               let guiEvts = filterEventType [FormEvents] u2cEvts
+               case (entity #? CTGFo) of
+                 Nothing -> return ()
+                 Just com -> _pushU2CEvents com guiEvts
 
-               -- C2U events from receiver components
-               case (entity #? CTEvR) of
+               -- Channel handling, send U2C events to channel
+                  
+               case (entity #? CTEvC) of
                  Nothing -> return ()
                  Just com -> do
-                   recVal <- readC com >>= return . fromStamped . fromJust
-                   c2uEvts <- _popC2UEvents com
-                   let filterF = case recVal of
-                         WinEventReceiver -> (\evt -> case evt of
-                                                 (WindowEvt _) -> True
-                                                 _ -> False)
-                         GUIEventReceiver -> (\evt -> case evt of
-                                                 (GUIEvt _) -> True
-                                                 _ -> False)
-                         UserEventReceiver -> (\evt -> case evt of
-                                                 (UserEvt _) -> True
-                                                 _ -> False)
-                         AllEventsReceiver -> (\evt -> True)
-                         _ -> (\evt -> False)
-                   let evts = filter filterF c2uEvts
-                   _pushEntityC2UEvents entity evts
-                   -- copy to sender, in case existing
-                   case (entity #? CTEvS) of
-                     Nothing -> return ()
-                     Just com -> _pushU2CEvents com evts
-                     
-               -- Channel handling, sender to named channel
-               case (entity #? CTEvS) of
-                 Nothing -> return ()
-                 Just com -> do
-                   recVal <- readC com >>= return . fromStamped . fromJust
-                   case recVal of
-                     ChannelEventReceiver channel -> do
-                       evts <- _popU2CEvents com
-                       mOldEvents <- HT.lookup (namedQueues esys) channel
-                       case mOldEvents of
-                         Just oldEvents -> HT.insert (namedQueues esys) channel (oldEvents ++ evts)
-                         
-                         Nothing -> HT.insert (namedQueues esys) channel evts
+                   EventChannel channel <- readC com >>= return . fromStamped . fromJust
+                   evts <- _popU2CEvents com
+                   mOldEvents <- HT.lookup (namedQueues esys) channel
+                   case mOldEvents of
+                     Just oldEvents -> HT.insert (namedQueues esys) channel (oldEvents ++ evts)
+                     Nothing -> HT.insert (namedQueues esys) channel evts
                      _ -> return ()
-           ) es
-
-
-      -- map over all events and handle channel events towards channel
-      -- receiver
-      mapM (\entity -> do
+                 
+               -- C2U mechanism, distribute incoming component events to entity
+                 
                case (entity #? CTEvR) of
                  Nothing -> return ()
                  Just com -> do
-                   recVal <- readC com >>= return . fromStamped . fromJust
-                   case recVal of
-                        ChannelEventReceiver channel -> do
-                          mEvents <- HT.lookup (namedQueues esys) channel
-                          case mEvents of
-                            Just events -> _pushC2UEvents com events
-                            Nothing -> return ()
-                        _ -> return ()
+                   (EventReceiver eventtypes) <- readC com >>= return . fromStamped . fromJust
+                   c2uEvts <- _popC2UEvents com
+                   let evts = filterEventType eventtypes c2uEvts
+                   _pushEntityC2UEvents entity evts
+                     
            ) es
 
+      -- remark channel handling: the correct sequence is as follows, first
+      -- handle all entities and put user events into channel storage (above).
+      -- Then (second) send all channels to receivers (C2U), which is below.
+      -- Third, delete queues.
+
+      -- Channel handling, send all queue content to all receivers
       -- clear all channels, after sending/receiving
       namedQueueList <- HT.toList (namedQueues esys)
       mapM (\(channel, events) -> do
+               events <- HT.lookup (namedQueues esys) channel >>= return . fromJust
                HT.insert (namedQueues esys) channel []
+               mapM (\entity -> do
+                        case (entity #? CTEvC) of
+                          Nothing -> return ()
+                          Just comChannel -> do
+                            EventChannel channel' <- readC comChannel >>= return . fromStamped . fromJust
+                            if channel == channel' then do
+                              case (entity #? CTEvR) of
+                                Nothing -> return ()
+                                Just comReceiver -> _pushC2UEvents comReceiver events
+                              else return ()
+                    ) es
            ) namedQueueList
       
       return (esys, False)

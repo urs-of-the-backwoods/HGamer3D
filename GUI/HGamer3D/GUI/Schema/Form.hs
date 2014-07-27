@@ -40,4 +40,5 @@ data FormValue = FVF Float
                | FVTC [String]          -- Text Choice
                | FVTS [(String, Bool)]  -- Text Selection
                | FVB Bool
+               | FVE                    -- Empty
                  deriving (Eq, Show, Typeable)
