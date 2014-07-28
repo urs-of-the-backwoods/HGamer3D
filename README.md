@@ -9,6 +9,11 @@ Documentation is on: http://www.hgamer3d.org
 
 News
 ----
-- HGamer3D now works on 64 bit Linux
-- Fixes of various build problems, April 2014, see new install instructions on http://www.hgamer3d.org/Install.html
-- Version 0.3.x published on master, changes keep 0.3.x compatibility
+- this release-0.4 branch is usable now and contains great new features
+- entity component system
+- add, update, remove 3d entities, sounds, guis at runtime
+- schema based specification of entities
+- see Examples/EcsAPI
+- more than one camera
+- multi-threading, live coding from GHCI
+
