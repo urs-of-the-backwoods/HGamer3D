@@ -187,7 +187,7 @@ instance System ECSGraphics3D where
             return ()
       lacApplyChanges (cameras ecsg3d) (Gr.addCamera g3ds) (Gr.updateCamera g3ds) (Gr.removeCamera g3ds) handleU2CEvents lacHandleC2UEvents
       lacApplyOtherChanges (poscam ecsg3d) (cameras ecsg3d) update'
-      lacApplyOtherChanges (orifig ecsg3d) (cameras ecsg3d) update''
+      lacApplyOtherChanges (oricam ecsg3d) (cameras ecsg3d) update''
       
       -- lights
       lacApplyChanges (lights ecsg3d) (Gr.addLight g3ds) (Gr.updateLight g3ds) (Gr.removeLight g3ds) lacHandleU2CEvents lacHandleC2UEvents
