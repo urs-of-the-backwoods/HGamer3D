@@ -130,7 +130,9 @@ _createFigure g3ds parent fig = do
   case fig of
     SimpleFigure geo mat -> do
       meshEntity <- _createGeometry g3ds geo
-      _buildTV meshEntity
+      if (geo /= Dodekaeder) && (geo /= Ikosaeder) then
+        _buildTV meshEntity
+        else return ()
       _setMaterial meshEntity mat
       _addEntityToNode g3ds node meshEntity
       return (EDEntityNode meshEntity node)

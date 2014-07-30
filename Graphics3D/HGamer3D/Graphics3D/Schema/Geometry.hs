@@ -36,7 +36,7 @@ data Geometry =
   -- Primitive 3D Geometries
   | Cube
   | Sphere
-  | Cylinder
+--  | Cylinder
 
   -- Platon Geometries
   | Ikosaeder
@@ -44,7 +44,7 @@ data Geometry =
 
   -- 2D Geometries
   | Plane
-  | Line
+--  | Line
 
   deriving (Eq, Show, Typeable)
   
