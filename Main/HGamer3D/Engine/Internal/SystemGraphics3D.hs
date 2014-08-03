@@ -47,6 +47,8 @@ import Data.List.Split
 import qualified HGamer3D.Data as D
 import qualified HGamer3D.Internal.Graphics3D as Gr
 import qualified HGamer3D.Engine.BaseAPI as E
+import qualified HGamer3D.Engine.Internal.Event as Evt
+
 import qualified HGamer3D.GUI.BaseAPI as GU
 import qualified HGamer3D.WinEvent.BaseAPI as WinEvt
 
@@ -232,6 +234,9 @@ instance System ECSGraphics3D where
       mapM (\(eid, com) -> do
                _pushC2UEvents com evts
                _pushC2UEvents com evts'
+	       if qFlag then
+	       	  _pushC2UEvents com [Evt.AppEvt Evt.AppQuit]
+		  else return ()
            ) inList
 
       

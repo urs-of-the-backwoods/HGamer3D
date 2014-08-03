@@ -29,6 +29,7 @@ for (p, s) in [
 
     # first EcsAPI examples
 
+    ("EcsAPI", "Coordinates"),
     ("EcsAPI", "GUI-Switch")
 
 ]:

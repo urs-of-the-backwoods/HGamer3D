@@ -39,11 +39,15 @@ data GUIFormEvent = FormSetValue [(String, F.FormValue)]
                   | FormButtonClick String
                     deriving (Show)
 
+data ApplicationEvent = AppQuit
+     		      deriving (Show)
+
 data HG3DEvent = WindowEvt SDLEvent
                | GUIEvt GUIEvent                         -- ^ Low level GUI evts
                | FormEvt GUIFormEvent                    -- ^ High level GUI evts, directly form related
                | AudioEvt AudioEvent
                | UserEvt Dynamic
+	       | AppEvt ApplicationEvent
                  deriving (Show)
                  
 

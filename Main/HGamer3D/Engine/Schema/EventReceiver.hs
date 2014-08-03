@@ -36,6 +36,7 @@ data EventType = ChannelEvents
                | FormEvents
                | JoystickEvents
                | UserEvents
+	       | ApplicationEvents
                | AllEvents
                deriving (Eq, Show, Typeable)
                      

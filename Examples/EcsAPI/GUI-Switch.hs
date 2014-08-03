@@ -5,29 +5,9 @@ module Main
 where
 
 import HGamer3D.Data
-import HGamer3D.Graphics3D.Schema.Material
-import HGamer3D.Graphics3D.Schema.Geometry
-import HGamer3D.Graphics3D.Schema.Figure
-import HGamer3D.Graphics3D.Schema.Camera
-import HGamer3D.Graphics3D.Schema.Light
-import HGamer3D.Graphics3D.Schema.Scene
-
-import HGamer3D.GUI.Schema.Widget
-import HGamer3D.GUI.Schema.Layout
-import HGamer3D.GUI.Schema.Form
-import HGamer3D.GUI.Schema.GUIDim
-
-import HGamer3D.Engine.Schema.EventReceiver
-import HGamer3D.Engine.Schema.EventChannel
-
-import HGamer3D.Engine.Internal.Entity
-import HGamer3D.Engine.Internal.Event
-
-import HGamer3D.Audio.Schema.AudioSource
-
-import HGamer3D.WinEvent.BaseAPI
 import HGamer3D.Engine.EcsAPI
-import HGamer3D.Audio.EcsAPI
+import HGamer3D.Graphics3D.EcsAPI
+import HGamer3D.GUI.EcsAPI
 
 import Control.Concurrent
 
@@ -171,9 +151,8 @@ checkEvents guiE bE = do
 main = do
   
   ecsG3D <- runSystemGraphics3D (msecT 30)
-  ecsAud <- runSystemAudio (msecT 100)
   ecsEvt <- runSystemEvent (msecT 110)
-  let systems = ecsG3D #+ ecsAud #+ ecsEvt #+ []
+  let systems = ecsG3D #+ ecsEvt #+ []
   [camE, bE, guiE] <- makeEs
   mapM (addToWorld systems) [camE, bE, guiE] 
   checkEvents guiE bE

@@ -215,6 +215,11 @@ lacApplyOtherChanges lac lac' update' = do
            stampedVal <- readC c >>= return . fromJust
            let val = fromStamped stampedVal
            HT.insert (lacCache lac) eid ((), stampedVal) -- empty engine value, only need to store stampedValue
+	   -- do one time change in main component
+           mMainCacheVal <- HT.lookup (lacCache lac') eid
+           case mMainCacheVal of
+               Just (engineMainVal, stampedMainCacheVal) -> update' val engineMainVal (fromStamped stampedMainCacheVal)
+	       Nothing -> return ()
            modifyIORef (lacList lac) ( (:) (eid, c) )
            ) insertList
   putMVar (lacAddList lac) []
@@ -329,6 +334,9 @@ filterEventType types events = let
       _ -> False
     UserEvents -> case evt of
       (UserEvt _ ) -> True
+      _ -> False
+    ApplicationEvents -> case evt of
+      (AppEvt _) -> True
       _ -> False
     AllEvents -> True
     _ -> False

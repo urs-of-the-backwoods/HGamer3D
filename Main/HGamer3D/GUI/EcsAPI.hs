@@ -22,8 +22,16 @@
 module HGamer3D.GUI.EcsAPI
 
 (
+	module HGamer3D.GUI.Schema.Form,
+	module HGamer3D.GUI.Schema.GUIDim,
+	module HGamer3D.GUI.Schema.Layout,
+	module HGamer3D.GUI.Schema.Widget
 )
 
 where
 
-
+import HGamer3D.GUI.Schema.Form
+import HGamer3D.GUI.Schema.GUIDim
+import HGamer3D.GUI.Schema.Layout
+import HGamer3D.GUI.Schema.Widget
+import HGamer3D.Internal.GUI

@@ -19,6 +19,7 @@
 -- Graphics.hs
 
 -- | 3D Graphics for HGamer3D, ECS public API.
+
 module HGamer3D.Graphics3D.EcsAPI
 
 (
@@ -29,7 +30,8 @@ module HGamer3D.Graphics3D.EcsAPI
   , module HGamer3D.Graphics3D.Schema.Material
   , module HGamer3D.Graphics3D.Schema.Scene
 
-  
+  , ECSGraphics3D
+  , runSystemGraphics3D
 )
 
 where
@@ -41,6 +43,6 @@ where
   import HGamer3D.Graphics3D.Schema.Material
   import HGamer3D.Graphics3D.Schema.Scene
   
-  import HGamer3D.Graphics3D.Internal.Base
+  import HGamer3D.Engine.Internal.SystemGraphics3D
 
 

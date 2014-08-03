@@ -49,11 +49,19 @@ module HGamer3D.Engine.EcsAPI
   -- * System
   -- $System
   System,
-  ECSGraphics3D,
-  runSystemGraphics3D,
 
   ECSEventQueues,
   runSystemEvent,
+  HG3DEvent (..),
+  GUIFormEvent (..),
+  ApplicationEvent (..),
+  AudioEvent (..),
+  
+  sendEvent,
+  receiveEvents,
+
+  module HGamer3D.Engine.Schema.EventReceiver,
+  module HGamer3D.Engine.Schema.EventChannel,
 
   SomeSystem,
   (#+),
@@ -63,6 +71,10 @@ module HGamer3D.Engine.EcsAPI
 ) where
 
 import HGamer3D.Internal.Engine
+import HGamer3D.Engine.Schema.EventReceiver
+import HGamer3D.Engine.Schema.EventChannel
+
+
 
 
 

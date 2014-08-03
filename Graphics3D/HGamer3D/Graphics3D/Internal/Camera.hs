@@ -93,14 +93,14 @@ addCamera g3ds schema = do
   -- create camera
   cameraName <- (nextUniqueName uname) >>= (\n -> return ("Camera"++n))
   camera <- SceneManager.createCamera sceneManager cameraName
-  -- set Frustum parameters
-  Frustum.setNearClipDistance camera nd
-  Frustum.setFarClipDistance camera fd
-  Frustum.setFOVy camera (fromAngle fov)
   -- add Viewport
   viewport <- RenderTarget.addViewport renderWindow camera z (rectX pos) (rectY pos) (rectWidth pos) (rectHeight pos)
   -- set Viewport parameters
   Viewport.setBackgroundColour viewport bgr
+  -- set Frustum parameters
+  Frustum.setNearClipDistance camera nd
+  Frustum.setFarClipDistance camera fd
+  Frustum.setFOVy camera (fromAngle fov)
   -- create camera return value
   let cam = Camera camera viewport schema
   -- adapt aspect ratio

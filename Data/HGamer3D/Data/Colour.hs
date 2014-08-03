@@ -26,6 +26,7 @@ module HGamer3D.Data.Colour
         white,
         silver,
         grey,
+	darkgrey,
         black,
         red,
         maroon,
@@ -54,6 +55,7 @@ data Colour = Colour {
 white = Colour 1.0 1.0 1.0 1.0 
 silver  = Colour 0.75 0.75 0.75 1.0
 grey = Colour 0.5 0.5 0.5 1.0
+darkgrey = Colour 0.25 0.25 0.25 1.0
 black = Colour 0.0 0.0 0.0 1.0
 red = Colour 1.0 0.0 0.0 1.0
 maroon = Colour 0.5 0.0 0.0 1.0
