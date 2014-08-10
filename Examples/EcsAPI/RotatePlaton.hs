@@ -16,12 +16,14 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- Coordinates.hs
--- Orientate yourself in 3D world
+-- RotatePlaton.hs
+-- Setup Basic Elements
 
 module Main
 
 where
+
+-- initialization
 
 -- import the needed Ecs API files
 import HGamer3D.Data
@@ -31,43 +33,28 @@ import HGamer3D.Graphics3D.EcsAPI
 -- other imports
 import Control.Concurrent
 
--- define two cameras
+-- define a camera
 camera1 = Camera (Frustum 5.0 5000.0 (Deg 40)) (Viewport 0 (Rectangle 0.0 0.0 1.0 1.0) black)
-camera2 = Camera (Frustum 5.0 5000.0 (Deg 10)) (Viewport 1 (Rectangle 0.7 0.7 0.27 0.27) darkgrey)
 
--- define some light
+-- define some light and the geometry
 light1 = Light white white PointLight 
-
--- define a geometry, which is laid out in different axes
-fzero = SimpleFigure Sphere (ResourceMaterial "Colours/Green")
-fx = SimpleFigure Cube (ResourceMaterial "Colours/Blue")
-fy = SimpleFigure Cube (ResourceMaterial "Colours/Red")
-
-figure1 = CombinedFigure [
-     (Vec3 0.0 0.0 (-200.0), unitU, unitVec3 &* 0.1, fzero),
-     (Vec3 20.0 0.0 (-200.0), unitU, unitVec3 &* 0.1, fx),
-     (Vec3 0.0 20.0 (-200.0), unitU, unitVec3 &* 0.1 , fy)
-  ]
+platon = SimpleFigure Dodekaeder (ResourceMaterial "Colours/Red")
 
 -- define event listener, to get quit event
 events1 = EventReceiver [ApplicationEvents]
 
--- rotation helper functions
-alphaTime :: IO Float
-alphaTime = do
+-- rotation angle, depending on time
+rotationAngle :: IO Float
+rotationAngle = do
   t <- getTime
   let t' = fromIntegral ((msec t) `mod` 5000)
   let v = (t' * 6.28 / 5000.0) 
   return v
 
-rotate alpha vstart radius = let
-  x = (sin alpha) * radius
-  z = (cos alpha) * radius
-  in (Vec3 x 0.0 z) &+ vstart
-
+-- main program
 main = do
 
-  -- make entities for environment and geometry
+  -- make entities and hand it to the runtime systems
 
   -- camera, light and scene parameters into one
   envE <- entity [
@@ -76,21 +63,12 @@ main = do
        CTEvR #: events1
        ]
 
-  -- a rotating camera for fun
-  rotC <- entity [
-     CTPos #: Vec3 0.0 0.0 0.0,
-     CTOri #: unitU,
-     CTCam #: camera2
-     ]
-
-  -- geometry entity
+  -- geometry and light entities
   geoE <- entity [
-     CTPos #: unitVec3,
+     CTPos #: Vec3 0.0 0.0 (-20.0),
      CTOri #: unitU,
-     CTFig #: figure1
+     CTFig #: platon
      ]
-
-  -- light entity
   liE1 <- entity [
        CTLig #: light1,
        CTPos #: Vec3 500.0 500.0 (-500.0)
@@ -100,28 +78,31 @@ main = do
        CTPos #: Vec3 100.0 50.0 0.0	
        ]
 
-  -- end definition of entities
-
   -- run graphics system
   ecsG3D <- runSystemGraphics3D (msecT 30)
   ecsEvt <- runSystemEvent (msecT 110)
   let systems = ecsG3D #+ ecsEvt #+ []
 
   -- add entities to running system
-  mapM (addToWorld systems) [envE, rotC, geoE, liE1, liE2] 
+  mapM (addToWorld systems) [envE, geoE, liE1, liE2] 
 
+  -- run logic until quit (logis is to rotate the dodekaeder)
+
+  -- run until quit
   let listenQuitLoop = do
+      -- receive event and quit loop on AppQuit
       evts <- receiveEvents envE
       if length (filter (\evt -> case evt of
       	 		      	      (AppEvt AppQuit) -> True
-				      _ -> False) evts) == 0 then do
-         threadDelay 100000  -- wait 100 msec
-	 -- rotate second camera
-	 alpha <- alphaTime
-	 updateC (rotC # CTPos) (const (rotate alpha (Vec3 0.0 0.0 (-200.0)) 400.0))
-	 updateC (rotC # CTOri) (const (rotU vec3Y alpha))
-      	 listenQuitLoop
-	 else return ()
+				      _ -> False) evts) > 0 
+         then return ()
+         else do   
+            -- wait 100 msec to save CPU time
+            threadDelay 100000 
+            -- rotate geometry
+	    rangle <- rotationAngle
+	    updateC (geoE # CTOri) (const (rotU vec3Y rangle))
+      	    listenQuitLoop
 
   listenQuitLoop
 
