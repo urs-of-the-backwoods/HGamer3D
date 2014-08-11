@@ -31,6 +31,7 @@ for (p, s) in [
 
     ("EcsAPI", "RotatePlaton"),
     ("EcsAPI", "Coordinates"),
+    ("EcsAPI", "MaterialManager"),
     ("EcsAPI", "GUI-Switch")
 
 ]:

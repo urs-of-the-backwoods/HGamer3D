@@ -95,7 +95,11 @@ _createGeometry g3ds geo = do
     Dodekaeder -> dodekaederE g3ds white
     Plane -> SceneManager.createEntity6 scm PT_PLANE
     _ -> error "HGamer3D.Graphics3D.Internal.Shapes._createMesh: Geo not implemented"
-  return $ OE entity
+  let rE = OE entity
+  if (geo /= Dodekaeder) && (geo /= Ikosaeder) then
+      _buildTV rE
+      else return ()
+  return $ rE
 
 _buildTV :: OEntity -> IO ()
 _buildTV (OE entity) = HG3DUtils.buildTangentVectors entity
@@ -130,9 +134,6 @@ _createFigure g3ds parent fig = do
   case fig of
     SimpleFigure geo mat -> do
       meshEntity <- _createGeometry g3ds geo
-      if (geo /= Dodekaeder) && (geo /= Ikosaeder) then
-        _buildTV meshEntity
-        else return ()
       _setMaterial meshEntity mat
       _addEntityToNode g3ds node meshEntity
       return (EDEntityNode meshEntity node)
@@ -201,14 +202,13 @@ _updateFigure g3ds parent edata oldFig newFig = do
                ResetGeometry -> do
                  let (SimpleFigure geo mat) = newFig
                  eNew <- _createGeometry g3ds geo
-                 _buildTV eNew
                  _setMaterial eNew mat
                  _exchangeEntityInNode g3ds nOld eOld eNew
                  return (EDEntityNode eNew nOld)
                ResetResource -> do
                  let (ResourceFigure name) = newFig
                  eNew <- _createResourceFigure g3ds name
-                 _buildTV eNew
+                 -- _buildTV eNew
                  _exchangeEntityInNode g3ds nOld eOld eNew
                  return (EDEntityNode eNew nOld)
 
