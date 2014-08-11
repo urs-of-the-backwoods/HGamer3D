@@ -23,22 +23,27 @@ module Main
 
 where
 
+-- import needed EcsAPI's
 import HGamer3D.Data
 import HGamer3D.Engine.EcsAPI
 import HGamer3D.Graphics3D.EcsAPI
 import HGamer3D.GUI.EcsAPI
 
 import Control.Concurrent
+import Data.Maybe
+import Data.List
 
 -- the things we need for the rotating entity
 camera1 = Camera (Frustum 5.0 5000.0 (Deg 40)) (Viewport 0 (Rectangle 0.0 0.0 1.0 1.0) black)
 
 light1 = Light white white PointLight 
 
+-- build and deconstruct composite figures
 toFigure scale geo mat = CombinedFigure [(zeroVec3, unitU, scale, SimpleFigure geo mat)]
 fromFigure fig = case fig of 
   CombinedFigure [(zeroVec3, unitU, scale, SimpleFigure geo mat)] -> (scale, geo, mat)
   _ -> error "wrong figure type"
+
 platon = toFigure unitVec3 Dodekaeder (ResourceMaterial "Colours/Red")
 
 rotationAngle :: IO Float
@@ -119,11 +124,17 @@ materialSelect = Form "Vanilla"
                                   Text "<select>",
                                   Width (GUIDim 1.0 0.0),
                                   Height (GUIDim 1.0 0.0),
-                                  TextChoice ["Blue", "Green", "Red"]      
+                                  TextChoice (map fst materials)      
                                   ] ))
                              ]
                           )])
 
+-- define the materials
+materials = [
+              ("Red", ResourceMaterial "Colours/Red"),
+              ("Green", ResourceMaterial "Colours/Green"),
+              ("Blue", ResourceMaterial "Colours/Blue")
+            ]
 
 -- main program
 main = do
@@ -167,9 +178,9 @@ main = do
   mapM (addToWorld systems) [envE, geoE, liE1, liE2, leftGuiE, rightGuiE] 
 
   -- changing a material
-  let materialChange [(_, FVS mat)] = updateC (geoE # CTFig) (\fig -> let (scale, geo, _) = fromFigure fig in toFigure scale geo (ResourceMaterial ("Colours/" ++ mat)))
+  let materialChange [(_, FVS mat)] = updateC (geoE # CTFig) (\fig -> let (scale, geo, _) = fromFigure fig in toFigure scale geo (fromJust (lookup mat materials)))
 
-  -- change sphere
+  -- change shape
   let doshape name = case name of
            "Sphere" -> updateC (geoE # CTFig) (\fig -> let (scale, geo, mat) = fromFigure fig in toFigure (unitVec3 &* 0.05) Sphere mat)
            "Cube" -> updateC (geoE # CTFig) (\fig -> let (scale, geo, mat) = fromFigure fig in toFigure (unitVec3 &* 0.03) Cube mat)
@@ -195,6 +206,7 @@ main = do
 	    updateC (geoE # CTOri) (const (rotU vec3Y rangle))
             loop
 
+  -- run loop
   loop
          
 
