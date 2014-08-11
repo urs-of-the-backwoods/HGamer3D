@@ -1,5 +1,5 @@
 Name:                HGamer3D-Enet-Binding
-Version:             0.3.2
+Version:             0.4.0
 Synopsis:            Enet Binding for HGamer3D
 Description:         
    HGamer3D is a game engine for developing 3D games in the programming 
@@ -19,12 +19,12 @@ Build-Type:          Simple
 Cabal-Version:       >=1.4
 Homepage:            http://www.hgamer3d.org
 Category:            Game Engine, Network
-Extra-source-files:  Setup.hs, include/ClassEnetPacket.h, include/StructHG3DClass.h, include/ClassEnetClient.h, include/hg3denet.hpp, include/ClassEnetServer.h, include/ClassEnet.h, include/EnetDllDefines.h, include/ClassPtr.h, include/hg3dstruct.h
+Extra-source-files:  Setup.hs, include/ClassEnetClient.h, include/StructHG3DClass.h, include/hg3dstruct.h, include/EnetDllDefines.h, include/ClassPtr.h, include/ClassEnetServer.h, include/ClassEnet.h, include/ClassEnetPacket.h, include/hg3denet.hpp
 
 Library
-  Build-Depends:     base >= 3 && < 5, HGamer3D-Data >= 0.3.0
+  Build-Depends:     base >= 3 && < 5, HGamer3D-Data >= 0.4.0
 
-  Exposed-modules:   HGamer3D.Bindings.Enet.Utils, HGamer3D.Bindings.Enet.StructHG3DClass, HGamer3D.Bindings.Enet.ClassPtr, HGamer3D.Bindings.Enet.ClassEnetServer, HGamer3D.Bindings.Enet.ClassEnetClient, HGamer3D.Bindings.Enet.ClassEnetPacket, HGamer3D.Bindings.Enet.ClassEnet
+  Exposed-modules:   HGamer3D.Bindings.Enet.Utils, HGamer3D.Bindings.Enet.StructHG3DClass, HGamer3D.Bindings.Enet.ClassPtr, HGamer3D.Bindings.Enet.ClassEnetServer, HGamer3D.Bindings.Enet.ClassEnet, HGamer3D.Bindings.Enet.ClassEnetPacket, HGamer3D.Bindings.Enet.ClassEnetClient
   Other-modules:     
 
   ghc-options:       
@@ -34,6 +34,6 @@ Library
   Build-tools:       
   build-depends:     
   if os(windows)
-     extra-libraries:   hg3denet032
+     extra-libraries:   hg3denet040
   else
-     extra-libraries:   hg3denet032,enet
+     extra-libraries:   hg3denet040,enet

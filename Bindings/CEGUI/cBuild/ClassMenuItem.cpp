@@ -36,10 +36,10 @@
 #include "RendererModules/Ogre/CEGUIOgreRenderer.h"
 #include "./WindowManagerHG3D.h"
 #include "./SystemHG3D.h"
+#include "HG3DCommandHandler.h"
 #include "HG3DEventStaticFunctions.h"
 #include "HG3DListboxStaticFunctions.h"
 #include "HG3DEventController.h"
-#include "HG3DCommandHandler.h"
 #include "HG3DEventModule.h"
 #include "HG3DWindowStaticFunctions.h"
 
@@ -107,6 +107,24 @@ extern "C" CEGUI_LIB_EXPORT void cegui_mnitm_setAutoPopupTimeout(struct hg3dclas
   CEGUI::MenuItem * thisclass_cpp = static_cast<CEGUI::MenuItem*> (getHG3DClassPtr(*thisclass_c, "CEGUI::MenuItem"));
   float time_cpp = (float)time_c;
   (thisclass_cpp->setAutoPopupTimeout(time_cpp));
+};
+
+// Returns the current offset for popup placement. 
+extern "C" CEGUI_LIB_EXPORT void cegui_mnitm_getPopupOffset(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c)
+{
+  CEGUI::MenuItem * thisclass_cpp = static_cast<CEGUI::MenuItem*> (getHG3DClassPtr(*thisclass_c, "CEGUI::MenuItem"));
+  const CEGUI::UVector2 * result_cpp;
+  result_cpp = &(thisclass_cpp->getPopupOffset());
+  *result_c = getHG3DClass_UVector2((void *) result_cpp);
+;
+};
+
+// sets the current offset for popup placement. 
+extern "C" CEGUI_LIB_EXPORT void cegui_mnitm_setPopupOffset(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * popupOffset_c)
+{
+  CEGUI::MenuItem * thisclass_cpp = static_cast<CEGUI::MenuItem*> (getHG3DClassPtr(*thisclass_c, "CEGUI::MenuItem"));
+  const CEGUI::UVector2 * popupOffset_cpp = static_cast<CEGUI::UVector2*> (getHG3DClassPtr(*popupOffset_c, "CEGUI::UVector2"));
+  (thisclass_cpp->setPopupOffset(*popupOffset_cpp));
 };
 
 // Opens the PopupMenu. 

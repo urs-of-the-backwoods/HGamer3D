@@ -9,5 +9,12 @@ Documentation is on: http://www.hgamer3d.org
 
 News
 ----
-- Release branch 0.4 is now ready to be tested and comes with live testing possibilities
-- Check Examples/EcsAPI !
+
+Version 0.4 is now on master! This new version features:
+
+- entity component system
+- schema based specification of entities
+- see Examples/EcsAPI
+- more than one camera
+- multi-threading, live coding from GHCI
+

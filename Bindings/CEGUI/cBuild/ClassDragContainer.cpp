@@ -36,10 +36,10 @@
 #include "RendererModules/Ogre/CEGUIOgreRenderer.h"
 #include "./WindowManagerHG3D.h"
 #include "./SystemHG3D.h"
+#include "HG3DCommandHandler.h"
 #include "HG3DEventStaticFunctions.h"
 #include "HG3DListboxStaticFunctions.h"
 #include "HG3DEventController.h"
-#include "HG3DCommandHandler.h"
 #include "HG3DEventModule.h"
 #include "HG3DWindowStaticFunctions.h"
 
@@ -169,6 +169,24 @@ extern "C" CEGUI_LIB_EXPORT void cegui_drgcnt_pickUp(struct hg3dclass_struct * t
   bool result_cpp;
   result_cpp = (thisclass_cpp->pickUp(force_sticky_cpp));
   *result_c = (int)result_cpp;
+};
+
+// Set the fixed mouse cursor dragging offset to be used for this DragContainer
+extern "C" CEGUI_LIB_EXPORT void cegui_drgcnt_setFixedDragOffset(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * offset_c)
+{
+  CEGUI::DragContainer * thisclass_cpp = static_cast<CEGUI::DragContainer*> (getHG3DClassPtr(*thisclass_c, "CEGUI::DragContainer"));
+  const CEGUI::UVector2 * offset_cpp = static_cast<CEGUI::UVector2*> (getHG3DClassPtr(*offset_c, "CEGUI::UVector2"));
+  (thisclass_cpp->setFixedDragOffset(*offset_cpp));
+};
+
+// Return the fixed mouse cursor dragging offset to be used for this DragContainer
+extern "C" CEGUI_LIB_EXPORT void cegui_drgcnt_getFixedDragOffset(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c)
+{
+  CEGUI::DragContainer * thisclass_cpp = static_cast<CEGUI::DragContainer*> (getHG3DClassPtr(*thisclass_c, "CEGUI::DragContainer"));
+  const CEGUI::UVector2 * result_cpp;
+  result_cpp = &(thisclass_cpp->getFixedDragOffset());
+  *result_c = getHG3DClass_UVector2((void *) result_cpp);
+;
 };
 
 // Set whether the fixed dragging offset - as set with the setFixedDragOffset - function will be used, or whether the built-in positioning will be used. 

@@ -113,6 +113,16 @@ import HGamer3D.Data.Angle
  fromBool `Bool' ,
  alloca- `Bool' peekBoolUtil*} -> `()'  #}
 
+{- function setFixedDragOffset -}
+{#fun cegui_drgcnt_setFixedDragOffset as setFixedDragOffset 
+{ withHG3DClass* `HG3DClass' ,
+ withHG3DClass* `HG3DClass' } -> `()'  #}
+
+{- function getFixedDragOffset -}
+{#fun cegui_drgcnt_getFixedDragOffset as getFixedDragOffset 
+{ withHG3DClass* `HG3DClass' ,
+ alloca- `HG3DClass' peek*} -> `()'  #}
+
 {- function setUsingFixedDragOffset -}
 {#fun cegui_drgcnt_setUsingFixedDragOffset as setUsingFixedDragOffset 
 { withHG3DClass* `HG3DClass' ,

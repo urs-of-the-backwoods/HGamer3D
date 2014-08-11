@@ -19,12 +19,20 @@ env.AppendENVPath('PATH', home + os.sep + '.cabal' + os.sep + 'bin')
 dependsOn = [
 	  Glob("HGamer3D/Bindings/SDL2/*"),
 	  Glob("*.cabal"),
-	  "LICENSE"
+	  "LICENSE",
+
+	  Glob("../../../Data/dist/HGamer3D-*.tar.gz"),
 ]
 
 target = [ "dist/setup-config", Glob("dist/HGamer3D-*.tar.gz")]
 
 env.Command(target, dependsOn, [
+
+"ghc-pkg unregister HGamer3D || true",
+"ghc-pkg unregister HGamer3D-Wire || true",
+"ghc-pkg unregister HGamer3D-GUI || true",
+"ghc-pkg unregister HGamer3D-WinEvent || true",
+
 "cabal configure --user --extra-lib-dirs=" + home + "/.HGamer3D/lib",
 "cabal build",
 "cabal haddock",

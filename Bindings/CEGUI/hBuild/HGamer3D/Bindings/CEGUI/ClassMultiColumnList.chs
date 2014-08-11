@@ -255,6 +255,21 @@ import HGamer3D.Data.Angle
 {#fun cegui_mltclmlst_resetList as resetList 
 { withHG3DClass* `HG3DClass' } -> `()'  #}
 
+{- function addColumn -}
+{#fun cegui_mltclmlst_addColumn as addColumn 
+{ withHG3DClass* `HG3DClass' ,
+ withCString* `String' ,
+ fromIntegral `Int' ,
+ withHG3DClass* `HG3DClass' } -> `()'  #}
+
+{- function insertColumn -}
+{#fun cegui_mltclmlst_insertColumn as insertColumn 
+{ withHG3DClass* `HG3DClass' ,
+ withCString* `String' ,
+ fromIntegral `Int' ,
+ withHG3DClass* `HG3DClass' ,
+ fromIntegral `Int' } -> `()'  #}
+
 {- function removeColumn -}
 {#fun cegui_mltclmlst_removeColumn as removeColumn 
 { withHG3DClass* `HG3DClass' ,
@@ -377,6 +392,12 @@ import HGamer3D.Data.Angle
 {- function handleUpdatedItemData -}
 {#fun cegui_mltclmlst_handleUpdatedItemData as handleUpdatedItemData 
 { withHG3DClass* `HG3DClass' } -> `()'  #}
+
+{- function setColumnHeaderWidth -}
+{#fun cegui_mltclmlst_setColumnHeaderWidth as setColumnHeaderWidth 
+{ withHG3DClass* `HG3DClass' ,
+ fromIntegral `Int' ,
+ withHG3DClass* `HG3DClass' } -> `()'  #}
 
 {- function setUserSortControlEnabled -}
 {#fun cegui_mltclmlst_setUserSortControlEnabled as setUserSortControlEnabled 

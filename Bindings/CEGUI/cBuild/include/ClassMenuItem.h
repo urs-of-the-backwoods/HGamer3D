@@ -25,6 +25,7 @@
 #define _DEFINED_HG3D_ClassMenuItem
 
 #include "ClassPtr.h"
+#include "ClassUVector2.h"
 
 
 // return true if user is hovering over this widget (or it's pushed and user is not over it for highlight) 
@@ -47,6 +48,12 @@ void cegui_mnitm_getAutoPopupTimeout(struct hg3dclass_struct * thisclass_c, floa
 
 // Sets the time, which has to elapse before the popup window is opened/closed if the hovering state changes. 
 void cegui_mnitm_setAutoPopupTimeout(struct hg3dclass_struct * thisclass_c, float time_c);
+
+// Returns the current offset for popup placement. 
+void cegui_mnitm_getPopupOffset(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * result_c);
+
+// sets the current offset for popup placement. 
+void cegui_mnitm_setPopupOffset(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * popupOffset_c);
 
 // Opens the PopupMenu. 
 void cegui_mnitm_openPopupMenu(struct hg3dclass_struct * thisclass_c, int notify_c);

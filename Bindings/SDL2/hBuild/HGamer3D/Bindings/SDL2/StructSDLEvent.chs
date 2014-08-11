@@ -40,6 +40,7 @@ import HGamer3D.Data.Angle
 #include "StructSDLEvent.h"
 
 import HGamer3D.Data
+import HGamer3D.Data.Window
 
 import HGamer3D.Bindings.SDL2.EnumSDLEventType
 import HGamer3D.Bindings.SDL2.EnumSDLKeymod
@@ -73,15 +74,15 @@ _getButton w = case w of
    5 -> SDLButtonX2
    _ -> SDLButtonNumber ((fromIntegral . toInteger) w)
 
-data SDLEvent = EvtKeyUp TimeMS Window EnumSDLScancode Keycode Keymod |
-             EvtKeyDown TimeMS Window EnumSDLScancode Keycode Keymod |
-             EvtText TimeMS Window String | 
-             EvtQuit TimeMS |
-             EvtWindow TimeMS Window EnumSDLWindowEventID Int Int |
-             EvtMouseButtonDown TimeMS Window MouseID SDLButton Int Int |
-             EvtMouseButtonUp TimeMS Window MouseID SDLButton Int Int |
-             EvtMouseMotion TimeMS Window MouseID Int Int Int Int | 
-             EvtCommon TimeMS EnumSDLEventType |
+data SDLEvent = EvtKeyUp GameTime Window EnumSDLScancode Keycode Keymod |
+             EvtKeyDown GameTime Window EnumSDLScancode Keycode Keymod |
+             EvtText GameTime Window String | 
+             EvtQuit GameTime |
+             EvtWindow GameTime Window EnumSDLWindowEventID Int Int |
+             EvtMouseButtonDown GameTime Window MouseID SDLButton Int Int |
+             EvtMouseButtonUp GameTime Window MouseID SDLButton Int Int |
+             EvtMouseMotion GameTime Window MouseID Int Int Int Int | 
+             EvtCommon GameTime EnumSDLEventType |
              EvtNotValid
 
 instance Storable SDLEvent where
@@ -93,7 +94,7 @@ instance Storable SDLEvent where
    time <- (peekByteOff p 4 :: IO CUInt)
    Control.Exception.catch (do
       let evttyp = (toEnum . fromIntegral . toInteger) typ  -- this first throws exception if enum not ok !
-      let t = TimeMS ((fromIntegral . toInteger) time)
+      let t = ((fromIntegral . (* 1000000) . toInteger) time) :: GameTime
 
       case (evttyp) of
          SDL_QUIT -> return $ EvtQuit t

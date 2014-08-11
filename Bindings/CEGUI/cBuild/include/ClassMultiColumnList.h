@@ -31,6 +31,7 @@
 #include "EnumSelectionMode.h"
 #include "ClassScrollbar.h"
 #include "ClassListHeader.h"
+#include "ClassUDim.h"
 
 
 // Return whether user manipulation of the sort column and direction are enabled. 
@@ -147,6 +148,12 @@ void cegui_mltclmlst_initialiseComponents(struct hg3dclass_struct * thisclass_c)
 // Remove all items from the list. 
 void cegui_mltclmlst_resetList(struct hg3dclass_struct * thisclass_c);
 
+// Add a column to the list box. 
+void cegui_mltclmlst_addColumn(struct hg3dclass_struct * thisclass_c, char * text_c, unsigned int col_id_c, struct hg3dclass_struct * width_c);
+
+// Insert a new column in the list. 
+void cegui_mltclmlst_insertColumn(struct hg3dclass_struct * thisclass_c, char * text_c, unsigned int col_id_c, struct hg3dclass_struct * width_c, unsigned int position_c);
+
 // Removes a column from the list box. This will cause any ListboxItem
 void cegui_mltclmlst_removeColumn(struct hg3dclass_struct * thisclass_c, unsigned int col_idx_c);
 
@@ -212,6 +219,9 @@ void cegui_mltclmlst_setItemSelectState(struct hg3dclass_struct * thisclass_c, s
 
 // Inform the list box that one or more attached ListboxItems have been externally modified, and the list should re-sync its internal state and refresh the display as needed. 
 void cegui_mltclmlst_handleUpdatedItemData(struct hg3dclass_struct * thisclass_c);
+
+// Set the width of the specified column header (and therefore the column itself). 
+void cegui_mltclmlst_setColumnHeaderWidth(struct hg3dclass_struct * thisclass_c, unsigned int col_idx_c, struct hg3dclass_struct * width_c);
 
 // Set whether user manipulation of the sort column and direction are enabled. 
 void cegui_mltclmlst_setUserSortControlEnabled(struct hg3dclass_struct * thisclass_c, int setting_c);

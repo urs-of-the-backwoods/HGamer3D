@@ -25,6 +25,25 @@ dependsOn = [
 target = [ "dist/setup-config", Glob("dist/HGamer3D-*.tar.gz")]
 
 env.Command(target, dependsOn, [
+
+"ghc-pkg unregister HGamer3D || true",
+"ghc-pkg unregister HGamer3D-Schema || true",
+"ghc-pkg unregister HGamer3D-Wire || true",
+
+"ghc-pkg unregister HGamer3D-GUI || true",
+"ghc-pkg unregister HGamer3D-WinEvent || true",
+"ghc-pkg unregister HGamer3D-Graphics3D || true",
+
+"ghc-pkg unregister HGamer3D-InputSystem || true",
+"ghc-pkg unregister HGamer3D-Network || true",
+"ghc-pkg unregister HGamer3D-Audio || true",
+
+"ghc-pkg unregister HGamer3D-CEGUI-Binding || true",
+"ghc-pkg unregister HGamer3D-Ogre-Binding || true",
+"ghc-pkg unregister HGamer3D-Enet-Binding || true",
+"ghc-pkg unregister HGamer3D-SDL2-Binding || true",
+"ghc-pkg unregister HGamer3D-SFML-Binding || true",
+
 "cabal configure --user",
 "cabal build",
 "cabal haddock",

@@ -37,6 +37,9 @@
 #include "ClassSlider.h"
 #include "ClassSpinner.h"
 #include "ClassMultiColumnList.h"
+#include "ClassUDim.h"
+#include "ClassUVector2.h"
+#include "ClassSystem.h"
 
 
 // 
@@ -71,5 +74,32 @@ void cegui_hg3dwsfs_castWindowToSpinner(struct hg3dclass_struct * window_c, stru
 
 // 
 void cegui_hg3dwsfs_castWindowToMultiColumnList(struct hg3dclass_struct * window_c, struct hg3dclass_struct * result_c);
+
+// 
+void cegui_hg3dwsfs_udScale(struct hg3dclass_struct * ud_c, float * result_c);
+
+// 
+void cegui_hg3dwsfs_udOffset(struct hg3dclass_struct * ud_c, float * result_c);
+
+// 
+void cegui_hg3dwsfs_v2X(struct hg3dclass_struct * uv2_c, struct hg3dclass_struct * result_c);
+
+// 
+void cegui_hg3dwsfs_v2Y(struct hg3dclass_struct * uv2_c, struct hg3dclass_struct * result_c);
+
+// 
+void cegui_hg3dwsfs_getWindowWidth(struct hg3dclass_struct * window_c, struct hg3dclass_struct * result_c);
+
+// 
+void cegui_hg3dwsfs_getWindowHeight(struct hg3dclass_struct * window_c, struct hg3dclass_struct * result_c);
+
+// 
+void cegui_hg3dwsfs_setNewWindowSize(struct hg3dclass_struct * system_c, float width_c, float height_c);
+
+// 
+void cegui_hg3dwsfs_getWindowMargin(struct hg3dclass_struct * window_c, struct hg3dclass_struct * result_c);
+
+// 
+void cegui_hg3dwsfs_setWindowMargin(struct hg3dclass_struct * window_c, struct hg3dclass_struct * margin_c);
 
 #endif 

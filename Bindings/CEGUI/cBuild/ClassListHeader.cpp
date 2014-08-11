@@ -37,10 +37,10 @@
 #include "RendererModules/Ogre/CEGUIOgreRenderer.h"
 #include "./WindowManagerHG3D.h"
 #include "./SystemHG3D.h"
+#include "HG3DCommandHandler.h"
 #include "HG3DEventStaticFunctions.h"
 #include "HG3DListboxStaticFunctions.h"
 #include "HG3DEventController.h"
-#include "HG3DCommandHandler.h"
 #include "HG3DEventModule.h"
 #include "HG3DWindowStaticFunctions.h"
 
@@ -258,6 +258,38 @@ extern "C" CEGUI_LIB_EXPORT void cegui_lsthdr_setColumnDraggingEnabled(struct hg
   (thisclass_cpp->setColumnDraggingEnabled(setting_cpp));
 };
 
+// Add a new column segment to the end of the header. 
+extern "C" CEGUI_LIB_EXPORT void cegui_lsthdr_addColumn(struct hg3dclass_struct * thisclass_c, char * text_c, unsigned int id_c, struct hg3dclass_struct * width_c)
+{
+  CEGUI::ListHeader * thisclass_cpp = static_cast<CEGUI::ListHeader*> (getHG3DClassPtr(*thisclass_c, "CEGUI::ListHeader"));
+  CEGUI::String text_cpp = CEGUI::String((const char*) text_c);
+  uint id_cpp = (uint)id_c;
+  const CEGUI::UDim * width_cpp = static_cast<CEGUI::UDim*> (getHG3DClassPtr(*width_c, "CEGUI::UDim"));
+  (thisclass_cpp->addColumn(text_cpp, id_cpp, *width_cpp));
+};
+
+// Insert a new column segment at the specified position. 
+extern "C" CEGUI_LIB_EXPORT void cegui_lsthdr_insertColumn(struct hg3dclass_struct * thisclass_c, char * text_c, unsigned int id_c, struct hg3dclass_struct * width_c, unsigned int position_c)
+{
+  CEGUI::ListHeader * thisclass_cpp = static_cast<CEGUI::ListHeader*> (getHG3DClassPtr(*thisclass_c, "CEGUI::ListHeader"));
+  CEGUI::String text_cpp = CEGUI::String((const char*) text_c);
+  uint id_cpp = (uint)id_c;
+  const CEGUI::UDim * width_cpp = static_cast<CEGUI::UDim*> (getHG3DClassPtr(*width_c, "CEGUI::UDim"));
+  uint position_cpp = (uint)position_c;
+  (thisclass_cpp->insertColumn(text_cpp, id_cpp, *width_cpp, position_cpp));
+};
+
+// Insert a new column segment at the specified position. 
+extern "C" CEGUI_LIB_EXPORT void cegui_lsthdr_insertColumn2(struct hg3dclass_struct * thisclass_c, char * text_c, unsigned int id_c, struct hg3dclass_struct * width_c, struct hg3dclass_struct * position_c)
+{
+  CEGUI::ListHeader * thisclass_cpp = static_cast<CEGUI::ListHeader*> (getHG3DClassPtr(*thisclass_c, "CEGUI::ListHeader"));
+  CEGUI::String text_cpp = CEGUI::String((const char*) text_c);
+  uint id_cpp = (uint)id_c;
+  const CEGUI::UDim * width_cpp = static_cast<CEGUI::UDim*> (getHG3DClassPtr(*width_c, "CEGUI::UDim"));
+  const CEGUI::ListHeaderSegment * position_cpp = static_cast<CEGUI::ListHeaderSegment*> (getHG3DClassPtr(*position_c, "CEGUI::ListHeaderSegment"));
+  (thisclass_cpp->insertColumn(text_cpp, id_cpp, *width_cpp, *position_cpp));
+};
+
 // Removes a column segment from the ListHeader
 extern "C" CEGUI_LIB_EXPORT void cegui_lsthdr_removeColumn(struct hg3dclass_struct * thisclass_c, unsigned int column_c)
 {
@@ -316,6 +348,15 @@ extern "C" CEGUI_LIB_EXPORT void cegui_lsthdr_setSegmentOffset(struct hg3dclass_
   CEGUI::ListHeader * thisclass_cpp = static_cast<CEGUI::ListHeader*> (getHG3DClassPtr(*thisclass_c, "CEGUI::ListHeader"));
   float offset_cpp = (float)offset_c;
   (thisclass_cpp->setSegmentOffset(offset_cpp));
+};
+
+// Set the width of the specified column. 
+extern "C" CEGUI_LIB_EXPORT void cegui_lsthdr_setColumnWidth(struct hg3dclass_struct * thisclass_c, unsigned int column_c, struct hg3dclass_struct * width_c)
+{
+  CEGUI::ListHeader * thisclass_cpp = static_cast<CEGUI::ListHeader*> (getHG3DClassPtr(*thisclass_c, "CEGUI::ListHeader"));
+  uint column_cpp = (uint)column_c;
+  const CEGUI::UDim * width_cpp = static_cast<CEGUI::UDim*> (getHG3DClassPtr(*width_c, "CEGUI::UDim"));
+  (thisclass_cpp->setColumnWidth(column_cpp, *width_cpp));
 };
 
 // Constructor for the list header base class. 

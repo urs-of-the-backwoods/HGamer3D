@@ -182,6 +182,12 @@ hg3dclass_struct getHG3DClass_Tooltip(void *ptrIn);
 typedef void ClassTree; 
 hg3dclass_struct getHG3DClass_Tree(void *ptrIn);
 
+typedef void ClassUDim; 
+hg3dclass_struct getHG3DClass_UDim(void *ptrIn);
+
+typedef void ClassUVector2; 
+hg3dclass_struct getHG3DClass_UVector2(void *ptrIn);
+
 typedef void ClassWidgetLookManager; 
 hg3dclass_struct getHG3DClass_WidgetLookManager(void *ptrIn);
 

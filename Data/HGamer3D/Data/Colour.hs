@@ -18,18 +18,57 @@
 
 -- ColourValue.hs
 
--- | HGamer3D colour type
+-- | Module providing the Colour type and some standard colours
 module HGamer3D.Data.Colour 
 
 (
 	Colour (Colour, cRed, cGreen, cBlue, cAlpha),
+        white,
+        silver,
+        grey,
+	darkgrey,
+        black,
+        red,
+        maroon,
+        yellow,
+        olive,
+        lime,
+        green,
+        aqua,
+        teal,
+        blue,
+        navy,
+        fuchsia,
+        purple
 )
 
 where
+
+-- | HGamer3D colour type
 data Colour = Colour {
-  cRed :: Float,
-  cGreen :: Float,
-  cBlue :: Float,
-  cAlpha :: Float
+  cRed :: Float,   -- ^ red component ranging from 0.0 to 1.0
+  cGreen :: Float, -- ^ green component ranging from 0.0 to 1.0
+  cBlue :: Float,  -- ^ blue component ranging from 0.0 to 1.0
+  cAlpha :: Float  -- ^ alpha component ranging from 0.0 to 1.0 with 1.0 being fully opaque
    } deriving (Eq, Show)
+
+white = Colour 1.0 1.0 1.0 1.0 
+silver  = Colour 0.75 0.75 0.75 1.0
+grey = Colour 0.5 0.5 0.5 1.0
+darkgrey = Colour 0.25 0.25 0.25 1.0
+black = Colour 0.0 0.0 0.0 1.0
+red = Colour 1.0 0.0 0.0 1.0
+maroon = Colour 0.5 0.0 0.0 1.0
+yellow = Colour 1.0 1.0 0.0 1.0
+olive = Colour 0.5 0.5 0.0 1.0
+lime = Colour 0.0 1.0 0.0 1.0
+green = Colour 0.0 0.5 0.0 1.0
+aqua = Colour 0.0 1.0 1.0 1.0
+teal = Colour 0.0 0.5 0.5 1.0
+blue = Colour 0.0 0.0 1.0 1.0 
+navy = Colour 0.0 0.0 0.5 1.0
+fuchsia = Colour 1.0 0.0 1.0 1.0
+purple = Colour 0.5 0.0 0.5 1.0
+
+
 

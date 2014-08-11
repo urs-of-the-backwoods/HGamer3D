@@ -14,7 +14,7 @@
 # 
 
 
-# scons file to build HGamer3DEnet library, version 0.3.2
+# scons file to build HGamer3DEnet library, version 0.4.0
 
 
 # set environment
@@ -31,7 +31,7 @@ libpath = home + "/.HGamer3D/lib"
 if env["PLATFORM"] == "win32":
    # on windows, create new environment, which finds MS C-Compiler
    env = Environment(TARGET_ARCH="x86", MSVC_VERSION="10.0")
-   env.MergeFlags({"CCFLAGS" : "/DWIN32 /D_WIN32 /DHGamer3DEnet032_EXPORTS /EHsc /MD"})
+   env.MergeFlags({"CCFLAGS" : "/DWIN32 /D_WIN32 /DHGamer3DEnet040_EXPORTS /EHsc /MD"})
 
 # set other compile parameters
 ##############################
@@ -40,15 +40,15 @@ if env["PLATFORM"] == "win32":
 
    env.Append(CPPPATH=["include","../Deps/include","../deps/include"])
    env.Append(LIBPATH=["lib","../Deps/lib","../Deps/lib"])
-   env.SharedLibrary("hg3denet032", ["ClassEnet.cpp","ClassEnetPacket.cpp","ClassEnetClient.cpp","hg3denet.cpp","ClassEnetServer.cpp","ClassPtr.cpp"], LIBS = ["enet137.lib","winmm.lib","ws2_32.lib"])
+   env.SharedLibrary("hg3denet040", ["ClassEnet.cpp","ClassEnetServer.cpp","ClassEnetClient.cpp","ClassEnetPacket.cpp","ClassPtr.cpp","hg3denet.cpp"], LIBS = ["enet137.lib","winmm.lib","ws2_32.lib"])
    env.Alias('install', libpath)
-   env.Install(libpath, "hg3denet032.dll")
+   env.Install(libpath, "hg3denet040.dll")
 
 else:
    env.Append(CPPPATH=["include","../Deps/include","../deps/include"])
    env.Append(LIBPATH=["lib","../Deps/lib","../Deps/lib"])
-   env.SharedLibrary("hg3denet032", ["ClassEnet.cpp","ClassEnetPacket.cpp","ClassEnetClient.cpp","hg3denet.cpp","ClassEnetServer.cpp","ClassPtr.cpp"], LIBS = ["enet"])
+   env.SharedLibrary("hg3denet040", ["ClassEnet.cpp","ClassEnetServer.cpp","ClassEnetClient.cpp","ClassEnetPacket.cpp","ClassPtr.cpp","hg3denet.cpp"], LIBS = ["enet"])
    env.Alias('install', libpath)
-   env.Install(libpath, "libhg3denet032.so")
+   env.Install(libpath, "libhg3denet040.so")
 
 

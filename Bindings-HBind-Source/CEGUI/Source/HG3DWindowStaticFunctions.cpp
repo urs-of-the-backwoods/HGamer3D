@@ -81,3 +81,60 @@ CEGUI::MultiColumnList* HG3DWindowStaticFunctions::castWindowToMultiColumnList(C
 	return (CEGUI::MultiColumnList*)window;
 }
 
+
+
+// functions for UDim and UVector2
+
+float HG3DWindowStaticFunctions::udScale( const CEGUI::UDim* ud)
+{
+  return ud->d_scale;
+}
+
+float HG3DWindowStaticFunctions::udOffset( const CEGUI::UDim* ud)
+{
+  return ud->d_offset;
+}
+
+CEGUI::UDim* HG3DWindowStaticFunctions::v2X( const CEGUI::UVector2* uv2)
+{
+  return (new CEGUI::UDim(uv2->d_x));
+}
+
+CEGUI::UDim* HG3DWindowStaticFunctions::v2Y( const CEGUI::UVector2* uv2)
+{
+  return (new CEGUI::UDim(uv2->d_y));
+}
+
+CEGUI::UDim* HG3DWindowStaticFunctions::getWindowWidth(const CEGUI::Window* window)
+{
+  CEGUI::UDim* pud = new CEGUI::UDim(0.0, 0.0);
+  *pud = window->getWidth();
+  return pud;
+}
+
+CEGUI::UDim* HG3DWindowStaticFunctions::getWindowHeight(const CEGUI::Window* window)
+{
+  CEGUI::UDim* pud = new CEGUI::UDim(0.0, 0.0);
+  *pud = window->getHeight();
+  return pud;
+}
+
+void HG3DWindowStaticFunctions::setNewWindowSize(CEGUI::System* system, float width, float height)
+{
+  CEGUI::Size new_size = CEGUI::Size(width, height);
+  system->notifyDisplaySizeChanged(new_size); 	
+}
+
+CEGUI::UDim* HG3DWindowStaticFunctions::getWindowMargin(const CEGUI::Window* window)
+{
+  CEGUI::UBox margin;
+  CEGUI::UDim* pud = new CEGUI::UDim(0.0, 0.0);
+  margin = window->getMargin();
+  *pud = margin.d_top;
+  return pud;
+}
+
+void HG3DWindowStaticFunctions::setWindowMargin (CEGUI::Window* window, const CEGUI::UDim* margin)
+{
+  window->setMargin(CEGUI::UBox(*margin, *margin, CEGUI::UDim(0.0,0.0), CEGUI::UDim(0.0,0.0)));
+}

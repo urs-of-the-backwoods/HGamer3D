@@ -27,6 +27,7 @@
 #include "ClassPtr.h"
 #include "ClassListHeaderSegment.h"
 #include "EnumSortDirection.h"
+#include "ClassUDim.h"
 
 
 // Return the number of columns or segments attached to the header. 
@@ -98,6 +99,15 @@ void cegui_lsthdr_setColumnSizingEnabled(struct hg3dclass_struct * thisclass_c, 
 // Set whether columns may be reordered by the user via drag and drop. 
 void cegui_lsthdr_setColumnDraggingEnabled(struct hg3dclass_struct * thisclass_c, int setting_c);
 
+// Add a new column segment to the end of the header. 
+void cegui_lsthdr_addColumn(struct hg3dclass_struct * thisclass_c, char * text_c, unsigned int id_c, struct hg3dclass_struct * width_c);
+
+// Insert a new column segment at the specified position. 
+void cegui_lsthdr_insertColumn(struct hg3dclass_struct * thisclass_c, char * text_c, unsigned int id_c, struct hg3dclass_struct * width_c, unsigned int position_c);
+
+// Insert a new column segment at the specified position. 
+void cegui_lsthdr_insertColumn2(struct hg3dclass_struct * thisclass_c, char * text_c, unsigned int id_c, struct hg3dclass_struct * width_c, struct hg3dclass_struct * position_c);
+
 // Removes a column segment from the ListHeader
 void cegui_lsthdr_removeColumn(struct hg3dclass_struct * thisclass_c, unsigned int column_c);
 
@@ -118,6 +128,9 @@ void cegui_lsthdr_moveSegment2(struct hg3dclass_struct * thisclass_c, struct hg3
 
 // Set the current base segment offset. (This implements scrolling of the header segments within the header area). 
 void cegui_lsthdr_setSegmentOffset(struct hg3dclass_struct * thisclass_c, float offset_c);
+
+// Set the width of the specified column. 
+void cegui_lsthdr_setColumnWidth(struct hg3dclass_struct * thisclass_c, unsigned int column_c, struct hg3dclass_struct * width_c);
 
 // Constructor for the list header base class. 
 void cegui_lsthdr_construct(char * type_c, char * name_c, struct hg3dclass_struct * result_c);
