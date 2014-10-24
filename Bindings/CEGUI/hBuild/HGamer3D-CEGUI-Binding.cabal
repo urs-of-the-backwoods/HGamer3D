@@ -1,0 +1,36 @@
+Name:                HGamer3D-CEGUI-Binding
+Version:             0.4.0
+Synopsis:            A Game Engine for the Haskell Programmer - CEGUI  Bindings
+Description:         
+   HGamer3D is a game engine for developing 3D games in the programming 
+   language Haskell. This module provides the CEGUI Bindings.
+   HGamer3D-CEGUI-Binding is available on Windows and Linux.
+   
+
+	
+License:             OtherLicense
+License-file:        LICENSE
+Author:              Peter Althainz
+Maintainer:          althainz@gmail.com
+Build-Type:          Simple
+Cabal-Version:       >=1.4
+Homepage:            http://www.hgamer3d.org
+Category:            Game Engine, GUI
+Extra-source-files:  Setup.hs, include/colorvalue_struct.h, include/StructHG3DClass.h, include/ClassThumb.h, include/EnumTabPanePosition.h, include/ClassUDim.h, include/hg3dstruct.h, include/vector4_struct.h, include/HG3DCommandHandler.h, include/ClassListboxItem.h, include/ClassEditbox.h, include/ClassSchemeManager.h, include/ClassSpinner.h, include/ClassItemListbox.h, include/EnumQuadSplitMode.h, include/ClassMultiLineEditbox.h, include/ClassMenuItem.h, include/radian_struct.h, include/ClassListHeaderSegment.h, include/ClassTree.h, include/ClassHG3DEventController.h, include/CEGUIDllDefines.h, include/ClassSlider.h, include/ClassListbox.h, include/SystemHG3D.h, include/ClassMultiColumnList.h, include/HG3DEventStaticFunctions.h, include/HG3DListboxStaticFunctions.h, include/ClassScrollablePane.h, include/ClassUVector2.h, include/vector2_struct.h, include/EnumTipState.h, include/ClassFont.h, include/ClassWindowManagerHG3D.h, include/ClassScheme.h, include/EnumSelectionMode.h, include/ClassFrameWindow.h, include/ClassWindowManager.h, include/ClassHG3DListboxStaticFunctions.h, include/sharedptr_struct.h, include/ClassHG3DEventStaticFunctions.h, include/HG3DEventController.h, include/ClassTabButton.h, include/ClassPushButton.h, include/ClassFontManager.h, include/EnumMouseButton.h, include/EnumWindowUpdateMode.h, include/ClassScrollbar.h, include/EnumFWSizingLocation.h, include/ClassDefaultResourceProvider.h, include/ClassItemEntry.h, include/EnumBlendMode.h, include/ClassPtr.h, include/ClassScrolledContainer.h, include/ClassDragContainer.h, include/ClassListboxTextItem.h, include/EnumSystemKey.h, include/ClassRadioButton.h, include/ClassXMLParser.h, include/ClassComboDropList.h, include/quaternion_struct.h, include/ClassScriptModule.h, include/ClassWindow.h, include/EnumHorizontalAlignment.h, include/EnumLoggingLevel.h, include/ClassEventSet.h, include/ClassRenderer.h, include/ClassOgreResourceProvider.h, include/ClassLogger.h, include/ClassResourceProvider.h, include/ClassImageCodec.h, include/vector3_struct.h, include/ClassScrolledItemListBase.h, include/ClassEventArgs.h, include/ClassPropertySet.h, include/EnumSortDirection.h, include/EnumKeyScan.h, include/EnumVerticalAlignment.h, include/ClassImageset.h, include/ClassProgressBar.h, include/ClassSystem.h, include/ClassDefaultLogger.h, include/ClassSystemHG3D.h, include/WindowManagerHG3D.h, include/HG3DEventModule.h, include/ClassMenuBase.h, include/ClassCheckbox.h, include/ClassCombobox.h, include/degree_struct.h, include/ClassWidgetLookManager.h, include/ClassListHeader.h, include/ClassTooltip.h, include/ClassOgreRenderer.h, include/EnumTextInputMode.h, include/ClassScriptFunctor.h, include/ClassHG3DWindowStaticFunctions.h, include/HG3DWindowStaticFunctions.h
+
+Library
+  Build-Depends:     base >= 3 && < 5,  HGamer3D-Data >= 0.4.0 && < 0.5.0
+
+  Exposed-modules:   HGamer3D.Bindings.CEGUI.Utils, HGamer3D.Bindings.CEGUI.StructHG3DClass, HGamer3D.Bindings.CEGUI.ClassPtr, HGamer3D.Bindings.CEGUI.EnumTextInputMode, HGamer3D.Bindings.CEGUI.EnumLoggingLevel, HGamer3D.Bindings.CEGUI.EnumWindowUpdateMode, HGamer3D.Bindings.CEGUI.EnumMouseButton, HGamer3D.Bindings.CEGUI.EnumTipState, HGamer3D.Bindings.CEGUI.EnumQuadSplitMode, HGamer3D.Bindings.CEGUI.EnumHorizontalAlignment, HGamer3D.Bindings.CEGUI.EnumKeyScan, HGamer3D.Bindings.CEGUI.EnumSelectionMode, HGamer3D.Bindings.CEGUI.EnumVerticalAlignment, HGamer3D.Bindings.CEGUI.EnumSortDirection, HGamer3D.Bindings.CEGUI.EnumTabPanePosition, HGamer3D.Bindings.CEGUI.EnumBlendMode, HGamer3D.Bindings.CEGUI.EnumFWSizingLocation, HGamer3D.Bindings.CEGUI.EnumSystemKey, HGamer3D.Bindings.CEGUI.ClassScrolledContainer, HGamer3D.Bindings.CEGUI.ClassSystem, HGamer3D.Bindings.CEGUI.ClassPushButton, HGamer3D.Bindings.CEGUI.ClassScheme, HGamer3D.Bindings.CEGUI.ClassWindowManager, HGamer3D.Bindings.CEGUI.ClassRadioButton, HGamer3D.Bindings.CEGUI.ClassMenuBase, HGamer3D.Bindings.CEGUI.ClassCombobox, HGamer3D.Bindings.CEGUI.ClassThumb, HGamer3D.Bindings.CEGUI.ClassSchemeManager, HGamer3D.Bindings.CEGUI.ClassEventArgs, HGamer3D.Bindings.CEGUI.ClassComboDropList, HGamer3D.Bindings.CEGUI.ClassImageset, HGamer3D.Bindings.CEGUI.ClassScriptFunctor, HGamer3D.Bindings.CEGUI.ClassWindowManagerHG3D, HGamer3D.Bindings.CEGUI.ClassScrollbar, HGamer3D.Bindings.CEGUI.ClassTree, HGamer3D.Bindings.CEGUI.ClassUDim, HGamer3D.Bindings.CEGUI.ClassHG3DEventStaticFunctions, HGamer3D.Bindings.CEGUI.ClassListHeaderSegment, HGamer3D.Bindings.CEGUI.ClassUVector2, HGamer3D.Bindings.CEGUI.ClassItemListbox, HGamer3D.Bindings.CEGUI.ClassCheckbox, HGamer3D.Bindings.CEGUI.ClassOgreResourceProvider, HGamer3D.Bindings.CEGUI.ClassHG3DEventController, HGamer3D.Bindings.CEGUI.ClassScrollablePane, HGamer3D.Bindings.CEGUI.ClassTooltip, HGamer3D.Bindings.CEGUI.ClassResourceProvider, HGamer3D.Bindings.CEGUI.ClassLogger, HGamer3D.Bindings.CEGUI.ClassListHeader, HGamer3D.Bindings.CEGUI.ClassPropertySet, HGamer3D.Bindings.CEGUI.ClassEventSet, HGamer3D.Bindings.CEGUI.ClassMultiColumnList, HGamer3D.Bindings.CEGUI.ClassFrameWindow, HGamer3D.Bindings.CEGUI.ClassOgreRenderer, HGamer3D.Bindings.CEGUI.ClassFont, HGamer3D.Bindings.CEGUI.ClassFontManager, HGamer3D.Bindings.CEGUI.ClassImageCodec, HGamer3D.Bindings.CEGUI.ClassDefaultResourceProvider, HGamer3D.Bindings.CEGUI.ClassWidgetLookManager, HGamer3D.Bindings.CEGUI.ClassScriptModule, HGamer3D.Bindings.CEGUI.ClassItemEntry, HGamer3D.Bindings.CEGUI.ClassRenderer, HGamer3D.Bindings.CEGUI.ClassTabButton, HGamer3D.Bindings.CEGUI.ClassMenuItem, HGamer3D.Bindings.CEGUI.ClassScrolledItemListBase, HGamer3D.Bindings.CEGUI.ClassDefaultLogger, HGamer3D.Bindings.CEGUI.ClassEditbox, HGamer3D.Bindings.CEGUI.ClassProgressBar, HGamer3D.Bindings.CEGUI.ClassMultiLineEditbox, HGamer3D.Bindings.CEGUI.ClassHG3DWindowStaticFunctions, HGamer3D.Bindings.CEGUI.ClassListboxTextItem, HGamer3D.Bindings.CEGUI.ClassSystemHG3D, HGamer3D.Bindings.CEGUI.ClassSlider, HGamer3D.Bindings.CEGUI.ClassDragContainer, HGamer3D.Bindings.CEGUI.ClassListboxItem, HGamer3D.Bindings.CEGUI.ClassXMLParser, HGamer3D.Bindings.CEGUI.ClassSpinner, HGamer3D.Bindings.CEGUI.ClassHG3DListboxStaticFunctions, HGamer3D.Bindings.CEGUI.ClassWindow, HGamer3D.Bindings.CEGUI.ClassListbox
+  Other-modules:     
+
+  ghc-options:       
+  cc-options:        -Wno-attributes 
+  hs-source-dirs:    .
+  Include-dirs:      include
+  Build-tools:       
+  build-depends:     
+  if os(windows)
+     extra-libraries:   hg3dcegui040
+  else
+     extra-libraries:   hg3dcegui040,CEGUIBase-0.7.7,CEGUIOgreRenderer-0.7.7

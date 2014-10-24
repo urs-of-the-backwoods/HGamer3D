@@ -1,0 +1,35 @@
+Name:                HGamer3D-Graphics3D
+Version:             0.4.0
+Synopsis:            3D Graphics Functionality for HGamer3D
+Description:         
+	HGamer3D is a game engine for developing 3D games in the programming 
+	language Haskell. This package provides the 3D Graphics functionality
+	based on the package HGamer3D-Ogre-Binding. HGamer3D-Graphics3D is
+	available on Windows and Linux.
+
+License:             OtherLicense
+License-file:        LICENSE
+Author:              Peter Althainz
+Maintainer:          althainz@gmail.com
+Build-Type:          Simple
+Cabal-Version:       >=1.4
+Homepage:            http://www.hgamer3d.org
+Category:            Game Engine
+Extra-source-files:  Setup.hs 
+
+Library
+  Build-Depends:     base >= 3 && < 5, containers, mtl, transformers, filepath, directory, HGamer3D-Data >= 0.4.0 && < 0.5.0, HGamer3D-Ogre-Binding >= 0.4.0 && < 0.5.0
+
+
+  Exposed-modules:   HGamer3D.Graphics3D.Schema.Figure, HGamer3D.Graphics3D.Schema.Geometry, HGamer3D.Graphics3D.Schema.Camera, HGamer3D.Graphics3D.Schema.Light, HGamer3D.Graphics3D.Schema.Material, HGamer3D.Graphics3D.Schema.Scene, HGamer3D.Graphics3D.Internal.Base, HGamer3D.Graphics3D.Internal.Shapes, HGamer3D.Graphics3D.Internal.Light, HGamer3D.Graphics3D.Internal.PlatonShapes, HGamer3D.Graphics3D.Internal.Camera, HGamer3D.Graphics3D.BaseAPI, HGamer3D.Internal.Graphics3D
+
+  Other-modules:     
+
+  c-sources:         
+  
+  ghc-options:       
+  cc-options:        -Wno-attributes 
+  hs-source-dirs:    .
+  Include-dirs:      . 
+  build-depends:     
+  extra-libraries:   

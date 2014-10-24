@@ -1,0 +1,38 @@
+Name:                HGamer3D-SFML-Binding
+Version:             0.4.0
+Synopsis:            SFML Binding for HGamer3D
+Description:         
+   HGamer3D is a game engine for developing 3D games in the programming 
+   language Haskell. This package provides the SFML binding. 
+   HGamer3D-SFML-Binding is available on Windows and Linux. 
+   This binding does not claim to have full coverage of SFML 
+   functionality, but only to support what is needed for the
+   HGamer3D-Audio and HGamer3D-InputSystem packages.
+
+	
+License:             OtherLicense
+License-file:        LICENSE
+Author:              Peter Althainz
+Maintainer:          althainz@gmail.com
+Build-Type:          Simple
+Cabal-Version:       >=1.4
+Homepage:            http://www.hgamer3d.org
+Category:            Game Engine, Audio, Graphics
+Extra-source-files:  Setup.hs, include/ClassSoundSource.h, include/StructHG3DClass.h, include/hg3dstruct.h, include/StructVec3.h, include/vector3istruct.h, include/ClassKeyboard.h, include/EnumKey.h, include/vector3fstruct.h, include/SFMLDllDefines.h, include/ClassMouse.h, include/EnumMouseButton.h, include/ClassPtr.h, include/vector2istruct.h, include/ClassMouseHG3D.h, include/ClassSoundBuffer.h, include/vector2fstruct.h, include/ClassMusic.h, include/ClassJoystick.h, include/MouseHG3D.h, include/ClassSound.h, include/ClassSoundStream.h, include/ClassListener.h, include/EnumJoystickAxis.h, include/EnumSoundSourceStatus.h
+
+Library
+  Build-Depends:     base >= 3 && < 5, HGamer3D-Data >= 0.4.0
+
+  Exposed-modules:   HGamer3D.Bindings.SFML.Utils, HGamer3D.Bindings.SFML.StructHG3DClass, HGamer3D.Bindings.SFML.ClassPtr, HGamer3D.Bindings.SFML.EnumMouseButton, HGamer3D.Bindings.SFML.EnumJoystickAxis, HGamer3D.Bindings.SFML.EnumSoundSourceStatus, HGamer3D.Bindings.SFML.EnumKey, HGamer3D.Bindings.SFML.StructVec3, HGamer3D.Bindings.SFML.ClassJoystick, HGamer3D.Bindings.SFML.ClassSound, HGamer3D.Bindings.SFML.ClassMouseHG3D, HGamer3D.Bindings.SFML.ClassListener, HGamer3D.Bindings.SFML.ClassMusic, HGamer3D.Bindings.SFML.ClassSoundStream, HGamer3D.Bindings.SFML.ClassSoundBuffer, HGamer3D.Bindings.SFML.ClassKeyboard, HGamer3D.Bindings.SFML.ClassSoundSource, HGamer3D.Bindings.SFML.ClassMouse
+  Other-modules:     
+
+  ghc-options:       
+  cc-options:        -Wno-attributes 
+  hs-source-dirs:    .
+  Include-dirs:      include
+  Build-tools:       
+  build-depends:     
+  if os(windows)
+     extra-libraries:   hg3dsfml040
+  else
+     extra-libraries:   hg3dsfml040,sfml-audio,sfml-system,sfml-window,sfml-network

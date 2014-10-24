@@ -1,0 +1,19 @@
+# download, and build Newton Dynamics from pre-build binaries or source
+
+# set environment
+#################
+from os.path import expanduser, exists
+import os
+home = expanduser("~")
+env = Environment() 
+env["ENV"]["PATH"] = os.environ.get("PATH")
+env["ENV"]["HOME"] = os.environ.get("HOME")
+
+libpath = home + "/.HGamer3D/lib"
+Alias('install', libpath)
+
+# for both platforms, download and extract sources
+if (not exists("newton-dynamics-2.36.rar")):
+   env.Command("newton-dynamics-2.36.rar", "", "wget -O newton-dynamics-2.36.rar https://newton-dynamics.googlecode.com/files/newton-dynamics-2.36.rar")
+env.Command("newton-dynamics-2.36", "newton-dynamics-2.36.rar", "unrar x newton-dynamics-2.36.rar")
+

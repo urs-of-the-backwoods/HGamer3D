@@ -1,0 +1,33 @@
+Name:                HGamer3D-Network
+Version:             0.4.0
+Synopsis:            Networking Functionality for HGamer3D
+Description:         
+	HGamer3D is a game engine for developing 3D games in the programming 
+	language Haskell. This package provides the Networking functionality, 
+	based on the package HGamer3D-Enet-Binding. HGamer3D-Network is 
+	available on Windows and Linux.
+	
+License:             OtherLicense
+License-file:        LICENSE
+Author:              Peter Althainz
+Maintainer:          althainz@gmail.com
+Build-Type:          Simple
+Cabal-Version:       >=1.4
+Homepage:            http://www.hgamer3d.org
+Category:            Game Engine
+Extra-source-files:  Setup.hs 
+
+Library
+  Build-Depends:     base >= 3 && < 5, HGamer3D-Data >= 0.4.0 && < 0.5.0, HGamer3D-Enet-Binding >= 0.4.0 && < 0.5.0
+
+  Exposed-modules:   HGamer3D.Network.Internal.Base, HGamer3D.Network.BaseAPI, HGamer3D.Internal.Network
+  Other-modules:     
+
+  c-sources:         
+  
+  ghc-options:       
+  cc-options:        -Wno-attributes 
+  hs-source-dirs:    .
+  Include-dirs:      . 
+  build-depends:     
+  extra-libraries:   

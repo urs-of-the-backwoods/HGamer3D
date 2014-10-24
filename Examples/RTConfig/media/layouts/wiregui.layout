@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+    <Window Type="DefaultWindow" Name="Root" >
+        <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1.01515,0}}" />
+        <Window Type="Vanilla/FrameWindow" Name="WindowAdd" >
+            <Property Name="Text" Value="Arithmetic" />
+            <Property Name="TitlebarFont" Value="DejaVuSans-10" />
+            <Property Name="TitlebarEnabled" Value="True" />
+            <Property Name="UnifiedAreaRect" Value="{{0.294357,0},{0.244444,0},{0.68987,0},{0.463681,0}}" />
+            <Window Type="Vanilla/Editbox" Name="WindowAdd/LeftEB" >
+                <Property Name="MaxTextLength" Value="1073741823" />
+                <Property Name="UnifiedAreaRect" Value="{{0.0136547,0},{0.289016,0},{0.220062,0},{0.539016,0}}" />
+                <Property Name="TextParsingEnabled" Value="False" />
+            </Window>
+            <Window Type="Vanilla/Editbox" Name="WindowAdd/RightEB" >
+                <Property Name="MaxTextLength" Value="1073741823" />
+                <Property Name="UnifiedAreaRect" Value="{{0.363804,0},{0.286962,0},{0.552774,0},{0.536962,0}}" />
+                <Property Name="TextParsingEnabled" Value="False" />
+            </Window>
+            <Window Type="Vanilla/StaticText" Name="WindowAdd/Plus" >
+                <Property Name="Text" Value="+" />
+                <Property Name="HorzExtent" Value="13" />
+                <Property Name="VertExtent" Value="13.6232" />
+                <Property Name="UnifiedAreaRect" Value="{{0.259269,0},{0.309875,0},{0.335872,0},{0.559875,0}}" />
+            </Window>
+            <Window Type="Vanilla/StaticText" Name="WindowAdd/Equals" >
+                <Property Name="Text" Value="=" />
+                <Property Name="HorzExtent" Value="13" />
+                <Property Name="VertExtent" Value="13.6232" />
+                <Property Name="UnifiedAreaRect" Value="{{0.611191,0},{0.299557,0},{0.690503,0},{0.549557,0}}" />
+            </Window>
+            <Window Type="Vanilla/StaticText" Name="WindowAdd/Sum" >
+                <Property Name="UnifiedAreaRect" Value="{{0.754552,0},{0.304215,0},{0.972583,0},{0.554215,0}}" />
+            </Window>
+        </Window>
+        <Window Type="Vanilla/FrameWindow" Name="WindowCounter" >
+            <Property Name="Text" Value="Counter" />
+            <Property Name="TitlebarFont" Value="DejaVuSans-10" />
+            <Property Name="TitlebarEnabled" Value="True" />
+            <Property Name="UnifiedAreaRect" Value="{{0.296551,0},{0.246239,0},{0.461494,0},{0.589785,0}}" />
+            <Window Type="Vanilla/Button" Name="WindowCounter/ButtonUp" >
+                <Property Name="Text" Value="Up" />
+                <Property Name="UnifiedAreaRect" Value="{{0.121068,0},{0.0499111,0},{0.846383,0},{0.210999,0}}" />
+            </Window>
+            <Window Type="Vanilla/Button" Name="WindowCounter/ButtonDown" >
+                <Property Name="Text" Value="Down" />
+                <Property Name="UnifiedAreaRect" Value="{{0.143917,0},{0.283278,0},{0.831555,0},{0.461038,0}}" />
+            </Window>
+            <Window Type="Vanilla/StaticText" Name="WindowCounter/Counter" >
+                <Property Name="UnifiedAreaRect" Value="{{0.346341,0},{0.605658,0},{0.596341,0},{0.827873,0}}" />
+            </Window>
+        </Window>
+        <Window Type="Vanilla/FrameWindow" Name="WindowCurrency" >
+            <Property Name="Text" Value="Currency Converter" />
+            <Property Name="TitlebarFont" Value="DejaVuSans-10" />
+            <Property Name="TitlebarEnabled" Value="True" />
+            <Property Name="UnifiedAreaRect" Value="{{0.295403,0},{0.248797,0},{0.545403,0},{0.498797,0}}" />
+            <Window Type="Vanilla/StaticText" Name="WindowCurrency/EuroText" >
+                <Property Name="Text" Value="Euro" />
+                <Property Name="HorzExtent" Value="33" />
+                <Property Name="VertExtent" Value="13.6232" />
+                <Property Name="UnifiedAreaRect" Value="{{0.0735637,0},{0.109822,0},{0.374138,0},{0.359822,0}}" />
+            </Window>
+            <Window Type="Vanilla/StaticText" Name="WindowCurrency/DollarText" >
+                <Property Name="Text" Value="Dollar" />
+                <Property Name="HorzExtent" Value="43" />
+                <Property Name="VertExtent" Value="13.6232" />
+                <Property Name="UnifiedAreaRect" Value="{{0.0724142,0},{0.477091,0},{0.372989,0},{0.727091,0}}" />
+            </Window>
+            <Window Type="Vanilla/Editbox" Name="WindowCurrency/EuroEB" >
+                <Property Name="MaxTextLength" Value="1073741823" />
+                <Property Name="UnifiedAreaRect" Value="{{0.416092,0},{0.108365,0},{0.946552,0},{0.358365,0}}" />
+                <Property Name="TextParsingEnabled" Value="False" />
+            </Window>
+            <Window Type="Vanilla/Editbox" Name="WindowCurrency/DollarEB" >
+                <Property Name="MaxTextLength" Value="1073741823" />
+                <Property Name="UnifiedAreaRect" Value="{{0.41954,0},{0.467998,0},{0.945402,0},{0.717997,0}}" />
+                <Property Name="TextParsingEnabled" Value="False" />
+            </Window>
+        </Window>
+        <Window Type="Vanilla/StaticText" Name="Menue" >
+            <Property Name="Text" Value="Menue" />
+            <Property Name="HorzExtent" Value="49" />
+            <Property Name="VertExtent" Value="13.6232" />
+            <Property Name="VertFormatting" Value="TopAligned" />
+            <Property Name="UnifiedAreaRect" Value="{{0.0149426,0},{0.384109,0},{0.264943,0},{0.634108,0}}" />
+            <Window Type="Vanilla/RadioButton" Name="Menue/AddWindow" >
+                <Property Name="Text" Value="Arithmetic" />
+                <Property Name="UnifiedAreaRect" Value="{{0.0459769,0},{0.190648,0},{0.944253,0},{0.38831,0}}" />
+            </Window>
+            <Window Type="Vanilla/RadioButton" Name="Menue/CntWindow" >
+                <Property Name="Text" Value="Counter" />
+                <Property Name="UnifiedAreaRect" Value="{{0.0448273,0},{0.350463,0},{0.883333,0},{0.600463,0}}" />
+            </Window>
+            <Window Type="Vanilla/RadioButton" Name="Menue/CurrWindow" >
+                <Property Name="Text" Value="Currency Converter" />
+                <Property Name="UnifiedAreaRect" Value="{{0.0528734,0},{0.521505,0},{0.964943,0},{0.771505,0}}" />
+            </Window>
+            <Window Type="Vanilla/RadioButton" Name="Menue/CrudWindow" >
+                <Property Name="Text" Value="CRUD Application" />
+                <Property Name="UnifiedAreaRect" Value="{{0.0563217,0},{0.711228,0},{0.922416,0},{0.961228,0}}" />
+            </Window>
+        </Window>
+        <Window Type="Vanilla/FrameWindow" Name="WindowCrud" >
+            <Property Name="Text" Value="CRUD Example" />
+            <Property Name="TitlebarFont" Value="DejaVuSans-10" />
+            <Property Name="TitlebarEnabled" Value="True" />
+            <Property Name="UnifiedAreaRect" Value="{{0.295402,0},{0.0859781,0},{0.894827,0},{0.954688,0}}" />
+            <Window Type="Vanilla/StaticText" Name="WindowCrud/text1" >
+                <Property Name="Text" Value="Filter prefix:" />
+                <Property Name="HorzExtent" Value="91" />
+                <Property Name="VertExtent" Value="13.6232" />
+                <Property Name="UnifiedAreaRect" Value="{{0.00987072,0},{0.0320278,0},{0.223437,0},{0.117896,0}}" />
+            </Window>
+            <Window Type="Vanilla/StaticText" Name="WindowCrud/text2" >
+                <Property Name="Text" Value="Name:" />
+                <Property Name="HorzExtent" Value="48" />
+                <Property Name="VertExtent" Value="13.6232" />
+                <Property Name="UnifiedAreaRect" Value="{{0.538211,0},{0.0330362,0},{0.699337,0},{0.116258,0}}" />
+            </Window>
+            <Window Type="Vanilla/StaticText" Name="WindowCrud/text3" >
+                <Property Name="Text" Value="Surname: " />
+                <Property Name="HorzExtent" Value="74" />
+                <Property Name="VertExtent" Value="13.6232" />
+                <Property Name="UnifiedAreaRect" Value="{{0.533653,0},{0.131145,0},{0.703116,0},{0.209008,0}}" />
+            </Window>
+            <Window Type="Vanilla/Button" Name="WindowCrud/ButtonCreate" >
+                <Property Name="Text" Value="Create" />
+                <Property Name="UnifiedAreaRect" Value="{{0.00661547,0},{0.893873,0},{0.2221,0},{0.967432,0}}" />
+            </Window>
+            <Window Type="Vanilla/Button" Name="WindowCrud/ButtonDelete" >
+                <Property Name="Text" Value="Delete" />
+                <Property Name="UnifiedAreaRect" Value="{{0.294535,0},{0.894894,0},{0.508102,0},{0.966302,0}}" />
+            </Window>
+            <Window Type="Vanilla/Listbox" Name="WindowCrud/Names" >
+                <Property Name="UnifiedAreaRect" Value="{{0.00910817,0},{0.248249,0},{0.985858,0},{0.866193,0}}" />
+            </Window>
+            <Window Type="Vanilla/Editbox" Name="WindowCrud/Filter" >
+                <Property Name="MaxTextLength" Value="1073741823" />
+                <Property Name="UnifiedAreaRect" Value="{{0.251774,0},{0.0343181,0},{0.501774,0},{0.112181,0}}" />
+                <Property Name="TextParsingEnabled" Value="False" />
+            </Window>
+            <Window Type="Vanilla/Editbox" Name="WindowCrud/Name" >
+                <Property Name="MaxTextLength" Value="1073741823" />
+                <Property Name="UnifiedAreaRect" Value="{{0.712272,0},{0.0353391,0},{0.996788,0},{0.11105,0}}" />
+                <Property Name="TextParsingEnabled" Value="False" />
+            </Window>
+            <Window Type="Vanilla/Editbox" Name="WindowCrud/Surname" >
+                <Property Name="MaxTextLength" Value="1073741823" />
+                <Property Name="UnifiedAreaRect" Value="{{0.718313,0},{0.133187,0},{0.995158,0},{0.208898,0}}" />
+                <Property Name="TextParsingEnabled" Value="False" />
+            </Window>
+        </Window>
+    </Window>
+</GUILayout>

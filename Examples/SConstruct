@@ -1,0 +1,67 @@
+# configure, build, install the examples
+
+# set environment
+#################
+from os.path import expanduser
+import os
+home = expanduser("~")
+env = Environment() 
+env["ENV"]["PATH"] = os.environ.get("PATH")
+env["ENV"]["HOME"] = os.environ.get("HOME")
+
+# the output directory
+env.Command("build", "", Mkdir("build"))
+
+
+for (p, s) in [
+
+    # the BaseAPI examples
+
+    ("BaseAPI", "Audio"),
+    ("BaseAPI", "BlueCube"),
+    ("BaseAPI", "BumpMappingCube"),
+    ("BaseAPI", "GUI-Widgets"),
+    ("BaseAPI", "Joystick"),
+    ("BaseAPI", "Keyboard"),
+    ("BaseAPI", "Mouse"),
+    ("BaseAPI", "Network-Chat"),
+    ("BaseAPI", "WinEvent"),
+
+    # first EcsAPI examples
+
+    ("EcsAPI", "RotatePlaton"),
+    ("EcsAPI", "Coordinates"),
+    ("EcsAPI", "MaterialManager"),
+    ("EcsAPI", "Materials"),
+    ("EcsAPI", "GUI-Switch"),
+
+    # life coding EcsAPI examples
+    ("EcsAPI", "Live1")
+
+]:
+
+    if env["PLATFORM"] == "win32":
+
+       env.Command("build/" + s + ".exe", [p + "/" + s + ".hs",
+                               "build/.HGamer3D"
+                               ] , "rm -f build/*.o && " + "ghc --make -threaded -odir build -hidir build -i" + p + " -o build/" + s + " " + p + "/" + s)
+    else:
+
+       env.Command("build/" + s, [p + "/" + s + ".hs",
+                               "build/.HGamer3D"
+                               ] , "rm -f build/*.o && " + "ghc --make -threaded -odir build -hidir build -i" + p + " -o build/" + s + " " + p + "/" + s)
+
+# download and extract Assetpack
+if (not os.path.exists("Assetpack")):
+      env.Command("Assetpack", "", [
+         "wget -O assetpack.tar.gz http://www.hgamer3D.org/downloads/assetpack.tar.gz || (rm -f assetpack.tar.gz && exit 1)",
+         "tar -xzf assetpack.tar.gz"
+	 ])
+
+
+# the media files need to be copied to .HGamer3D
+env.Command("build/.HGamer3D", ["Assetpack", "RTConfig"], [
+			       Mkdir("build/.HGamer3D"),
+			       "cp -r RTConfig/* build/.HGamer3D",
+			       "cp -r Assetpack/* build/.HGamer3D/media"
+			       ])

@@ -1,0 +1,33 @@
+Name:                HGamer3D-GUI
+Version:             0.4.0
+Synopsis:            GUI Functionality for HGamer3D
+Description:         
+	HGamer3D is a game engine for developing 3D games in the programming 
+	language Haskell. This package provides the GUI functionality, 
+	based on the package HGamer3D-CEGUI-Binding. HGamer3D-GUI
+	is available on Windows and Linux.
+	
+License:             OtherLicense
+License-file:        LICENSE
+Author:              Peter Althainz
+Maintainer:          althainz@gmail.com
+Build-Type:          Simple
+Cabal-Version:       >=1.4
+Homepage:            http://www.hgamer3d.org
+Category:            Game Engine
+Extra-source-files:  Setup.hs 
+
+Library
+  Build-Depends:     base >= 3 && < 5, split, HGamer3D-Data >= 0.4.0 && < 0.5.0, HGamer3D-CEGUI-Binding >= 0.4.0 && < 0.5.0, HGamer3D-WinEvent >= 0.4.0 && < 0.5.0
+
+  Exposed-modules:   HGamer3D.GUI.Internal.Base, HGamer3D.GUI.Internal.Widgets, HGamer3D.GUI.Internal.Properties, HGamer3D.GUI.Internal.Form, HGamer3D.GUI.BaseAPI, HGamer3D.Internal.GUI, HGamer3D.GUI.Schema.GUIDim, HGamer3D.GUI.Schema.Widget, HGamer3D.GUI.Schema.Layout, HGamer3D.GUI.Schema.Form
+  Other-modules:     
+
+  c-sources:         
+  
+  ghc-options:       
+  cc-options:        -Wno-attributes 
+  hs-source-dirs:    .
+  Include-dirs:      . 
+  build-depends:     
+  extra-libraries:   

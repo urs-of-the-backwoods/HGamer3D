@@ -1,0 +1,34 @@
+Name:                HGamer3D-InputSystem
+Version:             0.4.0
+Synopsis:            Joystick, Mouse and Keyboard Functionality for HGamer3D
+Description:         
+	HGamer3D is a game engine for developing 3D games in the programming 
+	language Haskell. This package provides the Joystick, Mouse and Keyboard
+	functionality, based on the packages HGamer3D-SFML-Binding and
+	HGamer3D-SDL2-Binding. HGamer3D-InputSystem is available on 
+	Windows and Linux.
+	
+License:             OtherLicense
+License-file:        LICENSE
+Author:              Peter Althainz
+Maintainer:          althainz@gmail.com
+Build-Type:          Simple
+Cabal-Version:       >=1.4
+Homepage:            http://www.hgamer3d.org
+Category:            Game Engine
+Extra-source-files:  Setup.hs 
+
+Library
+  Build-Depends:     base >= 3 && < 5, HGamer3D-Data >= 0.4.0 && < 0.5.0, HGamer3D-SFML-Binding >= 0.4.0 && < 0.5.0, HGamer3D-SDL2-Binding >= 0.4.0 && < 0.5.0
+
+  Exposed-modules:   HGamer3D.InputSystem.Internal.Base, HGamer3D.InputSystem.BaseAPI, HGamer3D.Internal.InputSystem
+  Other-modules:     
+
+  c-sources:         
+  
+  ghc-options:       
+  cc-options:        -Wno-attributes 
+  hs-source-dirs:    .
+  Include-dirs:      . 
+  build-depends:     
+  extra-libraries:   

@@ -1,0 +1,54 @@
+# (c) 2011-2014 Peter Althainz
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# 
+
+
+# scons file to build HGamer3DCEGUI library, version 0.4.0
+
+
+# set environment
+#################
+from os.path import expanduser, exists
+import os, sys
+home = expanduser("~")
+env = Environment() 
+env["ENV"]["PATH"] = os.environ.get("PATH")
+env["ENV"]["HOME"] = os.environ.get("HOME")
+
+libpath = home + "/.HGamer3D/lib"
+
+if env["PLATFORM"] == "win32":
+   # on windows, create new environment, which finds MS C-Compiler
+   env = Environment(TARGET_ARCH="x86", MSVC_VERSION="10.0")
+   env.MergeFlags({"CCFLAGS" : "/DWIN32 /D_WIN32 /DHGamer3DCEGUI040_EXPORTS /EHsc /MD"})
+
+# set other compile parameters
+##############################
+
+if env["PLATFORM"] == "win32":
+
+   env.Append(CPPPATH=["include","../Deps/include","../Deps/include/CEGUI","../Deps/dependencies/include"])
+   env.Append(LIBPATH=["lib","../Deps/lib","../Deps/lib"])
+   env.SharedLibrary("hg3dcegui040", ["HG3DEventModule.cpp","ClassEventSet.cpp","ClassMenuItem.cpp","ClassHG3DListboxStaticFunctions.cpp","ClassWidgetLookManager.cpp","ClassHG3DEventStaticFunctions.cpp","ClassRadioButton.cpp","ClassMenuBase.cpp","HG3DCommandHandler.cpp","ClassProgressBar.cpp","ClassImageCodec.cpp","ClassCheckbox.cpp","ClassUVector2.cpp","ClassListboxItem.cpp","ClassItemEntry.cpp","ClassCombobox.cpp","ClassFrameWindow.cpp","ClassEditbox.cpp","ClassRenderer.cpp","ClassLogger.cpp","HG3DWindowStaticFunctions.cpp","ClassDefaultResourceProvider.cpp","ClassTooltip.cpp","ClassHG3DWindowStaticFunctions.cpp","ClassScheme.cpp","ClassSystemHG3D.cpp","ClassPropertySet.cpp","HG3DListboxStaticFunctions.cpp","ClassFont.cpp","ClassResourceProvider.cpp","HG3DEventController.cpp","ClassPushButton.cpp","ClassScrollbar.cpp","ClassWindow.cpp","ClassListbox.cpp","ClassScriptModule.cpp","ClassListHeader.cpp","ClassSlider.cpp","ClassItemListbox.cpp","ClassListboxTextItem.cpp","ClassDragContainer.cpp","ClassWindowManager.cpp","HG3DEventStaticFunctions.cpp","ClassWindowManagerHG3D.cpp","ClassScriptFunctor.cpp","ClassOgreResourceProvider.cpp","ClassTree.cpp","ClassTabButton.cpp","ClassDefaultLogger.cpp","ClassPtr.cpp","ClassOgreRenderer.cpp","ClassSystem.cpp","ClassListHeaderSegment.cpp","ClassHG3DEventController.cpp","ClassThumb.cpp","ClassScrolledContainer.cpp","ClassScrollablePane.cpp","ClassSpinner.cpp","ClassImageset.cpp","ClassMultiLineEditbox.cpp","ClassSchemeManager.cpp","ClassFontManager.cpp","ClassMultiColumnList.cpp","ClassEventArgs.cpp","ClassComboDropList.cpp","ClassXMLParser.cpp","ClassUDim.cpp","ClassScrolledItemListBase.cpp"], LIBS = ["CEGUIBase.lib","CEGUIOgreRenderer.lib"])
+   env.Alias('install', libpath)
+   env.Install(libpath, "hg3dcegui040.dll")
+
+else:
+   env.Append(CPPPATH=["include","../Deps/include","../Deps/include/CEGUI","../Deps/dependencies/include"])
+   env.Append(LIBPATH=["lib","../Deps/lib","../Deps/lib"])
+   env.SharedLibrary("hg3dcegui040", ["HG3DEventModule.cpp","ClassEventSet.cpp","ClassMenuItem.cpp","ClassHG3DListboxStaticFunctions.cpp","ClassWidgetLookManager.cpp","ClassHG3DEventStaticFunctions.cpp","ClassRadioButton.cpp","ClassMenuBase.cpp","HG3DCommandHandler.cpp","ClassProgressBar.cpp","ClassImageCodec.cpp","ClassCheckbox.cpp","ClassUVector2.cpp","ClassListboxItem.cpp","ClassItemEntry.cpp","ClassCombobox.cpp","ClassFrameWindow.cpp","ClassEditbox.cpp","ClassRenderer.cpp","ClassLogger.cpp","HG3DWindowStaticFunctions.cpp","ClassDefaultResourceProvider.cpp","ClassTooltip.cpp","ClassHG3DWindowStaticFunctions.cpp","ClassScheme.cpp","ClassSystemHG3D.cpp","ClassPropertySet.cpp","HG3DListboxStaticFunctions.cpp","ClassFont.cpp","ClassResourceProvider.cpp","HG3DEventController.cpp","ClassPushButton.cpp","ClassScrollbar.cpp","ClassWindow.cpp","ClassListbox.cpp","ClassScriptModule.cpp","ClassListHeader.cpp","ClassSlider.cpp","ClassItemListbox.cpp","ClassListboxTextItem.cpp","ClassDragContainer.cpp","ClassWindowManager.cpp","HG3DEventStaticFunctions.cpp","ClassWindowManagerHG3D.cpp","ClassScriptFunctor.cpp","ClassOgreResourceProvider.cpp","ClassTree.cpp","ClassTabButton.cpp","ClassDefaultLogger.cpp","ClassPtr.cpp","ClassOgreRenderer.cpp","ClassSystem.cpp","ClassListHeaderSegment.cpp","ClassHG3DEventController.cpp","ClassThumb.cpp","ClassScrolledContainer.cpp","ClassScrollablePane.cpp","ClassSpinner.cpp","ClassImageset.cpp","ClassMultiLineEditbox.cpp","ClassSchemeManager.cpp","ClassFontManager.cpp","ClassMultiColumnList.cpp","ClassEventArgs.cpp","ClassComboDropList.cpp","ClassXMLParser.cpp","ClassUDim.cpp","ClassScrolledItemListBase.cpp"], LIBS = ["CEGUIBase-0.7.7","CEGUIOgreRenderer-0.7.7"])
+   env.Alias('install', libpath)
+   env.Install(libpath, "libhg3dcegui040.so")
+
+

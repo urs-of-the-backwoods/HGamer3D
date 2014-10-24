@@ -1,0 +1,148 @@
+# download, and build CEGUI from pre-build binaries
+
+
+# set environment
+#################
+from os.path import expanduser, exists
+import os
+home = expanduser("~")
+env = Environment() 
+env["ENV"]["PATH"] = os.environ.get("PATH")
+env["ENV"]["HOME"] = os.environ.get("HOME")
+
+libpath = home + "/.HGamer3D/lib"
+Alias('install', libpath)
+
+def linkSO(target, source, env):
+    cmd = "rm -f " + str(target[0])[:-9] + ".so" + " && ln -s " + os.path.basename(str(target[0])) + " " + str(target[0])[:-9] + ".so"
+    os.system(cmd)
+
+# target files on linux
+#######################
+
+files = [
+"./CEGUI-0.7.7/cegui/src/.libs/libCEGUIBase-0.7.7.so",
+"./CEGUI-0.7.7/cegui/src/WindowRendererSets/Falagard/.libs/libCEGUIFalagardWRBase-0.7.7.so",
+"./CEGUI-0.7.7/cegui/src/RendererModules/OpenGL/.libs/libCEGUIOpenGLRenderer-0.7.7.so",
+"./CEGUI-0.7.7/cegui/src/RendererModules/Ogre/.libs/libCEGUIOgreRenderer-0.7.7.so",
+"./CEGUI-0.7.7/cegui/src/ImageCodecModules/TGAImageCodec/.libs/libCEGUITGAImageCodec-0.7.7.so",
+"./CEGUI-0.7.7/cegui/src/ImageCodecModules/FreeImageImageCodec/.libs/libCEGUIFreeImageImageCodec-0.7.7.so",
+"./CEGUI-0.7.7/cegui/src/ImageCodecModules/STBImageCodec/.libs/libCEGUISTBImageCodec-0.7.7.so",
+"./CEGUI-0.7.7/cegui/src/XMLParserModules/TinyXMLParser/.libs/libCEGUITinyXMLParser-0.7.7.so"
+]
+
+# EXTRACT - LINUX SECTION
+#########################
+
+if env["PLATFORM"] == "posix":
+
+
+   # download and extract sources
+   if (not exists("cegui-0.7.7.tar.gz")):
+      env.Command("cegui-0.7.7.tar.gz", "", [
+      "wget -O cegui-0.7.7.tar.gz http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-0.7.7.tar.gz || (rm -f cegui-0.7.7.tar.gz && exit 1)",
+      "md5sum -c md5-cegui || (rm -f cegui-0.7.7.tar.gz && exit 1)"
+      ])
+
+   env.Command("CEGUI-0.7.7/cegui/include", "cegui-0.7.7.tar.gz", "tar xzf cegui-0.7.7.tar.gz")
+
+
+
+# EXTRACT - WINDOWS SECTION
+###########################
+else:
+
+   # download and extract sources
+   if (not exists("CEGUI-0.7.7.zip")):
+      env.Command("CEGUI-0.7.7.zip", "", [
+         "wget -O CEGUI-0.7.7.zip http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-0.7.7.zip || (rm -f CEGUI-0.7.7.zip && exit 1)"
+         , "md5sum -c md5-cegui-win || (rm -f CEGUI-0.7.7.zip && exit 1)"
+	 ])
+   env.Command("CEGUI-0.7.7/cegui/include", "CEGUI-0.7.7.zip", "unzip cegui-0.7.7.zip")
+
+   # download and extract pre-build dependencies
+   if (not exists("CEGUI-DEPS-0.7.x-r3-vc10.zip")):
+      env.Command("CEGUI-DEPS-0.7.x-r3-vc10.zip", "", [
+         "wget -O CEGUI-DEPS-0.7.x-r3-vc10.zip http://prdownloads.sourceforge.net/crayzedsgui/CEGUI-DEPS-0.7.x-r3-vc10.zip || (rm -f CEGUI-DEPS-0.7.x-r3-vc10.zip && exit 1)"
+         , "md5sum -c md5-cegui-deps || (rm -f CEGUI-DEPS-0.7.x-r3-vc10.zip && exit 1)"
+         ])
+
+   env.Command("CEGUI-0.7.7/dependencies", "CEGUI-DEPS-0.7.x-r3-vc10.zip", "cd CEGUI-0.7.7 && unzip ../CEGUI-DEPS-0.7.x-r3-vc10.zip")
+
+
+
+# LINK INCLUDE FOLDER
+#####################
+
+# link include folder
+env.Command("include/CEGUI", "CEGUI-0.7.7/cegui/include", [
+								Delete("include"),
+								Mkdir("include"),
+								"cd include && ln -s ../CEGUI-0.7.7/cegui/include CEGUI"
+							  ])
+
+
+# BUILD - LINUX
+###############
+
+if env["PLATFORM"] == "posix":
+
+   # configure step, to create Makefile
+   env.AppendENVPath("PKG_CONFIG_PATH", ["/usr/local/lib/pkgconfig"])
+   env.Command("CEGUI-0.7.7/Makefile", "include", [
+        "pkg-config --exact-version=1.8.1 OGRE || (echo \"you need to install Ogre 1.8.1 as root from folder Ogre/Deps/ogre_src... by typing: make install\" && exit 1)",
+   	"cd CEGUI-0.7.7 && ./configure"
+	])
+
+   # build libraries
+   env.Command(files, "CEGUI-0.7.7/Makefile", "cd CEGUI-0.7.7 && make")
+
+   # copy libraries
+   copyCmd = env.Install("lib", files)
+   AddPostAction(copyCmd, linkSO)
+ 
+   # install runtime
+   installCmd = env.Install(home + "/.HGamer3D/lib", Glob("lib/*0.7.7.so"))
+   AddPostAction(installCmd, linkSO)
+
+# BUILD - WINDOWS
+#################
+
+else:
+
+   compile_msg = '''
+   ATTENTION
+   ---------
+   Here is a manual step needed, please doublecklick the file CEGUI.sln in the next
+   window, which pops up, convert to VS2010 and compile with "F7".
+
+   '''
+   
+   def manual_compile(target, source, env):
+       print compile_msg
+       raw_input("Press enter now, to open up the explorer window!")
+       os.system("explorer CEGUI-0.7.7\\projects\\premake")
+       raw_input("Press enter, when compilation successfully done!")
+       return 0
+   
+   def patch_config(target, source, env):
+       os.system("patch -N -r- CEGUI-0.7.7/projects/premake/config.lua config-lua.patch")
+       return 0
+
+   env.Command("CEGUI-0.7.7/lib", "include", [
+    				  patch_config,
+   				  "cd CEGUI-0.7.7/projects/premake && premake --file cegui.lua --target vs2008",
+				  manual_compile
+				  ])
+   env.Command("lib", "CEGUI-0.7.7/lib", [
+		   Mkdir("lib"),
+		   "bash -c \"cp  `find  CEGUI-0.7.7/bin -name *.dll` lib\"",
+		   "bash -c \"cp  `find  CEGUI-0.7.7/lib -name *.lib` lib\""
+		   ])
+
+   # install runtime
+   installCmd = env.Install(home + "/.HGamer3D/lib", Glob("lib/*.dll"))
+
+
+
+

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+    <Window Type="DefaultWindow" Name="Root" >
+        <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+        <Window Type="WindowsLook/StaticText" Name="OutputTextBox" >
+            <Property Name="Text" Value="Testtext" />
+            <Property Name="HorzExtent" Value="76" />
+            <Property Name="VertExtent" Value="17.37" />
+            <Property Name="TextColours" Value="tl:FFFFFF88 tr:FFFFFF88 bl:FFFFFF88 br:FFFFFF88" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="VertFormatting" Value="TopAligned" />
+            <Property Name="UnifiedAreaRect" Value="{{0.725781,0},{0.00386896,0},{0.996289,0},{0.286607,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+    </Window>
+</GUILayout>

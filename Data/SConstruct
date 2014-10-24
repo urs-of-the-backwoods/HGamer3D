@@ -1,0 +1,52 @@
+# SConstruct file to build Haskell packages
+# #########################################
+
+# set environment
+#################
+from os.path import expanduser
+import os
+home = expanduser("~")
+env = Environment() 
+env["ENV"]["PATH"] = os.environ.get("PATH")
+env["ENV"]["HOME"] = os.environ.get("HOME")
+
+# Gather main dependencies
+##########################
+
+dependsOn = [
+	  Glob("HGamer3D/*"),
+	  Glob("HGamer3D/Data/*"),
+	  Glob("HGamer3D/Data/Vector/*"),
+	  Glob("HGamer3D/Util/*"),
+	  Glob("*.cabal"),
+	  "LICENSE"
+]
+
+target = [ "dist/setup-config", Glob("dist/HGamer3D-*.tar.gz")]
+
+env.Command(target, dependsOn, [
+
+"ghc-pkg unregister HGamer3D || true",
+"ghc-pkg unregister HGamer3D-Schema || true",
+"ghc-pkg unregister HGamer3D-Wire || true",
+
+"ghc-pkg unregister HGamer3D-GUI || true",
+"ghc-pkg unregister HGamer3D-WinEvent || true",
+"ghc-pkg unregister HGamer3D-Graphics3D || true",
+
+"ghc-pkg unregister HGamer3D-InputSystem || true",
+"ghc-pkg unregister HGamer3D-Network || true",
+"ghc-pkg unregister HGamer3D-Audio || true",
+
+"ghc-pkg unregister HGamer3D-CEGUI-Binding || true",
+"ghc-pkg unregister HGamer3D-Ogre-Binding || true",
+"ghc-pkg unregister HGamer3D-Enet-Binding || true",
+"ghc-pkg unregister HGamer3D-SDL2-Binding || true",
+"ghc-pkg unregister HGamer3D-SFML-Binding || true",
+
+"cabal configure --user",
+"cabal build",
+"cabal haddock",
+"cabal install --user --extra-lib-dirs=" + home + "/.HGamer3D/lib",
+"cabal sdist"
+])

@@ -1,0 +1,54 @@
+# (c) 2011-2014 Peter Althainz
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# 
+
+
+# scons file to build HGamer3DOgre library, version 0.4.0
+
+
+# set environment
+#################
+from os.path import expanduser, exists
+import os, sys
+home = expanduser("~")
+env = Environment() 
+env["ENV"]["PATH"] = os.environ.get("PATH")
+env["ENV"]["HOME"] = os.environ.get("HOME")
+
+libpath = home + "/.HGamer3D/lib"
+
+if env["PLATFORM"] == "win32":
+   # on windows, create new environment, which finds MS C-Compiler
+   env = Environment(TARGET_ARCH="x86", MSVC_VERSION="10.0")
+   env.MergeFlags({"CCFLAGS" : "/DWIN32 /D_WIN32 /DHGamer3DOgre040_EXPORTS /EHsc /MD"})
+
+# set other compile parameters
+##############################
+
+if env["PLATFORM"] == "win32":
+
+   env.Append(CPPPATH=["include","../Deps/include","../Deps/include/OgreMain","../Deps/include/boost","../Deps/include/BuildConfig"])
+   env.Append(LIBPATH=["lib","../Deps/lib","../Deps/lib","../Deps/include/boost/lib"])
+   env.SharedLibrary("hg3dogre040", ["ClassViewport.cpp","ClassRenderWindow.cpp","ClassManualObjectFactory.cpp","ClassRoot.cpp","ClassBillboardChainFactory.cpp","ClassArchiveManager.cpp","ClassRenderSystem.cpp","ClassMaterial.cpp","ClassBillboardSet.cpp","ClassManualObjectSection.cpp","ClassVertexAnimationTrack.cpp","ClassBillboardSetFactory.cpp","ClassNodeAnimationTrack.cpp","ClassRenderTarget.cpp","ClassResource.cpp","ClassSceneNode.cpp","ClassCamera.cpp","ClassNode.cpp","ClassResourceGroupManager.cpp","ClassSkeleton.cpp","ClassMovableObjectFactory.cpp","ClassAnimationStateSet.cpp","ClassAnimation.cpp","ClassConfigFile.cpp","ClassAnimationState.cpp","ClassSceneManager.cpp","ClassRenderable.cpp","ClassTextureManager.cpp","ClassManualObject.cpp","ClassRenderTexture.cpp","ClassEntity.cpp","ClassMeshManager.cpp","ClassBillboard.cpp","ClassHG3DUtilities.cpp","HG3DUtilities.cpp","ClassLog.cpp","ClassException.cpp","ClassLight.cpp","ClassMovableObject.cpp","ClassResourceManager.cpp","ClassMultiRenderTarget.cpp","ClassPtr.cpp","ClassLightFactory.cpp","ClassWindowEventUtilities.cpp","ClassEntityFactory.cpp","ClassAnimationTrack.cpp","ClassLogManager.cpp","ClassBillboardChain.cpp","ClassNumericAnimationTrack.cpp","ClassMaterialManager.cpp","ClassControllerManager.cpp","ClassTimeIndex.cpp","ClassFrustum.cpp","ClassBone.cpp","ClassArchive.cpp","ClassSkeletonManager.cpp","ClassMesh.cpp","ClassSceneManagerFactory.cpp"], LIBS = ["OgreMain","libboost_thread-vc100-mt-1_49"])
+   env.Alias('install', libpath)
+   env.Install(libpath, "hg3dogre040.dll")
+
+else:
+   env.Append(CPPPATH=["include","../Deps/include","../Deps/include/OgreMain","../Deps/include/boost","../Deps/include/BuildConfig"])
+   env.Append(LIBPATH=["lib","../Deps/lib","../Deps/lib","../Deps/include/boost/lib"])
+   env.SharedLibrary("hg3dogre040", ["ClassViewport.cpp","ClassRenderWindow.cpp","ClassManualObjectFactory.cpp","ClassRoot.cpp","ClassBillboardChainFactory.cpp","ClassArchiveManager.cpp","ClassRenderSystem.cpp","ClassMaterial.cpp","ClassBillboardSet.cpp","ClassManualObjectSection.cpp","ClassVertexAnimationTrack.cpp","ClassBillboardSetFactory.cpp","ClassNodeAnimationTrack.cpp","ClassRenderTarget.cpp","ClassResource.cpp","ClassSceneNode.cpp","ClassCamera.cpp","ClassNode.cpp","ClassResourceGroupManager.cpp","ClassSkeleton.cpp","ClassMovableObjectFactory.cpp","ClassAnimationStateSet.cpp","ClassAnimation.cpp","ClassConfigFile.cpp","ClassAnimationState.cpp","ClassSceneManager.cpp","ClassRenderable.cpp","ClassTextureManager.cpp","ClassManualObject.cpp","ClassRenderTexture.cpp","ClassEntity.cpp","ClassMeshManager.cpp","ClassBillboard.cpp","ClassHG3DUtilities.cpp","HG3DUtilities.cpp","ClassLog.cpp","ClassException.cpp","ClassLight.cpp","ClassMovableObject.cpp","ClassResourceManager.cpp","ClassMultiRenderTarget.cpp","ClassPtr.cpp","ClassLightFactory.cpp","ClassWindowEventUtilities.cpp","ClassEntityFactory.cpp","ClassAnimationTrack.cpp","ClassLogManager.cpp","ClassBillboardChain.cpp","ClassNumericAnimationTrack.cpp","ClassMaterialManager.cpp","ClassControllerManager.cpp","ClassTimeIndex.cpp","ClassFrustum.cpp","ClassBone.cpp","ClassArchive.cpp","ClassSkeletonManager.cpp","ClassMesh.cpp","ClassSceneManagerFactory.cpp"], LIBS = ["OgreMain","OgrePaging","OgreProperty","OgreRTShaderSystem","OgreTerrain"])
+   env.Alias('install', libpath)
+   env.Install(libpath, "libhg3dogre040.so")
+
+

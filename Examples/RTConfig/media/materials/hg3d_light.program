@@ -1,0 +1,23 @@
+vertex_program SpecBumpL2_VP glsl
+{ 
+    source hg3d_lighting_vp.glsl
+    preprocessor_defines LIGHT_COUNT=2,SPECULAR=1,BUMPED=1
+}
+
+fragment_program SpecBumpL2_FP glsl
+{ 
+    source hg3d_lighting_fp.glsl
+    preprocessor_defines LIGHT_COUNT=2,SPECULAR=1,BUMPED=1
+}
+
+vertex_program DiffBumpL2_VP glsl
+{ 
+    source hg3d_lighting_vp.glsl
+    preprocessor_defines LIGHT_COUNT=2,BUMPED=1
+}
+
+fragment_program DiffBumpL2_FP glsl
+{ 
+    source hg3d_lighting_fp.glsl
+    preprocessor_defines LIGHT_COUNT=2,BUMPED=1
+}

@@ -1,0 +1,1 @@
+python ../HBind/hbind.py $1 -c Bindings-HBind-Source/$2/$2.cfg -o Bindings/$2

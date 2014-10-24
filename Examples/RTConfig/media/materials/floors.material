@@ -1,0 +1,326 @@
+import * from "hg3d_light.material"
+
+material Floor/Tiles1
+{ 
+
+// http://nobiax.deviantart.com/art/Free-textures-pack-54-428924249
+// pattern 270
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : SpecBumpL2_Pass
+	{
+		set $texture "pattern270_diffuse.tga"
+		set $normalmap "pattern270_normal.tga"
+	}
+   } 
+}
+
+material Floor/Tiles2
+{ 
+
+// http://nobiax.deviantart.com/art/Free-textures-pack-54-428924249
+// pattern 272
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : SpecBumpL2_Pass
+	{
+		set $texture "pattern272_diffuse.tga"
+		set $normalmap "pattern272_normal.tga"
+	}
+   } 
+}
+
+material Floor/Tiles3
+{ 
+
+// http://nobiax.deviantart.com/art/Free-textures-pack-54-428924249
+// pattern 273
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : SpecBumpL2_Pass
+	{
+		set $texture "pattern273_diffuse.tga"
+		set $normalmap "pattern273_normal.tga"
+	}
+   } 
+}
+
+material Floor/Wood1
+{ 
+
+// http://nobiax.deviantart.com/art/Free-textures-pack-54-428924249
+// pattern 271
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : DiffBumpL2_Pass
+	{
+		set $texture "pattern271_diffuse.tga"
+		set $normalmap "pattern271_normal.tga"
+	}
+   } 
+}
+
+material Floor/Steel1
+{ 
+
+// http://www.deviantart.com/art/Free-3D-Textures-Pack-01-153806426
+// pattern 01
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : SpecBumpL2_Pass
+	{
+		set $texture "pattern_01_diffus.tga"
+		set $normalmap "pattern_01_normal.tga"
+	}
+   } 
+}
+
+material Floor/Steel2
+{ 
+
+// http://www.deviantart.com/art/Free-3D-Textures-Pack-01-153806426
+// pattern 03
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : SpecBumpL2_Pass
+	{
+		set $texture "pattern_03_diffus.tga"
+		set $normalmap "pattern_03_normal.tga"
+	}
+   } 
+}
+
+material Floor/Steel3
+{ 
+
+// http://www.deviantart.com/art/Free-3D-Textures-Pack-01-153806426
+// pattern 04
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : SpecBumpL2_Pass
+	{
+		set $texture "pattern_04_diffus.tga"
+		set $normalmap "pattern_04_normal.tga"
+	}
+   } 
+}
+
+material Floor/Steel3
+{ 
+
+// http://www.deviantart.com/art/Free-3D-Textures-Pack-01-153806426
+// pattern 04
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : SpecBumpL2_Pass
+	{
+		set $texture "pattern_04_diffus.tga"
+		set $normalmap "pattern_04_normal.tga"
+	}
+   } 
+}
+
+material Floor/Steel4
+{ 
+
+// http://www.deviantart.com/art/Free-3D-textures-pack-03-156623646
+// pattern 15
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : SpecBumpL2_Pass
+	{
+		set $texture "pattern_15_diffus.tga"
+		set $normalmap "pattern_15_normal.tga"
+	}
+   } 
+}
+
+material Floor/Plain2
+{ 
+
+// http://www.deviantart.com/art/Free-3D-textures-pack-03-156623646
+// pattern 13
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : DiffBumpL2_Pass
+	{
+		set $texture "pattern_13_diffus.tga"
+		set $normalmap "pattern_13_normal.tga"
+	}
+   } 
+}
+
+material Floor/Plain2S
+{ 
+
+// http://www.deviantart.com/art/Free-3D-textures-pack-03-156623646
+// pattern 13
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : SpecBumpL2_Pass
+	{
+		set $texture "pattern_13_diffus.tga"
+		set $normalmap "pattern_13_normal.tga"
+	}
+   } 
+}
+
+material Floor/Plain3
+{ 
+
+// http://www.deviantart.com/art/Free-3D-textures-pack-03-156623646
+// pattern 14
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : DiffBumpL2_Pass
+	{
+		set $texture "pattern_14_diffus.tga"
+		set $normalmap "pattern_14_normal.tga"
+	}
+   } 
+}
+
+material Floor/Plain3S
+{ 
+
+// http://www.deviantart.com/art/Free-3D-textures-pack-03-156623646
+// pattern 14
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : SpecBumpL2_Pass
+	{
+		set $texture "pattern_14_diffus.tga"
+		set $normalmap "pattern_14_normal.tga"
+	}
+   } 
+}
+
+material Floor/Steel5
+{ 
+
+// http://www.deviantart.com/art/Free-3D-textures-pack-05-186206685
+// pattern 29
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : SpecBumpL2_Pass
+	{
+		set $texture "pattern_29_diffus.tga"
+		set $normalmap "pattern_29_normal.tga"
+	}
+   } 
+}
+
+material Floor/Steel6
+{ 
+
+// http://www.deviantart.com/art/Free-3D-textures-pack-05-186206685
+// pattern 30
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : DiffBumpL2_Pass
+	{
+		set $texture "pattern_30_diffus.tga"
+		set $normalmap "pattern_30_normal.tga"
+	}
+   } 
+}
+
+material Floor/Steel7
+{ 
+
+// http://www.deviantart.com/art/Free-3D-textures-pack-05-186206685
+// pattern 30
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : SpecBumpL2_Pass
+	{
+		set $texture "pattern_31_diffus.tga"
+		set $normalmap "pattern_31_normal.tga"
+	}
+   } 
+}
+
+material Floor/Stone1
+{ 
+
+// http://www.deviantart.com/art/Free-3D-textures-pack-25-289115039
+// pattern 124
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : DiffBumpL2_Pass
+	{
+		set $texture "pattern_124_diffuse.tga"
+		set $normalmap "pattern_124_normal.tga"
+	}
+   } 
+}
+
+material Floor/Stone2
+{ 
+
+// http://www.deviantart.com/art/Free-3D-textures-pack-25-289115039
+// pattern 125
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : DiffBumpL2_Pass
+	{
+		set $texture "pattern_125_diffuse.tga"
+		set $normalmap "pattern_125_normal.tga"
+	}
+   } 
+}
+
+material Floor/Stone3
+{ 
+
+// http://www.deviantart.com/art/Free-3D-textures-pack-25-289115039
+// pattern 127
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : DiffBumpL2_Pass
+	{
+		set $texture "pattern_127_diffuse.tga"
+		set $normalmap "pattern_127_normal.tga"
+	}
+   } 
+}
+
+

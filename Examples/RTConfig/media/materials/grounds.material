@@ -1,0 +1,87 @@
+import * from "hg3d_light.material"
+
+material Ground/Grass1
+{ 
+
+// http://www.deviantart.com/art/Free-3D-textures-pack-08-199719161
+// pattern 42
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : DiffBumpL2_Pass
+	{
+		set $texture "pattern_42_diffus.tga"
+		set $normalmap "pattern_42_normal.tga"
+	}
+   } 
+}
+
+material Ground/Grass2
+{ 
+
+// http://www.deviantart.com/art/Free-3D-textures-pack-08-199719161
+// pattern 43
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : DiffBumpL2_Pass
+	{
+		set $texture "pattern_43_diffus.tga"
+		set $normalmap "pattern_43_normal.tga"
+	}
+   } 
+}
+
+material Ground/Grass3
+{ 
+
+// http://www.deviantart.com/art/Free-3D-textures-pack-08-199719161
+// pattern 44
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : DiffBumpL2_Pass
+	{
+		set $texture "pattern_44_diffus.tga"
+		set $normalmap "pattern_44_normal.tga"
+	}
+   } 
+}
+
+material Ground/Sand1
+{ 
+
+// http://www.deviantart.com/art/Free-3D-textures-pack-08-199719161
+// pattern 45
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : DiffBumpL2_Pass
+	{
+		set $texture "pattern_45_diffus.tga"
+		set $normalmap "pattern_45_normal.tga"
+	}
+   } 
+}
+
+material Ground/Sand2
+{ 
+
+// http://www.deviantart.com/art/Free-3D-textures-pack-08-199719161
+// pattern 46
+// license: CC0 1.0 Universal (CC0 1.0), public domain dedication
+
+  technique 
+   {
+	pass : DiffBumpL2_Pass
+	{
+		set $texture "pattern_46_diffus.tga"
+		set $normalmap "pattern_46_normal.tga"
+	}
+   } 
+}
+

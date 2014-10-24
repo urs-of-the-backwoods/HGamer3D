@@ -1,0 +1,38 @@
+Name:                HGamer3D-SDL2-Binding
+Version:             0.4.0
+Synopsis:            SDL2 Binding for HGamer3D
+Description:         
+   HGamer3D is a game engine for developing 3D games in the programming 
+   language Haskell. This package provides the SDL2 binding. 
+   HGamer3D-SDL2-Binding is available on Windows and Linux. 
+   This binding does not claim to have full coverage of SDL2 
+   functionality, but only to support what is needed for the
+   HGamer3D-WinEvent package.
+
+	
+License:             OtherLicense
+License-file:        LICENSE
+Author:              Peter Althainz
+Maintainer:          althainz@gmail.com
+Build-Type:          Simple
+Cabal-Version:       >=1.4
+Homepage:            http://www.hgamer3d.org
+Category:            Game Engine
+Extra-source-files:  Setup.hs, include/StructHG3DClass.h, include/HeaderSDL.h, include/EnumSDLSystemCursor.h, include/hg3dstruct.h, include/EnumSDLMessageBoxFlags.h, include/HeaderSDLMouse.h, include/EnumSDLWindowShapeMode.h, include/EnumSDLWindowFlags.h, include/EnumSDLScancode.h, include/EnumSDLGLAttr.h, include/EnumSDLGameControllerAxis.h, include/EnumSDLBlendMode.h, include/EnumSDLMessageBoxColorType.h, include/EnumSDLLogPriority.h, include/EnumSDLGlContextFlag.h, include/EnumSDLPixelFormat.h, include/EnumSDLGLProfile.h, include/EnumSDLTextureAccess.h, include/EnumSDLTextureModulate.h, include/HeaderSDLEvents.h, include/EnumSDLRendererFlags.h, include/ClassHG3DUtilities.h, include/EnumSDLPowerState.h, include/EnumSDLWindowEventID.h, include/EnumSDLKeymod.h, include/ClassPtr.h, include/EnumSDLLogCategory.h, include/EnumSDLRendererFlip.h, include/SDL2DllDefines.h, include/EnumSDLThreadPriority.h, include/EnumSDLPacketLayout.h, include/EnumSDLMessageBoxButtonFlags.h, include/EnumSDLGameControllerButton.h, include/HeaderSDLKeyboard.h, include/HeaderSDLVideo.h, include/sdlevent_struct.h, include/EnumSDLEventType.h, include/EnumSDLGameControllerBindType.h, include/EnumSDLHintPriority.h, include/EnumSDLKeycode.h, include/EnumSDLSysWMType.h, include/StructSDLEvent.h, include/HG3DUtilities.h
+
+Library
+  Build-Depends:     base >= 3 && < 5, utf8-string, bytestring, HGamer3D-Data >= 0.4.0
+
+  Exposed-modules:   HGamer3D.Bindings.SDL2.Utils, HGamer3D.Bindings.SDL2.StructHG3DClass, HGamer3D.Bindings.SDL2.ClassPtr, HGamer3D.Bindings.SDL2.EnumSDLMessageBoxButtonFlags, HGamer3D.Bindings.SDL2.EnumSDLGLProfile, HGamer3D.Bindings.SDL2.EnumSDLRendererFlags, HGamer3D.Bindings.SDL2.EnumSDLScancode, HGamer3D.Bindings.SDL2.EnumSDLWindowEventID, HGamer3D.Bindings.SDL2.EnumSDLThreadPriority, HGamer3D.Bindings.SDL2.EnumSDLSystemCursor, HGamer3D.Bindings.SDL2.EnumSDLGameControllerAxis, HGamer3D.Bindings.SDL2.EnumSDLMessageBoxFlags, HGamer3D.Bindings.SDL2.EnumSDLWindowFlags, HGamer3D.Bindings.SDL2.EnumSDLGameControllerButton, HGamer3D.Bindings.SDL2.EnumSDLKeymod, HGamer3D.Bindings.SDL2.EnumSDLHintPriority, HGamer3D.Bindings.SDL2.EnumSDLLogCategory, HGamer3D.Bindings.SDL2.EnumSDLRendererFlip, HGamer3D.Bindings.SDL2.EnumSDLTextureModulate, HGamer3D.Bindings.SDL2.EnumSDLPacketLayout, HGamer3D.Bindings.SDL2.EnumSDLEventType, HGamer3D.Bindings.SDL2.EnumSDLTextureAccess, HGamer3D.Bindings.SDL2.EnumSDLLogPriority, HGamer3D.Bindings.SDL2.EnumSDLGameControllerBindType, HGamer3D.Bindings.SDL2.EnumSDLWindowShapeMode, HGamer3D.Bindings.SDL2.EnumSDLBlendMode, HGamer3D.Bindings.SDL2.EnumSDLPixelFormat, HGamer3D.Bindings.SDL2.EnumSDLGLAttr, HGamer3D.Bindings.SDL2.EnumSDLSysWMType, HGamer3D.Bindings.SDL2.EnumSDLGlContextFlag, HGamer3D.Bindings.SDL2.EnumSDLMessageBoxColorType, HGamer3D.Bindings.SDL2.EnumSDLPowerState, HGamer3D.Bindings.SDL2.StructSDLEvent, HGamer3D.Bindings.SDL2.ClassHG3DUtilities, HGamer3D.Bindings.SDL2.HeaderSDLMouse, HGamer3D.Bindings.SDL2.HeaderSDLEvents, HGamer3D.Bindings.SDL2.HeaderSDLVideo, HGamer3D.Bindings.SDL2.HeaderSDL, HGamer3D.Bindings.SDL2.HeaderSDLKeyboard
+  Other-modules:     
+
+  ghc-options:       
+  cc-options:        -Wno-attributes 
+  hs-source-dirs:    .
+  Include-dirs:      include
+  Build-tools:       
+  build-depends:     
+  if os(windows)
+     extra-libraries:   hg3dsdl2040
+  else
+     extra-libraries:   hg3dsdl2040,SDL2-2.0,X11
