@@ -14,13 +14,14 @@ env["ENV"]["HOME"] = os.environ.get("HOME")
 ##########################
 
 dependsOn = [
-	  "HGamer3D/InputSystem/BaseAPI.hs",
-	  Glob("HGamer3D/InputSystem/Internal/*"),
-	  Glob("HGamer3D/Internal/*"),
+	  "HGamer3D/BaseAPI/InputSystem.hs",
+	  Glob("HGamer3D/InputSystem/*"),
+	  Glob("HGamer3D/BaseAPI/*"),
 	  Glob("*.cabal"),
 	  "LICENSE",
 
 	  Glob("../Data/dist/HGamer3D-*.tar.gz"),
+	  Glob("../Common/dist/HGamer3D-*.tar.gz"),
 	  Glob("../Bindings/SFML/hBuild/dist/HGamer3D-*.tar.gz"),
 
 ]

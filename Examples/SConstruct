@@ -15,28 +15,27 @@ env.Command("build", "", Mkdir("build"))
 
 for (p, s) in [
 
-    # the BaseAPI examples
+    # the base-tests examples
 
-    ("BaseAPI", "Audio"),
-    ("BaseAPI", "BlueCube"),
-    ("BaseAPI", "BumpMappingCube"),
-    ("BaseAPI", "GUI-Widgets"),
-    ("BaseAPI", "Joystick"),
-    ("BaseAPI", "Keyboard"),
-    ("BaseAPI", "Mouse"),
-    ("BaseAPI", "Network-Chat"),
-    ("BaseAPI", "WinEvent"),
+#    ("base-tests", "Audio"),
+    ("base-tests", "BlueCube"),
+    ("base-tests", "BumpMappingCube"),
+    ("base-tests", "GUI-Widgets"),
+    ("base-tests", "Joystick"),
+    ("base-tests", "Keyboard"),
+    ("base-tests", "Mouse"),
+    ("base-tests", "Network-Chat"),
+    ("base-tests", "WinEvent"),
 
-    # first EcsAPI examples
+    # the main examples
 
-    ("EcsAPI", "RotatePlaton"),
-    ("EcsAPI", "Coordinates"),
-    ("EcsAPI", "MaterialManager"),
-    ("EcsAPI", "Materials"),
-    ("EcsAPI", "GUI-Switch"),
-
-    # life coding EcsAPI examples
-    ("EcsAPI", "Live1")
+    ("source", "RotatePlaton"),
+    ("source", "Coordinates"),
+    ("source", "MaterialManager"),
+    ("source", "Materials"),
+    ("source", "GUI-Switch"),
+    ("source", "Audio"),
+    ("source", "Live1")
 
 ]:
 
@@ -44,12 +43,12 @@ for (p, s) in [
 
        env.Command("build/" + s + ".exe", [p + "/" + s + ".hs",
                                "build/.HGamer3D"
-                               ] , "rm -f build/*.o && " + "ghc --make -threaded -odir build -hidir build -i" + p + " -o build/" + s + " " + p + "/" + s)
+                               ] , "rm -f build/*.o && " + "ghc --make -O2 -threaded -odir build -hidir build -i" + p + " -o build/" + s + " " + p + "/" + s)
     else:
 
        env.Command("build/" + s, [p + "/" + s + ".hs",
                                "build/.HGamer3D"
-                               ] , "rm -f build/*.o && " + "ghc --make -threaded -odir build -hidir build -i" + p + " -o build/" + s + " " + p + "/" + s)
+                               ] , "rm -f build/*.o && " + "ghc --make -O2 -threaded -odir build -hidir build -i" + p + " -o build/" + s + " " + p + "/" + s)
 
 # download and extract Assetpack
 if (not os.path.exists("Assetpack")):
@@ -60,8 +59,23 @@ if (not os.path.exists("Assetpack")):
 
 
 # the media files need to be copied to .HGamer3D
-env.Command("build/.HGamer3D", ["Assetpack", "RTConfig"], [
+buildRT = env.Command("build/.HGamer3D", ["Assetpack", "RTConfig"], [
 			       Mkdir("build/.HGamer3D"),
 			       "cp -r RTConfig/* build/.HGamer3D",
 			       "cp -r Assetpack/* build/.HGamer3D/media"
 			       ])
+
+# copy runtime
+
+def copyRT(target, source, env):
+    # get target path
+    if env["PLATFORM"] == "win32":
+       targetPath = os.getenv("APPDATA").replace("\\","/") + "/HGamer3D"
+       os.mkdir(targetPath + "/lib")
+       os.system("cp ~/.HGamer3D/lib/* " + targetPath + "/lib")
+       os.system("cp -r build/.HGamer3D/* " + targetPath)
+    else:
+       targetPath = "~\.HGamer3D"
+       os.system("cp -r build/.HGamer3D/* " + targetPath)
+    
+env.AddPostAction(buildRT, copyRT)

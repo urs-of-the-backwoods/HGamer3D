@@ -115,7 +115,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mnos_get32BitIndices(struct hg3dclass_struc
   *result_c = (long)result_cpp;
 };
 
-// 
+// . 
 extern "C" Ogre_LIB_EXPORT void ogre_mnos_getMaterial(struct hg3dclass_struct * thisclass_c, struct sharedptr_struct * result_c)
 {
   Ogre::ManualObject::ManualObjectSection * thisclass_cpp = static_cast<Ogre::ManualObject::ManualObjectSection*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject::ManualObjectSection"));
@@ -124,7 +124,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mnos_getMaterial(struct hg3dclass_struct * 
   *result_c = *((struct sharedptr_struct*) &result_cpp);
 };
 
-// 
+// . 
 extern "C" Ogre_LIB_EXPORT void ogre_mnos_getSquaredViewDepth(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * _c, float * result_c)
 {
   Ogre::ManualObject::ManualObjectSection * thisclass_cpp = static_cast<Ogre::ManualObject::ManualObjectSection*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject::ManualObjectSection"));

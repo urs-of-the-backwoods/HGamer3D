@@ -1,0 +1,32 @@
+Name:                HGamer3D-Common
+Version:             0.5.0
+Synopsis:            Toolset for the Haskell Game Programmer - Game Engine and Utilities
+Description:         
+	HGamer3D is a toolset for developing 3D games in the programming 
+	language Haskell. HGamer3D is available on Windows and Linux. This 
+	package provides common engine definitions and utility functions for HGamer3D.
+
+License:             OtherLicense
+License-file:        LICENSE
+Author:              Peter Althainz
+Maintainer:          althainz@gmail.com
+Build-Type:          Simple
+Cabal-Version:       >=1.4
+Homepage:            http://www.hgamer3d.org
+Category:            Game Engine
+Extra-source-files:  Setup.hs 
+
+Library
+  Build-Depends:     base >= 3 && < 5, HGamer3D-Data >= 0.5.0 && < 0.6.0, FindBin, directory, filepath, vect, clock, stm, containers
+
+  Exposed-modules:   HGamer3D.Common.FileLocation, HGamer3D.Common.UniqueName, HGamer3D.Common.ECS, HGamer3D.Common
+  Other-modules:     
+
+  c-sources:         
+  
+  ghc-options:       -O2
+  cc-options:        -Wno-attributes 
+  hs-source-dirs:    .
+  Include-dirs:      . 
+  build-depends:     
+  extra-libraries:   

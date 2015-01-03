@@ -14,7 +14,7 @@
 # 
 
 
-# scons file to build HGamer3DSFML library, version 0.4.0
+# scons file to build HGamer3DSFML library, version 0.5.0
 
 
 # set environment
@@ -31,7 +31,7 @@ libpath = home + "/.HGamer3D/lib"
 if env["PLATFORM"] == "win32":
    # on windows, create new environment, which finds MS C-Compiler
    env = Environment(TARGET_ARCH="x86", MSVC_VERSION="10.0")
-   env.MergeFlags({"CCFLAGS" : "/DWIN32 /D_WIN32 /DHGamer3DSFML040_EXPORTS /EHsc /MD"})
+   env.MergeFlags({"CCFLAGS" : "/DWIN32 /D_WIN32 /DHGamer3DSFML050_EXPORTS /EHsc /MD"})
 
 # set other compile parameters
 ##############################
@@ -40,15 +40,15 @@ if env["PLATFORM"] == "win32":
 
    env.Append(CPPPATH=["include","../Deps/include","../Deps/include"])
    env.Append(LIBPATH=["lib","../Deps/lib","../Deps/lib"])
-   env.SharedLibrary("hg3dsfml040", ["ClassSoundBuffer.cpp","ClassMusic.cpp","ClassSound.cpp","ClassSoundSource.cpp","ClassSoundStream.cpp","ClassMouseHG3D.cpp","ClassJoystick.cpp","ClassListener.cpp","ClassMouse.cpp","ClassPtr.cpp","ClassKeyboard.cpp"], LIBS = ["sfml-audio.lib","sfml-system.lib","sfml-window.lib"])
+   env.SharedLibrary("hg3dsfml050", ["ClassJoystick.cpp","ClassKeyboard.cpp","ClassListener.cpp","ClassMouse.cpp","ClassMouseHG3D.cpp","ClassMusic.cpp","ClassPtr.cpp","ClassSound.cpp","ClassSoundBuffer.cpp","ClassSoundSource.cpp","ClassSoundStream.cpp"], LIBS = ["sfml-audio.lib","sfml-system.lib","sfml-window.lib"])
    env.Alias('install', libpath)
-   env.Install(libpath, "hg3dsfml040.dll")
+   env.Install(libpath, "hg3dsfml050.dll")
 
 else:
    env.Append(CPPPATH=["include","../Deps/include","../Deps/include"])
    env.Append(LIBPATH=["lib","../Deps/lib","../Deps/lib"])
-   env.SharedLibrary("hg3dsfml040", ["ClassSoundBuffer.cpp","ClassMusic.cpp","ClassSound.cpp","ClassSoundSource.cpp","ClassSoundStream.cpp","ClassMouseHG3D.cpp","ClassJoystick.cpp","ClassListener.cpp","ClassMouse.cpp","ClassPtr.cpp","ClassKeyboard.cpp"], LIBS = ["sfml-audio","sfml-system","sfml-window","sfml-network"])
+   env.SharedLibrary("hg3dsfml050", ["ClassJoystick.cpp","ClassKeyboard.cpp","ClassListener.cpp","ClassMouse.cpp","ClassMouseHG3D.cpp","ClassMusic.cpp","ClassPtr.cpp","ClassSound.cpp","ClassSoundBuffer.cpp","ClassSoundSource.cpp","ClassSoundStream.cpp"], LIBS = ["sfml-audio","sfml-system","sfml-window","sfml-network"])
    env.Alias('install', libpath)
-   env.Install(libpath, "libhg3dsfml040.so")
+   env.Install(libpath, "libhg3dsfml050.so")
 
 

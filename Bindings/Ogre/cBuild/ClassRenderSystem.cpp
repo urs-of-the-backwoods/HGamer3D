@@ -248,6 +248,23 @@ extern "C" Ogre_LIB_EXPORT void ogre_rds_setGlobalNumberOfInstances(struct hg3dc
 };
 
 // 
+extern "C" Ogre_LIB_EXPORT void ogre_rds_setFixedPipelineEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c)
+{
+  Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
+  bool enabled_cpp = (bool)enabled_c;
+  (thisclass_cpp->setFixedPipelineEnabled(enabled_cpp));
+};
+
+// 
+extern "C" Ogre_LIB_EXPORT void ogre_rds_getFixedPipelineEnabled(struct hg3dclass_struct * thisclass_c, long * result_c)
+{
+  Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));
+  bool result_cpp;
+  result_cpp = (thisclass_cpp->getFixedPipelineEnabled());
+  *result_c = (long)result_cpp;
+};
+
+// 
 extern "C" Ogre_LIB_EXPORT void ogre_rds_setDepthBufferFor(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * renderTarget_c)
 {
   Ogre::RenderSystem * thisclass_cpp = static_cast<Ogre::RenderSystem*> (getHG3DClassPtr(*thisclass_c, "Ogre::RenderSystem"));

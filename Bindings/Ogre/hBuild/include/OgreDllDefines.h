@@ -16,10 +16,10 @@
 
 // OgreDllDefines.h
 
-#ifndef _HGamer3DOgre040_DLLDEFINES_H_
-#define _HGamer3DOgre040_DLLDEFINES_H_
+#ifndef _HGamer3DOgre050_DLLDEFINES_H_
+#define _HGamer3DOgre050_DLLDEFINES_H_
 
-/* Cmake will define HGamer3DOgre040_EXPORTS on Windows when it
+/* Cmake will define HGamer3DOgre050_EXPORTS on Windows when it
 configures to build a shared library. If you are going to use
 another build system on windows or create the visual studio
 projects by hand you need to define MyLibrary_EXPORTS when
@@ -29,13 +29,13 @@ building a DLL on windows.
 // We are using the Visual Studio Compiler and building Shared libraries
 
 #if (defined (_WIN32)) && !(defined (__GNUC__)) 
-  #if defined(HGamer3DOgre040_EXPORTS)
+  #if defined(HGamer3DOgre050_EXPORTS)
     #define  Ogre_LIB_EXPORT __declspec(dllexport)
   #else
     #define  Ogre_LIB_EXPORT __declspec(dllimport)
-  #endif /* HGamer3DOgre040_EXPORTS */
+  #endif /* HGamer3DOgre050_EXPORTS */
 #else /* defined (_WIN32) */
  #define Ogre_LIB_EXPORT
 #endif
 
-#endif /* _HGamer3DOgre040_DLLDEFINES_H_ */
+#endif /* _HGamer3DOgre050_DLLDEFINES_H_ */

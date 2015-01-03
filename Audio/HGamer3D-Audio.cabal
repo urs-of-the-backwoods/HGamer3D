@@ -1,8 +1,8 @@
 Name:                HGamer3D-Audio
-Version:             0.4.0
-Synopsis:            Audio Functionality for HGamer3D
+Version:             0.5.0
+Synopsis:            Toolset for the Haskell Game Programmer - Audio Functionality
 Description:         
-	HGamer3D is a game engine for developing 3D games in the programming 
+	HGamer3D is a toolset for developing 3D games in the programming 
 	language Haskell. This package provides the Audio functionality, 
 	based on the package HGamer3D-SFML-Binding. HGamer3D-Audio
 	is available on Windows and Linux.
@@ -18,14 +18,14 @@ Category:            Game Engine
 Extra-source-files:  Setup.hs 
 
 Library
-  Build-Depends:     base >= 3 && < 5, containers, HGamer3D-Data >= 0.4.0 && < 0.5.0, HGamer3D-SFML-Binding >= 0.4.0 && < 0.5.0
+  Build-Depends:     base >= 3 && < 5, containers, HGamer3D-Data >= 0.5.0 && < 0.6.0, HGamer3D-SFML-Binding >= 0.5.0 && < 0.6.0, HGamer3D-Common >= 0.5.0 && < 0.6.0
 
-  Exposed-modules:   HGamer3D.Audio.Schema.AudioSource, HGamer3D.Audio.Schema.AudioListener, HGamer3D.Audio.Internal.Base, HGamer3D.Audio.BaseAPI, HGamer3D.Internal.Audio
+  Exposed-modules:   HGamer3D.Audio.AudioBase, HGamer3D.Audio.AudioSource, HGamer3D.Audio.AudioListener, HGamer3D.Audio.SystemAudio, HGamer3D.BaseAPI.Audio, HGamer3D.Audio
   Other-modules:     
 
   c-sources:         
   
-  ghc-options:       
+  ghc-options:       -O2
   cc-options:        -Wno-attributes 
   hs-source-dirs:    .
   Include-dirs:      . 

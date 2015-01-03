@@ -1,5 +1,5 @@
 Name:                HGamer3D-Network
-Version:             0.4.0
+Version:             0.5.0
 Synopsis:            Networking Functionality for HGamer3D
 Description:         
 	HGamer3D is a game engine for developing 3D games in the programming 
@@ -18,9 +18,9 @@ Category:            Game Engine
 Extra-source-files:  Setup.hs 
 
 Library
-  Build-Depends:     base >= 3 && < 5, HGamer3D-Data >= 0.4.0 && < 0.5.0, HGamer3D-Enet-Binding >= 0.4.0 && < 0.5.0
+  Build-Depends:     base >= 3 && < 5, HGamer3D-Data >= 0.5.0 && < 0.6.0, HGamer3D-Enet-Binding >= 0.5.0 && < 0.6.0, HGamer3D-Common >= 0.5.0 && < 0.6.0
 
-  Exposed-modules:   HGamer3D.Network.Internal.Base, HGamer3D.Network.BaseAPI, HGamer3D.Internal.Network
+  Exposed-modules:   HGamer3D.Network.NetworkBase, HGamer3D.BaseAPI.Network, HGamer3D.Network
   Other-modules:     
 
   c-sources:         

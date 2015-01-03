@@ -16,10 +16,10 @@
 
 // CEGUIDllDefines.h
 
-#ifndef _HGamer3DCEGUI040_DLLDEFINES_H_
-#define _HGamer3DCEGUI040_DLLDEFINES_H_
+#ifndef _HGamer3DCEGUI050_DLLDEFINES_H_
+#define _HGamer3DCEGUI050_DLLDEFINES_H_
 
-/* Cmake will define HGamer3DCEGUI040_EXPORTS on Windows when it
+/* Cmake will define HGamer3DCEGUI050_EXPORTS on Windows when it
 configures to build a shared library. If you are going to use
 another build system on windows or create the visual studio
 projects by hand you need to define MyLibrary_EXPORTS when
@@ -29,13 +29,13 @@ building a DLL on windows.
 // We are using the Visual Studio Compiler and building Shared libraries
 
 #if (defined (_WIN32)) && !(defined (__GNUC__)) 
-  #if defined(HGamer3DCEGUI040_EXPORTS)
+  #if defined(HGamer3DCEGUI050_EXPORTS)
     #define  CEGUI_LIB_EXPORT __declspec(dllexport)
   #else
     #define  CEGUI_LIB_EXPORT __declspec(dllimport)
-  #endif /* HGamer3DCEGUI040_EXPORTS */
+  #endif /* HGamer3DCEGUI050_EXPORTS */
 #else /* defined (_WIN32) */
  #define CEGUI_LIB_EXPORT
 #endif
 
-#endif /* _HGamer3DCEGUI040_DLLDEFINES_H_ */
+#endif /* _HGamer3DCEGUI050_DLLDEFINES_H_ */

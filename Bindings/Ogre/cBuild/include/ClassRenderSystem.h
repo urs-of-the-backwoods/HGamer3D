@@ -98,6 +98,12 @@ void ogre_rds_getGlobalNumberOfInstances(struct hg3dclass_struct * thisclass_c, 
 void ogre_rds_setGlobalNumberOfInstances(struct hg3dclass_struct * thisclass_c, const long val_c);
 
 // 
+void ogre_rds_setFixedPipelineEnabled(struct hg3dclass_struct * thisclass_c, long enabled_c);
+
+// 
+void ogre_rds_getFixedPipelineEnabled(struct hg3dclass_struct * thisclass_c, long * result_c);
+
+// 
 void ogre_rds_setDepthBufferFor(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * renderTarget_c);
 
 // 

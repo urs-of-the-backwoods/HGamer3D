@@ -38,7 +38,7 @@
 
 
 // 
-extern "C" SDL2_LIB_EXPORT void sdl2_hg3dutl_createWindowFromHandle(unsigned int handle_c, void * * result_c)
+extern "C" SDL2_LIB_EXPORT void hg3d_util_createWindowFromHandle(unsigned int handle_c, void * * result_c)
 {
   unsigned int handle_cpp = (unsigned int)handle_c;
   SDL_Window * result_cpp;

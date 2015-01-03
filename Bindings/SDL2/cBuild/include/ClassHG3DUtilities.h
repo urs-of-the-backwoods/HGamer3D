@@ -28,6 +28,6 @@
 
 
 // 
-void sdl2_hg3dutl_createWindowFromHandle(unsigned int handle_c, void * * result_c);
+void hg3d_util_createWindowFromHandle(unsigned int handle_c, void * * result_c);
 
 #endif 

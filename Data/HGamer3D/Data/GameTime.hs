@@ -34,11 +34,14 @@ module HGamer3D.Data.GameTime
   
   getTime,
   getThreadCPUTime,
-  getProcessCPUTime
+  getProcessCPUTime,
+
+  sleepFor
 )
 
 where
 
+import Control.Concurrent
 import qualified System.Clock as C
 
 type GameTime = C.TimeSpec
@@ -89,4 +92,7 @@ getThreadCPUTime = C.getTime C.ThreadCPUTime
 
 getProcessCPUTime :: IO GameTime
 getProcessCPUTime = C.getTime C.ProcessCPUTime
+
+sleepFor :: GameTime -> IO ()
+sleepFor gt = threadDelay (usec gt)
 

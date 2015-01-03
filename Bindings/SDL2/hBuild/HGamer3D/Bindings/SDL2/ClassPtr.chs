@@ -40,6 +40,8 @@ import HGamer3D.Data.Angle
 {# import HGamer3D.Bindings.SDL2.Utils #}
 
 #include "ClassPtr.h"
+{- class ClassHG3DUtilities -}
+{#pointer *ClassHG3DUtilities as ClassHG3DUtilities#}
 data SDLWindow
 peekSDLWindowPtr :: Ptr (Ptr () ) -> IO (Ptr SDLWindow)
 peekSDLWindowPtr inp = do { ptr <- peek inp; return $ castPtr ptr } 

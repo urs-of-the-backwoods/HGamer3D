@@ -29,7 +29,6 @@ target = [ "dist/setup-config", Glob("dist/HGamer3D-*.tar.gz")]
 env.Command(target, dependsOn, [
 
 "ghc-pkg unregister HGamer3D || true",
-"ghc-pkg unregister HGamer3D-Wire || true",
 "ghc-pkg unregister HGamer3D-Audio || true",
 "ghc-pkg unregister HGamer3D-InputSystem || true",
 

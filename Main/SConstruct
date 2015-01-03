@@ -14,30 +14,17 @@ env["ENV"]["HOME"] = os.environ.get("HOME")
 ##########################
 
 dependsOn = [
-          Glob("HGamer3D/Internal/*"),
-          Glob("HGamer3D/Internal/ECS/*"),
-          Glob("HGamer3D/Audio/*"),
-          Glob("HGamer3D/Audio/Internal/*"),
-          Glob("HGamer3D/InputSystem/*"),
-          Glob("HGamer3D/InputSystem/Internal/*"),
-          Glob("HGamer3D/Network/*"),
-          Glob("HGamer3D/Network/Internal/*"),
-          Glob("HGamer3D/Engine/*"),
-          Glob("HGamer3D/Engine/Internal/*"),
-          Glob("HGamer3D/Engine/Schema/*"),
-	  Glob("HGamer3D/GUI/*"),
-	  Glob("HGamer3D/Graphics3D/*"),
+          Glob("HGamer3D/Graphics3D/*"),
+          Glob("HGamer3D/WinEvent/*"),
+          Glob("HGamer3D/GUI/*"),
+          Glob("HGamer3D/System/ECS/*"),
 	  Glob("*.cabal"),
 	  "LICENSE",
 
 	  Glob("../Data/dist/HGamer3D-*.tar.gz"),
-	  Glob("../GUI/dist/HGamer3D-*.tar.gz"),
-	  Glob("../WinEvent/dist/HGamer3D-*.tar.gz"),
-	  Glob("../Graphics3D/dist/HGamer3D-*.tar.gz"),
 	  Glob("../Audio/dist/HGamer3D-*.tar.gz"),
 	  Glob("../Network/dist/HGamer3D-*.tar.gz"),
 	  Glob("../InputSystem/dist/HGamer3D-*.tar.gz"),
-	  Glob("../Schema/dist/HGamer3D-*.tar.gz"),
 	  Glob("../Wire/dist/HGamer3D-*.tar.gz"),
 ]
 

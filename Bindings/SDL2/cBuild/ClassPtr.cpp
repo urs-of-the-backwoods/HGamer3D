@@ -48,3 +48,25 @@ void *getHG3DClassPtr(hg3dclass_struct inSt, const char* className)
 	return ((*ptrcaster)(className, inSt.ptr));
 }
 
+//
+// HG3DUtilities
+//
+
+// Ptr Caster
+void *internalHG3D_HG3DUtilities_PtrCaster(const char* className, void* ptrIn) {
+	if (strcmp(className, "HG3DUtilities") == 0) {
+		return ptrIn;
+	};
+	printf("PtrCaster not successful, Class: HG3DUtilities is not a subclass of %s!\n",className);
+	return (void *)0;
+};
+
+// getHG3DClass
+hg3dclass_struct getHG3DClass_HG3DUtilities(void *ptrIn)
+{
+	hg3dclass_struct st;
+	st.ptr = ptrIn;
+	st.fptr = (void *)(&internalHG3D_HG3DUtilities_PtrCaster);
+	return st;
+};
+

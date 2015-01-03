@@ -42,7 +42,7 @@ import HGamer3D.Data.Angle
 
 #include "ClassHG3DUtilities.h"
 {- function createWindowFromHandle -}
-{#fun sdl2_hg3dutl_createWindowFromHandle as createWindowFromHandle 
+{#fun hg3d_util_createWindowFromHandle as createWindowFromHandle 
 { fromIntegral `Int' ,
  alloca- `Ptr SDLWindow' peekSDLWindowPtr*} -> `()'  #}
 

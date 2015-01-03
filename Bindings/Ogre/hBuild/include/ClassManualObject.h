@@ -150,10 +150,10 @@ void ogre_mno_setKeepDeclarationOrder(struct hg3dclass_struct * thisclass_c, lon
 // 
 void ogre_mno_getKeepDeclarationOrder(struct hg3dclass_struct * thisclass_c, long * result_c);
 
-// 
+// . 
 void ogre_mno_getMovableType(struct hg3dclass_struct * thisclass_c, char * result_c);
 
-// 
+// . 
 void ogre_mno_getBoundingRadius(struct hg3dclass_struct * thisclass_c, float * result_c);
 
 // 

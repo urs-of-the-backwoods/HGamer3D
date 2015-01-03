@@ -157,6 +157,16 @@ import HGamer3D.Data.Angle
 { withHG3DClass* `HG3DClass' ,
  fromIntegral `Int' } -> `()'  #}
 
+{- function setFixedPipelineEnabled -}
+{#fun ogre_rds_setFixedPipelineEnabled as setFixedPipelineEnabled 
+{ withHG3DClass* `HG3DClass' ,
+ fromBool `Bool' } -> `()'  #}
+
+{- function getFixedPipelineEnabled -}
+{#fun ogre_rds_getFixedPipelineEnabled as getFixedPipelineEnabled 
+{ withHG3DClass* `HG3DClass' ,
+ alloca- `Bool' peekBoolUtil*} -> `()'  #}
+
 {- function setDepthBufferFor -}
 {#fun ogre_rds_setDepthBufferFor as setDepthBufferFor 
 { withHG3DClass* `HG3DClass' ,

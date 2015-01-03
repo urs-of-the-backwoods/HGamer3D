@@ -39,6 +39,7 @@ enum EnumSDLKeycode
   SDLK_PERCENT =  '%', // 
   SDLK_DOLLAR =  '$', // 
   SDLK_AMPERSAND =  '&', // 
+  SDLK_QUOTE =  '\'', // 
   SDLK_LEFTPAREN =  '(', // 
   SDLK_RIGHTPAREN =  ')', // 
   SDLK_ASTERISK =  '*', // 

@@ -15,13 +15,14 @@ env["ENV"]["HOME"] = os.environ.get("HOME")
 ##########################
 
 dependsOn = [
-	  "HGamer3D/Audio/BaseAPI.hs",
-	  "HGamer3D/Internal/Audio.hs",
-	  Glob("HGamer3D/Audio/Internal/*"),
+	  "HGamer3D/Audio.hs",
+	  Glob("HGamer3D/Audio/*"),
+	  Glob("HGamer3D/BaseAPI/*"),
 	  Glob("*.cabal"),
 	  "LICENSE",
 
 	  Glob("../Data/dist/HGamer3D-*.tar.gz"),
+	  Glob("../Common/dist/HGamer3D-*.tar.gz"),
 	  Glob("../Bindings/SFML/hBuild/dist/HGamer3D-*.tar.gz"),
 ]
 
@@ -30,7 +31,6 @@ target = [ "dist/setup-config", Glob("dist/HGamer3D-*.tar.gz")]
 env.Command(target, dependsOn, [
 
 "ghc-pkg unregister HGamer3D || true",
-"ghc-pkg unregister HGamer3D-Wire || true",
 
 "cabal configure --user",
 "cabal build",

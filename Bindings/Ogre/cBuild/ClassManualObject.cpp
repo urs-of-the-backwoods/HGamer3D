@@ -397,7 +397,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mno_getKeepDeclarationOrder(struct hg3dclas
   *result_c = (long)result_cpp;
 };
 
-// 
+// . 
 extern "C" Ogre_LIB_EXPORT void ogre_mno_getMovableType(struct hg3dclass_struct * thisclass_c, char * result_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));
@@ -410,7 +410,7 @@ extern "C" Ogre_LIB_EXPORT void ogre_mno_getMovableType(struct hg3dclass_struct 
   };
 };
 
-// 
+// . 
 extern "C" Ogre_LIB_EXPORT void ogre_mno_getBoundingRadius(struct hg3dclass_struct * thisclass_c, float * result_c)
 {
   Ogre::ManualObject * thisclass_cpp = static_cast<Ogre::ManualObject*> (getHG3DClassPtr(*thisclass_c, "Ogre::ManualObject"));

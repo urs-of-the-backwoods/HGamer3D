@@ -29,9 +29,7 @@ target = [ "dist/setup-config", Glob("dist/HGamer3D-*.tar.gz")]
 env.Command(target, dependsOn, [
 
 "ghc-pkg unregister HGamer3D || true",
-"ghc-pkg unregister HGamer3D-Wire || true",
-"ghc-pkg unregister HGamer3D-GUI || true",
-"ghc-pkg unregister HGamer3D-WinEvent || true",
+"ghc-pkg unregister HGamer3D-Graphics3D || true",
 
 "cabal configure --user --extra-lib-dirs=" + home + "/.HGamer3D/lib",
 "cabal build",

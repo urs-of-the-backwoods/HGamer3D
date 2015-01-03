@@ -52,10 +52,10 @@ void ogre_mnos_set32BitIndices(struct hg3dclass_struct * thisclass_c, long n32_c
 // Get whether we need 32-bit indices. 
 void ogre_mnos_get32BitIndices(struct hg3dclass_struct * thisclass_c, long * result_c);
 
-// 
+// . 
 void ogre_mnos_getMaterial(struct hg3dclass_struct * thisclass_c, struct sharedptr_struct * result_c);
 
-// 
+// . 
 void ogre_mnos_getSquaredViewDepth(struct hg3dclass_struct * thisclass_c, struct hg3dclass_struct * _c, float * result_c);
 
 #endif 

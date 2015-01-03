@@ -35,4 +35,7 @@ typedef struct hg3dclass_struct {
 void *getHG3DClassPtr(hg3dclass_struct inSt, const char* className);
 
 
+typedef void ClassHG3DUtilities; 
+hg3dclass_struct getHG3DClass_HG3DUtilities(void *ptrIn);
+
 #endif
