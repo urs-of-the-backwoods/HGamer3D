@@ -34,7 +34,6 @@ mats = [
   "Ground/Grass3",
   "Ground/Sand1",
   "Ground/Sand2",
-  "SkyBox/BlueSky1",
   "Wall/Brick1",
   "Wall/Brick2",
   "Wall/Stone1"

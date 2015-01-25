@@ -25,6 +25,7 @@ module HGamer3D.Graphics3D.SystemGraphics3D
 
 where
 
+import Control.Monad
 import Control.Concurrent.MVar
 import qualified Data.Map as M
 import Data.Maybe
@@ -51,6 +52,8 @@ createRecordFig g3ds eref rep e ct = do
                     CTFig -> \ _ e' -> do
                           r <- readIORef ref
                           r' <- (Gr.update3D g3ds) r (e' # CTFig)
+                          when (e' #? CTPos) $ positionTo r' (e' # CTPos)
+                          when (e' #? CTOri) $ orientationTo r' (e' # CTOri)
                           writeIORef ref r'
                           return () 
                     CTOri -> \ _ e' -> do
@@ -75,6 +78,8 @@ createRecordCam g3ds eref rep e ct = do
                     CTCam -> \ _ e' -> do
                           r <- readIORef ref
                           r' <- (Gr.updateCamera g3ds) r (e' # CTCam)
+                          when (e' #? CTPos) $ positionTo r' (e' # CTPos)
+                          when (e' #? CTOri) $ orientationTo r' (e' # CTOri)
                           writeIORef ref r'
                           return () 
                     CTOri -> \ _ e' -> do
@@ -99,6 +104,8 @@ createRecordLight g3ds eref rep e ct = do
                     CTLig -> \ _ e' -> do
                           r <- readIORef ref
                           r' <- (Gr.updateLight g3ds) r (e' # CTLig)
+                          when (e' #? CTPos) $ positionTo r' (e' # CTPos)
+                          when (e' #? CTOri) $ orientationTo r' (e' # CTOri)
                           writeIORef ref r'
                           return () 
                     CTOri -> \ _ e' -> do

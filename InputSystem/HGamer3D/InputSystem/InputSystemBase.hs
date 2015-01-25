@@ -17,11 +17,6 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
--- InputSystem/Internal/Base.hs
-
-
--- | Mouse, Keyboard and Joystick functionality for HGamer3D, internal implementation. This modules also exposes internal data structures. Public API is HGamer3D.InputSystem.
-
 module HGamer3D.InputSystem.InputSystemBase
 
 (

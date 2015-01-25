@@ -22,28 +22,13 @@
 module HGamer3D.Network
 
 (
-  
-       -- * Overview
-       -- $Overview  
-  
-        -- * Types
-        NetworkSystem, 
-        NetworkClient,
-        NetworkServer,
-        NetworkPacket (..),
-        NetworkNode (..),
-                
-        -- * Library initialization
-        initNetwork,
-        freeNetwork,
-       
-        -- * Connection Handling
-        networkClient,
-        networkServer,
-        connectClientToServer,
-        disconnectClient
+  HGamer3D.Network.Node.NetworkNode (..),
+  NetworkMessage (..),
+  NetworkCommand (..),
+  forkNetworkWorld
 )
 
 where
 
-import HGamer3D.Network.NetworkBase
+import HGamer3D.Network.Node
+import HGamer3D.Network.SystemNetwork

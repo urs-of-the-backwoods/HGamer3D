@@ -1,0 +1,39 @@
+# SConstruct file, to build the runtime files
+# ###########################################
+
+# set environment
+#################
+from os.path import expanduser
+import os
+home = expanduser("~")
+env = Environment() 
+env["ENV"]["PATH"] = os.environ.get("PATH")
+env["ENV"]["HOME"] = os.environ.get("HOME")
+
+# the output directory
+env.Command("build", "", Mkdir("build"))
+
+
+# for users in the web, who don't own the assetpack, or after fresh install from GITHUB
+# get original assepack by download
+
+if (not os.path.exists("Assetpack")):
+      env.Command("Assetpack", "", [
+         "wget -O assetpack.tar.gz http://www.hgamer3D.org/downloads/assetpack.tar.gz || (rm -f assetpack.tar.gz && exit 1)",
+         "tar -xzf assetpack.tar.gz"
+	 ])
+
+# the media files need to be copied to HGamer3D
+buildRT = env.Command("build/HGamer3D", ["Assetpack", "RTConfig"], [
+			       Mkdir("build/HGamer3D"),
+			       "cp -r RTConfig/* build/HGamer3D",
+			       "cp -r Assetpack/* build/HGamer3D/media"
+			       ])
+
+# install runtime in targetpath
+
+def copyRT(target, source, env):
+     os.mkdir("build/HGamer3D/lib")
+     os.system("cp ~/.HGamer3D/lib/* build/HGamer3D/lib")
+    
+env.AddPostAction(buildRT, copyRT)

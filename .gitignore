@@ -78,7 +78,10 @@ Bindings/*/Deps/*
 # Example build dir
 ###################
 Examples/build
-Examples/Assetpack
+Tests/build
+Runtime/build
+Runtime/Assetpack
+
 
 # Docs, keep only the script-file for generation
 ################################################

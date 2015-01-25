@@ -41,9 +41,17 @@ module HGamer3D.BaseAPI.Network
         networkClient,
         networkServer,
         connectClientToServer,
-        disconnectClient
+        disconnectClient,
+
+        -- * Broadcast for peer discovery
+        broadcastInfo,   
+        receiveInfoServer,
+        getOwnIpAddresses,
+        encodePortIPs,
+        decodePortIPs
 )
 
 where
 
 import HGamer3D.Network.NetworkBase
+import HGamer3D.Network.PeerLookup

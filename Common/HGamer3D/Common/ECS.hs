@@ -40,10 +40,10 @@ import HGamer3D.Data
 -- | Possible Components, which are known, this list needs to be extended, if
 --   additional components are introduced. Each component can occur only once in
 --   an Entity.
+
 data Component =       CTPos    -- ^ Position
                      | CTOri    -- ^ Orientation
                      | CTSiz    -- ^ Size
-                     | CTSca    -- ^ Scale
                      | CTFig    -- ^ Figure
                      | CTASr    -- ^ Audio Source
                      | CTALs    -- ^ Audio Listener
@@ -52,6 +52,10 @@ data Component =       CTPos    -- ^ Position
                      | CTScP    -- ^ Scene Parameter
                      | CTGFo    -- ^ GUI Form
                      | CTWin    -- ^ Window
+                     | CTJoI    -- ^ JoystickInfo
+                     | CTJoV    -- ^ JoystickValue
+                     | CTMou    -- ^ Mouse
+                     | CTNNo    -- ^ Network Node
                      | CTCmd    -- ^ internal, used for sending commands, created automatically
                      | CTEvt    -- ^ internal, used for receiving events, created automatically 
                        deriving (Eq, Ord, Show)
@@ -175,7 +179,12 @@ componentListener :: ERef -> Component -> IO ComponentListener
 componentListener er@(ERef te tl) c  = do
            tv <- newTVarIO Nothing
            let w e e' = do
-                        seq e (atomically $ writeTVar tv (Just (e, e')))
+                        seq e (atomically $ do
+                                          v <- readTVar tv
+                                          case v of
+                                               Nothing -> writeTVar tv (Just (e, e'))
+                                               Just (old, new) -> writeTVar tv (Just (old, e'))  -- need to keep old, if not queried in the meantime !
+                                               )
                         return ()
            addListener tl c w
            return tv

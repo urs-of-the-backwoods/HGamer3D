@@ -1,5 +1,5 @@
-# SConstruct files, to build the examples
-# #######################################
+# SConstruct files, to build the tests
+# ####################################
 
 # set environment
 #################
@@ -18,15 +18,15 @@ def buildCmd(p, s):
 
 for (p, s) in [
 
-    ("source", "RotatePlaton"),
-    ("source", "Coordinates"),
-    ("source", "MaterialManager"),
-    ("source", "Materials"),
-    ("source", "GUI-Switch"),
-    ("source", "Audio"),
-    ("source", "Live1"),
-    ("source", "Paddle"),
-    ("source", "Chat") 
+#    ("base-tests", "Audio"),
+    ("base-tests", "BlueCube"),
+    ("base-tests", "BumpMappingCube"),
+    ("base-tests", "GUI-Widgets"),
+    ("base-tests", "Joystick"),
+    ("base-tests", "Keyboard"),
+    ("base-tests", "Mouse"),
+    ("base-tests", "Network-Chat"),
+    ("base-tests", "WinEvent"),
 
 ]:
    if env["PLATFORM"] == "win32":
@@ -43,4 +43,7 @@ for (p, s) in [
 	  				Glob("../Graphics3D/dist/HGamer3D-*.tar.gz"),
 	  				Glob("../Main/dist/HGamer3D-*.tar.gz")
                                		  ] , buildCmd(p,s) )
+
+
+
 

@@ -29,8 +29,8 @@ module HGamer3D.BaseAPI.InputSystem
 	module HGamer3D.Bindings.SFML.EnumKey,
 	module HGamer3D.Bindings.SFML.EnumMouseButton,
 	
-	Joystick,
-	JoystickButton,
+	Joystick (..),
+	JoystickButton (..),
 	
 	-- * Joystick Functions
 	updateJoystickStatus,
