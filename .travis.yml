@@ -1,0 +1,9 @@
+before_install:
+  - sudo apt-get update -qq
+
+language: c
+
+script:
+  - mkdir Build
+
+
