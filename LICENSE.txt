@@ -1,7 +1,7 @@
 LICENSE
 -------
 
-(c) 2011-2014 Peter Althainz
+(c) 2011-2015 Peter Althainz
 
 
 HGamer3D (http://www.hgamer3d.org)
@@ -17,10 +17,5 @@ Unless required by applicable law or agreed to in writing, software distributed 
 Source Code
 -----------
 You can obtain the latest version of the source code under http://www.github.com/urs-of-the-backwoods/HGamer3D
-
-
-Libraries Used
---------------
-HGamer3D uses a number of open source software libraries. You are responsible to comply to the licenses of those packages and the licenses of software used by those packages if you use HGamer3D. Details can be found in the LICENSES folder and subfolders.
 
 

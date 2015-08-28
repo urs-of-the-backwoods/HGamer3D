@@ -1,5 +1,0 @@
-<?xml version="1.0" ?>
-<Imageset Name="HGamer3DLogo" Imagefile="hg3dlogosmall.png" NativeHorzRes="242" NativeVertRes="242" AutoScaled="false">
-	<Image Name="HG3DLogo" XPos="0" YPos="0" Width="242" Height="242" />
-</Imageset>
-

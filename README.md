@@ -3,15 +3,14 @@ HGamer3D
 
  A tool to use Haskell for game programming. See http://www.hgamer3D.org .
 
- News, May 2015
+ News, August 2015
 
  After a lot of frustration with the old setup (too complex, too error phrone, difficult to compile on linux, headaches with import of graphics, headaches with different shading approaches on different architectures, too many dependencies, complex build chain ...) I finally decided, to build a new version on a different approach.
 
- So version 0.6 will be different, based on a different C++ library (Urho3D), new build system (CMake), only one base API based on ECS approach. I hope to be able to have a first version ready for the master branch in the next weeks.
+ The result is now on master, version 0.6. This version is different! It is based on a different C++ library (Urho3D) and I introduced a new build system (CMake). Also the binding strategy is different and this also reduced a lot of the complexity of the former versions. The backdraw is - not all functionality is ready now, so for this version only basic 3D graphics and some mouse input work, but having accomplished this step, adding functions is much easier now, so hopefully as time progresses new functions will emerge.
 
- Until then, it is not very useful, to work on older versions, unfortunately, they will not further developed.
+ A remark to version numbers, all versions now, starting with a major "0" may have API breakage, when the minor version number change. This will change, starting with version 1.x.x.
 
  regards
  uotbw
-
 
