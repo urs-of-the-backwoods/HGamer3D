@@ -3,18 +3,13 @@ services:
   - docker
 
 before_install:
-  - chmod +x Scripts/*.sh
+  - chmod +x Scripts/building/*.sh
   - docker pull uotbw/urho3d-build:debian-latest
-#  - docker pull uotbw/urho3d-build:ubuntu-latest
-#  - docker pull uotbw/urho3d-build:fedora-latest
-
 
 language: c
 
 script:
-  - docker run -v /home/travis/build/urs-of-the-backwoods/HGamer3D/Scripts:/opt/scripts uotbw/urho3d-build:debian-latest bash -c "/opt/scripts/installHaskell.sh && /opt/scripts/getHGamer3D.sh && /opt/scripts/buildHGamer3D.sh"
-#  - docker run -v /home/travis/build/urs-of-the-backwoods/HGamer3D/Scripts:/opt/scripts uotbw/urho3d-build:ubuntu-latest bash -c "/opt/scripts/installHaskell.sh && /opt/scripts/getHGamer3D.sh && /opt/scripts/buildHGamer3D.sh"
-#  - docker run -v /home/travis/build/urs-of-the-backwoods/HGamer3D/Scripts:/opt/scripts uotbw/urho3d-build:fedora-latest bash -c "/opt/scripts/installHaskell.sh && /opt/scripts/getHGamer3D.sh && /opt/scripts/buildHGamer3D.sh"
+  - docker run -v /home/travis/build/urs-of-the-backwoods/HGamer3D:/opt/hg3d uotbw/urho3d-build:debian-latest bash -c "/opt/hg3d/Scripts/building/installHaskell.sh && /opt/hg3d/Scripts/building/buildHGamer3D.sh"
 
 
 

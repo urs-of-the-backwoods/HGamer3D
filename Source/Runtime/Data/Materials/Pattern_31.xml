@@ -1,0 +1,9 @@
+<material>
+    <technique name="Techniques/DiffNormalSpec.xml" quality="0"/>
+    <texture name="Textures/pattern_31_diffus.tga" unit="diffuse"/>
+    <texture name="Textures/pattern_31_normal.tga" unit="normal"/>
+    <texture name="Textures/pattern_31_specular.tga" unit="specular"/>
+    <parameter name="MatDiffColor" value="0.5 0.5 0.5 10"/>
+    <parameter name="MatSpecColor" value="0.5 0.5 0.5 10"/>
+</material>
+

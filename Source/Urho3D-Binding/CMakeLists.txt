@@ -1,23 +1,13 @@
-# This source file is part of HGamer3D
-# (A project to enable 3D game development in Haskell)
-# For the latest info, see http://www.hgamer3d.org
+#	CMakeLists.txt file for Urho3D Binding
+#	HGamer3D Library (A project to enable 3D game development in Haskell)
+#	Copyright 2015 Peter Althainz
+#	
+#	Distributed under the Apache License, Version 2.0
+#	(See attached file LICENSE or copy at 
+#	http://www.apache.org/licenses/LICENSE-2.0)
 #
-# (c) 2015 Peter Althainz
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+#	file: Urho3D-Binding/CMakeLists.txt
 
-# CMakeLists.txt for Urho3D-Binding
-# ---------------------------------
 
 # Set minimum version
 cmake_minimum_required (VERSION 2.8.6)
@@ -36,6 +26,8 @@ set (Urho3DBinding_VERSION_PATCH ${HGamer3D_VERSION_PATCH} )
 set (Urho3DBinding_VERSION_MAJOR ${Urho3DBinding_VERSION_MAJOR} PARENT_SCOPE)
 set (Urho3DBinding_VERSION_MINOR ${Urho3DBinding_VERSION_MINOR} PARENT_SCOPE)
 set (Urho3DBinding_VERSION_PATCH ${Urho3DBinding_VERSION_PATCH} PARENT_SCOPE)
+
+set (DLLNAME hgamer3d${HGamer3D_VERSION_MAJOR}${HGamer3D_VERSION_MINOR}${HGamer3D_VERSION_PATCH})
 
 # strategy of this cmake file
 # ---------------------------
@@ -67,7 +59,7 @@ include(GenerateExportHeader)
 
 add_library(urho3dbinding_clib SHARED ${CPP_SRCS})
 generate_export_header(urho3dbinding_clib)
-set_target_properties(urho3dbinding_clib PROPERTIES OUTPUT_NAME hgamer3d${HGamer3D_VERSION_MAJOR})
+set_target_properties(urho3dbinding_clib PROPERTIES OUTPUT_NAME ${DLLNAME})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 # Urho3D
@@ -99,7 +91,7 @@ target_link_libraries(urho3dbinding_clib ${ABSOLUTE_PATH_LIBS} ${LIBS})
 
 add_custom_target(output_dll DEPENDS urho3dbinding_clib)
 add_custom_command(TARGET output_dll
-                COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:urho3dbinding_clib> ${CMAKE_BINARY_DIR}/Output/$<TARGET_FILE_NAME:urho3dbinding_clib>
+                COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:urho3dbinding_clib> ${HG3D_RUNTIME_DIR}/$<TARGET_FILE_NAME:urho3dbinding_clib>
                 DEPENDS urho3dbinding_clib
 )
 

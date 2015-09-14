@@ -31,51 +31,229 @@ extern "C" {
 #include "interface.h"
 }
 
-InputEventHub::InputEventHub(Graphics3DSystem* g3ds)
+
+//
+// Mouse
+//
+
+Mouse::Mouse(Graphics3DSystem* g3ds)
 : Object(g3ds->context)
 {
+    input = new Input(g3ds->context);
 	mouseEventF = NULL;
+	visibleEventF = NULL;
 }
 
-InputEventHub::~InputEventHub()
+Mouse::~Mouse()
 {
+  UnsubscribeFromEvent(E_MOUSEBUTTONUP);
+  UnsubscribeFromEvent(E_MOUSEBUTTONDOWN);
+  UnsubscribeFromEvent(E_MOUSEMOVE);
+  UnsubscribeFromEvent(E_MOUSEWHEEL);
+  UnsubscribeFromEvent(E_MOUSEVISIBLECHANGED);
+  
+  mouseEventF = NULL;
+  visibleEventF = NULL;
+  delete input;
 }
 
-int InputEventHub::create(char* pdata, int len)
+int Mouse::create(char* pdata, int len)
 {
-  SubscribeToEvent(E_MOUSEMOVE, HANDLER(InputEventHub, HandleMouseMove));
-  SubscribeToEvent(E_MOUSEBUTTONUP, HANDLER(InputEventHub, HandleMouseButtonUp));
+  SubscribeToEvent(E_MOUSEBUTTONUP, HANDLER(Mouse, HandleMouseButtonUp));
+  SubscribeToEvent(E_MOUSEBUTTONDOWN, HANDLER(Mouse, HandleMouseButtonDown));
+  SubscribeToEvent(E_MOUSEMOVE, HANDLER(Mouse, HandleMouseMove));
+  SubscribeToEvent(E_MOUSEWHEEL, HANDLER(Mouse, HandleMouseWheel));
+  SubscribeToEvent(E_MOUSEVISIBLECHANGED, HANDLER(Mouse, HandleMouseVisibleChanged));
+  
+  msgMouse(pdata, len);
   return 0; 
 }
 
-void InputEventHub::HandleMouseMove(StringHash eventType, VariantMap& eventData)
+int Mouse::msgMouse(char* pdata, int len)
 {
-        using namespace MouseMove;
-        int x = eventData[P_DX].GetInt();
-        int y = eventData[P_DY].GetInt();
+  msgpack::unpacked msg;
+  msgpack::unpack(&msg, pdata, len);
+  msgpack::object obj = msg.get();
+  std::cout << "mouse: " << obj << std::endl;
+  if (obj.type != msgpack::type::ARRAY || obj.via.array.size != 2) return ERROR_TYPE_NOT_KNOWN;
+  
+  // set mouse mode
+  if (obj.via.array.ptr[1].as<int>() == 1)
+  {
+      input->SetMouseMode(MM_ABSOLUTE);
+  }
+  else if (obj.via.array.ptr[1].as<int>() == 2)
+  {
+      input->SetMouseMode(MM_RELATIVE);
+  }
+  else if (obj.via.array.ptr[1].as<int>() == 3)
+  {
+      input->SetMouseMode(MM_WRAP);
+  }
+}
+  
+int Mouse::msgVisible(char* pdata, int len)
+{
+  msgpack::unpacked msg;
+  msgpack::unpack(&msg, pdata, len);
+  msgpack::object obj = msg.get();
+  std::cout << "mouse-visible: " << obj << std::endl;
+  
+  if (obj.type != msgpack::type::BOOLEAN) return ERROR_TYPE_NOT_KNOWN;
+  // set visibility
+  input->SetMouseVisible(obj.as<bool>());       // true -> suppress event
+  return 0;
+}
 
+void Mouse::HandleMouseButtonUp(StringHash eventType, VariantMap& eventData)
+{
 	if (mouseEventF != NULL) {
-		
 		msgpack::sbuffer buffer;
 		msgpack::packer<msgpack::sbuffer> pk(&buffer);
-                
-		pk.pack_array(3);
+		pk.pack_array(4);
 		pk.pack(1);
-		pk.pack(x);
-		pk.pack(y);
-
+		pk.pack_fix_int32(eventData[MouseButtonUp::P_BUTTON].GetInt());
+		pk.pack_fix_int32(eventData[MouseButtonUp::P_BUTTONS].GetInt());
+		pk.pack_fix_int32(eventData[MouseButtonUp::P_QUALIFIERS].GetInt());
 		mouseEventF((void*)this, buffer.data(), buffer.size());
 	}
 }
 
-void InputEventHub::HandleMouseButtonUp(StringHash eventType, VariantMap& eventData)
+void Mouse::HandleMouseButtonDown(StringHash eventType, VariantMap& eventData)
 {
-    std::cout << "Mouse Button Up Event" << std::endl;
+	if (mouseEventF != NULL) {
+		msgpack::sbuffer buffer;
+		msgpack::packer<msgpack::sbuffer> pk(&buffer);
+		pk.pack_array(4);
+		pk.pack(2);
+		pk.pack_fix_int32(eventData[MouseButtonDown::P_BUTTON].GetInt());
+		pk.pack_fix_int32(eventData[MouseButtonDown::P_BUTTONS].GetInt());
+		pk.pack_fix_int32(eventData[MouseButtonDown::P_QUALIFIERS].GetInt());
+		mouseEventF((void*)this, buffer.data(), buffer.size());
+	}
 }
 
-void InputEventHub::registerMouseEvent(msgFP f)
+void Mouse::HandleMouseMove(StringHash eventType, VariantMap& eventData)
+{
+	if (mouseEventF != NULL) {
+		msgpack::sbuffer buffer;
+		msgpack::packer<msgpack::sbuffer> pk(&buffer);
+	    int x = eventData[MouseMove::P_DX].GetInt();
+		int y = eventData[MouseMove::P_DY].GetInt();
+		pk.pack_array(7);
+		pk.pack(3);
+        if (input->IsMouseVisible()) {
+            pk.pack_fix_int32(eventData[MouseMove::P_X].GetInt());
+            pk.pack_fix_int32(eventData[MouseMove::P_Y].GetInt());
+        } else {
+            pk.pack_fix_int32(0);
+            pk.pack_fix_int32(0);
+        }
+		pk.pack_fix_int32(eventData[MouseMove::P_DX].GetInt());
+		pk.pack_fix_int32(eventData[MouseMove::P_DY].GetInt());
+		pk.pack_fix_int32(eventData[MouseMove::P_BUTTONS].GetInt());
+		pk.pack_fix_int32(eventData[MouseMove::P_QUALIFIERS].GetInt());
+		mouseEventF((void*)this, buffer.data(), buffer.size());
+	}
+}
+
+void Mouse::HandleMouseWheel(StringHash eventType, VariantMap& eventData)
+{
+	if (mouseEventF != NULL) {
+		msgpack::sbuffer buffer;
+		msgpack::packer<msgpack::sbuffer> pk(&buffer);
+		pk.pack_array(4);
+		pk.pack(4);
+		pk.pack_fix_int32(eventData[MouseWheel::P_WHEEL].GetInt());
+		pk.pack_fix_int32(eventData[MouseWheel::P_BUTTONS].GetInt());
+		pk.pack_fix_int32(eventData[MouseWheel::P_QUALIFIERS].GetInt());
+		mouseEventF((void*)this, buffer.data(), buffer.size());
+	}
+}
+
+void Mouse::HandleMouseVisibleChanged(StringHash eventType, VariantMap& eventData)
+{
+	if (visibleEventF != NULL) {
+		msgpack::sbuffer buffer;
+		msgpack::packer<msgpack::sbuffer> pk(&buffer);
+		pk.pack(eventData[MouseVisibleChanged::P_VISIBLE].GetBool());
+		visibleEventF((void*)this, buffer.data(), buffer.size());
+	}
+}
+
+void Mouse::registerMouseEvent(msgFP f)
 {
   mouseEventF = f;
 }
 
+void Mouse::registerVisibleEvent(msgFP f)
+{
+  visibleEventF = f;
+}
+
+
+
+
+//
+// KeyEventHandler
+//
+
+KeyEventHandler::KeyEventHandler(Graphics3DSystem* g3ds)
+: Object(g3ds->context)
+{
+	eventF = NULL;
+    input = new Input(g3ds->context);
+}
+
+KeyEventHandler::~KeyEventHandler()
+{
+  UnsubscribeFromEvent(E_KEYUP);
+  UnsubscribeFromEvent(E_KEYDOWN);
+  eventF = NULL;
+  delete input;
+}
+
+int KeyEventHandler::create(char* pdata, int len)
+{
+  SubscribeToEvent(E_KEYUP, HANDLER(KeyEventHandler, HandleKeyUp));
+  SubscribeToEvent(E_KEYDOWN, HANDLER(KeyEventHandler, HandleKeyDown));
+  return 0; 
+}
+
+void KeyEventHandler::HandleKeyUp(StringHash eventType, VariantMap& eventData)
+{
+	if (eventF != NULL) {
+        msgpack::sbuffer buffer;
+        msgpack::packer<msgpack::sbuffer> pk(&buffer);
+        pk.pack_array(4);
+        pk.pack(1);
+        int sc = eventData[KeyUp::P_SCANCODE].GetInt();
+        pk.pack_fix_int32(eventData[KeyUp::P_KEY].GetInt());
+        pk.pack_fix_int32(sc);
+        pk.pack(input->GetScancodeName(sc).CString());
+        eventF((void*)this, buffer.data(), buffer.size());
+	}
+}
+
+void KeyEventHandler::HandleKeyDown(StringHash eventType, VariantMap& eventData)
+{
+	if (eventF != NULL) {
+        if (!eventData[KeyDown::P_REPEAT].GetBool()) {
+            msgpack::sbuffer buffer;
+            msgpack::packer<msgpack::sbuffer> pk(&buffer);
+            pk.pack_array(4);
+            pk.pack(2);
+            int sc = eventData[KeyUp::P_SCANCODE].GetInt();
+            pk.pack_fix_int32(eventData[KeyUp::P_KEY].GetInt());
+            pk.pack_fix_int32(sc);
+            pk.pack(input->GetScancodeName(sc).CString());
+            eventF((void*)this, buffer.data(), buffer.size());
+        }
+	}
+}
+
+void KeyEventHandler::registerEvent(msgFP f)
+{
+  eventF = f;
+}
 

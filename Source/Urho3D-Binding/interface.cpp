@@ -42,8 +42,11 @@ uint64_t id_ori =    0x815eb4d9c7bfaa74;
 uint64_t id_mat = 0xb4bae8b0d0d8c162;
 uint64_t id_col = 0xe202add0521cde41;
 
-uint64_t id_input =  0xa532f43b1c1c6bc7;
+uint64_t id_mouse =  0xa532f43b1c1c6bc7;
 uint64_t id_mouseevent = 0x27eaf3fd46595d08;
+uint64_t id_keyevent = 0x5ba1617fb50e97e5;
+
+uint64_t id_visible = 0x98e7a78e949e1c6e;
 
 using namespace std;
 
@@ -52,6 +55,17 @@ using namespace std;
 // Input
 // -----------------------
 //
+
+// messages for mouse
+extern "C" int msg_mouse_mouse(void* p, char* data, int len)
+{
+  return ((Mouse *)p)->msgMouse(data, len);
+}
+
+extern "C" int msg_mouse_visible(void* p, char* data, int len)
+{
+  return ((Mouse *)p)->msgVisible(data, len);
+}
 
 
 //
@@ -147,15 +161,28 @@ int hg3durho3d0_create_item(uint64_t idItemType, char* c_initData, int len_id, v
   // input
   //
 
-  if (idItemType == id_input) {
+  if (idItemType == id_mouse) {
     if (!g3ds) return ERROR_SYSTEM_NOT_INITIALIZED;
-    InputEventHub *ieh = new InputEventHub(g3ds);
-    int rv = ieh->create(c_initData, len_id);
+    Mouse *m = new Mouse(g3ds);
+    int rv = m->create(c_initData, len_id);
     if ( rv == 0) {
-      *p = (void *)ieh;
+      *p = (void *)m;
       return OK;
     } else {
-      delete ieh;
+      delete m;
+      return rv; 
+    }
+  }   
+ 
+  if (idItemType == id_keyevent) {
+    if (!g3ds) return ERROR_SYSTEM_NOT_INITIALIZED;
+    KeyEventHandler *kh = new KeyEventHandler(g3ds);
+    int rv = kh->create(c_initData, len_id);
+    if ( rv == 0) {
+      *p = (void *)kh;
+      return OK;
+    } else {
+      delete kh;
       return rv; 
     }
   }   
@@ -222,8 +249,8 @@ int hg3durho3d0_destroy_item(uint64_t idItemType, void* p)
 {
   // input
 
-  if (idItemType == id_input) {
-    delete ((InputEventHub *) p);
+  if (idItemType == id_mouse) {
+    delete ((Mouse *) p);
     return OK;
   }   
 
@@ -255,6 +282,21 @@ int hg3durho3d0_get_msg_sender(uint64_t idItemType, uint64_t idPropType, msgFP *
 {
 
   // here we can see, which item understands which properties, in addition to its native message type
+  
+  // mouse
+  if (idItemType == id_mouse && idPropType == id_mouse) {
+    *f = msg_mouse_mouse;
+    return OK;
+  }   
+
+  if (idItemType == id_mouse && idPropType == id_visible) {
+    *f = msg_mouse_visible;
+    return OK;
+  }   
+
+  
+  
+  // graphics3d
   
   // g3dsystem understands only cmd
   if (idItemType == id_g3dsystem && idPropType == id_cmdg3d) {
@@ -327,8 +369,18 @@ int hg3durho3d0_get_msg_sender(uint64_t idItemType, uint64_t idPropType, msgFP *
 
 int hg3durho3d0_register_msg_receiver(uint64_t  idItemType, uint64_t idEvtType, void* p, msgFP f)
 {
-  if (idItemType == id_input && idEvtType == id_mouseevent) {
-    ((InputEventHub*)p)->registerMouseEvent(f);
+  if (idItemType == id_mouse && idEvtType == id_mouseevent) {
+    ((Mouse*)p)->registerMouseEvent(f);
+    return OK;
+  }
+  
+  if (idItemType == id_mouse && idEvtType == id_mouseevent) {
+    ((Mouse*)p)->registerVisibleEvent(f);
+    return OK;
+  }
+
+  if (idItemType == id_keyevent && idEvtType == id_keyevent) {
+    ((KeyEventHandler*)p)->registerEvent(f);
     return OK;
   }
 }

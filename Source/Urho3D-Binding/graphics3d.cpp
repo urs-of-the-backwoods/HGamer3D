@@ -25,6 +25,18 @@
 
 using namespace std;
 
+// Initialization of objects, remarks:
+// -----------------------------------
+// Objects will get two messages, on on creation with the original data, it was created with.
+// This data will be handled in the create method.
+// Then, if the object supports changes, it will also listen to the msg_obid_obid and allow
+// changes during live-time, this will be handled during additional methods, as laid out in 
+// the file interface.hpp, interface.cpp
+
+// to be done, change all implementations to support a create and a msg_obid_obid 
+
+
+
 // base graphics initialisation
 
 Graphics3DSystem::Graphics3DSystem()
@@ -358,31 +370,31 @@ int LightItem::msgLight(char* pdata, int len)
   msgpack::object obj = msg.get();
   std::cout << "light:" << obj << std::endl;
 
-  if (obj.type != msgpack::type::ARRAY || obj.via.array.size < 2) return ERROR_TYPE_NOT_KNOWN;
+  if (obj.type != msgpack::type::ARRAY || obj.via.array.size < 4) return ERROR_TYPE_NOT_KNOWN;
 
   // Light type parameters
-  if (obj.via.array.ptr[0].as<int>() == 0)
+  msgpack::object obj_t = obj.via.array.ptr[0];
+  if (obj_t.via.array.ptr[0].as<int>() == 0)
   {
     light->SetLightType(LIGHT_POINT);
 
-  } else if (obj.via.array.ptr[0].as<int>() == 1)
+  } else if (obj_t.via.array.ptr[0].as<int>() == 1)
   {
     light->SetLightType(LIGHT_DIRECTIONAL);
 
-  } else if (obj.via.array.ptr[0].as<int>() == 2)
+  } else if (obj_t.via.array.ptr[0].as<int>() == 2)
   {
     light->SetLightType(LIGHT_SPOT);
-    light->SetFov(obj.via.array.ptr[2].as<float>() * 57.2957795);
-    light->SetAspectRatio(obj.via.array.ptr[3].as<float>());
+    light->SetFov(obj_t.via.array.ptr[1].as<float>() * 57.2957795);
+    light->SetAspectRatio(obj_t.via.array.ptr[2].as<float>());
   } 
 
   // light parameters
-  msgpack::object obj_par = obj.via.array.ptr[1];
   // brightness, range, spec intesity, per vertex
-  light->SetBrightness(obj_par.via.array.ptr[0].as<float>());
-  light->SetRange(obj_par.via.array.ptr[1].as<float>());
-  light->SetSpecularIntensity(obj_par.via.array.ptr[2].as<float>());
-  light->SetPerVertex(obj_par.via.array.ptr[3].as<bool>());
+  light->SetBrightness(obj.via.array.ptr[1].as<float>());
+  light->SetRange(obj.via.array.ptr[2].as<float>());
+  light->SetSpecularIntensity(obj.via.array.ptr[3].as<float>());
+  light->SetPerVertex(false);
 
   return 0;
 };
@@ -392,7 +404,7 @@ int LightItem::msgColour(char* pdata, int len)
   msgpack::unpacked msg;
   msgpack::unpack(&msg, pdata, len);
   msgpack::object obj = msg.get();
-  std::cout << "light:" << obj << std::endl;
+  std::cout << "light-colour:" << obj << std::endl;
 
   if (obj.type != msgpack::type::ARRAY || obj.via.array.size != 4) return ERROR_TYPE_NOT_KNOWN;
 
@@ -446,6 +458,12 @@ int GeometryItem::msgGeometry(char* pdata, int len)
       model->SetModel(cache->GetResource<Model>("Models/Box.mdl"));
     } else if (shape_o.as<int>() == 3) { // plane
       model->SetModel(cache->GetResource<Model>("Models/Plane.mdl"));
+    } else if (shape_o.as<int>() == 4) { // cylinder
+      model->SetModel(cache->GetResource<Model>("Models/Cylinder.mdl"));
+    } else if (shape_o.as<int>() == 5) { // pyramid
+      model->SetModel(cache->GetResource<Model>("Models/Pyramid.mdl"));
+    } else if (shape_o.as<int>() == 6) { // torus
+      model->SetModel(cache->GetResource<Model>("Models/Torus.mdl"));
     }  
     model->SetMaterial(cache->GetResource<Material>(material));
   } else if (obj.via.array.ptr[0].as<int>() == 2) { // mesh geometry

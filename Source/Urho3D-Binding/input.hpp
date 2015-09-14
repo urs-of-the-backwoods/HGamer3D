@@ -65,23 +65,52 @@ extern "C" {
 #include "interface.h"
 }
 
-class InputEventHub : public Object {
+class Mouse : public Object {
 
-  OBJECT(InputEventHub);
+  OBJECT(Mouse);
 
 private:
   msgFP mouseEventF;
+  msgFP visibleEventF;
+  Input *input;
 
 public:
-  InputEventHub(Graphics3DSystem* g3ds);
-  ~InputEventHub();
+  Mouse(Graphics3DSystem* g3ds);
+  ~Mouse();
+ 
+  int create(char* pdata, int len);
+  int msgMouse(char* pdata, int len);
+  int msgVisible(char* pdata, int len);
+
+  void registerMouseEvent(msgFP f);
+  void registerVisibleEvent(msgFP f);
+
+  void HandleMouseMove(StringHash eventType, VariantMap& eventData);
+  void HandleMouseButtonDown(StringHash eventType, VariantMap& eventData);
+  void HandleMouseButtonUp(StringHash eventType, VariantMap& eventData);
+  void HandleMouseWheel(StringHash eventType, VariantMap& eventData);
+  void HandleMouseVisibleChanged(StringHash eventType, VariantMap& eventData);
+};
+
+class KeyEventHandler : public Object {
+
+  OBJECT(KeyEventHandler);
+  Input *input;
+
+private:
+  msgFP eventF;
+
+public:
+  KeyEventHandler(Graphics3DSystem* g3ds);
+  ~KeyEventHandler();
  
   int create(char* pdata, int len);
 
-  void registerMouseEvent(msgFP f);
+  void registerEvent(msgFP f);
 
-  void HandleMouseMove(StringHash eventType, VariantMap& eventData);
-  void HandleMouseButtonUp(StringHash eventType, VariantMap& eventData);
+  void HandleKeyUp(StringHash eventType, VariantMap& eventData);
+  void HandleKeyDown(StringHash eventType, VariantMap& eventData);
 };
+
 
 #endif

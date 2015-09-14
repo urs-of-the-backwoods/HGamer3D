@@ -1,0 +1,7 @@
+<material>
+    <technique name="Techniques/DiffNormal.xml" quality="0"/>
+    <texture name="Textures/pattern_42_diffus.tga" unit="diffuse"/>
+    <texture name="Textures/pattern_42_normal.tga" unit="normal"/>
+    <parameter name="MatDiffColor" value="0.5 0.5 0.5 10"/>
+</material>
+
