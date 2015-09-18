@@ -102,6 +102,7 @@ set (SAMPLE_SRCS
 	Samples/RotatingCube.hs
 	Samples/Materials.hs		
 	Samples/engineShutdown.hs
+    Samples/Cuboid2.hs
 )
 foreach(file ${SAMPLE_SRCS})
 	add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${file}

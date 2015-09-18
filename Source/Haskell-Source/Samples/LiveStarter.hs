@@ -20,8 +20,10 @@ run notepad++
 Usable command lines:
 
 :s OverloadedStrings
-:l Test
+:l LiveStarter
 (w, c, g, l) <- main
+
+experiment with those:
 
 setC l ctLight (Light (SpotLight (Deg 50) 1.0) 1.0 1000.0 1.5)
 setC l ctColour white
@@ -43,6 +45,7 @@ import qualified Data.Text as T
 import Control.Concurrent
 import Control.Monad
 
+-- routine to initialize the system
 startWorld = do
     eG3D <- newE [
         ctGraphics3DConfig #: standardGraphics3DConfig,
@@ -53,11 +56,13 @@ startWorld = do
     addToWorld world eG3D
     return world
 
+-- small tool, to create entities
 creator w l = do
                 e <- newE l
                 addToWorld w e
                 return e
-    
+
+-- entity creation tools
 camera w pos = creator w [
                 ctCamera #: FullViewCamera,
                 ctPosition #: pos
@@ -76,18 +81,19 @@ light w pos = creator w [
                 ctPosition #: pos,
                 ctColour #: white
                 ]
-                
+
+-- creation of some event receivers
 mouse w = creator w [
             ctMouse #: Mouse MMAbsolute,
             ctMouseEvent #: undefined,
             ctVisible #: False
             ]
-            
+
 keyboard w = creator w [
             ctKeyEvent #: KeyUp 0 0 ""
             ]
 
-            
+-- event usage, testing the mouse modes            
 testMouseModes m k = do
     let handleKeys n = do
                             case n of
@@ -98,12 +104,14 @@ testMouseModes m k = do
                                 _ -> return ()
                             return ()
         in addListener  k ctKeyEvent (\_ enew -> handleKeys (enew # ctKeyEvent))
-            
+
+-- the main program, putting all together        
 main = do
     w <- startWorld
     c <- camera w (Vec3 0.0 0.0 0.0)
     g <- cube w (Vec3 0.0 0.0 (10.0))
     l <- light w (Vec3 0.0 0.0 0.0)
     return (w, c, g, l)
+    -- here the program stops, use it in GHCI
 
     
