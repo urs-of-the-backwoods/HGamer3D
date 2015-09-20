@@ -5,9 +5,9 @@ HGamer3D
 
  News, September 2015
  
- Version 0.6.1<p>
- Travis build results for Linux: <img src="https://travis-ci.org/urs-of-the-backwoods/HGamer3D.svg?branch=master"><p>
- Have a look at the sample Cuboids2.
+ - Version 0.6.1
+ - Travis build results for Linux: <img src="https://travis-ci.org/urs-of-the-backwoods/HGamer3D.svg?branch=master">
+ -  Have a look at the sample Cuboids2
  
   
  News, August 2015
