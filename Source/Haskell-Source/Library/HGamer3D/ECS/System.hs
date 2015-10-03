@@ -58,10 +58,10 @@ import HGamer3D.ECS.Entity
 
 -- ComponentListener, used internally in sytems
 
-type ComponentListener = IORef (Maybe (Entity, Entity))
+type ComponentListener = IORef (Maybe (EntityData, EntityData))
 
-componentListener :: ERef -> ComponentType a -> IO ComponentListener
-componentListener er@(ERef te tl) c  = do
+componentListener :: Entity -> ComponentType a -> IO ComponentListener
+componentListener er@(Entity te tl) c  = do
            tv <- newIORef Nothing
            let w e e' = atomicModifyIORef tv (\old -> let
                                                         new = case old of
@@ -71,7 +71,7 @@ componentListener er@(ERef te tl) c  = do
            addListener er c w
            return tv
 
-queryComponentListener :: ComponentListener -> IO (Maybe (Entity, Entity))
+queryComponentListener :: ComponentListener -> IO (Maybe (EntityData, EntityData))
 queryComponentListener tv = atomicModifyIORef tv (\val -> (Nothing, val))
 
 
@@ -82,16 +82,16 @@ queryComponentListener tv = atomicModifyIORef tv (\val -> (Nothing, val))
 
 -}
 
-type OnUpdateFunction = Entity -> Entity -> IO ()
+type OnUpdateFunction = EntityData -> EntityData -> IO ()
 type OnDeleteFunction = IO ()
-type SystemRecord = (ERef, Either (ComponentListener, OnUpdateFunction) OnDeleteFunction)
-type SystemFunction = SystemData -> ERef -> IO [SystemRecord]
+type SystemRecord = (Entity, Either (ComponentListener, OnUpdateFunction) OnDeleteFunction)
+type SystemFunction = SystemData -> Entity -> IO [SystemRecord]
 
 -- | this data specifies the type of system
 data SystemData = SystemData {
      sdLock :: MVar (),
-     sdNewERefs :: IORef [ERef], 
-     sdDelERefs :: IORef [ERef],
+     sdNewEntities :: IORef [Entity], 
+     sdDelEntities :: IORef [Entity],
      sdRecords :: [SystemRecord],
      sdComponents :: [Word64],
      sdProperties :: [Word64],
@@ -107,11 +107,11 @@ data SystemData = SystemData {
      sdErrorMessage :: (Int) -> IO ((String))
 }
 
-addERef :: SystemData -> ERef -> IO ()
-addERef sd eref = atomicModifyIORef (sdNewERefs sd) (\a -> (eref : a, ()))
+addEntity :: SystemData -> Entity -> IO ()
+addEntity sd entity = atomicModifyIORef (sdNewEntities sd) (\a -> (entity : a, ()))
 
-removeERef :: SystemData -> ERef -> IO ()
-removeERef sd eref = atomicModifyIORef (sdDelERefs sd) (\a -> (eref : a, ()))
+removeEntity :: SystemData -> Entity -> IO ()
+removeEntity sd entity = atomicModifyIORef (sdDelEntities sd) (\a -> (entity : a, ()))
 
 stepRecord (er, Left (listener, updateF)) = do
   me <- queryComponentListener listener
@@ -126,7 +126,7 @@ stepRecord (er, Right deleteF) = return ()
 stepSystem :: SystemData -> IO Bool -> IO (SystemData, Bool)
 stepSystem sd@(SystemData lock nrefs drefs records cs ps es ci di gm rm em) stepF = do
 
-           -- add and delete erefs
+           -- add and delete Entitys
            adds <- atomicModifyIORef nrefs (\a -> ([],a))
            dels <- atomicModifyIORef drefs (\a -> ([],a))
 
@@ -177,7 +177,7 @@ runSystem stepF stepT systemData = do
 
 -- called within the run loop
 
-systemFunction sd eref = do
+systemFunction sd entity = do
 
   let components = sdComponents sd
   let properties = sdProperties sd
@@ -190,23 +190,23 @@ systemFunction sd eref = do
   let errorMessage = sdErrorMessage sd
 
   let r = []
-  e <- readE eref
+  e <- readE entity
 
-  -- create system records, (ERef, Either (Listener, UdateF) DeleteF)
+  -- create system records, (Entity, Either (Listener, UdateF) DeleteF)
 
   rs <- mapM (\c -> if c `elem` components
                         then do (res, rep) <- createItem c (e M.! c)   -- create the item
                                 if res == 0 
-                                    then do let ir = (eref, Right (destroyItem c rep >> return ()))
+                                    then do let ir = (entity, Right (destroyItem c rep >> return ()))
 
                                             -- add property records with listeners, also components can act as property
                                             prs <- mapM (\p -> if p `elem` (properties ++ components) 
                                                                     then do (res', propF) <- getMessageSender c p
                                                                             if res' == 0 
-                                                                              then do lp <- componentListener eref (ComponentType p)
+                                                                              then do lp <- componentListener entity (ComponentType p)
                                                                                       let uf = (\oe ne -> callMsgFunction propF rep (ne M.! p) >> return ())
                                                                                       uf e e   -- call message function, update component with this property right away
-                                                                                      return [(eref, Left (lp, uf) )]
+                                                                                      return [(entity, Left (lp, uf) )]
                                                                               else return []
                                                                     else return []
                                                           ) (M.keys e)
@@ -216,7 +216,7 @@ systemFunction sd eref = do
                                             -- add event writer, in case applicable
                                             mapM (\p -> if p `elem` events 
                                                             then do let fwrite = (\_ msgData msgLen -> do   bData <- B.packCStringLen (msgData, fromIntegral msgLen)
-                                                                                                            _setC' eref p bData
+                                                                                                            _setC' entity p bData
                                                                                                             return 0)
                                                                     fwritePtr <- mkMsgFunPtr fwrite
                                                                     registerMessageReceiver c p rep fwritePtr
@@ -241,13 +241,13 @@ shutdownSystem system = print "Shutdown System received" >> return ()
 -- management of systems
 --
 
--- | add an ERef to the world, thread safe        
-addToWorld :: [SystemData] -> ERef -> IO ()
-addToWorld systems e = mapM (\s -> addERef s e) systems >> return () 
+-- | add an Entity to the world, thread safe        
+addToWorld :: [SystemData] -> Entity -> IO ()
+addToWorld systems e = mapM (\s -> addEntity s e) systems >> return () 
 
--- | remove an ERef from the world, thread safe        
-removeFromWorld :: [SystemData] -> ERef -> IO ()
-removeFromWorld systems e = mapM (\s -> removeERef s e) systems >> return ()
+-- | remove an Entity from the world, thread safe        
+removeFromWorld :: [SystemData] -> Entity -> IO ()
+removeFromWorld systems e = mapM (\s -> removeEntity s e) systems >> return ()
     
 
 

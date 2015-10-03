@@ -58,6 +58,8 @@ import HGamer3D.Graphics3D.Camera
 import HGamer3D.Graphics3D.Geometry
 import HGamer3D.Graphics3D.Material
 import HGamer3D.Input
+import HGamer3D.GUI
+import HGamer3D.Audio
 
 
 w64 (ComponentType w) = w
@@ -66,43 +68,69 @@ systemData = do
   lock <- newMVar ()
   ne <- newIORef []
   de <- newIORef []
-  return $ SystemData lock ne de []
-                    -- TABLE OF RECOGNIZED COMPONENTS
-                    
-                    -- Components, which can be created:
-                    [
-                        w64 ctGraphics3DConfig, 
-                        w64 ctCamera, 
-                        w64 ctLight, 
-                        w64 ctGeometry, 
-                        w64 ctMouse,
-                        w64 ctKeyEvent
-                    ]
-                    
-                    -- Properties, which receive messages:
-                    [
-                        w64 ctPosition, 
-                        w64 ctScale, 
-                        w64 ctOrientation, 
-                        w64 ctGraphics3DCommand, 
-                        w64 ctMaterial, 
-                        w64 ctColour, 
-                        w64 ctVisible
-                    ]
-                    
-                    -- Properties, which send messages:
-                    [
-                        w64 ctMouseEvent, 
-                        w64 ctVisible,
-                        w64 ctKeyEvent
-                    ]
-                    
-                    B.createItem
-                    B.destroyItem
-                    B.getMessageSender
-                    B.registerMessageReceiver
-                    B.errorMessage
+  
+  return $ SystemData lock ne de [] 
+  
+-- CH4-5s
+    -- TABLE OF RECOGNIZED COMPONENTS
+    
+    -- Components, which are objects that means they can be created (and modified if supported): 
+    [
+        w64 ctGraphics3DConfig
+        , w64 ctCamera
+        , w64 ctLight
+        , w64 ctGeometry
+        
+        , w64 ctMouse
+        , w64 ctInputEventHandler
+        
+        , w64 ctButton
+        , w64 ctEditText
+        , w64 ctText
+        , w64 ctSlider
+        , w64 ctCheckBox
+        , w64 ctDropDownList
+        
+        , w64 ctSoundSource
+        , w64 ctSoundListener
+        , w64 ctVolume
+    ]
+    
+    -- Components, which are properties, they can be set on objects:
+    [
+        w64 ctPosition
+        , w64 ctScale
+        , w64 ctOrientation
+        , w64 ctGraphics3DCommand
+        , w64 ctMaterial
+        , w64 ctColour
+        , w64 ctVisible
+        , w64 ctScreenRect
+        , w64 ctPlayCmd
+    ]
+    
+    -- Event receiver, they cannot set by API, they are set by C library (they send messages):
+    [
+        -- events are only receiver
+        w64 ctMouseEvent
+        , w64 ctKeyEvent
+       
+        -- gui elements are both sender and receiver !
+        , w64 ctEditText
+        , w64 ctButton
+        , w64 ctSlider
+        , w64 ctCheckBox
+        , w64 ctDropDownList
+    ]
+    
+-- CH4-5e                    
 
+    B.createItem
+    B.destroyItem
+    B.getMessageSender
+    B.registerMessageReceiver
+    B.errorMessage
+    
 -- | start a graphics world
 forkGraphics3DWorld :: IO Bool -> GameTime -> IO [SystemData] 
 forkGraphics3DWorld stepF sleepT = do

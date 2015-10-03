@@ -68,6 +68,7 @@ set(HASKELL_SRCS
 	Library/HGamer3D/Data/TypeSynonyms.hs
 	Library/HGamer3D/Data/Vector.hs
 	Library/HGamer3D/Data/Window.hs
+	Library/HGamer3D/Data/PlayCmd.hs
 	Library/HGamer3D/Data.hs
 	Library/HGamer3D/Util/FileLocation.hs
 	Library/HGamer3D/Util/UniqueName.hs
@@ -87,7 +88,19 @@ set(HASKELL_SRCS
 	Library/HGamer3D/Input/Mouse.hs
 	Library/HGamer3D/Input/Keyboard.hs
 	Library/HGamer3D/Input/Joystick.hs
+	Library/HGamer3D/Input/InputEventHandler.hs
 	Library/HGamer3D/Input.hs
+    Library/HGamer3D/GUI/Button.hs
+    Library/HGamer3D/GUI/EditText.hs
+    Library/HGamer3D/GUI/Text.hs
+    Library/HGamer3D/GUI/Slider.hs
+    Library/HGamer3D/GUI/CheckBox.hs
+    Library/HGamer3D/GUI/DropDownList.hs
+    Library/HGamer3D/GUI.hs
+    Library/HGamer3D/Audio/SoundSource.hs
+    Library/HGamer3D/Audio/SoundListener.hs
+    Library/HGamer3D/Audio/Volume.hs
+    Library/HGamer3D/Audio.hs
 	Library/HGamer3D.hs
 )
 foreach(file ${HASKELL_SRCS})
@@ -103,6 +116,8 @@ set (SAMPLE_SRCS
 	Samples/Materials.hs		
 	Samples/engineShutdown.hs
     Samples/Cuboid2.hs
+    Samples/Gui1.hs
+    Samples/SoundEffects.hs
 )
 foreach(file ${SAMPLE_SRCS})
 	add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${file}

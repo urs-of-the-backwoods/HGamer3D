@@ -1,20 +1,12 @@
-// This source file is part of HGamer3D
-// (A project to enable 3D game development in Haskell)
-// For the latest info, see http://www.hgamer3d.org
-//
-// (c) 2015 Peter Althainz
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+//	C++ part of bindings for graphics
+//	HGamer3D Library (A project to enable 3D game development in Haskell)
+//	Copyright 2015 Peter Althainz
+//	
+//	Distributed under the Apache License, Version 2.0
+//	(See attached file LICENSE or copy at 
+//	http://www.apache.org/licenses/LICENSE-2.0)
+// 
+//	file: Urho3D-Binding/graphics3d.cpp
 
 #include <iostream>
 #include <fstream>
@@ -157,6 +149,7 @@ int Graphics3DSystem::create(char* pdata, int len)
     {
       engineParameters["Multisample"] = 4;
     }
+
   }
 
   context = new Context();
@@ -168,6 +161,16 @@ int Graphics3DSystem::create(char* pdata, int len)
   }
   scene = new Scene(context);
   scene->CreateComponent<Octree>();
+  
+  // Enable OS cursor
+  context->GetSubsystem<Input>()->SetMouseVisible(true);
+  
+  // Initialize GUI, at least set a style
+  ResourceCache* cache = context->GetSubsystem<ResourceCache>();
+  XMLFile* style = cache->GetResource<XMLFile>("UI/DefaultStyle.xml");
+  UI* ui = context->GetSubsystem<UI>();
+  ui->GetRoot()->SetDefaultStyle(style);
+    
   return OK;
 }
 
@@ -176,9 +179,7 @@ int Graphics3DSystem::msgCmdGraphics3DSystem(char* pdata, int len)
     msgpack::unpacked msg;
     msgpack::unpack(&msg, pdata, len);
     msgpack::object obj = msg.get();
-//    std::cout << "g3dcmd: " << obj << std::endl;
     if (obj.type != msgpack::type::ARRAY || obj.via.array.size == 0) return ERROR_TYPE_NOT_KNOWN;
-
     if (obj.via.array.ptr[0].as<int>() == 1) {
         if (!engine->IsExiting())
             engine->RunFrame();
@@ -354,7 +355,6 @@ LightItem::LightItem(Graphics3DSystem* g)
 int LightItem::create(char* pdata, int len)
 {
   light = node->CreateComponent<Light>();
-  msgLight(pdata, len);
   return 0;
 }
 

@@ -53,5 +53,15 @@ instance ComponentClass (ComponentType a) where
 instance ComponentClass Bool where
     toObj b = ObjectBool b
     fromObj (ObjectBool b) = b
+    
+instance ComponentClass Int where
+    toObj i = ObjectInt (fromIntegral i)
+    fromObj (ObjectInt i) = fromIntegral i
+    
+instance ComponentClass a => ComponentClass (Maybe a) where
+    toObj Nothing = ObjectArray [ObjectInt 0]
+    toObj (Just v) = ObjectArray [ObjectInt 1, toObj v]
+    fromObj (ObjectArray [ObjectInt 0]) = Nothing
+    fromObj (ObjectArray [ObjectInt 1, v_o]) = Just (fromObj v_o)
 
 

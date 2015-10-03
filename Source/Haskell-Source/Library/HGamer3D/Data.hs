@@ -35,6 +35,9 @@ module HGamer3D.Data
 	module HGamer3D.Data.Transform3D,
 	module HGamer3D.Data.TypeSynonyms,
 
+    -- * Misc
+    module HGamer3D.Data.PlayCmd, 
+    
 	-- * Entity Component System, Index Type
 	module HGamer3D.Data.Component,
 
@@ -54,4 +57,5 @@ import HGamer3D.Data.TypeSynonyms
 import HGamer3D.Data.Vector
 import HGamer3D.Data.Window
 import HGamer3D.Data.Component
+import HGamer3D.Data.PlayCmd
 

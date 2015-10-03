@@ -51,3 +51,14 @@ Pattern 271 - http://nobiax.deviantart.com/art/Free-textures-pack-54-428924249
 Pattern 272 - http://nobiax.deviantart.com/art/Free-textures-pack-54-428924249
 Pattern 273 - http://nobiax.deviantart.com/art/Free-textures-pack-54-428924249
 
+Sound files in folder "Data/Sounds"
+-----------------------------------
+
+RMN Music Pack:
+RMN Music Pack: http://rpgmaker.net/musicpack/ 
+Artists:  Jasprelao, Jeremiah "McTricky" George, Jude, Gamesfreak13563, Tarranon, Cornflake, Xcalnarok, Lana42, Kunsel, Subaru, NathanGDay, Snowy Fox, ReclaimedGlory, Apoc, hyde9318 and 800 M.P.H.
+license Creative Commons - Attribution-NonCommercial-3.0 (http://creativecommons.org/licenses/by-nc/3.0)
+
+Inventory Sound Effects:
+http://opengameart.org/content/inventory-sound-effects
+license: http://creativecommons.org/licenses/by/3.0/

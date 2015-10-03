@@ -25,7 +25,8 @@ module HGamer3D.Input
 (
     module HGamer3D.Input.Mouse,
     module HGamer3D.Input.Keyboard,
-    module HGamer3D.Input.Joystick
+    module HGamer3D.Input.Joystick,
+    module HGamer3D.Input.InputEventHandler
 )
 
 where
@@ -33,5 +34,6 @@ where
 import HGamer3D.Input.Mouse
 import HGamer3D.Input.Keyboard
 import HGamer3D.Input.Joystick
+import HGamer3D.Input.InputEventHandler
 
 

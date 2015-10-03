@@ -26,13 +26,17 @@ import Data.Text
 
 import HGamer3D.Data
 
-data KeyEvent =   KeyUp Int Int Text      -- Key, Scancode, Name
+data KeyEvent =   NoKeyEvent
+                | KeyUp Int Int Text      -- Key, Scancode, Name
                 | KeyDown Int Int Text    -- Key, Scancode, Name
                 deriving (Eq, Show)
                 
 instance ComponentClass KeyEvent where
+    toObj NoKeyEvent = ObjectArray [ObjectInt 0]
     toObj (KeyUp k s n) = ObjectArray [ObjectInt 1, ObjectInt (fromIntegral k), ObjectInt (fromIntegral s), toObj n]
     toObj (KeyDown k s n) = ObjectArray [ObjectInt 2, ObjectInt (fromIntegral k), ObjectInt (fromIntegral s), toObj n]
+
+    fromObj (ObjectArray [ObjectInt 0]) = NoKeyEvent
     fromObj (ObjectArray [ObjectInt 1, ObjectInt k, ObjectInt s, n_o]) = KeyUp (fromIntegral k) (fromIntegral s) (fromObj n_o)
     fromObj (ObjectArray [ObjectInt 2, ObjectInt k, ObjectInt s, n_o]) = KeyDown (fromIntegral k) (fromIntegral s) (fromObj n_o)
     

@@ -35,6 +35,7 @@ import Data.Text
 import HGamer3D.Data
 import HGamer3D.Graphics3D.Material
 
+-- CH4-4s
 -- | A shape is a basic geometric form
 data Shape =   Sphere 
                 | Cube
@@ -43,6 +44,16 @@ data Shape =   Sphere
                 | Pyramid
                 | Torus
                 deriving (Eq, Show)
+
+-- | A geometry is the basic drawable item, it can be a shape or a mesh loaded from a resource
+data Geometry = ShapeGeometry Shape
+                | ResourceGeometry Text
+                deriving (Eq, Show)
+
+-- | Component Type for the Geometry
+ctGeometry :: ComponentType Geometry
+ctGeometry = ComponentType 0xee433d1a4b964591 
+-- CH4-4e
 
 instance ComponentClass Shape where
     toObj shape = case shape of
@@ -60,15 +71,6 @@ instance ComponentClass Shape where
                     5 -> Pyramid
                     6 -> Torus
                     
--- | A geometry is the basic drawable item, it can be a shape or a mesh loaded from a resource
-data Geometry = ShapeGeometry Shape
-                | ResourceGeometry Text
-                deriving (Eq, Show)
-
--- | Component Type for the Geometry
-ctGeometry :: ComponentType Geometry
-ctGeometry = ComponentType 0xee433d1a4b964591 
-
 instance ComponentClass Geometry where
         toObj (ShapeGeometry sh) = ObjectArray [ObjectInt 1, toObj sh]
         toObj (ResourceGeometry mesh) = ObjectArray [ObjectInt 2, toObj mesh]

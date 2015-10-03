@@ -19,7 +19,7 @@ cmake_minimum_required (VERSION 2.8)
 project (HGamer3D)
 set (HGamer3D_VERSION_MAJOR 0)
 set (HGamer3D_VERSION_MINOR 6)
-set (HGamer3D_VERSION_PATCH 1)
+set (HGamer3D_VERSION_PATCH 2)
 
 # Runtime DLL folder
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")

@@ -27,6 +27,7 @@ import Data.List
 -- Game Logic, pure functional parts
 ------------------------------------
 
+-- CH3-7s
 -- largest dimension
 maxDim :: Int
 maxDim = 5
@@ -67,6 +68,7 @@ steps start move level =
             | otherwise = oneStep (ps ++ [pos]) start (next pos move) -- successful step do next step
             
     in oneStep [] start (next start move)
+-- CH3-7e
           
     
 
@@ -101,18 +103,22 @@ setupWorld = do
     addToWorld world eG3D
     -- camera and light
     cam <- creator world [ctCamera #: FullViewCamera, ctPosition #: Vec3 0 0 0, ctOrientation #: unitU]
+    -- CH3-8s
     light1 <- creator world [ctLight #: Light (SpotLight (Deg 50) 1.0) 1.0 100.0 1.0, ctPosition #: Vec3 (10) (-10) (-10.0)]
     light2 <- creator world [ctLight #: Light PointLight 0.5 1000.0 0.8, ctPosition #: Vec3 0 0 (-50)]
     light3 <- creator world [ctLight #: Light DirectionalLight 1.0 1000.0 1.0, ctOrientation #: (rotU vec3Y 45 .*. rotU vec3X 45)]
-    -- keyboard, mouse input
-    kb <- creator world [ctKeyEvent #: KeyUp 0 0 ""]
-    return (world, cam, kb)
+    -- CH3-8e
+    -- key input
+    -- CH5-2s
+    ieh <- creator world [ctInputEventHandler #: DefaultEventHandler, ctKeyEvent #: NoKeyEvent] 
+    -- CH5-2e
+    return (world, cam, ieh)
 
 -- quat from 2 vectors, normalized input
 ufrom2v u v = let (Vec3 x y z) = u &^ v in mkU (Vec4 (1.0 + (u &. v)) x y z )
 
 -- create a line
-line :: [SystemData] -> Material -> Vec3 -> Vec3 -> Float -> IO ERef
+line :: [SystemData] -> Material -> Vec3 -> Vec3 -> Float -> IO Entity
 line w m p1 p2 t = do
     let d = p2 &- p1
     let l = len d
@@ -177,13 +183,10 @@ setPos er fp = setC er ctPosition (f2pos fp)
 -- Low Level Event Routines
 ---------------------------
 
--- two different ways of event handling demonstrated here
--- camera is moved by traditional listener
--- other key events are fed into Sodium network for game logic
-
 -- install key handler, moves each key up and currently pressed keys in variable
-installKeyHandler :: IORef [T.Text] -> IORef [T.Text] -> ERef -> IO ()
-installKeyHandler varKeysUp varKeysPressed kb = do
+-- CH5-3s
+installKeyHandler :: IORef [T.Text] -> IORef [T.Text] -> Entity -> IO ()
+installKeyHandler varKeysUp varKeysPressed ieh = do
     let handleKeys ke = do
         case ke of  
             KeyUp _ _ k -> do
@@ -192,8 +195,9 @@ installKeyHandler varKeysUp varKeysPressed kb = do
                 return ()
             KeyDown _ _ k -> updateVar varKeysPressed (\keys -> if not (k `elem` keys) then k:keys else keys) >> return ()
             _ -> return ()
-    addListener  kb ctKeyEvent (\_ enew -> handleKeys (enew # ctKeyEvent))
+    addListener  ieh ctKeyEvent (\_ enew -> handleKeys (enew #! ctKeyEvent))
     return ()
+-- CH5-3e
 
 -- camera movement
 installMoveCamera cam varKeysPressed = do
@@ -214,10 +218,10 @@ installMoveCamera cam varKeysPressed = do
 ------------------------
 
 startWorld = do
-    (world, cam, keyboard) <- setupWorld
+    (world, cam, inputHandler) <- setupWorld
     varKeysUp <- newVar []
     varKeysPressed <- newVar []
-    installKeyHandler varKeysUp varKeysPressed keyboard
+    installKeyHandler varKeysUp varKeysPressed inputHandler
     installMoveCamera cam varKeysPressed
     drawCubeFrame world
     (startSphere, endSphere, spheres) <- createSpheres world
@@ -270,7 +274,8 @@ getMoveFromKey k = case k of
                 "PageUp" -> Just (0, 0, 1)
                 "PageDown" -> Just (0, 0, -1)
                 _ -> Nothing
-        
+
+-- CH3-11s                
 runLevel varKeysUp allS@(sS, eS, ss) level = do
 
     newFieldA allS level
@@ -296,6 +301,7 @@ runLevel varKeysUp allS@(sS, eS, ss) level = do
             if success then return () else loopKey pos'
     resetKeys
     loopKey (lStart level)
+-- CH3-11e
             
 main = do
     (varKeysUp, allS) <- startWorld

@@ -23,21 +23,21 @@
 -- | Entity of the Entity ComponentType System for HGamer3D
 module HGamer3D.ECS.Entity (
 
--- * Entity Data Type
+-- * EntityData Type
 --   Entities are a kind of simplified extensible record system. They are basically a Map from ComponentType (64 bit id) to a data item with 
 --   ComponentClass Typeclass. Basic entities are non-mutable but their exists the entity reference.
 
-  Entity,
+  EntityData,
   (#:),
-  (#?),
+  (#!),
   (#),
 
--- * ERef Data Type
---   The ERef type, which puts an Entity into
+-- * Entity Type
+--   The ERef type, which puts an EntityData into
 --   an IORef and serves as mutable data structure.
 --   In HGamer3D those ERefs are also used as thread-safe communication vehicle towards the C/C++ implementation of multimedia functionality.
 
-  ERef (..),
+  Entity (..),
   newE,
   readE,
   readC,
@@ -70,36 +70,36 @@ import Foreign.C
 import HGamer3D.Binding
 import HGamer3D.Data 
 
--- | Entity, a simple non-mutable record type, implemented as Map
-type Entity = M.Map Word64 Component
+-- | EntityData, a simple non-mutable record type, implemented as Map
+type EntityData = M.Map Word64 Component
 
 -- | pair builder for nice construction syntax, allows [ ct #: val, ...] syntax
 (#:) :: ComponentClass a => ComponentType a -> a -> (Word64, Component)
 (ComponentType c) #: val = (c, toMsg val)
 
 -- | Builder for entities, allows newE = entity [ct #: val, ...] syntax
-entity :: [(Word64, Component)] -> Entity
-entity clist = M.fromList clist
+entityData :: [(Word64, Component)] -> EntityData
+entityData clist = M.fromList clist
 
 -- | does the entity have the ComponentType
-(#?) :: Entity -> ComponentType a -> Bool
+(#?) :: EntityData -> ComponentType a -> Bool
 e #? (ComponentType c) = Prelude.elem c $ M.keys e
 
 -- | get the ComponentType, throws exception, if ComponentType not present
-(#) :: ComponentClass a => Entity -> ComponentType a -> a
-e # (ComponentType c) = fromJust $ M.lookup c e >>= fromMsg
+(#!) :: ComponentClass a => EntityData -> ComponentType a -> a
+e #! (ComponentType c) = fromJust $ M.lookup c e >>= fromMsg
 
 -- | get the ComponentType as an maybe, in case wrong type
-(?#) :: ComponentClass a => Entity -> ComponentType a -> Maybe a
-e ?# (ComponentType c) = M.lookup c e >>= fromMsg
+(#) :: ComponentClass a => EntityData -> ComponentType a -> Maybe a
+e # (ComponentType c) = M.lookup c e >>= fromMsg
 
 -- | modification function, throws exception, if ComponentType not present
-updateEntity :: ComponentClass a => Entity -> ComponentType a -> (a -> a) -> Entity
-updateEntity e c'@(ComponentType c) f = M.insert c ((toMsg . f) (e # c')) e
+updateDataC :: ComponentClass a => EntityData -> ComponentType a -> (a -> a) -> EntityData
+updateDataC e c'@(ComponentType c) f = M.insert c ((toMsg . f) (e #! c')) e
 
 -- | modification function, sets entity ComponentType, needed for events
-setComponentType :: ComponentClass a => Entity -> ComponentType a -> a -> Entity
-setComponentType e (ComponentType c) val = M.insert c (toMsg val) e
+setDataC :: ComponentClass a => EntityData -> ComponentType a -> a -> EntityData
+setDataC e (ComponentType c) val = M.insert c (toMsg val) e
 
 
 -- References to Entities
@@ -109,67 +109,67 @@ setComponentType e (ComponentType c) val = M.insert c (toMsg val) e
 
 -- Listener Map, for each k, manages a map of writers, writers geting the old and the new value after a change
 
-type Listeners = IORef (M.Map Word64 [Entity -> Entity -> IO ()])
+type Listeners = IORef (M.Map Word64 [EntityData -> EntityData -> IO ()])
 
 -- | ERef, composable objects, referenced Entities with listeners
-data ERef = ERef (IORef Entity) Listeners deriving (Eq)
+data Entity = Entity (IORef EntityData) Listeners deriving (Eq)
 
 -- | Add an action (IO function), which will be executed when value of ComponentType is changed
-addListener :: ERef -> ComponentType a -> (Entity -> Entity -> IO ()) -> IO ()
-addListener (ERef _ tls) (ComponentType c) l = atomicModifyIORef tls (\m -> let
+addListener :: Entity -> ComponentType a -> (EntityData -> EntityData -> IO ()) -> IO ()
+addListener (Entity _ tls) (ComponentType c) l = atomicModifyIORef tls (\m -> let
             l' = case M.lookup c m of
                            Just ol -> ol ++ [l]
                            Nothing -> [l]
             in (M.insert c l' m, ()))
 
--- | Clear all listeners from ERef
-clearListeners :: ERef -> IO ()
-clearListeners (ERef _ tls) = atomicWriteIORef tls (M.fromList [])
+-- | Clear all listeners from Entity
+clearListeners :: Entity -> IO ()
+clearListeners (Entity _ tls) = atomicWriteIORef tls (M.fromList [])
 
-fireListeners :: ERef -> ComponentType a -> Entity -> Entity -> IO ()
-fireListeners (ERef _ tls) (ComponentType c) val val' = do
+fireListeners :: Entity -> ComponentType a -> EntityData -> EntityData -> IO ()
+fireListeners (Entity _ tls) (ComponentType c) val val' = do
               ls <- readIORef tls
               case M.lookup c ls of
                    Just l -> mapM (\f -> f val val') l >> return ()
                    Nothing -> return ()
 
--- | creates an ERef
-newE :: [(Word64, Component)] -> IO ERef
+-- | creates an Entity
+newE :: [(Word64, Component)] -> IO Entity
 newE inlist = do
-     let e = entity inlist
+     let e = entityData inlist
      te <- newIORef e
      tl <- newIORef (M.fromList [])
-     return $ ERef te tl
+     return $ Entity te tl
 
--- | reads the Entity from an ERef
-readE :: ERef -> IO Entity
-readE (ERef te _) = readIORef te
+-- | reads the EntityData from an Entity
+readE :: Entity -> IO EntityData
+readE (Entity te _) = readIORef te
 
 -- | reads one ComponentType, throws exception, if ComponentType not present, or wrong type
-readC :: ComponentClass a => ERef -> ComponentType a -> IO a
-readC er c = readE er >>= \e -> return (e # c)
+readC :: ComponentClass a => Entity -> ComponentType a -> IO a
+readC er c = readE er >>= \e -> return (e #! c)
 
 -- | updates one ComponentType
-updateC :: ComponentClass a => ERef -> ComponentType a -> (a -> a) -> IO ()
-updateC er@(ERef te tl) c f = do
+updateC :: ComponentClass a => Entity -> ComponentType a -> (a -> a) -> IO ()
+updateC er@(Entity te tl) c f = do
         (e, e') <- atomicModifyIORef te (\olde -> let
-                    newe = updateEntity olde c f
+                    newe = updateDataC olde c f
                     in (newe, (olde, newe)))
         fireListeners er c e e'
         return ()
 
 -- | sets one ComponentType
-setC :: ComponentClass a => ERef -> ComponentType a -> a -> IO ()
-setC er@(ERef te tl) c val = do
+setC :: ComponentClass a => Entity -> ComponentType a -> a -> IO ()
+setC er@(Entity te tl) c val = do
         (e, e') <- atomicModifyIORef te (\olde -> let
-                    newe = setComponentType olde c val
+                    newe = setDataC olde c val
                     in (newe, (olde, newe)))
         fireListeners er c e e'
         return ()
 
 -- | sets one ComponentType as Component
-_setC' :: ERef -> Word64 -> Component -> IO ()
-_setC' er@(ERef te tls) c val = do
+_setC' :: Entity -> Word64 -> Component -> IO ()
+_setC' er@(Entity te tls) c val = do
         (e, e') <- atomicModifyIORef te (\olde -> let
                     newe = M.insert c val olde
                     in (newe, (olde, newe)))

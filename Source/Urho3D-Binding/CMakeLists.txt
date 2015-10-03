@@ -53,6 +53,8 @@ set(CPP_SRCS
 	interface.cpp 
 	graphics3d.cpp
 	input.cpp
+    gui.cpp
+    audio.cpp
 )
 
 include(GenerateExportHeader)

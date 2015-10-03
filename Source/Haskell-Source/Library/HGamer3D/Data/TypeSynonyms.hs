@@ -34,8 +34,10 @@ ctPosition = ComponentType 0x29aacbbb10c84016
 ctScale :: ComponentType Scale
 ctScale = ComponentType 0x2f9c124bc8fd41c4
 
+-- CH4-3s
 ctOrientation :: ComponentType Orientation
 ctOrientation = ComponentType 0x815eb4d9c7bfaa74
+-- CH4-3e
 
 ctVisible :: ComponentType Bool
 ctVisible = ComponentType 0x98e7a78e949e1c6e

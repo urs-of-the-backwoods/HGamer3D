@@ -27,7 +27,9 @@ module HGamer3D
 	module HGamer3D.Util,
 	module HGamer3D.ECS,
 	module HGamer3D.Graphics3D,
-	module HGamer3D.Input
+	module HGamer3D.Input,
+    module HGamer3D.GUI,
+    module HGamer3D.Audio
 )
 
 where
@@ -37,3 +39,5 @@ import HGamer3D.Util
 import HGamer3D.ECS
 import HGamer3D.Graphics3D
 import HGamer3D.Input
+import HGamer3D.GUI
+import HGamer3D.Audio

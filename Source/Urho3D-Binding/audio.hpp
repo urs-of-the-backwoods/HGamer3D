@@ -1,4 +1,4 @@
-//	C++ part of bindings for graphics
+//	C++ part of bindings for audio
 //	HGamer3D Library (A project to enable 3D game development in Haskell)
 //	Copyright 2015 Peter Althainz
 //	
@@ -6,10 +6,10 @@
 //	(See attached file LICENSE or copy at 
 //	http://www.apache.org/licenses/LICENSE-2.0)
 // 
-//	file: Urho3D-Binding/graphics3d.hpp
+//	file: Urho3D-Binding/audio.hpp
 
-#ifndef __graphics3d_hpp__
-#define __graphics3d_hpp__
+#ifndef __audio_hpp__
+#define __audio_hpp__
 
 #include <iostream>
 #include <fstream>
@@ -45,90 +45,63 @@
 #include <Urho3D/UI/Text.h>
 #include <Urho3D/UI/UI.h>
 
+#include <Urho3D/Audio/Audio.h>
+#include <Urho3D/Audio/Sound.h>
+#include <Urho3D/Audio/SoundSource.h>
+#include <Urho3D/Audio/SoundSource3D.h>
+
 #include <exception>
 
-#include "Urho3D/DebugNew.h"
 #include "errors.hpp"
+#include "graphics3d.hpp"
+#include "Urho3D/DebugNew.h"
 
 using namespace Urho3D;
 
-class Graphics3DSystem {
+extern "C" {
+#include "interface.h"
+}
+
+class SoundSourceItem : public HasNode {
 
 private:
-  Engine* engine;
-  VariantMap engineParameters;
-
+  SoundSource* soundSource;
+  Sound* sound;
+  ResourceCache* cache;
+  int soundType;
 
 public:
+  SoundSourceItem(Graphics3DSystem* g3ds);
+  ~SoundSourceItem();
 
-  Context* context;
-  SharedPtr<Scene> scene;
-
-  Graphics3DSystem();
-  ~Graphics3DSystem();
-
-  // initialization
   int create(char* pdata, int len);
-  int msgCmdGraphics3DSystem(char* pdata, int len);
+  int msgSoundSource(char* pdata, int len);
+  int msgPlayCmd(char* pdata, int len);
 };
 
-class HasNode
-{
-
-protected:
-  SharedPtr<Node> node;
-
-public:
-  HasNode(Graphics3DSystem*g3ds);
-  ~HasNode();
-
-  int msgOri(char* pdata, int len);
-  int msgPos(char* pdata, int len);
-  int msgScale(char* pdata, int len);
-};
-
-class CameraItem : public HasNode
-{
+class SoundListenerItem : public HasNode {
 
 private:
-  Graphics3DSystem* g3ds;
-  SharedPtr<Viewport> viewport;
-  int viewportSlot;
-  void setFrustum(float nc, float fc, float fov);
 
 public:
-  CameraItem(Graphics3DSystem* g);
-  ~CameraItem();
-  int create(char *pdata, int len);
-  int msgFrustum(char* pdata, int len);
-};
+  SoundListenerItem(Graphics3DSystem* g3ds);
+  ~SoundListenerItem();
 
-class LightItem : public HasNode
-{
-private:
-  Light* light;
-  
-public:
-  LightItem(Graphics3DSystem*g3ds);
-  ~LightItem();
   int create(char* pdata, int len);
-  int msgLight(char* pdata, int len);
-  int msgColour(char* pdata, int len);
+  int msgSoundListener(char* pdata, int len);
 };
 
-class GeometryItem : public HasNode
-{
+class VolumeItem : public HasNode {
+
 private:
-  String material;
+  Audio* audio;
 
 public:
-  GeometryItem(Graphics3DSystem*g3ds);
-  ~GeometryItem();
+  VolumeItem(Graphics3DSystem* g3ds);
+  ~VolumeItem();
+
   int create(char* pdata, int len);
-  int msgGeometry(char* pdata, int len);
-  int msgMaterial(char* pdata, int len);
-  int msgColour(char* pdata, int len);
-  
+  int msgVolume(char* pdata, int len);
 };
 
 

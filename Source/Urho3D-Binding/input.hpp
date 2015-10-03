@@ -1,20 +1,12 @@
-// This source file is part of HGamer3D
-// (A project to enable 3D game development in Haskell)
-// For the latest info, see http://www.hgamer3d.org
-//
-// (c) 2015 Peter Althainz
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+//	C++ part of bindings for input
+//	HGamer3D Library (A project to enable 3D game development in Haskell)
+//	Copyright 2015 Peter Althainz
+//	
+//	Distributed under the Apache License, Version 2.0
+//	(See attached file LICENSE or copy at 
+//	http://www.apache.org/licenses/LICENSE-2.0)
+// 
+//	file: Urho3D-Binding/input.hpp
 
 #ifndef __input_hpp__
 #define __input_hpp__
@@ -67,11 +59,9 @@ extern "C" {
 
 class Mouse : public Object {
 
-  OBJECT(Mouse);
+OBJECT(Mouse);
 
 private:
-  msgFP mouseEventF;
-  msgFP visibleEventF;
   Input *input;
 
 public:
@@ -81,36 +71,51 @@ public:
   int create(char* pdata, int len);
   int msgMouse(char* pdata, int len);
   int msgVisible(char* pdata, int len);
+};
 
-  void registerMouseEvent(msgFP f);
-  void registerVisibleEvent(msgFP f);
+class InputEventHandler : public Object {
 
+OBJECT(InputEventHandler);
+
+private:
+  msgFP mouseEventF;
+  msgFP keyEventF;
+  Input *input;
+  
+  bool bDefaultEvents;          // events are not specified use properties, to check which to register
+  
+  bool bKeyEvents;
+  bool bMouseEvents;
+  
+  bool bMouseButtonUp;
+  bool bMouseButtonDown;
+  bool bMouseMove;
+  bool bMouseWheel;
+  bool bMouseVisibleChanged;
+  bool bKeyUp;
+  bool bKeyDown;
+  
+  void registerEvents();
+
+public:
+  InputEventHandler(Graphics3DSystem* g3ds);
+  ~InputEventHandler();
+ 
+  int create(char* pdata, int len);
+  int msgInputEventHandler(char* pdata, int len);
+
+  void registerMouseEventFunction(msgFP f);
+  void registerKeyEventFunction(msgFP f);
+
+  // the event handling routines
   void HandleMouseMove(StringHash eventType, VariantMap& eventData);
   void HandleMouseButtonDown(StringHash eventType, VariantMap& eventData);
   void HandleMouseButtonUp(StringHash eventType, VariantMap& eventData);
   void HandleMouseWheel(StringHash eventType, VariantMap& eventData);
   void HandleMouseVisibleChanged(StringHash eventType, VariantMap& eventData);
-};
-
-class KeyEventHandler : public Object {
-
-  OBJECT(KeyEventHandler);
-  Input *input;
-
-private:
-  msgFP eventF;
-
-public:
-  KeyEventHandler(Graphics3DSystem* g3ds);
-  ~KeyEventHandler();
- 
-  int create(char* pdata, int len);
-
-  void registerEvent(msgFP f);
-
+  
   void HandleKeyUp(StringHash eventType, VariantMap& eventData);
   void HandleKeyDown(StringHash eventType, VariantMap& eventData);
 };
-
 
 #endif
