@@ -47,6 +47,7 @@ createAll = do
                 , ctSoundSource #: Sound "Sounds/inventory_sound_effects/metal-clash.wav" 1.0 False "Sounds"
                 , ctPlayCmd #: Stop
             ]
+-- CH7-1s
            ,[   -- ring-inventory button and sound
                 ctText #: "ring inventory"
                 , ctButton #: False
@@ -54,6 +55,7 @@ createAll = do
                 , ctSoundSource #: Sound "Sounds/inventory_sound_effects/ring_inventory.wav" 1.0 False "Sounds"
                 , ctPlayCmd #: Stop
             ]
+-- CH7-1e
            ,[   -- sell_buy_item button and sound
                 ctText #: "sell buy item"
                 , ctButton #: False
@@ -92,9 +94,11 @@ createAll = do
                 ctSlider #: Slider 1.0 0.75
                 , ctScreenRect #: Rectangle 180 160 150 25
             ]
+-- CH7-2s
            ,[   -- volume
                 ctVolume #: Volume "Sounds" 0.75
             ]
+-- CH7-2e
            ,[   -- Slider Text
                 ctText #: "Sound Volume"
                 , ctScreenRect #: Rectangle 10 200 150 25
@@ -126,10 +130,12 @@ registerMusicButtons musicStart musicStop music = do
     addActionButton musicStart (setC music ctPlayCmd Play)
     addActionButton musicStop (setC music ctPlayCmd Stop)
 
+-- CH7-3s
 registerVolumeSliders sliderSound sliderMusic volume = do
     let sliderVal e = let (Slider _ val) = e #! ctSlider in val
     addListener sliderSound ctSlider (\_ new -> setC volume ctVolume (Volume "Sounds" (sliderVal new)))
     addListener sliderMusic ctSlider (\_ new -> setC volume ctVolume (Volume "Music" (sliderVal new)))
+-- CH7-3e
     
 main = do
     [camera, cube,
