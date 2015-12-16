@@ -4,7 +4,7 @@ language: c
 
 script:
   - sudo apt-get update
-  - sudo apt-get install python-doit
+  - pip install doit
   - doit urho3d
   - doit binding
 
