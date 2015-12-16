@@ -3,7 +3,7 @@ sudo: required
 language: c
 
 script:
-  - apt-get update
+  - sudo apt-get update
   - bash Scripts/building/buildUrho3d.sh"
   - bash Scripts/building/buildBinding.sh
 
