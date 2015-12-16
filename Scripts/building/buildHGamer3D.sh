@@ -12,6 +12,6 @@ cd BuildHG3D
 
 export LANG=C.UTF-8     # needed for docker files
 stack build c2hs --resolver lts-3.4
-cmake /opt/hg3d/Source
+cmake ../Source
 cmake --build . --config Release --target samples
 

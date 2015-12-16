@@ -6,6 +6,8 @@ script:
   - sudo apt-get update
   - bash Scripts/building/buildUrho3d.sh
   - bash Scripts/building/buildBinding.sh
+  - bash Scripts/building/installHaskell.sh
+  - bash Scripts/building/buildHGamer3D.sh
 
 
 
