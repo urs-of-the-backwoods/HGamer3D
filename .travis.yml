@@ -2,9 +2,10 @@ sudo: required
 
 language: c
 
-script:
-  - sudo apt-get update
+install:
   - pip install doit
+
+script:
   - doit urho3d
   - doit binding
 
