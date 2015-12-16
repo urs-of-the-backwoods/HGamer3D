@@ -4,7 +4,7 @@ language: c
 
 script:
   - sudo apt-get update
-  - bash Scripts/building/buildUrho3d.sh"
+  - bash Scripts/building/buildUrho3d.sh
   - bash Scripts/building/buildBinding.sh
 
 
