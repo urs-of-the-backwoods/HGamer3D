@@ -1,5 +1,9 @@
 # Build directory #
 ###################
 
-Build
+Urho3D-Build
+Binding-Build
+.doit.db
+.directory
+*.pyc
 

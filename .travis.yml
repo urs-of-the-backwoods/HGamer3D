@@ -1,15 +1,13 @@
 sudo: required
-services: 
-  - docker
-
-before_install:
-  - chmod +x Scripts/building/*.sh
-  - docker pull uotbw/urho3d-build:debian-latest
 
 language: c
 
 script:
-  - docker run -v /home/travis/build/urs-of-the-backwoods/HGamer3D:/opt/hg3d uotbw/urho3d-build:debian-latest bash -c "/opt/hg3d/Scripts/building/installHaskell.sh && /opt/hg3d/Scripts/building/buildHGamer3D.sh"
+  - sudo apt-get update
+  - sudo apt-get install python-pip
+  - pip install doit
+  - doit urho3d
+  - doit binding
 
 
 

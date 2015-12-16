@@ -26,7 +26,7 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     set (HG3D_RUNTIME_DIR "C:/HGamer3D_RT")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    set (HG3D_RUNTIME_DIR /usr/local/lib/Urho3D)
+    set (HG3D_RUNTIME_DIR /usr/local/lib)
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 # Subdirectories
