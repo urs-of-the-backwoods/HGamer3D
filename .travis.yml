@@ -4,7 +4,7 @@ language: c
 
 script:
   - sudo apt-get update
-  - pip install pynt
+  - sudo pip install pynt
   - pynt -f Scripts/build.py all
 
 
