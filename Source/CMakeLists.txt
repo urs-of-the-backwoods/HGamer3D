@@ -24,9 +24,11 @@ set (HGamer3D_VERSION_PATCH 2)
 # Runtime DLL folder
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     set (HG3D_RUNTIME_DIR "C:/HGamer3D_RT")
+    set (URHO3D_RUNTIME_DIR "")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     set (HG3D_RUNTIME_DIR /usr/local/lib)
+    set (URHO3D_RUNTIME_DIR /usr/local/lib/Urho3D)
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 # Subdirectories

@@ -11,10 +11,9 @@ else
    SUDO=""
 fi
 
-# install stack
-wget -q -O- https://s3.amazonaws.com/download.fpcomplete.com/ubuntu/fpco.key | $SUDO apt-key add -
-echo 'deb http://download.fpcomplete.com/ubuntu/vivid stable main'| $SUDO tee /etc/apt/sources.list.d/fpco.list
-$SUDO apt-get install libtinfo-dev -y
-$SUDO apt-get install stack -y
+$SUDO apt-get -y install wget ca-certificates libgmp-dev
+wget https://www.stackage.org/stack/linux-x86_64 -O stack.tar.gz
+tar -xzf stack.tar.gz
+$SUDO mv stack-*/stack /usr/local/bin
 stack setup --resolver lts-3.4
 

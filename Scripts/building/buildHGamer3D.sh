@@ -1,17 +1,17 @@
 #!/bin/bash
 # build hgamer3d in linux
-# to be used as root
-# assumption, current path is in HGamer3D
+# to be used as root or user
+# builds from any path, first parameter needs to be path to HGamer3D
 
 set -x
 set -e
 
 cd ..
-mkdir BuildHG3D
-cd BuildHG3D
+mkdir HGamer3D-Build
+cd HGamer3D-Build
 
 export LANG=C.UTF-8     # needed for docker files
 stack build c2hs --resolver lts-3.4
-cmake ../Source
+cmake $1/Source
 cmake --build . --config Release --target samples
 

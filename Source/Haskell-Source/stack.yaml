@@ -6,3 +6,4 @@ packages:
 - 'Samples'
 extra-lib-dirs:
 - '${HG3D_RUNTIME_DIR}'
+- '${URHO3D_RUNTIME_DIR}'
