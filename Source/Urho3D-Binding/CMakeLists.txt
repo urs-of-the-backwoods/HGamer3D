@@ -9,25 +9,16 @@
 #	file: Urho3D-Binding/CMakeLists.txt
 
 
-# Set minimum version
-cmake_minimum_required (VERSION 2.8.6)
+# Include general info
+cmake_minimum_required (VERSION 2.8)
 
 #
 # basic project information
 #
 
 project (Urho3DBinding)
+include(../CMakeLists.txt)
 
-# transfer to parent scope
-set (Urho3DBinding_VERSION_MAJOR ${HGamer3D_VERSION_MAJOR} )
-set (Urho3DBinding_VERSION_MINOR ${HGamer3D_VERSION_MINOR} )
-set (Urho3DBinding_VERSION_PATCH ${HGamer3D_VERSION_PATCH} )
-
-set (Urho3DBinding_VERSION_MAJOR ${Urho3DBinding_VERSION_MAJOR} PARENT_SCOPE)
-set (Urho3DBinding_VERSION_MINOR ${Urho3DBinding_VERSION_MINOR} PARENT_SCOPE)
-set (Urho3DBinding_VERSION_PATCH ${Urho3DBinding_VERSION_PATCH} PARENT_SCOPE)
-
-set (DLLNAME hgamer3d${HGamer3D_VERSION_MAJOR}${HGamer3D_VERSION_MINOR}${HGamer3D_VERSION_PATCH})
 
 # strategy of this cmake file
 # ---------------------------

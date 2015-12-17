@@ -8,15 +8,7 @@
 #
 #	file: CMakeLists.txt
 
-# special targets:
-# output_dll (copies runtime dll to HG3D_RUNTIME_DIR)
-# samples (builds the samples)
-# runtime (copy's runtime info to folder)
-
-cmake_minimum_required (VERSION 2.8)
-
 # basic project information
-project (HGamer3D)
 set (HGamer3D_VERSION_MAJOR 0)
 set (HGamer3D_VERSION_MINOR 6)
 set (HGamer3D_VERSION_PATCH 2)
@@ -31,7 +23,13 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     set (URHO3D_RUNTIME_DIR /usr/local/lib/Urho3D)
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
-# Subdirectories
-add_subdirectory(Urho3D-Binding)
-add_subdirectory(Haskell-Source)
-add_subdirectory(Runtime)
+# transfer to parent scope
+set (Urho3DBinding_VERSION_MAJOR ${HGamer3D_VERSION_MAJOR} )
+set (Urho3DBinding_VERSION_MINOR ${HGamer3D_VERSION_MINOR} )
+set (Urho3DBinding_VERSION_PATCH ${HGamer3D_VERSION_PATCH} )
+
+set (Urho3DBinding_VERSION_MAJOR ${Urho3DBinding_VERSION_MAJOR} PARENT_SCOPE)
+set (Urho3DBinding_VERSION_MINOR ${Urho3DBinding_VERSION_MINOR} PARENT_SCOPE)
+set (Urho3DBinding_VERSION_PATCH ${Urho3DBinding_VERSION_PATCH} PARENT_SCOPE)
+
+set (DLLNAME hgamer3d${HGamer3D_VERSION_MAJOR}${HGamer3D_VERSION_MINOR}${HGamer3D_VERSION_PATCH})

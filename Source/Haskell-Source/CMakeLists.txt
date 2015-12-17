@@ -8,13 +8,15 @@
 #
 #	file: Haskell-Source/CMakeLists.txt
 
-cmake_minimum_required (VERSION 2.8.6)
+# include general information
+cmake_minimum_required (VERSION 2.8)
 
 #
 # basic project information
 #
 
 project (HaskellPackage)
+include(../CMakeLists.txt)
 
 # strategy of this cmake file
 # ---------------------------
@@ -164,5 +166,5 @@ add_custom_command(OUTPUT ${SAMPLE_EXES}
 	           	COMMAND stack build 
 	           	DEPENDS ${STATIC_BIN_FILES} ${SAMPLE_SRCS_BIN_FILES} ${HASKELL_SRCS_BIN_FILES} ${BIN_INTERFACE_HS}
 		   )
-add_custom_target(samples DEPENDS ${SAMPLE_EXES} output_dll)
+add_custom_target(samples DEPENDS ${SAMPLE_EXES})
 

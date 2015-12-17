@@ -20,7 +20,7 @@ wget https://github.com/urho3d/Urho3D/archive/1.4.tar.gz
 tar -xzf 1.4.tar.gz
 # build urho 3d
 cd Urho3D-1.4
-./cmake_generic.sh ../Urho3D-Build -DURHO3D_LIB_TYPE=SHARED
+./cmake_generic.sh ../Urho3D-Build -DURHO3D_LIB_TYPE=SHARED -DENABLE_SAMPLES=0 -DENABLE_TOOLS=0
 cd ../Urho3D-Build
 cmake --build . --config Release
 # install urho 3d

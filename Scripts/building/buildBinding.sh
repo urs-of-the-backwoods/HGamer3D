@@ -11,7 +11,7 @@ fi
 
 mkdir Binding-Build
 cd Binding-Build
-cmake $1/Source
+cmake $1/Source/Urho3D-Binding
 cmake --build . --config Release --target urho3dbinding_clib
 $SUDO cmake --build . --config Release --target output_dll
 $SUDO ldconfig
