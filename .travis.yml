@@ -5,7 +5,7 @@ language: c
 script:
   - sudo apt-get update
   - sudo pip install pynt
-  - pynt -f Scripts/build.py all
+  - pynt -f Scripts/build.py travis
 
 
 

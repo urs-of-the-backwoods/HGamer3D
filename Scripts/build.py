@@ -33,8 +33,13 @@ def samples():
     if res != 0:
         sys.exit(res)
 
+@task(urho3d, binding, haskell)
+def linux():
+    """Installs all pre-requisites on Linux"""
+    pass
+
 @task(urho3d, binding, haskell, samples)
-def all():
-    """builds all pre-requisites and HGamer3D"""
+def travis():
+    """Builds all steps for travis CI integration test"""
     pass
 
