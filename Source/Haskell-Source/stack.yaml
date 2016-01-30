@@ -1,9 +1,0 @@
-extra-deps: ["HGamer3D-${HGamer3D_VERSION_MAJOR}.${HGamer3D_VERSION_MINOR}.${HGamer3D_VERSION_PATCH}", "vect-0.4.7"]
-resolver: lts-3.4
-flags: {}
-packages:
-- 'Library'
-- 'Samples'
-extra-lib-dirs:
-- '${HG3D_RUNTIME_DIR}'
-- '${URHO3D_RUNTIME_DIR}'

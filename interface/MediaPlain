@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type='text/xsl' href='interface.xsl'?>
+<interface uri="http://www.hgamer3d.org/interface/MediaPlain" xmlns="http://zero-install.sourceforge.net/2004/injector/interface">
+  <name>HGamer3D Runtime Resources - Plain</name>
+  <summary>Runtime resources for HGamer3D</summary>
+  <description>
+    Runtime resources, media files and similar for HGamer3D
+    taken from the underlying engine resource folders.
+  </description>
+
+  <group main="">
+    <implementation id="." version="{version}">
+    </implementation>
+  </group>
+</interface>

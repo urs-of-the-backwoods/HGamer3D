@@ -1,0 +1,7 @@
+extra-deps: ["messagepack-0.5.0", "vect-0.4.7"]
+resolver: lts-3.4
+flags: {}
+packages:
+- '.'
+- '../../fresco/haskell'
+extra-lib-dirs:

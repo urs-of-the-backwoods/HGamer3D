@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type='text/xsl' href='interface.xsl'?>
+<interface uri="http://www.hgamer3d.org/examples/Any" xmlns="http://zero-install.sourceforge.net/2004/injector/interface">
+  <name>Any Example</name>
+  <summary>HGamer3D Cube Example, with dependency runtime</summary>
+  <description>
+    Try to use the data files from different directory.
+  </description>
+  <group main="{example}">
+    <requires interface="http://www.hgamer3d.org/interface/MediaPlain">
+      <environment insert="." name="URHO3D_PREFIX_PATH"/>
+    </requires>
+    <requires interface="http://www.hgamer3d.org/interface/Intonaco">
+      <environment insert="libintonaco.so" name="INTONACO_LIB"/>
+    </requires>
+    <requires interface="http://www.hgamer3d.org/interface/GameEngineGio">
+      <environment insert="./game_engine.gio" name="INTONACO"/>
+    </requires>
+    <implementation id="." version="0.0.1">
+    </implementation>
+  </group>
+</interface>
