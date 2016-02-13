@@ -10,6 +10,7 @@
 
 build-gamegio
 build-media
+build-media-ex
 build-hgamer3d
 build-examples
 examples/.stack-work

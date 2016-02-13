@@ -1,22 +1,43 @@
-<?xml version="1.0" ?>
-<?xml-stylesheet type='text/xsl' href='interface.xsl'?>
-<interface uri="http://www.hgamer3d.org/examples/Any" xmlns="http://zero-install.sourceforge.net/2004/injector/interface">
-  <name>Any Example</name>
-  <summary>HGamer3D Cube Example, with dependency runtime</summary>
-  <description>
-    Try to use the data files from different directory.
-  </description>
-  <group main="{example}">
-    <requires interface="http://www.hgamer3d.org/interface/MediaPlain">
-      <environment insert="." name="URHO3D_PREFIX_PATH"/>
-    </requires>
-    <requires interface="http://www.hgamer3d.org/interface/Intonaco">
-      <environment insert="libintonaco.so" name="INTONACO_LIB"/>
-    </requires>
-    <requires interface="http://www.hgamer3d.org/interface/GameEngineGio">
-      <environment insert="./game_engine.gio" name="INTONACO"/>
-    </requires>
-    <implementation id="." version="0.0.1">
-    </implementation>
-  </group>
-</interface>
+# arriccio.toml file for starting HGamer3D Examples
+
+[If] 
+  Id = "http://www.hgamer3d.org/interface/{example}Example"
+  Purpose = "{example} Example"
+  Description = """
+    This interface is starting a {example} example, by
+    binding the required data, game engine runtime and intonaco libraries
+    and then starting the main executable.
+  """
+
+# amd64 linux implementation
+#
+
+[[Impls]]
+  location = "http://www.hgamer3d.org/downloads/{example}Example-amd64-linux-{version}.tar.gz"
+  pgpkey = "https://www.github.com/urs-of-the-backwoods.keys"
+  version = "{version}"
+  architecture = "amd64"
+  os = "linux"
+  Command = "{example}"
+
+[[Impls.dependencies]]
+  Id = "http://www.hgamer3d.org/interface/MediaPlain"
+  VersionConstraint = "{version_media}"
+  Environment = ["add-path URHO3D_PREFIX_PATH ."]
+
+[[Impls.dependencies]]
+  Id = "http://www.hgamer3d.org/interface/MediaExamples"
+  VersionConstraint = "{version_media_examples}"
+  Environment = ["add-path HG3D_RESOURCE_PATH ."]
+
+[[Impls.dependencies]]
+  Id = "http://www.hgamer3d.org/interface/Intonaco"
+  VersionConstraint = "{version_intonaco}"
+  Environment = ["add-path INTONACO_LIB libintonaco.so"]
+
+[[Impls.dependencies]]
+  Id = "http://www.hgamer3d.org/interface/GameEngineGio"
+  VersionConstraint = "{version_gamegio}"
+  Environment = ["add-path INTONACO game_engine.gio"]
+
+

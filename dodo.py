@@ -9,19 +9,42 @@
 # 
 #	file: dodo.py
 
-import os, os.path
+import os, os.path, platform
 from doit.tools import config_changed
+
+def get_os():
+	os = platform.system()
+	if os == "Linux":
+		return "linux"
+	if os == "Windows":
+		return "windows"
+	return "???"
+
+def get_arch():
+	ar = platform.machine()
+	if ar == "x86_64":
+		return "amd64"
+	if ar == "i386":
+		return "386"
+
+
+arch_os = get_arch() + "-" + get_os()
 
 # version information for all subcomponents
 version_gamegio = "0.7.0"
 version_media = "1.4.0"
+version_media_examples = "0.1.0"
 version_hgamer3d = "0.7.0"
+version_intonaco = "0.1.0"
 
-def copy_file_replace(file_in, replace_in, replace_out, targets):
+def copy_file_replace(file_in, replace_dict, targets):
 	with open(targets[0], "wt") as fout:
 	    with open(file_in, "rt") as fin:
 	        for line in fin:
-	            fout.write(line.replace(replace_in, replace_out))
+	        	line_out = line
+	        	for k in replace_dict.keys():
+	        		line_out = line_out.replace(k, replace_dict[k])
+		        fout.write(line_out)
 
 
 def task_gamegio():
@@ -39,8 +62,9 @@ def task_gamegio():
 	yield {
 		'name' : 'library',
 	    'actions': [
+		 			'mkdir -p build-gamegio/gamegio-' + arch_os + '-' + version_gamegio,
 	    			'cd build-gamegio && cmake --build . --config Release',
-	    			'cp build-gamegio/libgame_gio_lib.so build-gamegio/game_engine.gio',
+	    			'cp build-gamegio/libgame_gio_lib.so build-gamegio/gamegio-' + arch_os + '-' + version_gamegio + '/game_engine.gio',
 	    ],
 	    'file_dep': [
 			'fresco/game-giornata/gui.hpp',
@@ -56,17 +80,17 @@ def task_gamegio():
 			'fresco/game-giornata/interface.cpp',
 			'fresco/game-giornata/interface.h'    
 		],
-	    'targets': ['build-gamegio/game_engine.gio',
+	    'targets': ['build-gamegio/gamegio-' + arch_os + '-' + version_gamegio + '/game_engine.gio',
 	    ],
 	} 
 
 	yield {
-		'name' : 'feed',
+		'name' : 'arriccio',
 	    'actions': [
-	    	(copy_file_replace, ['interface/GameEngineGio', '{version}', version_gamegio]),
-				'0install add-feed http://www.hgamer3d.org/interface/GameEngineGio build-gamegio/GameEngineGio || true'
+	    	(copy_file_replace, ['interface/GameEngineGio', {'{version}' : version_gamegio} ]),
+				'aio local http://www.hgamer3d.org/interface/GameEngineGio build-gamegio || true'
 	    ],
-	    'targets': ['build-gamegio/GameEngineGio'],
+	    'targets': ['build-gamegio/arriccio.toml'],
 	    'uptodate': [config_changed(version_gamegio)],
 	    'file_dep': [
 			'interface/GameEngineGio',
@@ -77,27 +101,54 @@ def task_gamegio():
 def task_media():
 
 	yield {
-		'name' : 'build-dir',
-		'actions' : ['mkdir -p build-media',
-					 'cp -r ../HGamer3D-Runtimes/Plain-1.4/* build-media'
+		'name' : 'build-dir-plain',
+		'actions' : ['mkdir -p build-media/media-' + version_media,
+					 'cp -r ../HGamer3D-Runtimes/Plain-1.4/* build-media/media-' + version_media,
 		],
 	    'file_dep': [
 			'../HGamer3D-Runtimes/Plain-1.4/LICENSE.txt',
 			'../HGamer3D-Runtimes/Plain-1.4/README_RUNTIME.txt',
 			],
-		'targets' : ['build-media']
+		'targets' : ['build-media/media-' + version_media]
 	}
 
 	yield {
-		'name' : 'feed',
+		'name' : 'arriccio-plain',
 	    'actions': [
-	    	(copy_file_replace, ['interface/MediaPlain', '{version}', version_media]),
-				'0install add-feed http://www.hgamer3d.org/interface/MediaPlain build-media/MediaPlain || true'
+	    	(copy_file_replace, ['interface/MediaPlain', {'{version}' : version_media} ]),
+				'aio local http://www.hgamer3d.org/interface/MediaPlain build-media || true'
 	    ],
-	    'targets': ['build-media/MediaPlain'],
+	    'targets': ['build-media/arriccio.toml'],
 	    'uptodate': [config_changed(version_media)],
 	    'file_dep': [
 			'interface/MediaPlain',
+		]
+	} 
+
+def task_media_ex():
+
+	yield {
+		'name' : 'build-dir',
+		'actions' : ['mkdir -p build-media-ex/media-examples-' + version_media_examples,
+					 'cp -r ../HGamer3D-Runtimes/HGamer3D-1/* build-media-ex/media-examples-' + version_media_examples,
+		],
+	    'file_dep': [
+			'../HGamer3D-Runtimes/HGamer3D-1/LICENSE.txt',
+			'../HGamer3D-Runtimes/HGamer3D-1/README_RUNTIME.txt',
+			],
+		'targets' : ['build-media-ex/media-examples-' + version_media_examples]
+	}
+
+	yield {
+		'name' : 'arriccio',
+	    'actions': [
+	    	(copy_file_replace, ['interface/MediaExamples', {'{version}' : version_media_examples} ]),
+				'aio local http://www.hgamer3d.org/interface/MediaExamples build-media-ex || true'
+	    ],
+	    'targets': ['build-media-ex/arriccio.toml'],
+	    'uptodate': [config_changed(version_media_examples)],
+	    'file_dep': [
+			'interface/MediaExamples',
 		]
 	} 
 
@@ -159,22 +210,35 @@ def task_hgamer3d():
 
 def task_examples():
 
-	return {
-		'actions' : [
-					 'cd examples && stack build',
-					 'mkdir -p build-examples',
-					 'cd examples && bash -c "cp `find .stack-work | grep bin/RotatingCube` ../build-examples"',
-					 'cd examples && bash -c "cp `find .stack-work | grep bin/Gui1` ../build-examples"',
-					 'cd examples && bash -c "cp `find .stack-work | grep bin/SoundEffects` ../build-examples"',
-					],
-		'targets' : ['build-examples/Gui1',
-					 'build-examples/RotatingCube',
-					 'build-examples/SoundEffects',
-		],
-	    'file_dep': [
-			'examples/Gui1.hs',
-			'examples/RotatingCube.hs',
-			'examples/SoundEffects.hs',
-		],
-		}
+	for example in [
+		"RotatingCube",
+		"Gui1",
+		"SoundEffects",
+	]:
 
+		yield {
+			'name' : "build-" + example,
+			'actions' : [
+						 'cd examples && stack build',
+						 'mkdir -p build-examples/' + example + '/'  + example + 'Example-' + arch_os + '-' + version_hgamer3d,
+						 'cd examples && bash -c "cp `find .stack-work | grep bin/' + example +'` ../build-examples/' + example + '/'  + example + 'Example-' + arch_os + '-' + version_hgamer3d + '"',
+						],
+			'targets' : ['build-examples/' + example + '/'  + example + '-' + arch_os + '-' + version_hgamer3d,
+			],
+		    'file_dep': [
+				'examples/' + example + '.hs',
+			],
+			}
+
+		yield {
+			'name' : 'arriccio-' + example,
+		    'actions': [
+		    	(copy_file_replace, ['interface/Example', {'{example}' : example, '{version}' : version_hgamer3d, '{version_media}' : version_media, '{version_media_examples}' : version_media_examples, '{version_gamegio}' : version_gamegio, '{version_intonaco}' : version_intonaco}]),
+				'aio local http://www.hgamer3d.org/interface/' + example + 'Example build-examples/' + example + ' || true',
+				'aio alias ' + example + ' http://www.hgamer3d.org/interface/' + example + 'Example || true'
+		    ],
+		    'targets': ['build-examples/' + example + '/arriccio.toml'],
+		    'file_dep': [
+				'interface/Example',
+			]
+		} 

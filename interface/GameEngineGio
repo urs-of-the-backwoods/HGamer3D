@@ -1,14 +1,16 @@
-<?xml version="1.0" ?>
-<?xml-stylesheet type='text/xsl' href='interface.xsl'?>
-<interface uri="http://www.hgamer3d.org/interface/GameEngineGio" xmlns="http://zero-install.sourceforge.net/2004/injector/interface">
-  <name>HGamer3D Game Engine Gio</name>
-  <summary>Game Engine Gio (fresco component) for HGamer3D</summary>
-  <description>
-    The fresco runtime component to bind game engine functionality.
-  </description>
+# arriccio.toml file for HGamer3D - runtime media data
 
-  <group main="">
-    <implementation id="." version="{version}">
-    </implementation>
-  </group>
-</interface>
+[If]
+  Id = "http://www.hgamer3d.org/interface/GameEngineGio"
+  Purpose = "HGamer3D Game Engine Gio"
+  Description = """
+    The fresco runtime component to bind game engine functionality.
+  """
+
+[[Impls]]
+  location = "http://www.hgamer3d.org/downloads/gamegio-amd64-linux-{version}.tar.gz"
+  pgpkey = "https://www.github.com/urs-of-the-backwoods.keys"
+  version = "{version}"
+  architecture = "amd64"
+  os = "linux"
+

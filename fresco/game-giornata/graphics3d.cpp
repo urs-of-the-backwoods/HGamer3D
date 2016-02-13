@@ -8,6 +8,7 @@
 // 
 //	file: Urho3D-Binding/graphics3d.cpp
 
+#include <sstream>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -16,6 +17,25 @@
 #include "graphics3d.hpp"
 
 using namespace std;
+
+
+// utils
+
+std::vector<std::string> &split1(const std::string &s, char delim, std::vector<std::string> &elems) {
+    std::stringstream ss(s);
+    std::string item;
+    while (std::getline(ss, item, delim)) {
+        elems.push_back(item);
+    }
+    return elems;
+}
+
+std::vector<std::string> split(const std::string &s, char delim) {
+    std::vector<std::string> elems;
+    split1(s, delim, elems);
+    return elems;
+}
+  
 
 // Initialization of objects, remarks:
 // -----------------------------------
@@ -165,6 +185,17 @@ int Graphics3DSystem::create(char* pdata, int len)
   
   // Initialize GUI, at least set a style
   ResourceCache* cache = context->GetSubsystem<ResourceCache>();
+
+  // add resource dirs from environment
+  char* rpath = getenv("HG3D_RESOURCE_PATH");
+  std::string rp = string(rpath);
+  std::vector<std::string> elems = split(rp, ';');
+
+  for(std::vector<string>::iterator it = elems.begin(); it != elems.end(); ++it) {
+    /* std::cout << *it; ... */
+    cache->AddResourceDir(String((*it).c_str()));
+  }
+ 
   XMLFile* style = cache->GetResource<XMLFile>("UI/DefaultStyle.xml");
   UI* ui = context->GetSubsystem<UI>();
   ui->GetRoot()->SetDefaultStyle(style);

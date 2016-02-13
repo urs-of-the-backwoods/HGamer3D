@@ -1,0 +1,18 @@
+# arriccio.toml file for HGamer3D - runtime media data for the examples
+
+[If]
+  Id = "http://www.hgamer3d.org/interface/MediaExamples"
+  Purpose = "HGamer3D Runtime Resources - Examples"
+  Description = """
+    Runtime resources, media files and similar for HGamer3D examples.
+  """
+
+# wildcard architecture, os
+# data can be used for all architectures
+[[Impls]]
+  location = "http://www.hgamer3d.org/downloads/media-examples-{version}.tar.gz"
+  pgpkey = "https://www.github.com/urs-of-the-backwoods.keys"
+  version = "{version}"
+  architecture = "*"
+  os = "*"
+
