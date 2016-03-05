@@ -86,10 +86,11 @@ ButtonItem::~ButtonItem()
     delete button;
 }
 
-void ButtonItem::registerPressedReleasedFunction(msgFP2 f, void* p2)
+void ButtonItem::registerPressedReleasedFunction(msgFP2 f, void* p2, uint64_t cbet)
 {
     callbackF = f;
     callbackData = p2;
+    cbEventType = cbet;
 }
 
 void ButtonItem::HandlePressedReleasedChanged(StringHash eventType, VariantMap& eventData)
@@ -99,7 +100,7 @@ void ButtonItem::HandlePressedReleasedChanged(StringHash eventType, VariantMap& 
         msgpack::sbuffer buffer;
         msgpack::packer<msgpack::sbuffer> pk(&buffer);
         pk.pack(button->IsPressed());
-        callbackF((void*)this, callbackData, buffer.data(), buffer.size());
+        callbackF(callbackData, cbEventType, buffer.data(), buffer.size());
     }
 }
 
@@ -143,10 +144,11 @@ int EditTextItem::msgEditText(char* pdata, int len)
     return 0;
 }
 
-void EditTextItem::registerTextEventFunction(msgFP2 f, void* p2)
+void EditTextItem::registerTextEventFunction(msgFP2 f, void* p2, uint64_t cbet)
 {
     callbackF = f;
     callbackData = p2;
+    cbEventType = cbet;
 }
 
 void EditTextItem::HandleTextChanged (StringHash eventType, VariantMap& eventData)
@@ -156,7 +158,7 @@ void EditTextItem::HandleTextChanged (StringHash eventType, VariantMap& eventDat
         msgpack::sbuffer buffer;
         msgpack::packer<msgpack::sbuffer> pk(&buffer);
         pk.pack(str.CString());
-        callbackF((void*)this, callbackData, buffer.data(), buffer.size());
+        callbackF(callbackData, cbEventType, buffer.data(), buffer.size());
     }
 }
 
@@ -237,10 +239,11 @@ int SliderItem::msgSlider(char* pdata, int len)
     return 0;
 }
 
-void SliderItem::registerSliderEventFunction(msgFP2 f, void* p2)
+void SliderItem::registerSliderEventFunction(msgFP2 f, void* p2, uint64_t cbet)
 {
     callbackF = f;
     callbackData = p2;
+    cbEventType = cbet;
 }
 
 void SliderItem::HandleSliderChanged(StringHash eventType, VariantMap& eventData)
@@ -251,7 +254,7 @@ void SliderItem::HandleSliderChanged(StringHash eventType, VariantMap& eventData
 		pk.pack_array(2);
         pk.pack(slider->GetRange());
         pk.pack(slider->GetValue());
-        callbackF((void*)this, callbackData, buffer.data(), buffer.size());
+        callbackF(callbackData, cbEventType, buffer.data(), buffer.size());
     }
 }
 
@@ -296,10 +299,11 @@ int CheckBoxItem::msgCheckBox(char* pdata, int len)
     return 0;
 }
 
-void CheckBoxItem::registerToggledEventFunction(msgFP2 f, void* p2)
+void CheckBoxItem::registerToggledEventFunction(msgFP2 f, void* p2, uint64_t cbet)
 {
     callbackF = f;
     callbackData = p2;
+    cbEventType = cbet;
 }
 
 void CheckBoxItem::HandleToggled(StringHash eventType, VariantMap& eventData)
@@ -308,7 +312,7 @@ void CheckBoxItem::HandleToggled(StringHash eventType, VariantMap& eventData)
         msgpack::sbuffer buffer;
         msgpack::packer<msgpack::sbuffer> pk(&buffer);
         pk.pack(checkbox->IsChecked());
-        callbackF((void*)this, callbackData, buffer.data(), buffer.size());
+        callbackF(callbackData, cbEventType, buffer.data(), buffer.size());
     }
 }
 
@@ -372,10 +376,11 @@ int DropDownListItem::msgDropDownList(char* pdata, int len)
     return 0;
 }
 
-void DropDownListItem::registerSelectionEventFunction(msgFP2 f, void* p2)
+void DropDownListItem::registerSelectionEventFunction(msgFP2 f, void* p2, uint64_t cbet)
 {
     callbackF = f;
     callbackData = p2;
+    cbEventType = cbet;
 }
 
 void DropDownListItem::HandleSelectionChanged(StringHash eventType, VariantMap& eventData)
@@ -393,7 +398,7 @@ void DropDownListItem::HandleSelectionChanged(StringHash eventType, VariantMap& 
         pk.pack(1);
         int s = eventData[ItemSelected::P_SELECTION].GetInt();
         pk.pack(s);
-        callbackF((void*)this, callbackData, buffer.data(), buffer.size());
+        callbackF(callbackData, cbEventType, buffer.data(), buffer.size());
     }
 }
 

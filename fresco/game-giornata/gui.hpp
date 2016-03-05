@@ -86,6 +86,7 @@ protected:
     SharedPtr<Button> button;
     msgFP2 callbackF;
     void* callbackData;
+    uint64_t cbEventType;
     
 public:
   ButtonItem(Graphics3DSystem* g3ds);
@@ -93,7 +94,7 @@ public:
  
   int create(char* pdata, int len);
   
-  void registerPressedReleasedFunction(msgFP2 f, void* p2);
+  void registerPressedReleasedFunction(msgFP2 f, void* p2, uint64_t evt_t);
   void HandlePressedReleasedChanged(StringHash eventType, VariantMap& eventData);
 };
 
@@ -105,6 +106,7 @@ protected:
     SharedPtr<LineEdit> edittext;
     msgFP2 callbackF;
     void* callbackData;
+    uint64_t cbEventType;
 
 public:
   EditTextItem(Graphics3DSystem* g3ds);
@@ -113,7 +115,7 @@ public:
   int create(char* pdata, int len);
   int msgEditText(char* pdata, int len);
   
-  void registerTextEventFunction(msgFP2 f, void* p2);
+  void registerTextEventFunction(msgFP2 f, void* p2, uint64_t evt_t);
   void HandleTextChanged(StringHash eventType, VariantMap& eventData);
 };
 
@@ -138,6 +140,7 @@ protected:
     SharedPtr<Slider> slider;
     msgFP2 callbackF;
     void* callbackData;
+    uint64_t cbEventType;
 
 public:
   SliderItem(Graphics3DSystem* g3ds);
@@ -146,7 +149,7 @@ public:
   int create(char* pdata, int len);
   int msgSlider(char* pdata, int len);
   
-  void registerSliderEventFunction(msgFP2 f, void* p2);
+  void registerSliderEventFunction(msgFP2 f, void* p2, uint64_t evt_t);
   void HandleSliderChanged(StringHash eventType, VariantMap& eventData);
 };
 
@@ -158,6 +161,7 @@ protected:
     SharedPtr<CheckBox> checkbox;
     msgFP2 callbackF;
     void* callbackData;
+    uint64_t cbEventType;
 
 public:
   CheckBoxItem(Graphics3DSystem* g3ds);
@@ -166,7 +170,7 @@ public:
   int create(char* pdata, int len);
   int msgCheckBox(char* pdata, int len);
 
-  void registerToggledEventFunction(msgFP2 f, void* p2);
+  void registerToggledEventFunction(msgFP2 f, void* p2, uint64_t evt_t);
   void HandleToggled(StringHash eventType, VariantMap& eventData);
 };
 
@@ -178,6 +182,7 @@ protected:
     SharedPtr<DropDownList> dropdownlist;
     msgFP2 callbackF;
     void* callbackData;
+    uint64_t cbEventType;
 
 public:
   DropDownListItem(Graphics3DSystem* g3ds);
@@ -186,7 +191,7 @@ public:
   int create(char* pdata, int len);
   int msgDropDownList(char* pdata, int len);
 
-  void registerSelectionEventFunction(msgFP2 f, void* p2);
+  void registerSelectionEventFunction(msgFP2 f, void* p2, uint64_t evt_t);
   void HandleSelectionChanged(StringHash eventType, VariantMap& eventData);
 };
 

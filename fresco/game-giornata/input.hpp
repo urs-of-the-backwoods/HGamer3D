@@ -80,9 +80,11 @@ OBJECT(InputEventHandler);
 private:
   msgFP2 mouseEventF;
   void* mouseDataP;
+  uint64_t mouseEventType;
 
   msgFP2 keyEventF;
   void* keyDataP;
+  uint64_t keyEventType;
 
   Input *input;
   
@@ -108,8 +110,8 @@ public:
   int create(char* pdata, int len);
   int msgInputEventHandler(char* pdata, int len);
 
-  void registerMouseEventFunction(msgFP2 f, void* p2);
-  void registerKeyEventFunction(msgFP2 f, void* p2);
+  void registerMouseEventFunction(msgFP2 f, void* p2, uint64_t mouseET);
+  void registerKeyEventFunction(msgFP2 f, void* p2, uint64_t keyET);
 
   // the event handling routines
   void HandleMouseMove(StringHash eventType, VariantMap& eventData);

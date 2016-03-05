@@ -76,6 +76,12 @@ createAll = do
                 , ctScreenRect #: Rectangle 350 10 300 400
             ]
         ]
+
+    -- create callback for gui
+    forkIO $ do
+        cbs <- createCBS
+        forever (stepCBS cbs)
+
     return res
 
 rotate eGeo eG3D = do

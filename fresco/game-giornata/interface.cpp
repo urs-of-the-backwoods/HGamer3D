@@ -778,34 +778,34 @@ int get_msg_sender(uint64_t idItemType, uint64_t idPropType, msgFP *f)
 int register_msg_receiver(uint64_t  idItemType, uint64_t idEvtType, void* p1, void* p2, msgFP2 f)
 {
   if (idItemType == id_inputeventhandler && idEvtType == id_mouseevent) {
-    ((InputEventHandler*)p1)->registerMouseEventFunction(f, p2);
+    ((InputEventHandler*)p1)->registerMouseEventFunction(f, p2, idEvtType);
     return OK;
   }
   
   if (idItemType == id_inputeventhandler && idEvtType == id_keyevent) {
-    ((InputEventHandler*)p1)->registerKeyEventFunction(f, p2);
+    ((InputEventHandler*)p1)->registerKeyEventFunction(f, p2, idEvtType);
     return OK;
   }
  
   if (idItemType == id_edittext && idEvtType == id_edittext) {
-    ((EditTextItem*)p1)->registerTextEventFunction(f, p2);
+    ((EditTextItem*)p1)->registerTextEventFunction(f, p2, idEvtType);
     return OK;
   }
   if (idItemType == id_checkbox && idEvtType == id_checkbox) {
-    ((CheckBoxItem*)p1)->registerToggledEventFunction(f, p2);
+    ((CheckBoxItem*)p1)->registerToggledEventFunction(f, p2, idEvtType);
     return OK;
   }
   if (idItemType == id_button && idEvtType == id_button) {
     printf("low level (c) register function, button item\n");
-    ((ButtonItem*)p1)->registerPressedReleasedFunction(f, p2);
+    ((ButtonItem*)p1)->registerPressedReleasedFunction(f, p2, idEvtType);
     return OK;
   }
   if (idItemType == id_slider && idEvtType == id_slider) {
-    ((SliderItem*)p1)->registerSliderEventFunction(f, p2);
+    ((SliderItem*)p1)->registerSliderEventFunction(f, p2, idEvtType);
     return OK;
   }
   if (idItemType == id_dropdownlist && idEvtType == id_dropdownlist) {
-    ((DropDownListItem*)p1)->registerSelectionEventFunction(f, p2);
+    ((DropDownListItem*)p1)->registerSelectionEventFunction(f, p2, idEvtType);
     return OK;
   }
 }

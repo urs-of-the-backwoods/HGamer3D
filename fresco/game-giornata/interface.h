@@ -11,7 +11,7 @@
 #include "game_gio_lib_export.h" 
 
 typedef int (*msgFP)(void *p, char* data, int len);
-typedef int (*msgFP2)(void *p1, void *p2, char* data, int len);
+typedef int (*msgFP2)(void *p1, uint64_t idItemType, char* data, int len);
 typedef int (*initFP)(void *p);
 
 int GAME_GIO_LIB_EXPORT create_item(uint64_t idItemType, char* c_initData, int len_id, void** p);

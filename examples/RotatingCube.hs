@@ -36,13 +36,13 @@ start = do
 
       eButton <- newE [
             ctButton #: False,
-            ctText #: " Exit",
+            ctText #: " Raus Hier",
             ctScreenRect #: Rectangle 200 10 50 25
             ]
 
       -- create callback for gui
-      cbs <- createCBS
       forkIO $ do
+            cbs <- createCBS
             registerReceiverCBS cbs eButton ctButton (\flag -> if (not flag) then exitSuccess else return ())
             forever (stepCBS cbs)
 
@@ -78,6 +78,8 @@ showPic eG3D = do
       return ()
 
 main = do 
+      print $ "rotating main"
+
       (eGeo, eCam, eG3D) <- start
       forkIO $ rotateZ eGeo
       forkIO $ rotateX eGeo

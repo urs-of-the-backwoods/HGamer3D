@@ -223,7 +223,7 @@ void InputEventHandler::HandleMouseButtonUp(StringHash eventType, VariantMap& ev
 		pk.pack_fix_int32(eventData[MouseButtonUp::P_BUTTON].GetInt());
 		pk.pack_fix_int32(eventData[MouseButtonUp::P_BUTTONS].GetInt());
 		pk.pack_fix_int32(eventData[MouseButtonUp::P_QUALIFIERS].GetInt());
-		mouseEventF((void*)this, mouseDataP, buffer.data(), buffer.size());
+    mouseEventF(mouseDataP, mouseEventType, buffer.data(), buffer.size());
 	}
 }
 
@@ -237,7 +237,7 @@ void InputEventHandler::HandleMouseButtonDown(StringHash eventType, VariantMap& 
 		pk.pack_fix_int32(eventData[MouseButtonDown::P_BUTTON].GetInt());
 		pk.pack_fix_int32(eventData[MouseButtonDown::P_BUTTONS].GetInt());
 		pk.pack_fix_int32(eventData[MouseButtonDown::P_QUALIFIERS].GetInt());
-		mouseEventF((void*)this, mouseDataP, buffer.data(), buffer.size());
+    mouseEventF(mouseDataP, mouseEventType, buffer.data(), buffer.size());
 	}
 }
 
@@ -261,7 +261,7 @@ void InputEventHandler::HandleMouseMove(StringHash eventType, VariantMap& eventD
 		pk.pack_fix_int32(eventData[MouseMove::P_DY].GetInt());
 		pk.pack_fix_int32(eventData[MouseMove::P_BUTTONS].GetInt());
 		pk.pack_fix_int32(eventData[MouseMove::P_QUALIFIERS].GetInt());
-		mouseEventF((void*)this, mouseDataP, buffer.data(), buffer.size());
+    mouseEventF(mouseDataP, mouseEventType, buffer.data(), buffer.size());
 	}
 }
 
@@ -275,7 +275,7 @@ void InputEventHandler::HandleMouseWheel(StringHash eventType, VariantMap& event
 		pk.pack_fix_int32(eventData[MouseWheel::P_WHEEL].GetInt());
 		pk.pack_fix_int32(eventData[MouseWheel::P_BUTTONS].GetInt());
 		pk.pack_fix_int32(eventData[MouseWheel::P_QUALIFIERS].GetInt());
-		mouseEventF((void*)this, mouseDataP, buffer.data(), buffer.size());
+    mouseEventF(mouseDataP, mouseEventType, buffer.data(), buffer.size());
 	}
 }
 
@@ -285,7 +285,7 @@ void InputEventHandler::HandleMouseVisibleChanged(StringHash eventType, VariantM
 		msgpack::sbuffer buffer;
 		msgpack::packer<msgpack::sbuffer> pk(&buffer);
 		pk.pack(eventData[MouseVisibleChanged::P_VISIBLE].GetBool());
-		mouseEventF((void*)this, mouseDataP, buffer.data(), buffer.size());
+		mouseEventF(mouseDataP, mouseEventType, buffer.data(), buffer.size());
 	}
 }
 
@@ -300,7 +300,7 @@ void InputEventHandler::HandleKeyUp(StringHash eventType, VariantMap& eventData)
         pk.pack_fix_int32(eventData[KeyUp::P_KEY].GetInt());
         pk.pack_fix_int32(sc);
         pk.pack(input->GetScancodeName(sc).CString());
-        keyEventF((void*)this, mouseDataP, buffer.data(), buffer.size());
+        keyEventF(mouseDataP, mouseEventType, buffer.data(), buffer.size());
 	}
 }
 
@@ -316,26 +316,28 @@ void InputEventHandler::HandleKeyDown(StringHash eventType, VariantMap& eventDat
             pk.pack_fix_int32(eventData[KeyUp::P_KEY].GetInt());
             pk.pack_fix_int32(sc);
             pk.pack(input->GetScancodeName(sc).CString());
-            keyEventF((void*)this, mouseDataP, buffer.data(), buffer.size());
+            keyEventF(mouseDataP, mouseEventType, buffer.data(), buffer.size());
         }
 	}
 }
 
-void InputEventHandler::registerMouseEventFunction(msgFP2 f, void* p2)
+void InputEventHandler::registerMouseEventFunction(msgFP2 f, void* p2, uint64_t mouseET)
 {
     // register events: depends on default setting
     bMouseEvents = true;
     registerEvents();
     mouseEventF = f;
     mouseDataP = p2;
+    mouseEventType = mouseET;
 }
 
-void InputEventHandler::registerKeyEventFunction(msgFP2 f, void* p2)
+void InputEventHandler::registerKeyEventFunction(msgFP2 f, void* p2, uint64_t keyET)
 {
     // register events: depends on default setting
     bKeyEvents = true;
     registerEvents();
     keyEventF = f;
     mouseDataP = p2;
+    keyEventType = keyET;
 }
 
