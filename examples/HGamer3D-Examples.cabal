@@ -28,6 +28,11 @@ Executable Gui1
 Executable SoundEffects
   Build-Depends:     base >= 3 && < 5, HGamer3D, text
   Main-Is:          SoundEffects.hs
-  ghc-options:		-threaded -rtsopts "-with-rtsopts=-N -A15M -qg -G3"
+  ghc-options:    -threaded -rtsopts "-with-rtsopts=-N -A15M -qg -G3"
+
+Executable Cuboid2
+  Build-Depends:     base >= 3 && < 5, HGamer3D, text
+  Main-Is:          Cuboid2.hs
+  ghc-options:    -threaded -rtsopts "-with-rtsopts=-N -A15M -qg -G3"
 
      

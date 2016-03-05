@@ -16,6 +16,7 @@ build-examples
 examples/.stack-work
 library/.stack-work
 library/CMakeLists.txt
+library/HGamer3D.cabal
 .doit.db
 .directory
 *.pyc

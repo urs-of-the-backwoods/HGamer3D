@@ -29,7 +29,16 @@ module HGamer3D
 	module HGamer3D.Graphics3D,
 	module HGamer3D.Input,
     module HGamer3D.GUI,
-    module HGamer3D.Audio
+    module HGamer3D.Audio,
+
+    configureHG3D,
+    stepHG3D,
+    loopHG3D,
+    registerCallback,
+    isExitHG3D,
+    exitHG3D,
+
+    HG3D,
 )
 
 where
@@ -41,3 +50,56 @@ import HGamer3D.Graphics3D
 import HGamer3D.Input
 import HGamer3D.GUI
 import HGamer3D.Audio
+
+import Control.Concurrent
+import Control.Monad
+import Control.Concurrent.MVar
+import Data.IORef
+
+-- run loop
+
+type HG3D = (Entity, CallbackSystem, IORef Bool)
+
+configureHG3D = do
+
+	cbsRef <- newEmptyMVar
+
+	-- create graphics system
+	eG3D <- newE [
+	    ctGraphics3DConfig #: standardGraphics3DConfig,
+	    ctGraphics3DCommand #: NoCmd
+	    ]
+
+	-- create callback loop
+	forkIO $ do
+	    cbs <- createCBS
+	    putMVar cbsRef cbs
+	    forever (stepCBS cbs)
+
+	cbs <- takeMVar cbsRef
+	exitRef <- newIORef False
+
+	return (eG3D, cbs, exitRef)
+
+stepHG3D (eG3D, cbs, exitRef) = do
+    setC eG3D ctGraphics3DCommand Step
+
+isExitHG3D (eG3D, cbs, exitRef) = do
+	ise <- readIORef exitRef
+	return ise
+
+loopHG3D (eG3D, cbs, exitRef) loopSleepTime = do
+	stepHG3D (eG3D, cbs, exitRef)
+	sleepFor loopSleepTime
+	ise <- isExitHG3D (eG3D, cbs, exitRef)
+	if not ise then do
+		loopHG3D (eG3D, cbs, exitRef) loopSleepTime
+		return ()
+		else
+			return ()
+
+exitHG3D (eG3D, cvs, exitRef) = do
+	writeIORef exitRef True
+
+registerCallback (eG3D, cbs, exitRef) e ct f = do
+	registerReceiverCBS cbs e ct f

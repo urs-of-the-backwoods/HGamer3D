@@ -70,7 +70,7 @@ int Graphics3DSystem::create(char* pdata, int len)
   msgpack::unpacked msg;
   msgpack::unpack(&msg, pdata, len);
   msgpack::object obj = msg.get();
-  std::cout << "system: " << obj << std::endl;
+//  std::cout << "system: " << obj << std::endl;
   if (obj.type != msgpack::type::ARRAY || obj.via.array.size != 4) return ERROR_TYPE_NOT_KNOWN;
 
   // misc default engine parameters
@@ -177,6 +177,7 @@ int Graphics3DSystem::create(char* pdata, int len)
       ErrorExit();
       return ERROR_COULD_NOT_INITIALIZE_ENGINE;
   }
+  engine->SetAutoExit(false);
   scene = new Scene(context);
   scene->CreateComponent<Octree>();
   
@@ -273,7 +274,7 @@ int HasNode::msgScale(char* pdata, int len)
   msgpack::unpacked msg;
   msgpack::unpack(&msg, pdata, len);
   msgpack::object obj = msg.get();
-  std::cout << "scale: " << obj << std::endl;
+//  std::cout << "scale: " << obj << std::endl;
 
   if (obj.type != msgpack::type::ARRAY || obj.via.array.size != 3) return ERROR_TYPE_NOT_KNOWN;
 
@@ -302,10 +303,10 @@ int CameraItem::create(char* pdata, int len)
   msgpack::unpack(&msg, pdata, len);
   msgpack::object obj = msg.get();
 
-  std::cout << "camera: " << obj << std::endl;
+//  std::cout << "camera: " << obj << std::endl;
   if (obj.type != msgpack::type::ARRAY || obj.via.array.size > 2) return ERROR_TYPE_NOT_KNOWN;
 
-  std::cout << "camera initializing" << std::endl;
+//  std::cout << "camera initializing" << std::endl;
   node->CreateComponent<Camera>();
   Renderer* renderer = node->GetSubsystem<Renderer>();
   viewportSlot = renderer->GetNumViewports();
@@ -317,7 +318,7 @@ int CameraItem::create(char* pdata, int len)
   // camera is main camera, we are done
   if (obj.via.array.ptr[0].as<int>() == 0) return 0;
 
-  std::cout << "camera not main camera" << std::endl;
+//  std::cout << "camera not main camera" << std::endl;
 
   // camera is overlay camera
   if (obj.via.array.ptr[0].as<int>() == 1)
@@ -346,7 +347,7 @@ int CameraItem::msgFrustum(char* pdata, int len)
   msgpack::unpack(&msg, pdata, len);
   msgpack::object obj = msg.get();
 
-  std::cout << "frustum: " << obj << std::endl;
+//  std::cout << "frustum: " << obj << std::endl;
   if (obj.type != msgpack::type::ARRAY || obj.via.array.size != 3) return ERROR_TYPE_NOT_KNOWN;
 
   setFrustum(obj.via.array.ptr[0].as<float>(),
@@ -402,7 +403,7 @@ int LightItem::msgLight(char* pdata, int len)
   msgpack::unpacked msg;
   msgpack::unpack(&msg, pdata, len);
   msgpack::object obj = msg.get();
-  std::cout << "light:" << obj << std::endl;
+//  std::cout << "light:" << obj << std::endl;
 
   if (obj.type != msgpack::type::ARRAY || obj.via.array.size < 4) return ERROR_TYPE_NOT_KNOWN;
 
@@ -438,7 +439,7 @@ int LightItem::msgColour(char* pdata, int len)
   msgpack::unpacked msg;
   msgpack::unpack(&msg, pdata, len);
   msgpack::object obj = msg.get();
-  std::cout << "light-colour:" << obj << std::endl;
+//  std::cout << "light-colour:" << obj << std::endl;
 
   if (obj.type != msgpack::type::ARRAY || obj.via.array.size != 4) return ERROR_TYPE_NOT_KNOWN;
 
@@ -478,23 +479,20 @@ int GeometryItem::msgGeometry(char* pdata, int len)
   msgpack::unpacked msg;
   msgpack::unpack(&msg, pdata, len);
   msgpack::object obj = msg.get();
-  std::cout << "geo: " << obj << std::endl;
+//  std::cout << "geo: " << obj << std::endl;
 
   if (obj.type != msgpack::type::ARRAY || obj.via.array.size != 2) return ERROR_TYPE_NOT_KNOWN;
 
-  std::cout << "geo initializing" << std::endl;
+//  std::cout << "geo initializing" << std::endl;
 
   ResourceCache* cache = node->GetSubsystem<ResourceCache>();
   StaticModel* model = node->GetComponent<StaticModel>();
   if (obj.via.array.ptr[0].as<int>() == 0) { // Basic Geometry
-    std::cout << "in geo initializing one" << std::endl;
     msgpack::object shape_o = obj.via.array.ptr[1].via.array.ptr[0];
-    std::cout << "in geo initializing two" << shape_o << std::endl;
     if (shape_o.via.array.ptr[0].as<int>() == 0) { // sphere
       std::cout << "in geo initializing three" << std::endl;
       model->SetModel(cache->GetResource<Model>("Models/Sphere.mdl"));
     } else if (shape_o.via.array.ptr[0].as<int>() == 1) { // cube
-      std::cout << "in geo initializing four" << std::endl;
       model->SetModel(cache->GetResource<Model>("Models/Box.mdl"));
     } else if (shape_o.via.array.ptr[0].as<int>() == 2) { // plane
       model->SetModel(cache->GetResource<Model>("Models/Plane.mdl"));
@@ -510,7 +508,7 @@ int GeometryItem::msgGeometry(char* pdata, int len)
       model->SetModel(cache->GetResource<Model>(String(obj.via.array.ptr[1].as<char*>())));
   }
 
-  std::cout << "geo initializing end" << std::endl;
+//  std::cout << "geo initializing end" << std::endl;
   return 0;
 };
 
@@ -519,7 +517,7 @@ int GeometryItem::msgMaterial(char* pdata, int len)
   msgpack::unpacked msg;
   msgpack::unpack(&msg, pdata, len);
   msgpack::object obj = msg.get();
-  std::cout << "geo-material: " << obj << std::endl;
+//  std::cout << "geo-material: " << obj << std::endl;
 
   if (obj.type != msgpack::type::ARRAY || obj.via.array.size != 2) return ERROR_TYPE_NOT_KNOWN;
 

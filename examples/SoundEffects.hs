@@ -9,14 +9,12 @@ import Control.Concurrent
 import Control.Monad
 
 createAll = do
+
+    hg3d <- configureHG3D      -- initialize
+
     -- create all elements
     res <- mapM newE [
 
-            -- graphics system creation
-            [
-                ctGraphics3DConfig #: standardGraphics3DConfig,
-                ctGraphics3DCommand #: NoCmd
-            ],
             [   -- camera
                 ctCamera #: FullViewCamera,
                 ctPosition #: Vec3 1 1 (-30.0),
@@ -102,42 +100,39 @@ createAll = do
             
             
         ]
-    return res
+    return (res, hg3d)
 
-rotate eGeo eG3D = do
+rotate eGeo = do
     forever $ do 
-        updateC eGeo ctOrientation (\u -> (rotU vec3Y 0.02) .*. (rotU vec3X 0.005) .*. u)
-        setC eG3D ctGraphics3DCommand Step
+        updateC eGeo ctOrientation (\u -> (rotU vec3Y 0.02) .*. (rotU vec3X 0.05) .*. u)
         sleepFor (msecT 20)
     return ()
 
-{-
-addActionButton button action = addListener button ctButton (\_ enew -> 
-            if ((enew #! ctButton) == False)
-                then action
-                else return () )
+addActionButton hg3d button action = registerCallback hg3d button ctButton (\flag -> if flag then action else return ()) 
     
-registerSoundButtons sound1 sound2 sound3 = do
-    mapM (\sound -> addActionButton sound (setC sound ctPlayCmd Play)) [sound1, sound2, sound3]
+registerSoundButtons hg3d sound1 sound2 sound3 = do
+    mapM (\sound -> addActionButton hg3d sound (setC sound ctPlayCmd Play)) [sound1, sound2, sound3]
           
-registerMusicButtons musicStart musicStop music = do
-    addActionButton musicStart (setC music ctPlayCmd Play)
-    addActionButton musicStop (setC music ctPlayCmd Stop)
+registerMusicButtons hg3d musicStart musicStop music = do
+    addActionButton hg3d musicStart (setC music ctPlayCmd Play)
+    addActionButton hg3d musicStop (setC music ctPlayCmd Stop)
 
 -- CH7-3s
-registerVolumeSliders sliderSound sliderMusic volume = do
-    let sliderVal e = let (Slider _ val) = e #! ctSlider in val
-    addListener sliderSound ctSlider (\_ new -> setC volume ctVolume (Volume "Sounds" (sliderVal new)))
-    addListener sliderMusic ctSlider (\_ new -> setC volume ctVolume (Volume "Music" (sliderVal new)))
+registerVolumeSliders hg3d sliderSound sliderMusic volume = do
+    let sliderVal val = let (Slider _ val') = val in val'
+    registerCallback hg3d sliderSound ctSlider (\val -> setC volume ctVolume (Volume "Sounds" (sliderVal val)))
+    registerCallback hg3d sliderMusic ctSlider (\val -> setC volume ctVolume (Volume "Music" (sliderVal val)))
 -- CH7-3e
--}
 
 main = do
-    [eg3d, camera, cube,
+    ([camera, cube,
      sound1, sound2, sound3,
      musicStart, musicStop, music, _, 
-     sliderSound, sliderMusic, volume, _, _] <- createAll
---    registerSoundButtons sound1 sound2 sound3
---    registerMusicButtons musicStart musicStop music
---    registerVolumeSliders sliderSound sliderMusic volume
-    rotate cube eg3d
+     sliderSound, sliderMusic, volume, _, _], hg3d) <- createAll
+    registerSoundButtons hg3d sound1 sound2 sound3
+    registerMusicButtons hg3d musicStart musicStop music
+    registerVolumeSliders hg3d sliderSound sliderMusic volume
+    forkIO $ rotate cube
+    loopHG3D hg3d (msecT 20)
+    return ()
+

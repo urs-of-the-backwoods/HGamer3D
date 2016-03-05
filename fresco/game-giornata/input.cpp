@@ -51,7 +51,7 @@ int Mouse::msgMouse(char* pdata, int len)
   msgpack::unpacked msg;
   msgpack::unpack(&msg, pdata, len);
   msgpack::object obj = msg.get();
-  std::cout << "mouse: " << obj << std::endl;
+//  std::cout << "mouse: " << obj << std::endl;
   if (obj.type != msgpack::type::ARRAY || obj.via.array.size != 2) return ERROR_TYPE_NOT_KNOWN;
   
   // set mouse mode
@@ -74,12 +74,12 @@ int Mouse::msgVisible(char* pdata, int len)
   msgpack::unpacked msg;
   msgpack::unpack(&msg, pdata, len);
   msgpack::object obj = msg.get();
-  std::cout << "mouse-visible: " << obj << std::endl;
+//  std::cout << "mouse-visible: " << obj << std::endl;
   
   if (obj.type != msgpack::type::BOOLEAN) return ERROR_TYPE_NOT_KNOWN;
   // set visibility
   bool flag = obj.as<bool>();
-  std::cout << "in mouse-visible: " << obj << " " << flag << std::endl;
+//  std::cout << "in mouse-visible: " << obj << " " << flag << std::endl;
   input->SetMouseVisible(flag);       // true -> suppress event
   return 0;
 }
@@ -173,7 +173,7 @@ int InputEventHandler::msgInputEventHandler(char* pdata, int len)
     msgpack::unpack(&msg, pdata, len);
     msgpack::object obj = msg.get();
     
-    std::cout << "input event handler: " << obj << std::endl;
+//    std::cout << "input event handler: " << obj << std::endl;
     if (obj.type != msgpack::type::ARRAY) return ERROR_TYPE_NOT_KNOWN;
 
     // default handler

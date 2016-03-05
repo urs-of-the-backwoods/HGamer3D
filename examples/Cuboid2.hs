@@ -92,50 +92,51 @@ readVar = readIORef
 -- Engine related low level routines
 ------------------------------------
 
--- creates and adds entities to world
-creator w l = newE l >>= \e -> (addToWorld w e >> return e) 
-
 -- setup basic 3D world
 setupWorld = do
+    print "in setupWorld"
     -- initialize
-    eG3D <- newE [ctGraphics3DConfig #: standardGraphics3DConfig, ctGraphics3DCommand #: NoCmd]
-    world <- forkGraphics3DWorld (setC eG3D ctGraphics3DCommand Step >> return False) (msecT 20)
-    addToWorld world eG3D
+    hg3d <- configureHG3D
     -- camera and light
-    cam <- creator world [ctCamera #: FullViewCamera, ctPosition #: Vec3 0 0 0, ctOrientation #: unitU]
+    print "in chg3d"
+    cam <- newE [ctCamera #: FullViewCamera, ctPosition #: Vec3 0 0 0, ctOrientation #: unitU]
     -- CH3-8s
-    light1 <- creator world [ctLight #: Light (SpotLight (Deg 50) 1.0) 1.0 100.0 1.0, ctPosition #: Vec3 (10) (-10) (-10.0)]
-    light2 <- creator world [ctLight #: Light PointLight 0.5 1000.0 0.8, ctPosition #: Vec3 0 0 (-50)]
-    light3 <- creator world [ctLight #: Light DirectionalLight 1.0 1000.0 1.0, ctOrientation #: (rotU vec3Y 45 .*. rotU vec3X 45)]
+    print "cam ok"
+--    light1 <- newE [ctLight #: Light (SpotLight (Deg 50) 1.0) 1.0 100.0 1.0, ctPosition #: Vec3 (10) (-10) (-10.0)]
+    light2 <- newE [ctLight #: Light PointLight 0.5 1000.0 0.8, ctPosition #: Vec3 0 0 (-50)]
+    light3 <- newE [ctLight #: Light DirectionalLight 1.0 1000.0 1.0, ctOrientation #: (rotU vec3Y 45 .*. rotU vec3X 45)]
+    print "light ok"
     -- CH3-8e
     -- key input
     -- CH5-2s
-    ieh <- creator world [ctInputEventHandler #: DefaultEventHandler, ctKeyEvent #: NoKeyEvent] 
+    ieh <- newE [ctInputEventHandler #: DefaultEventHandler, ctKeyEvent #: NoKeyEvent] 
     -- CH5-2e
-    return (world, cam, ieh)
+    print "before end setupWrold"
+
+    return (hg3d, cam, ieh)
 
 -- quat from 2 vectors, normalized input
 ufrom2v u v = let (Vec3 x y z) = u &^ v in mkU (Vec4 (1.0 + (u &. v)) x y z )
 
 -- create a line
-line :: [SystemData] -> Material -> Vec3 -> Vec3 -> Float -> IO Entity
-line w m p1 p2 t = do
+line :: Material -> Vec3 -> Vec3 -> Float -> IO Entity
+line m p1 p2 t = do
     let d = p2 &- p1
     let l = len d
     let u = ufrom2v (normalize (Vec3 0 l 0)) (normalize d) 
-    l <- creator w [ctMaterial #: m, ctGeometry #: ShapeGeometry Cube, 
+    l <- newE [ctMaterial #: m, ctGeometry #: ShapeGeometry Cube, 
                     ctPosition #: (p1 &+ (d &* 0.5)) , ctScale #: (Vec3 t l t), ctOrientation #: u]
     return l
 
 -- create a sphere
-sphere w m p s = do
-    s <- creator w [ctMaterial #: m, ctGeometry #: ShapeGeometry Sphere, 
+sphere m p s = do
+    s <- newE [ctMaterial #: m, ctGeometry #: ShapeGeometry Sphere, 
                     ctPosition #: p, ctScale #: s, ctOrientation #: unitU]
     return s
 
 -- create a cube
-cube w m p s = do
-    s <- creator w [ctMaterial #: m, ctGeometry #: ShapeGeometry Cube, 
+cube m p s = do
+    s <- newE [ctMaterial #: m, ctGeometry #: ShapeGeometry Cube, 
                     ctPosition #: p, ctScale #: s, ctOrientation #: unitU]
     return s
 
@@ -165,17 +166,17 @@ f2pos pos@(x, y, z) = let
     in oC &+ (sC *& vs')
 
 -- draw the static frame around the cubes    
-drawCubeFrame w = do
+drawCubeFrame = do
     let (corners, edges) = cubeOutline oC (unitVec3 &* (sC * 1.05))
-    mapM (\(a, b) -> line w matMetal a b (0.05 * sC) ) edges
-    mapM (\v -> sphere w matMetal v (unitVec3 &* (sC * 0.12))) corners
+    mapM (\(a, b) -> line matMetal a b (0.05 * sC) ) edges
+    mapM (\v -> sphere matMetal v (unitVec3 &* (sC * 0.12))) corners
 
 -- create all used sphere
-createSpheres w = do
+createSpheres = do
     let sphereSize = unitVec3 &* (2.0 * sC / (fromIntegral maxDim))
-    cubes <- mapM (\_ -> cube w matBlue (f2pos spC) (sphereSize &* 0.9)) [0.. (maxDim * maxDim) -1]
-    startSphere <- sphere w matLime (f2pos spC) sphereSize
-    endSphere <- sphere w matRed (f2pos spC) sphereSize
+    cubes <- mapM (\_ -> cube matBlue (f2pos spC) (sphereSize &* 0.9)) [0.. (maxDim * maxDim) -1]
+    startSphere <- sphere matLime (f2pos spC) sphereSize
+    endSphere <- sphere matRed (f2pos spC) sphereSize
     return (startSphere, endSphere, cubes)
 
 setPos er fp = setC er ctPosition (f2pos fp)
@@ -185,8 +186,8 @@ setPos er fp = setC er ctPosition (f2pos fp)
 
 -- install key handler, moves each key up and currently pressed keys in variable
 -- CH5-3s
-installKeyHandler :: IORef [T.Text] -> IORef [T.Text] -> Entity -> IO ()
-installKeyHandler varKeysUp varKeysPressed ieh = do
+installKeyHandler :: HG3D -> IORef [T.Text] -> IORef [T.Text] -> Entity -> IO ()
+installKeyHandler hg3d varKeysUp varKeysPressed ieh = do
     let handleKeys ke = do
         case ke of  
             KeyUp _ _ k -> do
@@ -195,7 +196,7 @@ installKeyHandler varKeysUp varKeysPressed ieh = do
                 return ()
             KeyDown _ _ k -> updateVar varKeysPressed (\keys -> if not (k `elem` keys) then k:keys else keys) >> return ()
             _ -> return ()
-    addListener  ieh ctKeyEvent (\_ enew -> handleKeys (enew #! ctKeyEvent))
+    registerCallback hg3d ieh ctKeyEvent (\k -> handleKeys k)
     return ()
 -- CH5-3e
 
@@ -218,13 +219,14 @@ installMoveCamera cam varKeysPressed = do
 ------------------------
 
 startWorld = do
-    (world, cam, inputHandler) <- setupWorld
+    (hg3d, cam, inputHandler) <- setupWorld
     varKeysUp <- newVar []
     varKeysPressed <- newVar []
-    installKeyHandler varKeysUp varKeysPressed inputHandler
+    installKeyHandler hg3d varKeysUp varKeysPressed inputHandler
     installMoveCamera cam varKeysPressed
-    drawCubeFrame world
-    (startSphere, endSphere, spheres) <- createSpheres world
+    drawCubeFrame
+    (startSphere, endSphere, spheres) <- createSpheres
+    forkIO $ loopHG3D hg3d (msecT 30)
     return (varKeysUp, (startSphere, endSphere, spheres))
 
 
@@ -304,6 +306,7 @@ runLevel varKeysUp allS@(sS, eS, ss) level = do
 -- CH3-11e
             
 main = do
+    print "start"
     (varKeysUp, allS) <- startWorld
     mapM (\l -> runLevel varKeysUp allS l) gameData
     return ()

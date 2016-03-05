@@ -156,6 +156,18 @@ def task_media_ex():
 def task_hgamer3d():
 
 	yield {
+		'name' : 'cabal',
+	    'actions': [
+	    	(copy_file_replace, ['library/HGamer3D.cabal.tmpl', {'{version}' : version_hgamer3d} ]),
+	    ],
+	    'targets': ['library/HGamer3D.cabal'],
+	    'uptodate': [config_changed(version_hgamer3d)],
+	    'file_dep': [
+			'library/HGamer3D.cabal.tmpl',
+		]
+	} 
+
+	yield {
 		'name' : 'library',
 		'actions' : [
 					 'cd library && stack build',
@@ -165,6 +177,9 @@ def task_hgamer3d():
 					],
 		'targets' : ['build-hgamer3d/HGamer3D-' + version_hgamer3d + '.tar.gz'],
 	    'file_dep': [
+	    	'library/HGamer3D.cabal',
+	    	'library/LICENSE',
+	    	'library/stack.yaml',
 			'library/HGamer3D/Data/Angle.hs',
 			'library/HGamer3D/Data/Colour.hs',
 			'library/HGamer3D/Data/LMH.hs',
@@ -187,7 +202,6 @@ def task_hgamer3d():
 			'library/HGamer3D/Graphics3D/Window.hs',
 			'library/HGamer3D/Graphics3D/Graphics3DCommand.hs',
 			'library/HGamer3D/Graphics3D/Graphics3DConfig.hs',
-			'library/HGamer3D/Graphics3D/SystemGraphics3D.hs',
 			'library/HGamer3D/Input/Mouse.hs',
 			'library/HGamer3D/Input/Keyboard.hs',
 			'library/HGamer3D/Input/Joystick.hs',
@@ -214,6 +228,7 @@ def task_examples():
 		"RotatingCube",
 		"Gui1",
 		"SoundEffects",
+		"Cuboid2",
 	]:
 
 		yield {
@@ -223,7 +238,7 @@ def task_examples():
 						 'mkdir -p build-examples/' + example + '/'  + example + 'Example-' + arch_os + '-' + version_hgamer3d,
 						 'cd examples && bash -c "cp `find .stack-work | grep bin/' + example +'` ../build-examples/' + example + '/'  + example + 'Example-' + arch_os + '-' + version_hgamer3d + '"',
 						],
-			'targets' : ['build-examples/' + example + '/'  + example + '-' + arch_os + '-' + version_hgamer3d,
+			'targets' : ['build-examples/' + example + '/'  + example + 'Example-' + arch_os + '-' + version_hgamer3d + "/" + example,
 			],
 		    'file_dep': [
 				'examples/' + example + '.hs',

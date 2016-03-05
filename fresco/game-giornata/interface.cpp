@@ -796,7 +796,6 @@ int register_msg_receiver(uint64_t  idItemType, uint64_t idEvtType, void* p1, vo
     return OK;
   }
   if (idItemType == id_button && idEvtType == id_button) {
-    printf("low level (c) register function, button item\n");
     ((ButtonItem*)p1)->registerPressedReleasedFunction(f, p2, idEvtType);
     return OK;
   }

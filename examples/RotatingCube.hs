@@ -15,11 +15,7 @@ import System.Exit
 
 start = do
 
-      -- create graphics system
-      eG3D <- newE [
-            ctGraphics3DConfig #: standardGraphics3DConfig,
-            ctGraphics3DCommand #: NoCmd
-            ]
+      hg3d <- configureHG3D      -- initialize
 
       -- create camera
       eCam <- newE [
@@ -36,15 +32,11 @@ start = do
 
       eButton <- newE [
             ctButton #: False,
-            ctText #: " Raus Hier",
+            ctText #: " Exit",
             ctScreenRect #: Rectangle 200 10 50 25
             ]
 
-      -- create callback for gui
-      forkIO $ do
-            cbs <- createCBS
-            registerReceiverCBS cbs eButton ctButton (\flag -> if (not flag) then exitSuccess else return ())
-            forever (stepCBS cbs)
+      registerCallback hg3d eButton ctButton (\flag -> if not flag then exitHG3D hg3d else return ())
 
       -- create cube
       eGeo <- newE [
@@ -55,7 +47,7 @@ start = do
             ctOrientation #: unitU
             ]
 
-      return (eGeo, eCam, eG3D)
+      return (eGeo, eCam, hg3d)
 
 -- rotate the cube
 rotateZ eGeo = do
@@ -70,19 +62,10 @@ rotateX eGeo = do
             sleepFor (msecT 16)
       return ()
 
--- show graphics
-showPic eG3D = do
-      forever $ do
-            setC eG3D ctGraphics3DCommand Step
-            sleepFor (msecT 2)
-      return ()
 
 main = do 
-      print $ "rotating main"
-
-      (eGeo, eCam, eG3D) <- start
+      (eGeo, eCam, hg3d) <- start
       forkIO $ rotateZ eGeo
       forkIO $ rotateX eGeo
-      forkIO $ showPic eG3D
-      forever $ sleepFor (secT 1)
+      loopHG3D hg3d (msecT 20)
       return ()
