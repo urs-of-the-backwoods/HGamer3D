@@ -116,7 +116,7 @@ ctLogging = ComponentType 0x86bc15156976f061
 ctGraphicsQuality :: ComponentType GraphicsQuality
 ctGraphicsQuality = ComponentType 0x7d9cff864f27c6d2
 
-standardGraphics3DConfig = Graphics3DConfig stdEngineConfig (GraphicsQuality Medium Medium Medium Medium) (Logging Warning True "logging") (xyWindow 800 600) 
+standardGraphics3DConfig = Graphics3DConfig stdEngineConfig (GraphicsQuality Medium Medium Medium Medium) (Logging Info False "hgamer3d.log") (xyWindow 800 600) 
 
 ctGraphics3DConfig :: ComponentType Graphics3DConfig
 ctGraphics3DConfig = ComponentType 0x0884eb62b6674bff

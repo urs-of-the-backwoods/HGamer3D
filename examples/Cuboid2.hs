@@ -94,25 +94,19 @@ readVar = readIORef
 
 -- setup basic 3D world
 setupWorld = do
-    print "in setupWorld"
     -- initialize
     hg3d <- configureHG3D
     -- camera and light
-    print "in chg3d"
     cam <- newE [ctCamera #: FullViewCamera, ctPosition #: Vec3 0 0 0, ctOrientation #: unitU]
     -- CH3-8s
-    print "cam ok"
 --    light1 <- newE [ctLight #: Light (SpotLight (Deg 50) 1.0) 1.0 100.0 1.0, ctPosition #: Vec3 (10) (-10) (-10.0)]
     light2 <- newE [ctLight #: Light PointLight 0.5 1000.0 0.8, ctPosition #: Vec3 0 0 (-50)]
     light3 <- newE [ctLight #: Light DirectionalLight 1.0 1000.0 1.0, ctOrientation #: (rotU vec3Y 45 .*. rotU vec3X 45)]
-    print "light ok"
     -- CH3-8e
     -- key input
     -- CH5-2s
     ieh <- newE [ctInputEventHandler #: DefaultEventHandler, ctKeyEvent #: NoKeyEvent] 
     -- CH5-2e
-    print "before end setupWrold"
-
     return (hg3d, cam, ieh)
 
 -- quat from 2 vectors, normalized input
@@ -130,15 +124,15 @@ line m p1 p2 t = do
 
 -- create a sphere
 sphere m p s = do
-    s <- newE [ctMaterial #: m, ctGeometry #: ShapeGeometry Sphere, 
+    s' <- newE [ctMaterial #: m, ctGeometry #: ShapeGeometry Sphere, 
                     ctPosition #: p, ctScale #: s, ctOrientation #: unitU]
-    return s
+    return s'
 
 -- create a cube
 cube m p s = do
-    s <- newE [ctMaterial #: m, ctGeometry #: ShapeGeometry Cube, 
+    s' <- newE [ctMaterial #: m, ctGeometry #: ShapeGeometry Sphere, 
                     ctPosition #: p, ctScale #: s, ctOrientation #: unitU]
-    return s
+    return s'
 
 -- Containing cube
 cubeOutline p s = let
@@ -172,7 +166,7 @@ drawCubeFrame = do
     mapM (\v -> sphere matMetal v (unitVec3 &* (sC * 0.12))) corners
 
 -- create all used sphere
-createSpheres = do
+createSpheresAndCubes = do
     let sphereSize = unitVec3 &* (2.0 * sC / (fromIntegral maxDim))
     cubes <- mapM (\_ -> cube matBlue (f2pos spC) (sphereSize &* 0.9)) [0.. (maxDim * maxDim) -1]
     startSphere <- sphere matLime (f2pos spC) sphereSize
@@ -220,14 +214,14 @@ installMoveCamera cam varKeysPressed = do
 
 startWorld = do
     (hg3d, cam, inputHandler) <- setupWorld
+    forkIO $ loopHG3D hg3d (msecT 30)
     varKeysUp <- newVar []
     varKeysPressed <- newVar []
     installKeyHandler hg3d varKeysUp varKeysPressed inputHandler
     installMoveCamera cam varKeysPressed
     drawCubeFrame
-    (startSphere, endSphere, spheres) <- createSpheres
-    forkIO $ loopHG3D hg3d (msecT 30)
-    return (varKeysUp, (startSphere, endSphere, spheres))
+    (startSphere, endSphere, cubes) <- createSpheresAndCubes
+    return (varKeysUp, (startSphere, endSphere, cubes))
 
 
 -- Game Actions
@@ -306,7 +300,6 @@ runLevel varKeysUp allS@(sS, eS, ss) level = do
 -- CH3-11e
             
 main = do
-    print "start"
     (varKeysUp, allS) <- startWorld
     mapM (\l -> runLevel varKeysUp allS l) gameData
     return ()

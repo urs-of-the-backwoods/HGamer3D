@@ -300,7 +300,7 @@ void InputEventHandler::HandleKeyUp(StringHash eventType, VariantMap& eventData)
         pk.pack_fix_int32(eventData[KeyUp::P_KEY].GetInt());
         pk.pack_fix_int32(sc);
         pk.pack(input->GetScancodeName(sc).CString());
-        keyEventF(mouseDataP, mouseEventType, buffer.data(), buffer.size());
+        keyEventF(keyDataP, keyEventType, buffer.data(), buffer.size());
 	}
 }
 
@@ -316,7 +316,7 @@ void InputEventHandler::HandleKeyDown(StringHash eventType, VariantMap& eventDat
             pk.pack_fix_int32(eventData[KeyUp::P_KEY].GetInt());
             pk.pack_fix_int32(sc);
             pk.pack(input->GetScancodeName(sc).CString());
-            keyEventF(mouseDataP, mouseEventType, buffer.data(), buffer.size());
+            keyEventF(keyDataP, keyEventType, buffer.data(), buffer.size());
         }
 	}
 }
@@ -337,7 +337,7 @@ void InputEventHandler::registerKeyEventFunction(msgFP2 f, void* p2, uint64_t ke
     bKeyEvents = true;
     registerEvents();
     keyEventF = f;
-    mouseDataP = p2;
+    keyDataP = p2;
     keyEventType = keyET;
 }
 

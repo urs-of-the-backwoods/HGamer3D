@@ -490,7 +490,6 @@ int GeometryItem::msgGeometry(char* pdata, int len)
   if (obj.via.array.ptr[0].as<int>() == 0) { // Basic Geometry
     msgpack::object shape_o = obj.via.array.ptr[1].via.array.ptr[0];
     if (shape_o.via.array.ptr[0].as<int>() == 0) { // sphere
-      std::cout << "in geo initializing three" << std::endl;
       model->SetModel(cache->GetResource<Model>("Models/Sphere.mdl"));
     } else if (shape_o.via.array.ptr[0].as<int>() == 1) { // cube
       model->SetModel(cache->GetResource<Model>("Models/Box.mdl"));
