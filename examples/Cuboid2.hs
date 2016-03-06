@@ -130,7 +130,7 @@ sphere m p s = do
 
 -- create a cube
 cube m p s = do
-    s' <- newE [ctMaterial #: m, ctGeometry #: ShapeGeometry Sphere, 
+    s' <- newE [ctMaterial #: m, ctGeometry #: ShapeGeometry Cube, 
                     ctPosition #: p, ctScale #: s, ctOrientation #: unitU]
     return s'
 
