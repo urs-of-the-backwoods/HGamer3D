@@ -15,6 +15,7 @@
 #include <cmath>
 
 #include "gui.hpp"
+#include "Slider2.hpp"
 
 using namespace std;
 
@@ -117,7 +118,7 @@ EditTextItem::EditTextItem(Graphics3DSystem*g3ds) : HasUIElement(g3ds), Object(g
 int EditTextItem::create(char* pdata, int len)
 {
     UI* ui = g->context->GetSubsystem<UI>();
-    edittext = new LineEdit(g->context);
+    edittext = new LineEdit2(g->context);
     uiElement.StaticCast(edittext);
     SubscribeToEvent(uiElement, E_TEXTCHANGED, HANDLER(EditTextItem, HandleTextChanged));
     ui->GetRoot()->AddChild(edittext);
@@ -211,7 +212,7 @@ SliderItem::SliderItem(Graphics3DSystem*g3ds) : HasUIElement(g3ds), Object(g3ds-
 int SliderItem::create(char* pdata, int len)
 {
     UI* ui = g->context->GetSubsystem<UI>();
-    slider = new Slider(g->context);
+    slider = new Slider2(g->context);
     uiElement.StaticCast(slider);
     SubscribeToEvent(uiElement, E_SLIDERCHANGED, HANDLER(SliderItem, HandleSliderChanged));
     ui->GetRoot()->AddChild(slider);

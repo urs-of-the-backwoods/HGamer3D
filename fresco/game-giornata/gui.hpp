@@ -57,6 +57,8 @@
 #include "errors.hpp"
 #include "graphics3d.hpp"
 #include "Urho3D/DebugNew.h"
+#include "Slider2.hpp"
+#include "LineEdit2.hpp"
 
 using namespace Urho3D;
 
@@ -103,7 +105,7 @@ class EditTextItem : public HasUIElement, public Object {
 OBJECT(EditTextItem);
 
 protected:
-    SharedPtr<LineEdit> edittext;
+    SharedPtr<LineEdit2> edittext;
     msgFP2 callbackF;
     void* callbackData;
     uint64_t cbEventType;
@@ -137,7 +139,7 @@ class SliderItem : public HasUIElement, public Object  {
 OBJECT(SliderItem);
 
 protected:
-    SharedPtr<Slider> slider;
+    SharedPtr<Slider2> slider;
     msgFP2 callbackF;
     void* callbackData;
     uint64_t cbEventType;

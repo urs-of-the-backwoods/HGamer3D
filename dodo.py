@@ -78,7 +78,11 @@ def task_gamegio():
 			'fresco/game-giornata/input.hpp',
 			'fresco/game-giornata/audio.cpp',
 			'fresco/game-giornata/interface.cpp',
-			'fresco/game-giornata/interface.h'    
+			'fresco/game-giornata/interface.h',
+			'fresco/game-giornata/Slider2.hpp',
+			'fresco/game-giornata/Slider2.cpp',
+			'fresco/game-giornata/LineEdit2.hpp',
+			'fresco/game-giornata/LineEdit2.cpp',
 		],
 	    'targets': ['build-gamegio/gamegio-' + arch_os + '-' + version_gamegio + '/game_engine.gio',
 	    ],

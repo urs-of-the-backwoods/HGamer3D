@@ -45,8 +45,10 @@ set(CPP_SRCS
 	interface.cpp 
 	graphics3d.cpp
 	input.cpp
-    gui.cpp
-    audio.cpp
+  gui.cpp
+  audio.cpp
+  Slider2.cpp
+  LineEdit2.cpp
 )
 
 include(GenerateExportHeader)
