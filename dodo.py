@@ -91,13 +91,13 @@ def task_gamegio():
 	yield {
 		'name' : 'arriccio',
 	    'actions': [
-	    	(copy_file_replace, ['interface/GameEngineGio', {'{version}' : version_gamegio} ]),
-				'aio local http://www.hgamer3d.org/interface/GameEngineGio build-gamegio || true'
+	    	(copy_file_replace, ['component/GameEngineGio', {'{version}' : version_gamegio} ]),
+				'aio local http://www.hgamer3d.org/component/GameEngineGio build-gamegio || true'
 	    ],
 	    'targets': ['build-gamegio/arriccio.toml'],
 	    'uptodate': [config_changed(version_gamegio)],
 	    'file_dep': [
-			'interface/GameEngineGio',
+			'component/GameEngineGio',
 		]
 	} 
 
@@ -119,13 +119,13 @@ def task_media():
 	yield {
 		'name' : 'arriccio-plain',
 	    'actions': [
-	    	(copy_file_replace, ['interface/MediaPlain', {'{version}' : version_media} ]),
-				'aio local http://www.hgamer3d.org/interface/MediaPlain build-media || true'
+	    	(copy_file_replace, ['component/MediaPlain', {'{version}' : version_media} ]),
+				'aio local http://www.hgamer3d.org/component/MediaPlain build-media || true'
 	    ],
 	    'targets': ['build-media/arriccio.toml'],
 	    'uptodate': [config_changed(version_media)],
 	    'file_dep': [
-			'interface/MediaPlain',
+			'component/MediaPlain',
 		]
 	} 
 
@@ -146,13 +146,13 @@ def task_media_ex():
 	yield {
 		'name' : 'arriccio',
 	    'actions': [
-	    	(copy_file_replace, ['interface/MediaExamples', {'{version}' : version_media_examples} ]),
-				'aio local http://www.hgamer3d.org/interface/MediaExamples build-media-ex || true'
+	    	(copy_file_replace, ['component/MediaExamples', {'{version}' : version_media_examples} ]),
+				'aio local http://www.hgamer3d.org/component/MediaExamples build-media-ex || true'
 	    ],
 	    'targets': ['build-media-ex/arriccio.toml'],
 	    'uptodate': [config_changed(version_media_examples)],
 	    'file_dep': [
-			'interface/MediaExamples',
+			'component/MediaExamples',
 		]
 	} 
 
@@ -252,12 +252,12 @@ def task_examples():
 		yield {
 			'name' : 'arriccio-' + example,
 		    'actions': [
-		    	(copy_file_replace, ['interface/Example', {'{example}' : example, '{version}' : version_hgamer3d, '{version_media}' : version_media, '{version_media_examples}' : version_media_examples, '{version_gamegio}' : version_gamegio, '{version_intonaco}' : version_intonaco}]),
-				'aio local http://www.hgamer3d.org/interface/' + example + 'Example build-examples/' + example + ' || true',
-				'aio alias ' + example + ' http://www.hgamer3d.org/interface/' + example + 'Example || true'
+		    	(copy_file_replace, ['component/Example', {'{example}' : example, '{version}' : version_hgamer3d, '{version_media}' : version_media, '{version_media_examples}' : version_media_examples, '{version_gamegio}' : version_gamegio, '{version_intonaco}' : version_intonaco}]),
+				'aio local http://www.hgamer3d.org/component/' + example + 'Example build-examples/' + example + ' || true',
+				'aio alias ' + example + ' http://www.hgamer3d.org/component/' + example + 'Example || true'
 		    ],
 		    'targets': ['build-examples/' + example + '/arriccio.toml'],
 		    'file_dep': [
-				'interface/Example',
+				'component/Example',
 			]
 		} 

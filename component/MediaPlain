@@ -1,12 +1,11 @@
 # arriccio.toml file for HGamer3D - runtime media data
 
-[If]
-  Id = "http://www.hgamer3d.org/interface/MediaPlain"
-  Purpose = "HGamer3D Runtime Resources - Plain"
-  Description = """
-    Runtime resources, media files and similar for HGamer3D
-    taken from the underlying engine resource folders.
-  """
+Id = "http://www.hgamer3d.org/component/MediaPlain"
+Purpose = "HGamer3D Runtime Resources - Plain"
+Description = """
+  Runtime resources, media files and similar for HGamer3D
+  taken from the underlying engine resource folders.
+"""
 
 # wildcard architecture, os
 # data can be used for all architectures

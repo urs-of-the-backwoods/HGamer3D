@@ -1,13 +1,12 @@
 # arriccio.toml file for starting HGamer3D Examples
 
-[If] 
-  Id = "http://www.hgamer3d.org/interface/{example}Example"
-  Purpose = "{example} Example"
-  Description = """
-    This interface is starting a {example} example, by
-    binding the required data, game engine runtime and intonaco libraries
-    and then starting the main executable.
-  """
+Id = "http://www.hgamer3d.org/component/{example}Example"
+Purpose = "{example} Example"
+Description = """
+  This interface is starting a {example} example, by
+  binding the required data, game engine runtime and intonaco libraries
+  and then starting the main executable.
+"""
 
 # amd64 linux implementation
 #
@@ -21,22 +20,22 @@
   Command = "{example}"
 
 [[Impls.dependencies]]
-  Id = "http://www.hgamer3d.org/interface/MediaPlain"
+  Id = "http://www.hgamer3d.org/component/MediaPlain"
   VersionConstraint = "{version_media}"
   Environment = ["add-path URHO3D_PREFIX_PATH ."]
 
 [[Impls.dependencies]]
-  Id = "http://www.hgamer3d.org/interface/MediaExamples"
+  Id = "http://www.hgamer3d.org/component/MediaExamples"
   VersionConstraint = "{version_media_examples}"
   Environment = ["add-path HG3D_RESOURCE_PATH ."]
 
 [[Impls.dependencies]]
-  Id = "http://www.hgamer3d.org/interface/Intonaco"
+  Id = "http://www.hgamer3d.org/component/Intonaco"
   VersionConstraint = "{version_intonaco}"
   Environment = ["add-path INTONACO_LIB libintonaco.so"]
 
 [[Impls.dependencies]]
-  Id = "http://www.hgamer3d.org/interface/GameEngineGio"
+  Id = "http://www.hgamer3d.org/component/GameEngineGio"
   VersionConstraint = "{version_gamegio}"
   Environment = ["add-path INTONACO game_engine.gio"]
 

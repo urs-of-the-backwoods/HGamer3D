@@ -1,11 +1,10 @@
 # arriccio.toml file for HGamer3D - runtime media data
 
-[If]
-  Id = "http://www.hgamer3d.org/interface/GameEngineGio"
-  Purpose = "HGamer3D Game Engine Gio"
-  Description = """
-    The fresco runtime component to bind game engine functionality.
-  """
+Id = "http://www.hgamer3d.org/component/GameEngineGio"
+Purpose = "HGamer3D Game Engine Gio"
+Description = """
+  The fresco runtime component to bind game engine functionality.
+"""
 
 [[Impls]]
   location = "http://www.hgamer3d.org/downloads/gamegio-amd64-linux-{version}.tar.gz"
