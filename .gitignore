@@ -13,6 +13,7 @@ build-media
 build-media-ex
 build-hgamer3d
 build-examples
+build-runner
 examples/.stack-work
 library/.stack-work
 library/CMakeLists.txt
@@ -20,4 +21,5 @@ library/HGamer3D.cabal
 .doit.db
 .directory
 *.pyc
+hgamer3d.log
 

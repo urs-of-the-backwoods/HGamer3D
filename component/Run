@@ -1,11 +1,11 @@
 # arriccio.toml file for starting HGamer3D Examples
 
-Id = "http://www.hgamer3d.org/component/{example}Example"
-Purpose = "{example} Example"
+Id = "http://www.hgamer3d.org/component/Run"
+Purpose = "Run an executable of the HGamer3D stack"
 Description = """
-  This interface is starting a {example} example, by
+  This interface is running an executable of the HGamer3D stack, by
   binding the required data, game engine runtime and intonaco libraries
-  and then starting the main executable.
+  and then starting the executable.
 """
 signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
 
@@ -13,12 +13,9 @@ signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
 #
 
 [[Impls]]
-  location = "http://www.hgamer3d.org/downloads/{example}Example-amd64-linux-{version}.tar.gz"
-  pgpkey = "https://www.github.com/urs-of-the-backwoods.keys"
   version = "{version}"
   architecture = "amd64"
   os = "linux"
-  Command = "{example}"
 
 [[Impls.dependencies]]
   Id = "http://www.hgamer3d.org/component/MediaPlain"

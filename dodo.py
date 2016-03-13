@@ -9,8 +9,8 @@
 # 
 #	file: dodo.py
 
-import os, os.path, platform
-from doit.tools import config_changed
+import os, os.path, platform, string
+from doit.tools import config_changed, run_once
 
 def get_os():
 	os = platform.system()
@@ -36,6 +36,9 @@ version_media = "1.4.0"
 version_media_examples = "0.1.0"
 version_hgamer3d = "0.7.0"
 version_intonaco = "0.1.0"
+
+def short_version(version):
+	return string.join(string.split(version, '.')[0:2], '.')
 
 def copy_file_replace(file_in, replace_dict, targets):
 	with open(targets[0], "wt") as fout:
@@ -228,36 +231,59 @@ def task_hgamer3d():
 
 def task_examples():
 
-	for example in [
-		"RotatingCube",
-		"Gui1",
-		"SoundEffects",
-		"Cuboid2",
-	]:
+	yield {
+		'name' : 'build-dir',
+		'actions' : [
+					 'mkdir -p build-examples'
+					],
+		'targets' : ['build-examples'],
+		'uptodate' : [run_once],
+		}
 
-		yield {
-			'name' : "build-" + example,
-			'actions' : [
-						 'cd examples && stack build',
-						 'mkdir -p build-examples/' + example + '/'  + example + 'Example-' + arch_os + '-' + version_hgamer3d,
-						 'cd examples && bash -c "cp `find .stack-work | grep bin/' + example +'` ../build-examples/' + example + '/'  + example + 'Example-' + arch_os + '-' + version_hgamer3d + '"',
-						],
-			'targets' : ['build-examples/' + example + '/'  + example + 'Example-' + arch_os + '-' + version_hgamer3d + "/" + example,
-			],
-		    'file_dep': [
-				'examples/' + example + '.hs',
-			],
-			}
+	yield {
+		'name' : "compile",
+		'actions' : [ 
+						'cd examples && stack build',
+					    'cd examples && bash -c "cp `find .stack-work | grep bin/RotatingCube` ../build-examples"',
+					    'cd examples && bash -c "cp `find .stack-work | grep bin/Gui1` ../build-examples"',
+					    'cd examples && bash -c "cp `find .stack-work | grep bin/SoundEffects` ../build-examples"',
+					    'cd examples && bash -c "cp `find .stack-work | grep bin/Cuboid2` ../build-examples"',
+					],
+		'targets' : [
+						'build-examples/RotatingCube',
+						'build-examples/Gui1',
+						'build-examples/SoundEffects',
+						'build-examples/Cuboid1',
+					],
+	    'file_dep': [
+						'examples/RotatingCube.hs',
+						'examples/Gui1.hs',
+						'examples/SoundEffects.hs',
+						'examples/Cuboid2.hs',
+					],
+	}
 
-		yield {
-			'name' : 'arriccio-' + example,
-		    'actions': [
-		    	(copy_file_replace, ['component/Example', {'{example}' : example, '{version}' : version_hgamer3d, '{version_media}' : version_media, '{version_media_examples}' : version_media_examples, '{version_gamegio}' : version_gamegio, '{version_intonaco}' : version_intonaco}]),
-				'aio local http://www.hgamer3d.org/component/' + example + 'Example build-examples/' + example + ' || true',
-				'aio alias ' + example + ' http://www.hgamer3d.org/component/' + example + 'Example || true'
-		    ],
-		    'targets': ['build-examples/' + example + '/arriccio.toml'],
-		    'file_dep': [
-				'component/Example',
-			]
-		} 
+
+def task_runner():
+
+	yield {
+		'name' : 'build-dir',
+		'actions' : [
+					 'mkdir -p build-runner'
+					],
+		'targets' : ['build-runner'],
+		'uptodate' : [run_once],
+		}
+
+	yield {
+		'name' : 'runner',
+	    'actions': [
+	    	(copy_file_replace, ['component/Run', {'{version}' : version_hgamer3d, '{version_media}' : short_version(version_media), '{version_media_examples}' : short_version(version_media_examples), '{version_gamegio}' : short_version(version_gamegio), '{version_intonaco}' : short_version(version_intonaco)}]),
+			'aio local http://www.hgamer3d.org/component/Run build-runner || true',
+			'aio alias Run http://www.hgamer3d.org/component/Run || true'
+	    ],
+	    'targets': ['build-runner/arriccio.toml'],
+	    'file_dep': [
+			'component/Run',
+		]
+	}

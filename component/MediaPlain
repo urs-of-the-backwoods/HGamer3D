@@ -6,12 +6,13 @@ Description = """
   Runtime resources, media files and similar for HGamer3D
   taken from the underlying engine resource folders.
 """
+signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
 
 # wildcard architecture, os
 # data can be used for all architectures
 [[Impls]]
   location = "http://www.hgamer3d.org/downloads/media-{version}.tar.gz"
-  pgpkey = "https://www.github.com/urs-of-the-backwoods.keys"
+  signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
   version = "{version}"
   architecture = "*"
   os = "*"
