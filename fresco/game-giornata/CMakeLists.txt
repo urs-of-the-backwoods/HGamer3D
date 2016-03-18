@@ -9,8 +9,8 @@
 #	file: fresco/game-giornata/CMakeLists.txt
 
 
-# Include general info
-cmake_minimum_required (VERSION 2.8)
+# Set minimum version
+cmake_minimum_required (VERSION 2.8.6)
 
 #
 # basic project information
@@ -20,6 +20,25 @@ project (game-giornata)
 set (game-giornata_VERSION_MAJOR 0)
 set (game-giornata_VERSION_MINOR 7)
 set (game-giornata_VERSION_PATCH 0)
+
+if (COMMAND cmake_policy)
+    cmake_policy (SET CMP0003 NEW)
+    if (CMAKE_VERSION VERSION_GREATER 2.8.12 OR CMAKE_VERSION VERSION_EQUAL 2.8.12)
+        # INTERFACE_LINK_LIBRARIES defines the link interface
+        cmake_policy (SET CMP0022 NEW)
+    endif ()
+    if (CMAKE_VERSION VERSION_GREATER 3.0.0 OR CMAKE_VERSION VERSION_EQUAL 3.0.0)
+        # Disallow use of the LOCATION target property - therefore we set to OLD as we still need it
+        cmake_policy (SET CMP0026 OLD)
+        # MACOSX_RPATH is enabled by default
+        cmake_policy (SET CMP0042 NEW)
+    endif ()
+endif ()
+
+
+
+
+
 
 # strategy of this cmake file
 # ---------------------------
@@ -58,28 +77,26 @@ generate_export_header(game_gio_lib)
 #set_target_properties(game_gio_lib PROPERTIES OUTPUT_NAME ${DLLNAME})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
+
+
 # Urho3D
 
-# Set CMake modules search path and Urho home, find the rest
+# Set CMake modules search path
+set (CMAKE_MODULE_PATH ${URHO3D_SRC}/CMake/Modules)
 
-IF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-  set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "C:/Program Files (x86)/Urho3D/share/Urho3D/CMake/Modules")
-  set (URHO3D_HOME "C:/Program Files (x86)/Urho3D")
-ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-
-IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-  set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "/usr/local/share/Urho3D/CMake/Modules")
-  set (URHO3D_HOME "/usr/local/share/Urho3D")
-ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-
-find_package (Urho3D REQUIRED)
+# Include Urho3D Cmake common module
 include (Urho3D-CMake-common)
+
+# Find Urho3D library
+find_package (Urho3D REQUIRED)
 include_directories (${URHO3D_INCLUDE_DIRS})
+
 
 # target, library
 set(TARGET_NAME game_gio_lib)
 define_dependency_libs(Urho3D)
 target_link_libraries(game_gio_lib ${ABSOLUTE_PATH_LIBS} ${LIBS})
+
 
 #
 # add custom target to install in Output build folder

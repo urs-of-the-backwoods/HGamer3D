@@ -71,8 +71,8 @@ int ButtonItem::create(char* pdata, int len)
     UI* ui = g->context->GetSubsystem<UI>();
     button = new Button(g->context);
     uiElement.StaticCast(button);
-    SubscribeToEvent(uiElement, E_PRESSED, HANDLER(ButtonItem, HandlePressedReleasedChanged));
-    SubscribeToEvent(uiElement, E_RELEASED, HANDLER(ButtonItem, HandlePressedReleasedChanged));
+    SubscribeToEvent(uiElement, E_PRESSED, URHO3D_HANDLER(ButtonItem, HandlePressedReleasedChanged));
+    SubscribeToEvent(uiElement, E_RELEASED, URHO3D_HANDLER(ButtonItem, HandlePressedReleasedChanged));
     ui->GetRoot()->AddChild(button);
     button->SetStyleAuto();
     return 0;
@@ -120,7 +120,7 @@ int EditTextItem::create(char* pdata, int len)
     UI* ui = g->context->GetSubsystem<UI>();
     edittext = new LineEdit2(g->context);
     uiElement.StaticCast(edittext);
-    SubscribeToEvent(uiElement, E_TEXTCHANGED, HANDLER(EditTextItem, HandleTextChanged));
+    SubscribeToEvent(uiElement, E_TEXTCHANGED, URHO3D_HANDLER(EditTextItem, HandleTextChanged));
     ui->GetRoot()->AddChild(edittext);
     edittext->SetStyleAuto();
     return 0;
@@ -214,7 +214,7 @@ int SliderItem::create(char* pdata, int len)
     UI* ui = g->context->GetSubsystem<UI>();
     slider = new Slider2(g->context);
     uiElement.StaticCast(slider);
-    SubscribeToEvent(uiElement, E_SLIDERCHANGED, HANDLER(SliderItem, HandleSliderChanged));
+    SubscribeToEvent(uiElement, E_SLIDERCHANGED, URHO3D_HANDLER(SliderItem, HandleSliderChanged));
     ui->GetRoot()->AddChild(slider);
     slider->SetStyleAuto();
     return 0;
@@ -275,7 +275,7 @@ int CheckBoxItem::create(char* pdata, int len)
     UI* ui = g->context->GetSubsystem<UI>();
     checkbox = new CheckBox(g->context);
     uiElement.StaticCast(checkbox);
-    SubscribeToEvent(uiElement, E_TOGGLED, HANDLER(CheckBoxItem, HandleToggled));
+    SubscribeToEvent(uiElement, E_TOGGLED, URHO3D_HANDLER(CheckBoxItem, HandleToggled));
     ui->GetRoot()->AddChild(checkbox);
     checkbox->SetStyleAuto();
     return 0;
@@ -333,7 +333,7 @@ int DropDownListItem::create(char* pdata, int len)
     UI* ui = g->context->GetSubsystem<UI>();
     dropdownlist = new DropDownList(g->context);
     uiElement.StaticCast(dropdownlist);
-    SubscribeToEvent(uiElement, E_ITEMSELECTED, HANDLER(DropDownListItem, HandleSelectionChanged));
+    SubscribeToEvent(uiElement, E_ITEMSELECTED, URHO3D_HANDLER(DropDownListItem, HandleSelectionChanged));
     ui->GetRoot()->AddChild(dropdownlist);
     dropdownlist->SetStyleAuto();
     return 0;

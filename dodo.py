@@ -9,26 +9,8 @@
 # 
 #	file: dodo.py
 
-import os, os.path, platform, string
+import os, os.path, platform, string, sys
 from doit.tools import config_changed, run_once
-
-def get_os():
-	os = platform.system()
-	if os == "Linux":
-		return "linux"
-	if os == "Windows":
-		return "windows"
-	return "???"
-
-def get_arch():
-	ar = platform.machine()
-	if ar == "x86_64":
-		return "amd64"
-	if ar == "i386":
-		return "386"
-
-
-arch_os = get_arch() + "-" + get_os()
 
 # version information for all subcomponents
 version_gamegio = "0.7.0"
@@ -36,6 +18,36 @@ version_media = "1.4.0"
 version_media_examples = "0.1.0"
 version_hgamer3d = "0.7.0"
 version_intonaco = "0.1.0"
+
+# where is Urho3D located
+urho3d_home = os.path.abspath("../Urho3D-1.5").replace(os.sep, "/")
+urho3d_build = os.path.abspath("../Urho3D-Build").replace(os.sep, "/")
+
+def make_dir(d, targets):
+	d = d.replace("/", os.sep)
+	if not os.path.exists(d):
+		os.makedirs(d)
+
+def get_os():
+	os_name = platform.system()
+	if os_name == "Linux":
+		return "linux"
+	if os_name == "Windows":
+		return "windows"
+	print "don't know, which platform this is: ", os_name
+	sys.exit()
+
+def get_arch():
+	ar = platform.machine()
+	if ar == "AMD64":
+		return "amd64"
+	if ar == "i386":
+		return "386"
+	print "don't know, which arch this is: ", ar
+	sys.exit()
+
+
+arch_os = get_arch() + "-" + get_os()
 
 def short_version(version):
 	return string.join(string.split(version, '.')[0:2], '.')
@@ -51,10 +63,18 @@ def copy_file_replace(file_in, replace_dict, targets):
 
 
 def task_gamegio():
+	if platform.system() == "Windows":
+		cmake_cmd = 'cd build-gamegio && cmake -D URHO3D_64BIT=1 -D URHO3D_LIB_TYPE=SHARED -D URHO3D_SRC=' + urho3d_home + ' -D URHO3D_HOME=' + urho3d_build + ' ../fresco/game-giornata -G "Visual Studio 14 2015 Win64"'
+		copy_cmd = 'cp build-gamegio/Release/game_gio_lib.dll build-gamegio/gamegio-' + arch_os + '-' + version_gamegio + '/game_engine.gio'
+	else:
+		cmake_cmd = 'cd build-gamegio && cmake ../fresco/game-giornata'
+		copy_cmd = 'cp build-gamegio/libgame_gio_lib.so build-gamegio/gamegio-' + arch_os + '-' + version_gamegio + '/game_engine.gio'
+
 	yield {
 		'name' : 'build-dir',
-		'actions' : ['mkdir -p build-gamegio',
-					 'cd build-gamegio && cmake ../fresco/game-giornata'
+		'actions' : [
+	    			(make_dir, ['build-gamegio']),
+					cmake_cmd
 		],
 	    'file_dep': [
 			'fresco/game-giornata/CMakeLists.txt',
@@ -65,9 +85,9 @@ def task_gamegio():
 	yield {
 		'name' : 'library',
 	    'actions': [
-		 			'mkdir -p build-gamegio/gamegio-' + arch_os + '-' + version_gamegio,
+	    			(make_dir, ['build-gamegio/gamegio-' + arch_os + '-' + version_gamegio]),
 	    			'cd build-gamegio && cmake --build . --config Release',
-	    			'cp build-gamegio/libgame_gio_lib.so build-gamegio/gamegio-' + arch_os + '-' + version_gamegio + '/game_engine.gio',
+	    			copy_cmd
 	    ],
 	    'file_dep': [
 			'fresco/game-giornata/gui.hpp',
@@ -109,7 +129,8 @@ def task_media():
 
 	yield {
 		'name' : 'build-dir-plain',
-		'actions' : ['mkdir -p build-media/media-' + version_media,
+		'actions' : [
+	    			 (make_dir, ['build-media/media-' + version_media]),
 					 'cp -r ../HGamer3D-Runtimes/Plain-1.4/* build-media/media-' + version_media,
 		],
 	    'file_dep': [
@@ -136,7 +157,8 @@ def task_media_ex():
 
 	yield {
 		'name' : 'build-dir',
-		'actions' : ['mkdir -p build-media-ex/media-examples-' + version_media_examples,
+		'actions' : [
+	    			 (make_dir, ['build-media-ex/media-examples-' + version_media_examples]),
 					 'cp -r ../HGamer3D-Runtimes/HGamer3D-1/* build-media-ex/media-examples-' + version_media_examples,
 		],
 	    'file_dep': [
@@ -234,7 +256,7 @@ def task_examples():
 	yield {
 		'name' : 'build-dir',
 		'actions' : [
-					 'mkdir -p build-examples'
+	    			(make_dir, ['build-examples']),
 					],
 		'targets' : ['build-examples'],
 		'uptodate' : [run_once],
@@ -269,7 +291,7 @@ def task_runner():
 	yield {
 		'name' : 'build-dir',
 		'actions' : [
-					 'mkdir -p build-runner'
+	    			(make_dir, ['build-runner']),
 					],
 		'targets' : ['build-runner'],
 		'uptodate' : [run_once],

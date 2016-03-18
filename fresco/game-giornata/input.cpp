@@ -137,27 +137,27 @@ void InputEventHandler::registerEvents()
   if (bDefaultEvents) {
       // register only events, for which we have components active
       if (bMouseEvents) {
-          SubscribeToEvent(E_MOUSEBUTTONUP, HANDLER(InputEventHandler, HandleMouseButtonUp));
-          SubscribeToEvent(E_MOUSEBUTTONDOWN, HANDLER(InputEventHandler, HandleMouseButtonDown));
-          SubscribeToEvent(E_MOUSEMOVE, HANDLER(InputEventHandler, HandleMouseMove));
-          SubscribeToEvent(E_MOUSEWHEEL, HANDLER(InputEventHandler, HandleMouseWheel));
-          SubscribeToEvent(E_MOUSEVISIBLECHANGED, HANDLER(InputEventHandler, HandleMouseVisibleChanged));
+          SubscribeToEvent(E_MOUSEBUTTONUP, URHO3D_HANDLER(InputEventHandler, HandleMouseButtonUp));
+          SubscribeToEvent(E_MOUSEBUTTONDOWN, URHO3D_HANDLER(InputEventHandler, HandleMouseButtonDown));
+          SubscribeToEvent(E_MOUSEMOVE, URHO3D_HANDLER(InputEventHandler, HandleMouseMove));
+          SubscribeToEvent(E_MOUSEWHEEL, URHO3D_HANDLER(InputEventHandler, HandleMouseWheel));
+          SubscribeToEvent(E_MOUSEVISIBLECHANGED, URHO3D_HANDLER(InputEventHandler, HandleMouseVisibleChanged));
       }
       if (bKeyEvents) {
-          SubscribeToEvent(E_KEYUP, HANDLER(InputEventHandler, HandleKeyUp));
-          SubscribeToEvent(E_KEYDOWN, HANDLER(InputEventHandler, HandleKeyDown));
+          SubscribeToEvent(E_KEYUP, URHO3D_HANDLER(InputEventHandler, HandleKeyUp));
+          SubscribeToEvent(E_KEYDOWN, URHO3D_HANDLER(InputEventHandler, HandleKeyDown));
       }
       
   } else
       // register only events, for which we have a registration setting in input event handler
   {
-    if (bMouseButtonUp) SubscribeToEvent(E_MOUSEBUTTONUP, HANDLER(InputEventHandler, HandleMouseButtonUp));
-    if (bMouseButtonDown) SubscribeToEvent(E_MOUSEBUTTONDOWN, HANDLER(InputEventHandler, HandleMouseButtonDown));
-    if (bMouseMove) SubscribeToEvent(E_MOUSEMOVE, HANDLER(InputEventHandler, HandleMouseMove));
-    if (bMouseWheel) SubscribeToEvent(E_MOUSEWHEEL, HANDLER(InputEventHandler, HandleMouseWheel));
-    if (bMouseVisibleChanged) SubscribeToEvent(E_MOUSEVISIBLECHANGED, HANDLER(InputEventHandler, HandleMouseVisibleChanged));
-    if (bKeyUp) SubscribeToEvent(E_KEYUP, HANDLER(InputEventHandler, HandleKeyUp));
-    if (bKeyDown) SubscribeToEvent(E_KEYDOWN, HANDLER(InputEventHandler, HandleKeyDown));
+    if (bMouseButtonUp) SubscribeToEvent(E_MOUSEBUTTONUP, URHO3D_HANDLER(InputEventHandler, HandleMouseButtonUp));
+    if (bMouseButtonDown) SubscribeToEvent(E_MOUSEBUTTONDOWN, URHO3D_HANDLER(InputEventHandler, HandleMouseButtonDown));
+    if (bMouseMove) SubscribeToEvent(E_MOUSEMOVE, URHO3D_HANDLER(InputEventHandler, HandleMouseMove));
+    if (bMouseWheel) SubscribeToEvent(E_MOUSEWHEEL, URHO3D_HANDLER(InputEventHandler, HandleMouseWheel));
+    if (bMouseVisibleChanged) SubscribeToEvent(E_MOUSEVISIBLECHANGED, URHO3D_HANDLER(InputEventHandler, HandleMouseVisibleChanged));
+    if (bKeyUp) SubscribeToEvent(E_KEYUP, URHO3D_HANDLER(InputEventHandler, HandleKeyUp));
+    if (bKeyDown) SubscribeToEvent(E_KEYDOWN, URHO3D_HANDLER(InputEventHandler, HandleKeyDown));
   }
     
 }

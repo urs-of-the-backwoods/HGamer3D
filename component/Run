@@ -9,13 +9,13 @@ Description = """
 """
 signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
 
-# amd64 linux implementation
+# arch os independent implementation
 #
 
 [[Impls]]
   version = "{version}"
-  architecture = "amd64"
-  os = "linux"
+  architecture = "*"
+  os = "*"
 
 [[Impls.dependencies]]
   Id = "http://www.hgamer3d.org/component/MediaPlain"
@@ -30,11 +30,11 @@ signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
 [[Impls.dependencies]]
   Id = "http://www.hgamer3d.org/component/Intonaco"
   VersionConstraint = "{version_intonaco}"
-  Environment = ["add-path INTONACO_LIB libintonaco.so"]
+  Environment = ["add-path INTONACO intonaco.gio"]
 
 [[Impls.dependencies]]
   Id = "http://www.hgamer3d.org/component/GameEngineGio"
   VersionConstraint = "{version_gamegio}"
-  Environment = ["add-path INTONACO game_engine.gio"]
+  Environment = ["add-path GIORNATA game_engine.gio"]
 
 

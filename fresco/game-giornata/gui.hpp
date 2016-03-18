@@ -22,6 +22,7 @@
 #include "Urho3D/Core/Context.h"
 #include "Urho3D/Core/Main.h"
 #include "Urho3D/Core/Object.h"
+#include "Urho3D/Container/Str.h"
 
 #include "Urho3D/Engine/Application.h"
 #include "Urho3D/Engine/Engine.h"
@@ -82,7 +83,7 @@ public:
 
 class ButtonItem : public HasUIElement, public Object {
 
-OBJECT(ButtonItem);
+URHO3D_OBJECT(ButtonItem, Object);
 
 protected:
     SharedPtr<Button> button;
@@ -102,7 +103,7 @@ public:
 
 class EditTextItem : public HasUIElement, public Object {
 
-OBJECT(EditTextItem);
+URHO3D_OBJECT(EditTextItem, Object);
 
 protected:
     SharedPtr<LineEdit2> edittext;
@@ -136,7 +137,7 @@ public:
 
 class SliderItem : public HasUIElement, public Object  {
 
-OBJECT(SliderItem);
+URHO3D_OBJECT(SliderItem, Object);
 
 protected:
     SharedPtr<Slider2> slider;
@@ -157,7 +158,7 @@ public:
 
 class CheckBoxItem : public HasUIElement, public Object  {
 
-OBJECT(CheckBoxItem);
+URHO3D_OBJECT(CheckBoxItem, Object);
 
 protected:
     SharedPtr<CheckBox> checkbox;
@@ -178,7 +179,7 @@ public:
 
 class DropDownListItem : public HasUIElement, public Object  {
 
-OBJECT(DropDownListItem);
+URHO3D_OBJECT(DropDownListItem, Object);
 
 protected:
     SharedPtr<DropDownList> dropdownlist;

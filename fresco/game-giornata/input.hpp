@@ -59,7 +59,7 @@ extern "C" {
 
 class Mouse : public Object {
 
-OBJECT(Mouse);
+URHO3D_OBJECT(Mouse, Object);
 
 private:
   Input *input;
@@ -75,7 +75,7 @@ public:
 
 class InputEventHandler : public Object {
 
-OBJECT(InputEventHandler);
+URHO3D_OBJECT(InputEventHandler, Object);
 
 private:
   msgFP2 mouseEventF;
