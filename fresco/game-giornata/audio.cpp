@@ -54,7 +54,7 @@ int SoundSourceItem::msgSoundSource(char* pdata, int len)
     msgpack::unpacked msg;
     msgpack::unpack(&msg, pdata, len);
     msgpack::object obj = msg.get();
-    std::cout << "soundsource: " << obj << std::endl;
+//    std::cout << "soundsource: " << obj << std::endl;
 
     if (obj.type != msgpack::type::ARRAY || obj.via.array.size != 5) return ERROR_TYPE_NOT_KNOWN;
 
@@ -102,7 +102,7 @@ int SoundSourceItem::msgPlayCmd(char* pdata, int len)
     msgpack::unpacked msg;
     msgpack::unpack(&msg, pdata, len);
     msgpack::object obj = msg.get();
-    std::cout << "soundsource play: " << obj << std::endl;
+//    std::cout << "soundsource play: " << obj << std::endl;
 
 //    if (obj.type != msgpack::type::INT) return ERROR_TYPE_NOT_KNOWN;
     
@@ -165,7 +165,7 @@ int VolumeItem::msgVolume(char* pdata, int len)
     msgpack::unpacked msg;
     msgpack::unpack(&msg, pdata, len);
     msgpack::object obj = msg.get();
-    std::cout << "volume: " << obj << std::endl;
+//    std::cout << "volume: " << obj << std::endl;
 
     if (obj.type != msgpack::type::ARRAY || obj.via.array.size != 2) return ERROR_TYPE_NOT_KNOWN;
     

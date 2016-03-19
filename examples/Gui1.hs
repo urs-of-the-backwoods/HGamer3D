@@ -77,7 +77,6 @@ createAll = do
             ]
         ]
 
-    print "gui1 - 1"
     -- create callback for gui
     forkIO $ do
         cbs <- createCBS
@@ -86,7 +85,6 @@ createAll = do
     return res
 
 rotate eGeo eG3D = do
-    print "gui1 - 4"
     forever $ do 
         updateC eGeo ctOrientation (\u -> (rotU vec3Y 0.02) .*. (rotU vec3X 0.005) .*. u)
         setC eG3D ctGraphics3DCommand Step
@@ -109,10 +107,7 @@ printEvents button checkbox edittext slider dropdownlist output = do
 -- CH6-2e
 
 main = do
-    print "gui1 - 0"
     [eg3d, camera, cube, _, button, _, checkbox, _, edittext, _, slider, _, dropdownlist, output] <- createAll
-    print "gui1 - 2"
     forkIO $ printEvents button checkbox edittext slider dropdownlist output
-    print "gui1 - 3"
     rotate cube eg3d
     return ()
