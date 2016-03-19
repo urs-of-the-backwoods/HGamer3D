@@ -421,8 +421,10 @@ int LightItem::msgLight(char* pdata, int len)
 
   } else if (obj_t.via.array.ptr[0].as<int>() == 2)
   {
+//    std::cout << "spot-light:" << obj_t << std::endl;
+    msgpack::object obj_fov = obj_t.via.array.ptr[1];
     light->SetLightType(LIGHT_SPOT);
-    light->SetFov(obj_t.via.array.ptr[1].as<float>() * 57.2957795);
+    light->SetFov(obj_fov.via.array.ptr[1].via.array.ptr[0].as<float>());
     light->SetAspectRatio(obj_t.via.array.ptr[2].as<float>());
   } 
 

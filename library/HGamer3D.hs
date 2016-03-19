@@ -70,14 +70,21 @@ configureHG3D = do
 	    ctGraphics3DCommand #: NoCmd
 	    ]
 
+	eih <- newE [
+	    ctInputEventHandler #: DefaultEventHandler,
+	    ctExitRequestedEvent #: ExitRequestedEvent
+	    ]
+
+	exitRef <- newIORef False
+
 	-- create callback loop
 	forkIO $ do
 	    cbs <- createCBS
+	    registerCallback (eG3D, cbs, exitRef) eih ctExitRequestedEvent (\_ -> writeIORef exitRef True)
 	    putMVar cbsRef cbs
 	    forever (stepCBS cbs)
 
 	cbs <- takeMVar cbsRef
-	exitRef <- newIORef False
 
 	return (eG3D, cbs, exitRef)
 

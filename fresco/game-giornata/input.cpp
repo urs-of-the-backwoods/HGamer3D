@@ -97,8 +97,11 @@ InputEventHandler::InputEventHandler(Graphics3DSystem* g3ds)
     mouseDataP = NULL;
     keyEventF = NULL;
     keyDataP = NULL;
+    exitREventF = NULL;
+    exitRDataP = NULL;
     
     bDefaultEvents = true;
+
     bMouseEvents = false;
     bKeyEvents = false;
     bMouseButtonUp = false;
@@ -116,8 +119,10 @@ InputEventHandler::~InputEventHandler()
   bDefaultEvents = true;
   bMouseEvents = false;
   bKeyEvents = false;
+  bExitRequestedEvent = false;
   registerEvents();
   
+  exitREventF = NULL;
   mouseEventF = NULL;
   keyEventF = NULL;
   delete input;
@@ -133,6 +138,7 @@ void InputEventHandler::registerEvents()
   UnsubscribeFromEvent(E_MOUSEVISIBLECHANGED);
   UnsubscribeFromEvent(E_KEYUP);
   UnsubscribeFromEvent(E_KEYDOWN);
+  UnsubscribeFromEvent(E_EXITREQUESTED);
   
   if (bDefaultEvents) {
       // register only events, for which we have components active
@@ -146,6 +152,9 @@ void InputEventHandler::registerEvents()
       if (bKeyEvents) {
           SubscribeToEvent(E_KEYUP, URHO3D_HANDLER(InputEventHandler, HandleKeyUp));
           SubscribeToEvent(E_KEYDOWN, URHO3D_HANDLER(InputEventHandler, HandleKeyDown));
+      }
+      if (bExitRequestedEvent) {
+          SubscribeToEvent(E_EXITREQUESTED, URHO3D_HANDLER(InputEventHandler, HandleExitRequestedEvent));
       }
       
   } else
@@ -192,6 +201,7 @@ int InputEventHandler::msgInputEventHandler(char* pdata, int len)
         bMouseVisibleChanged = false;
         bKeyUp = false;
         bKeyDown = false;
+        bExitRequested = false;
         
         msgpack::object evts_o = obj.via.array.ptr[1];
         
@@ -206,6 +216,7 @@ int InputEventHandler::msgInputEventHandler(char* pdata, int len)
             if (*it == 5) bMouseVisibleChanged = true;
             if (*it == 6) bKeyUp = true;
             if (*it == 7) bKeyDown = true;
+            if (*it == 8) bExitRequested = true;
         }
     }
             
@@ -306,7 +317,7 @@ void InputEventHandler::HandleKeyUp(StringHash eventType, VariantMap& eventData)
 
 void InputEventHandler::HandleKeyDown(StringHash eventType, VariantMap& eventData)
 {
-	if (keyEventF != NULL) {
+  if (keyEventF != NULL) {
         if (!eventData[KeyDown::P_REPEAT].GetBool()) {
             msgpack::sbuffer buffer;
             msgpack::packer<msgpack::sbuffer> pk(&buffer);
@@ -318,7 +329,18 @@ void InputEventHandler::HandleKeyDown(StringHash eventType, VariantMap& eventDat
             pk.pack(input->GetScancodeName(sc).CString());
             keyEventF(keyDataP, keyEventType, buffer.data(), buffer.size());
         }
-	}
+  }
+}
+
+void InputEventHandler::HandleExitRequestedEvent(StringHash eventType, VariantMap& eventData)
+{
+  if (exitREventF != NULL) {
+      msgpack::sbuffer buffer;
+      msgpack::packer<msgpack::sbuffer> pk(&buffer);
+      pk.pack_array(1);
+      pk.pack(0);
+      keyEventF(exitRDataP, exitREventType, buffer.data(), buffer.size());
+  }
 }
 
 void InputEventHandler::registerMouseEventFunction(msgFP2 f, void* p2, uint64_t mouseET)
@@ -339,5 +361,15 @@ void InputEventHandler::registerKeyEventFunction(msgFP2 f, void* p2, uint64_t ke
     keyEventF = f;
     keyDataP = p2;
     keyEventType = keyET;
+}
+
+void InputEventHandler::registerExitRequestedEventFunction(msgFP2 f, void* p2, uint64_t erET)
+{
+  // register events: depends on default setting
+  bExitRequestedEvent = true;
+  registerEvents();
+  exitREventF = f;
+  exitRDataP = p2;
+  exitREventType = erET;
 }
 

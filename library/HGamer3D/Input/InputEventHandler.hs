@@ -15,7 +15,9 @@ module HGamer3D.Input.InputEventHandler
 (
     InputEventType (..),
     InputEventHandler (..),
-    ctInputEventHandler
+    ctInputEventHandler,
+    ExitRequestedEvent (..),
+    ctExitRequestedEvent
 )
 
 where
@@ -34,6 +36,7 @@ data InputEventType  =  IEMouseButtonUp
                         | IEMouseButtonVisibleChanged
                         | IEKeyUp
                         | IEKeyDown
+                        | IEExitRequested
 
                         deriving (Eq, Show)
 
@@ -47,6 +50,7 @@ instance ComponentClass InputEventType where
         IEMouseButtonVisibleChanged -> ObjectInt 5
         IEKeyUp -> ObjectInt 6
         IEKeyDown -> ObjectInt 7
+        IEExitRequested -> ObjectInt 8
     fromObj (ObjectInt n) = case n of
         1 -> IEMouseButtonUp
         2 -> IEMouseButtonDown
@@ -55,6 +59,7 @@ instance ComponentClass InputEventType where
         5 -> IEMouseButtonVisibleChanged
         6 -> IEKeyUp
         7 -> IEKeyDown
+        8 -> IEExitRequested
         
 data InputEventHandler = DefaultEventHandler
                          | SpecificEventHandler [InputEventType]
@@ -69,3 +74,15 @@ instance ComponentClass InputEventHandler where
 ctInputEventHandler :: ComponentType InputEventHandler
 ctInputEventHandler = ComponentType 0xfc0edefcebcb5878
 
+
+-- ExitRequestedEvent
+
+data ExitRequestedEvent = ExitRequestedEvent
+                      deriving (Eq, Show)
+
+instance ComponentClass ExitRequestedEvent where
+    toObj ExitRequestedEvent = ObjectArray [ObjectInt 0]
+    fromObj (ObjectArray [ObjectInt 0]) = ExitRequestedEvent
+    
+ctExitRequestedEvent :: ComponentType ExitRequestedEvent
+ctExitRequestedEvent = ComponentType 0x824517eb48d5c653

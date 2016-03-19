@@ -178,6 +178,7 @@ int TextItem::create(char* pdata, int len)
     uiElement.StaticCast(text);
     ui->GetRoot()->AddChild(text);
     text->SetStyleAuto();
+//    text->SetTextAlignment(HA_CENTER);
     return 0;
 }
 

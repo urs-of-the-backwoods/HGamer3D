@@ -40,6 +40,7 @@ uint64_t id_inputeventhandler = 0xfc0edefcebcb5878;
 uint64_t id_mouse =  0xa532f43b1c1c6bc7;
 uint64_t id_mouseevent = 0x27eaf3fd46595d08;
 uint64_t id_keyevent = 0x5ba1617fb50e97e5;
+uint64_t id_exitrequestedevent = 0x824517eb48d5c653;
 
 uint64_t id_visible = 0x98e7a78e949e1c6e;
 
@@ -784,6 +785,11 @@ int register_msg_receiver(uint64_t  idItemType, uint64_t idEvtType, void* p1, vo
   
   if (idItemType == id_inputeventhandler && idEvtType == id_keyevent) {
     ((InputEventHandler*)p1)->registerKeyEventFunction(f, p2, idEvtType);
+    return OK;
+  }
+ 
+  if (idItemType == id_inputeventhandler && idEvtType == id_exitrequestedevent) {
+    ((InputEventHandler*)p1)->registerExitRequestedEventFunction(f, p2, idEvtType);
     return OK;
   }
  

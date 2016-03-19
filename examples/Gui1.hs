@@ -9,13 +9,8 @@ import Control.Concurrent
 import Control.Monad
 
 createAll = do
+    hg3d <- configureHG3D
     res <- mapM newE [
-            -- graphics system creation
-            [
-                ctGraphics3DConfig #: standardGraphics3DConfig,
-                ctGraphics3DCommand #: NoCmd
-            ],
-
             [   -- camera
                 ctCamera #: FullViewCamera,
                 ctPosition #: Vec3 1 1 (-30.0),
@@ -34,8 +29,11 @@ createAll = do
             ]
            ,[   -- button
                 ctButton #: False
-                , ctText #: "Press Me"
                 , ctScreenRect #: Rectangle 130 10 100 25
+            ]
+           ,[   -- button text
+                ctText #: "Press Me"
+                , ctScreenRect #: Rectangle 140 12 100 25
             ]
            ,[   -- descriptive text
                 ctText #: "A Checkbox: \n"
@@ -77,19 +75,18 @@ createAll = do
             ]
         ]
 
-    -- create callback for gui
-    forkIO $ do
-        cbs <- createCBS
-        forever (stepCBS cbs)
+    return (res, hg3d)
 
-    return res
-
-rotate eGeo eG3D = do
-    forever $ do 
-        updateC eGeo ctOrientation (\u -> (rotU vec3Y 0.02) .*. (rotU vec3X 0.005) .*. u)
-        setC eG3D ctGraphics3DCommand Step
-        sleepFor (msecT 20)
-    return ()
+rotate eGeo hg3d = do
+    updateC eGeo ctOrientation (\u -> (rotU vec3Y 0.02) .*. (rotU vec3X 0.005) .*. u)
+    stepHG3D hg3d
+    ex <- isExitHG3D hg3d
+    if not ex then
+        do
+            sleepFor (msecT 20)
+            rotate eGeo hg3d
+        else 
+            return ()
 
 -- CH6-2s
 printEvents button checkbox edittext slider dropdownlist output = do
@@ -107,7 +104,7 @@ printEvents button checkbox edittext slider dropdownlist output = do
 -- CH6-2e
 
 main = do
-    [eg3d, camera, cube, _, button, _, checkbox, _, edittext, _, slider, _, dropdownlist, output] <- createAll
+    ([camera, cube, _, button, _, _, checkbox, _, edittext, _, slider, _, dropdownlist, output], hg3d) <- createAll
     forkIO $ printEvents button checkbox edittext slider dropdownlist output
-    rotate cube eg3d
+    rotate cube hg3d
     return ()

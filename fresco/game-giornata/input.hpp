@@ -86,13 +86,19 @@ private:
   void* keyDataP;
   uint64_t keyEventType;
 
+  msgFP2 exitREventF;
+  void* exitRDataP;
+  uint64_t exitREventType;
+
   Input *input;
   
   bool bDefaultEvents;          // events are not specified use properties, to check which to register
   
+  bool bExitRequestedEvent;
   bool bKeyEvents;
   bool bMouseEvents;
   
+  bool bExitRequested;
   bool bMouseButtonUp;
   bool bMouseButtonDown;
   bool bMouseMove;
@@ -112,6 +118,7 @@ public:
 
   void registerMouseEventFunction(msgFP2 f, void* p2, uint64_t mouseET);
   void registerKeyEventFunction(msgFP2 f, void* p2, uint64_t keyET);
+  void registerExitRequestedEventFunction(msgFP2 f, void* p2, uint64_t erET);
 
   // the event handling routines
   void HandleMouseMove(StringHash eventType, VariantMap& eventData);
@@ -119,6 +126,8 @@ public:
   void HandleMouseButtonUp(StringHash eventType, VariantMap& eventData);
   void HandleMouseWheel(StringHash eventType, VariantMap& eventData);
   void HandleMouseVisibleChanged(StringHash eventType, VariantMap& eventData);
+
+  void HandleExitRequestedEvent(StringHash eventType, VariantMap& eventData);
   
   void HandleKeyUp(StringHash eventType, VariantMap& eventData);
   void HandleKeyDown(StringHash eventType, VariantMap& eventData);
