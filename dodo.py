@@ -201,7 +201,7 @@ def task_hgamer3d():
 		'actions' : [
 					 'cd library && stack build',
 					 'cd library && stack sdist',
-					 'mkdir -p build-hgamer3d',
+	    			 (make_dir, ['build-hgamer3d']),
 					 'cd library && bash -c "cp `find .stack-work | grep .tar.gz` ../build-hgamer3d"'
 					],
 		'targets' : ['build-hgamer3d/HGamer3D-' + version_hgamer3d + '.tar.gz'],

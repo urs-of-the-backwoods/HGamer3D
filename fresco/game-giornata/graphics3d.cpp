@@ -70,7 +70,7 @@ int Graphics3DSystem::create(char* pdata, int len)
   msgpack::unpacked msg;
   msgpack::unpack(&msg, pdata, len);
   msgpack::object obj = msg.get();
-//  std::cout << "system: " << obj << std::endl;
+  std::cout << "system: " << obj << std::endl;
   if (obj.type != msgpack::type::ARRAY || obj.via.array.size != 4) return ERROR_TYPE_NOT_KNOWN;
 
   // misc default engine parameters
@@ -178,23 +178,30 @@ int Graphics3DSystem::create(char* pdata, int len)
       return ERROR_COULD_NOT_INITIALIZE_ENGINE;
   }
   engine->SetAutoExit(false);
-  scene = new Scene(context);
+  std::cout << "start 1";
+ scene = new Scene(context);
+  std::cout << "start 2";
   scene->CreateComponent<Octree>();
+  std::cout << "start 3";
   
   // Enable OS cursor
   context->GetSubsystem<Input>()->SetMouseVisible(true);
+  std::cout << "start 4";
   
   // Initialize GUI, at least set a style
   ResourceCache* cache = context->GetSubsystem<ResourceCache>();
+  std::cout << "start 5";
 
   // add resource dirs from environment
   char* rpath = getenv("HG3D_RESOURCE_PATH");
-  std::string rp = string(rpath);
-  std::vector<std::string> elems = split(rp, ';');
+  if (rpath != NULL) {
+    std::string rp = string(rpath);
+    std::vector<std::string> elems = split(rp, ';');
 
-  for(std::vector<string>::iterator it = elems.begin(); it != elems.end(); ++it) {
-    /* std::cout << *it; ... */
-    cache->AddResourceDir(String((*it).c_str()));
+    for(std::vector<string>::iterator it = elems.begin(); it != elems.end(); ++it) {
+      /* std::cout << *it; ... */
+      cache->AddResourceDir(String((*it).c_str()));
+    }
   }
  
   XMLFile* style = cache->GetResource<XMLFile>("UI/DefaultStyle.xml");

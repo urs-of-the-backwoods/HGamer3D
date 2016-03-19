@@ -1,5 +1,5 @@
-extra-deps: ["messagepack-0.5.0", "vect-0.4.7"]
-resolver: lts-3.4
+extra-deps: ["vect-0.4.7"]
+resolver: lts-5.8
 flags: {}
 packages:
 - '.'
