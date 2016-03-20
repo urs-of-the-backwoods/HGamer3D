@@ -39,7 +39,7 @@ def get_os():
 
 def get_arch():
 	ar = platform.machine()
-	if ar == "AMD64":
+	if ar == "AMD64" or ar == "x86_64":
 		return "amd64"
 	if ar == "i386":
 		return "386"
@@ -67,7 +67,8 @@ def task_gamegio():
 		cmake_cmd = 'cd build-gamegio && cmake -D URHO3D_64BIT=1 -D URHO3D_LIB_TYPE=SHARED -D URHO3D_SRC=' + urho3d_home + ' -D URHO3D_HOME=' + urho3d_build + ' ../fresco/game-giornata -G "Visual Studio 14 2015 Win64"'
 		copy_cmd = 'cp build-gamegio/Release/game_gio_lib.dll build-gamegio/gamegio-' + arch_os + '-' + version_gamegio + '/game_engine.gio'
 	else:
-		cmake_cmd = 'cd build-gamegio && cmake ../fresco/game-giornata'
+#		cmake_cmd = 'cd build-gamegio && cmake ../fresco/game-giornata'
+		cmake_cmd = 'cd build-gamegio && cmake -D URHO3D_64BIT=1 -D URHO3D_LIB_TYPE=SHARED -D URHO3D_SRC=' + urho3d_home + ' -D URHO3D_HOME=' + urho3d_build + ' ../fresco/game-giornata'
 		copy_cmd = 'cp build-gamegio/libgame_gio_lib.so build-gamegio/gamegio-' + arch_os + '-' + version_gamegio + '/game_engine.gio'
 
 	yield {
