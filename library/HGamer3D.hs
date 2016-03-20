@@ -58,7 +58,7 @@ import Data.IORef
 
 -- run loop
 
-type HG3D = (Entity, CallbackSystem, IORef Bool)
+type HG3D = (Entity, CallbackSystem, Var Bool)
 
 configureHG3D = do
 
@@ -75,38 +75,46 @@ configureHG3D = do
 	    ctExitRequestedEvent #: ExitRequestedEvent
 	    ]
 
-	exitRef <- newIORef False
+	varExit <- makeVar False
 
 	-- create callback loop
 	forkIO $ do
 	    cbs <- createCBS
-	    registerCallback (eG3D, cbs, exitRef) eih ctExitRequestedEvent (\_ -> writeIORef exitRef True)
+	    registerCallback (eG3D, cbs, varExit) eih ctExitRequestedEvent (\_ -> writeVar varExit True >> return ())
 	    putMVar cbsRef cbs
 	    forever (stepCBS cbs)
 
 	cbs <- takeMVar cbsRef
 
-	return (eG3D, cbs, exitRef)
+	return (eG3D, cbs, varExit)
 
-stepHG3D (eG3D, cbs, exitRef) = do
+stepHG3D (eG3D, cbs, varExit) = do
     setC eG3D ctGraphics3DCommand Step
 
-isExitHG3D (eG3D, cbs, exitRef) = do
-	ise <- readIORef exitRef
+isExitHG3D (eG3D, cbs, varExit) = do
+	ise <- readVar varExit
 	return ise
 
-loopHG3D (eG3D, cbs, exitRef) loopSleepTime = do
-	stepHG3D (eG3D, cbs, exitRef)
+resetExitHG3D (eG3D, cbs, varExit) = writeVar varExit False
+
+loopHG3D hg3d loopSleepTime checkExit = do
+	stepHG3D hg3d
 	sleepFor loopSleepTime
-	ise <- isExitHG3D (eG3D, cbs, exitRef)
+	ise <- do
+		ise' <- isExitHG3D hg3d
+		if ise' then do
+			resetExitHG3D hg3d
+			checkExit
+			else
+				return False
 	if not ise then do
-		loopHG3D (eG3D, cbs, exitRef) loopSleepTime
+		loopHG3D hg3d loopSleepTime checkExit
 		return ()
 		else
 			return ()
 
-exitHG3D (eG3D, cvs, exitRef) = do
-	writeIORef exitRef True
+exitHG3D (eG3D, cvs, varExit) = do
+	writeVar varExit True >> return ()
 
-registerCallback (eG3D, cbs, exitRef) e ct f = do
+registerCallback (eG3D, cbs, varExit) e ct f = do
 	registerReceiverCBS cbs e ct f

@@ -133,6 +133,6 @@ main = do
     registerMusicButtons hg3d musicStart musicStop music
     registerVolumeSliders hg3d sliderSound sliderMusic volume
     forkIO $ rotate cube
-    loopHG3D hg3d (msecT 20)
+    loopHG3D hg3d (msecT 20) (return True) -- allow close
     return ()
 

@@ -67,5 +67,5 @@ main = do
       (eGeo, eCam, hg3d) <- start
       forkIO $ rotateZ eGeo
       forkIO $ rotateX eGeo
-      loopHG3D hg3d (msecT 20)
+      loopHG3D hg3d (msecT 20) (return True) -- allow close on windows click
       return ()

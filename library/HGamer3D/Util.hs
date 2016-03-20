@@ -24,11 +24,13 @@ module HGamer3D.Util
 
 (
 	module HGamer3D.Util.FileLocation,
-	module HGamer3D.Util.UniqueName
+	module HGamer3D.Util.UniqueName,
+	module HGamer3D.Util.Variable
 )
 
 where
 
 import HGamer3D.Util.FileLocation
 import HGamer3D.Util.UniqueName
+import HGamer3D.Util.Variable
 

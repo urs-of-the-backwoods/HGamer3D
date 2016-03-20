@@ -222,6 +222,7 @@ def task_hgamer3d():
 			'library/HGamer3D/Data.hs',
 			'library/HGamer3D/Util/FileLocation.hs',
 			'library/HGamer3D/Util/UniqueName.hs',
+			'library/HGamer3D/Util/Variable.hs',
 			'library/HGamer3D/Util.hs',
 			'library/HGamer3D/Graphics3D.hs',
 			'library/HGamer3D/Graphics3D/Camera.hs',

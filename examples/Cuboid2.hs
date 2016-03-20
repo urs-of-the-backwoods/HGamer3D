@@ -71,24 +71,6 @@ steps start move level =
 -- CH3-7e
           
     
-
--- rename IORef
----------------
-newVar :: a -> IO (IORef a)
-newVar v = newIORef v
-
-updateVar :: IORef v -> (v -> v) -> IO v
-updateVar v f = atomicModifyIORef v (\v -> let r = f v in (r, r))
-
-updateVar' :: IORef v -> (v -> (v, w)) -> IO w
-updateVar' = atomicModifyIORef
-
-setVar :: IORef v -> v -> IO ()
-setVar v val = atomicModifyIORef v (\v -> (val, ()))
-
-readVar :: IORef v -> IO v
-readVar = readIORef
-
 -- Engine related low level routines
 ------------------------------------
 
@@ -180,15 +162,15 @@ setPos er fp = setC er ctPosition (f2pos fp)
 
 -- install key handler, moves each key up and currently pressed keys in variable
 -- CH5-3s
-installKeyHandler :: HG3D -> IORef [T.Text] -> IORef [T.Text] -> Entity -> IO ()
+installKeyHandler :: HG3D -> Var [T.Text] -> Var [T.Text] -> Entity -> IO ()
 installKeyHandler hg3d varKeysUp varKeysPressed ieh = do
     let handleKeys ke = do
         case ke of  
             KeyUp _ _ k -> do
-                updateVar varKeysPressed (\keys -> filter (\k' -> k' /= k) keys) 
-                updateVar varKeysUp (\keys -> keys ++ [k])
+                updateVar varKeysPressed (\keys -> (filter (\k' -> k' /= k) keys, ()))
+                updateVar varKeysUp (\keys -> (keys ++ [k], ()))
                 return ()
-            KeyDown _ _ k -> updateVar varKeysPressed (\keys -> if not (k `elem` keys) then k:keys else keys) >> return ()
+            KeyDown _ _ k -> updateVar varKeysPressed (\keys -> (if not (k `elem` keys) then k:keys else keys, ())) >> return ()
             _ -> return ()
     registerCallback hg3d ieh ctKeyEvent (\k -> handleKeys k)
     return ()
@@ -214,9 +196,9 @@ installMoveCamera cam varKeysPressed = do
 
 startWorld = do
     (hg3d, cam, inputHandler) <- setupWorld
-    forkIO $ loopHG3D hg3d (msecT 30)
-    varKeysUp <- newVar []
-    varKeysPressed <- newVar []
+    forkIO $ loopHG3D hg3d (msecT 30) (return True)   -- allow exit, per windows close
+    varKeysUp <- makeVar []
+    varKeysPressed <- makeVar []
     installKeyHandler hg3d varKeysUp varKeysPressed inputHandler
     installMoveCamera cam varKeysPressed
     drawCubeFrame
@@ -278,7 +260,7 @@ runLevel varKeysUp allS@(sS, eS, ss) level = do
     let moveSteps pos list = case list of
             (p: ps) -> moveTime sS pos p (msecT 200) >> moveSteps p ps
             [] -> return ()
-        resetKeys = setVar varKeysUp []
+        resetKeys = writeVar varKeysUp []
         pause = sleepFor (msecT 20)
         getMove = do
             keys <- updateVar' varKeysUp (\ks -> ([], ks))
