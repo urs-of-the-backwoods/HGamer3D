@@ -14,7 +14,8 @@ from doit.tools import config_changed, run_once
 
 # version information for all subcomponents
 version_gamegio = "0.7.0"
-version_media = "1.4.0"
+version_media = "1.5.0"
+version_engine = "1.5.0"
 version_media_examples = "0.1.0"
 version_hgamer3d = "0.7.0"
 version_intonaco = "0.1.0"
@@ -60,7 +61,6 @@ def copy_file_replace(file_in, replace_dict, targets):
 	        	for k in replace_dict.keys():
 	        		line_out = line_out.replace(k, replace_dict[k])
 		        fout.write(line_out)
-
 
 def task_gamegio():
 	if platform.system() == "Windows":
@@ -115,7 +115,7 @@ def task_gamegio():
 	yield {
 		'name' : 'arriccio',
 	    'actions': [
-	    	(copy_file_replace, ['component/GameEngineGio', {'{version}' : version_gamegio} ]),
+	    	(copy_file_replace, ['component/GameEngineGio', {'{version}' : version_gamegio, '{version_engine}' : short_version(version_engine)} ]),
 				'aio local http://www.hgamer3d.org/component/GameEngineGio build-gamegio || true'
 	    ],
 	    'targets': ['build-gamegio/arriccio.toml'],
@@ -126,62 +126,60 @@ def task_gamegio():
 	} 
 
 
-def task_media():
-
-	yield {
-		'name' : 'build-dir-plain',
-		'actions' : [
-	    			 (make_dir, ['build-media/media-' + version_media]),
-					 'cp -r ../HGamer3D-Runtimes/Plain-1.4/* build-media/media-' + version_media,
-		],
-	    'file_dep': [
-			'../HGamer3D-Runtimes/Plain-1.4/LICENSE.txt',
-			'../HGamer3D-Runtimes/Plain-1.4/README_RUNTIME.txt',
-			],
-		'targets' : ['build-media/media-' + version_media]
-	}
-
-	yield {
-		'name' : 'arriccio-plain',
-	    'actions': [
-	    	(copy_file_replace, ['component/MediaPlain', {'{version}' : version_media} ]),
-				'aio local http://www.hgamer3d.org/component/MediaPlain build-media || true'
-	    ],
-	    'targets': ['build-media/arriccio.toml'],
-	    'uptodate': [config_changed(version_media)],
-	    'file_dep': [
-			'component/MediaPlain',
-		]
-	} 
-
-def task_media_ex():
-
+def task_engine():
+	targetdir = 'build-engine/engine-' + arch_os + '-' + version_engine
 	yield {
 		'name' : 'build-dir',
 		'actions' : [
-	    			 (make_dir, ['build-media-ex/media-examples-' + version_media_examples]),
-					 'cp -r ../HGamer3D-Runtimes/HGamer3D-1/* build-media-ex/media-examples-' + version_media_examples,
+	    			(make_dir, [targetdir]),
+	    			'cp -r ../Urho3D-Build/bin/Urho3D.dll ' + targetdir,
+	    			'cp -r ../Urho3D-Build/bin/d3dcompiler_47.dll ' + targetdir,
 		],
-	    'file_dep': [
-			'../HGamer3D-Runtimes/HGamer3D-1/LICENSE.txt',
-			'../HGamer3D-Runtimes/HGamer3D-1/README_RUNTIME.txt',
-			],
-		'targets' : ['build-media-ex/media-examples-' + version_media_examples]
+		'uptodate' : [run_once],
+		'targets' : ['build-engine']
 	}
 
 	yield {
 		'name' : 'arriccio',
 	    'actions': [
-	    	(copy_file_replace, ['component/MediaExamples', {'{version}' : version_media_examples} ]),
-				'aio local http://www.hgamer3d.org/component/MediaExamples build-media-ex || true'
+	    	(copy_file_replace, ['component/Engine', {'{version}' : version_engine, '{version_media}' : short_version(version_media)} ]),
+				'aio local http://www.hgamer3d.org/component/Engine build-engine || true'
 	    ],
-	    'targets': ['build-media-ex/arriccio.toml'],
-	    'uptodate': [config_changed(version_media_examples)],
+	    'targets': ['build-engine/arriccio.toml'],
+	    'uptodate': [config_changed(version_engine)],
 	    'file_dep': [
-			'component/MediaExamples',
+			'component/Engine',
 		]
 	} 
 
+
+def task_media():
+
+	for (tdir, mdir, mversion, msource, mcomponent) in [
+		('build-media', 'build-media/media-', version_media, '../HGamer3D-Media/Plain-1.5', 'MediaPlain')
+	]:
+
+		yield {
+			'name' : 'build-dir-' + mcomponent,
+			'actions' : [
+		    			 (make_dir, [mdir + mversion]),
+						 'cp -r ' + msource + '/* ' + mdir + mversion,
+			],
+			'uptodate' : [run_once],
+			'targets' : [mdir + mversion]
+		}
+
+		yield {
+			'name' : 'arriccio-plain-' + mcomponent,
+		    'actions': [
+		    	(copy_file_replace, ['component/' + mcomponent, {'{version}' : mversion} ]),
+					'aio local http://www.hgamer3d.org/component/' + mcomponent + ' ' + tdir + ' || true'
+		    ],
+		    'targets': [tdir + '/arriccio.toml'],
+		    'file_dep': [
+				'component/' + mcomponent,
+			]
+		} 
 
 def task_hgamer3d():
 
@@ -287,7 +285,6 @@ def task_examples():
 					],
 	}
 
-
 def task_runner():
 
 	yield {
@@ -302,7 +299,7 @@ def task_runner():
 	yield {
 		'name' : 'runner',
 	    'actions': [
-	    	(copy_file_replace, ['component/Run', {'{version}' : version_hgamer3d, '{version_media}' : short_version(version_media), '{version_media_examples}' : short_version(version_media_examples), '{version_gamegio}' : short_version(version_gamegio), '{version_intonaco}' : short_version(version_intonaco)}]),
+	    	(copy_file_replace, ['component/Run', {'{version}' : version_hgamer3d, '{version_media_examples}' : short_version(version_media_examples), '{version_gamegio}' : short_version(version_gamegio), '{version_intonaco}' : short_version(version_intonaco)}]),
 			'aio local http://www.hgamer3d.org/component/Run build-runner || true',
 			'aio alias Run http://www.hgamer3d.org/component/Run || true'
 	    ],

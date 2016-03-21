@@ -9,18 +9,36 @@ Description = """
 """
 signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
 
-# arch os independent implementation
+# windwos implementation
 #
 
 [[Impls]]
   version = "{version}"
   architecture = "*"
-  os = "*"
+  os = "windows"
 
 [[Impls.dependencies]]
-  Id = "http://www.hgamer3d.org/component/MediaPlain"
-  VersionConstraint = "{version_media}"
-  Environment = ["add-path URHO3D_PREFIX_PATH ."]
+  Id = "http://www.hgamer3d.org/component/MediaExamples"
+  VersionConstraint = "{version_media_examples}"
+  Environment = ["add-path HG3D_RESOURCE_PATH ."]
+
+[[Impls.dependencies]]
+  Id = "http://www.hgamer3d.org/component/Intonaco"
+  VersionConstraint = "{version_intonaco}"
+  Environment = ["add-path INTONACO intonaco.gio"]
+
+[[Impls.dependencies]]
+  Id = "http://www.hgamer3d.org/component/GameEngineGio"
+  VersionConstraint = "{version_gamegio}"
+  Environment = ["add-path GIORNATA game_engine.gio"]
+
+# linux implementation
+#
+
+[[Impls]]
+  version = "{version}"
+  architecture = "*"
+  os = "linux"
 
 [[Impls.dependencies]]
   Id = "http://www.hgamer3d.org/component/MediaExamples"
