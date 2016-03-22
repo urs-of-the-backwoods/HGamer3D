@@ -128,16 +128,28 @@ def task_gamegio():
 
 def task_engine():
 	targetdir = 'build-engine/engine-' + arch_os + '-' + version_engine
-	yield {
-		'name' : 'build-dir',
-		'actions' : [
-	    			(make_dir, [targetdir]),
-	    			'cp -r ../Urho3D-Build/bin/Urho3D.dll ' + targetdir,
-	    			'cp -r ../Urho3D-Build/bin/d3dcompiler_47.dll ' + targetdir,
-		],
-		'uptodate' : [run_once],
-		'targets' : ['build-engine']
-	}
+	if platform.system() == "Windows":
+		yield {
+			'name' : 'build-dir',
+			'actions' : [
+		    			(make_dir, [targetdir]),
+		    			'cp -r ../Urho3D-Build/bin/Urho3D.dll ' + targetdir,
+		    			'cp -r ../Urho3D-Build/bin/d3dcompiler_47.dll ' + targetdir,
+			],
+			'uptodate' : [run_once],
+			'targets' : ['build-engine']
+		}
+	else:
+		yield {
+			'name' : 'build-dir',
+			'actions' : [
+		    			(make_dir, [targetdir]),
+		    			'cp -r ../Urho3D-Build/lib/libUrho3D.so ' + targetdir,
+			],
+			'uptodate' : [run_once],
+			'targets' : ['build-engine']
+		}
+
 
 	yield {
 		'name' : 'arriccio',
@@ -270,18 +282,21 @@ def task_examples():
 					    'cd examples && bash -c "cp `find .stack-work | grep bin/Gui1` ../build-examples"',
 					    'cd examples && bash -c "cp `find .stack-work | grep bin/SoundEffects` ../build-examples"',
 					    'cd examples && bash -c "cp `find .stack-work | grep bin/Cuboid2` ../build-examples"',
+					    'cd examples && bash -c "cp `find .stack-work | grep bin/Materials` ../build-examples"',
 					],
 		'targets' : [
 						'build-examples/RotatingCube',
 						'build-examples/Gui1',
 						'build-examples/SoundEffects',
-						'build-examples/Cuboid1',
+						'build-examples/Cuboid2',
+						'build-examples/Materials',
 					],
 	    'file_dep': [
 						'examples/RotatingCube.hs',
 						'examples/Gui1.hs',
 						'examples/SoundEffects.hs',
 						'examples/Cuboid2.hs',
+						'examples/Materials.hs',
 					],
 	}
 

@@ -18,14 +18,12 @@ mats = [
     matMetalZigZag,
     matMetalBumps,
     matFishEye,
-
     matMetalOrnament,
     matMetalScratch,
     matMetalLine,
     matGreenGrass,
     matBrownGrass,
-    matGreyGrass
-    ] {- ,,
+    matGreyGrass,
     matSand,
     matRedRock,
     matBlackRock,
@@ -38,7 +36,7 @@ mats = [
     matWoodTiles,
     matColourTiles,
     matBlackTiles
-  ] -}
+  ] 
 
 
 -- START SYSTEM
@@ -46,36 +44,25 @@ mats = [
 
 go = do
 
-  eG3D <- newE [
-        ctGraphics3DConfig #: standardGraphics3DConfig,
-        ctGraphics3DCommand #: NoCmd
-        ]
-
-  -- create G3D System
-  world <- forkGraphics3DWorld (setC eG3D ctGraphics3DCommand Step >> return False) (msecT 20)
-  addToWorld world eG3D
+  hg3d <- configureHG3D
 
   cam <- newE [
        ctCamera #: FullViewCamera,
        ctPosition #: Vec3 1.0 1.0 (-30.0),
        ctOrientation #: unitU
        ]
-  addToWorld world cam
 
   li <- newE [
      ctLight #: Light PointLight 1.0 1000.0 1.0,
      ctPosition #: Vec3 1.0 1.0 (-30.0)
      ]
-  addToWorld world li
 
-  -- mapM (addToWorld world) [cam, li]  
-
-  return (world, li, cam)
+  return (hg3d, li, cam)
 
 -- CONTENT CREATION
 
 -- create cube with material, position at n of m
-makeCube world mat n m = do
+makeCube mat n m = do
   eCube <- newE [
      ctGeometry #: ShapeGeometry Cube,
      ctMaterial #: mat,
@@ -84,12 +71,11 @@ makeCube world mat n m = do
 --     ctPosition #: rotate3 (2.0 * pi * (fromIntegral n) / (fromIntegral m)) vec3Y (Vec3 2000.0 0.0 0.0),
      ctOrientation #: unitU
      ]
-  addToWorld world eCube
   return eCube
 
-allCubes world mats = do
+allCubes mats = do
          let m = length mats
-         cubes <- mapM (\(mat, n) -> makeCube world mat n m) (zip mats [1..m])
+         cubes <- mapM (\(mat, n) -> makeCube mat n m) (zip mats [1..m])
          return cubes
 
 camy c d = do
@@ -103,8 +89,9 @@ rotateWorld c cs d = forever $ do
 
 
 demo = do
-     (world, l1, c) <- go
-     cubes <- allCubes world mats
+     (hg3d, l1, c) <- go
+     cubes <- allCubes mats
+     forkIO $ loopHG3D hg3d (msecT 20) (return True) -- allow close on windows click
      rotateWorld c cubes (-0.05)
      return ()
 
