@@ -16,7 +16,7 @@ from doit.tools import config_changed, run_once
 version_gamegio = "0.7.0"
 version_media = "1.5.0"
 version_engine = "1.5.0"
-version_media_examples = "0.1.0"
+version_media_pack1 = "1.0.0"
 version_hgamer3d = "0.7.0"
 version_intonaco = "0.1.0"
 
@@ -168,7 +168,8 @@ def task_engine():
 def task_media():
 
 	for (tdir, mdir, mversion, msource, mcomponent) in [
-		('build-media', 'build-media/media-', version_media, '../HGamer3D-Media/Plain-1.5', 'MediaPlain')
+		('build-media', 'build-media/media-', version_media, '../HGamer3D-Media/Plain-1.5', 'MediaPlain'),
+		('build-media-pack1', 'build-media-pack1/media-pack1-', version_media_pack1, '../HGamer3D-Media/MediaPack1', 'MediaPack1')
 	]:
 
 		yield {
@@ -314,7 +315,7 @@ def task_runner():
 	yield {
 		'name' : 'runner',
 	    'actions': [
-	    	(copy_file_replace, ['component/Run', {'{version}' : version_hgamer3d, '{version_media_examples}' : short_version(version_media_examples), '{version_gamegio}' : short_version(version_gamegio), '{version_intonaco}' : short_version(version_intonaco)}]),
+	    	(copy_file_replace, ['component/Run', {'{version}' : version_hgamer3d, '{version_media_examples}' : short_version(version_media_pack1), '{version_gamegio}' : short_version(version_gamegio), '{version_intonaco}' : short_version(version_intonaco)}]),
 			'aio local http://www.hgamer3d.org/component/Run build-runner || true',
 			'aio alias Run http://www.hgamer3d.org/component/Run || true'
 	    ],

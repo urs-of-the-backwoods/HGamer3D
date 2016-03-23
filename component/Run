@@ -1,24 +1,40 @@
 # arriccio.toml file for starting HGamer3D Examples
 
 Id = "http://www.hgamer3d.org/component/Run"
-Purpose = "Run an executable of the HGamer3D stack"
+Purpose = "Run an executable build with HGamer3D"
 Description = """
   This interface is running an executable of the HGamer3D stack, by
   binding the required data, game engine runtime and intonaco libraries
   and then starting the executable.
 """
+
+License = "Apache 2.0 License"
+
+FullLicenseText = """
+Copyright 2016 Peter Althainz
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+"""
+
 signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
 
-# windwos implementation
-#
-
 [[Impls]]
   version = "{version}"
   architecture = "*"
-  os = "windows"
+  os = "*"
 
 [[Impls.dependencies]]
-  Id = "http://www.hgamer3d.org/component/MediaExamples"
+  Id = "http://www.hgamer3d.org/component/MediaPack1"
   VersionConstraint = "{version_media_examples}"
   Environment = ["add-path HG3D_RESOURCE_PATH ."]
 
@@ -31,28 +47,4 @@ signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
   Id = "http://www.hgamer3d.org/component/GameEngineGio"
   VersionConstraint = "{version_gamegio}"
   Environment = ["add-path GIORNATA game_engine.gio"]
-
-# linux implementation
-#
-
-[[Impls]]
-  version = "{version}"
-  architecture = "*"
-  os = "linux"
-
-[[Impls.dependencies]]
-  Id = "http://www.hgamer3d.org/component/MediaExamples"
-  VersionConstraint = "{version_media_examples}"
-  Environment = ["add-path HG3D_RESOURCE_PATH ."]
-
-[[Impls.dependencies]]
-  Id = "http://www.hgamer3d.org/component/Intonaco"
-  VersionConstraint = "{version_intonaco}"
-  Environment = ["add-path INTONACO intonaco.gio"]
-
-[[Impls.dependencies]]
-  Id = "http://www.hgamer3d.org/component/GameEngineGio"
-  VersionConstraint = "{version_gamegio}"
-  Environment = ["add-path GIORNATA game_engine.gio"]
-
 
