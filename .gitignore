@@ -8,14 +8,8 @@
 # 
 #	file: .gitignore
 
-build-gamegio
-build-media
-build-media-ex
-build-hgamer3d
-build-examples
-build-runner
-examples/.stack-work
-library/.stack-work
+build-*
+*/.stack-work
 library/CMakeLists.txt
 library/HGamer3D.cabal
 .doit.db
