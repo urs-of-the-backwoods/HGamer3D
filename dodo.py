@@ -17,7 +17,7 @@ version_gamegio = "0.7.0"
 version_media = "1.5.0"
 version_engine = "1.5.0"
 version_media_pack1 = "1.0.0"
-version_hgamer3d = "0.7.0"
+version_hgamer3d = "0.7.1"
 version_intonaco = "0.1.0"
 
 # where is Urho3D located
@@ -144,7 +144,7 @@ def task_engine():
 			'name' : 'build-dir',
 			'actions' : [
 		    			(make_dir, [targetdir]),
-		    			'cp -r ../Urho3D-Build/lib/libUrho3D.so ' + targetdir,
+		    			'cp -r ../Urho3D-Build/lib/libUrho3D.so* ' + targetdir,
 			],
 			'uptodate' : [run_once],
 			'targets' : ['build-engine']
