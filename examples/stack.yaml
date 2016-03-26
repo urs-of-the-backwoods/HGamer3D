@@ -1,8 +1,4 @@
-extra-deps: ["vect-0.4.7"]
+extra-deps: ["HGamer3D-0.7.1", "fresco-binding-0.1.1", "vect-0.4.7"]
 resolver: lts-5.8
 flags: {}
-packages:
-- '.'
-- '../../fresco/haskell'
-- '../library'
-extra-lib-dirs:
+packages: []

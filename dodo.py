@@ -270,20 +270,34 @@ def task_examples():
 		'name' : 'build-dir',
 		'actions' : [
 	    			(make_dir, ['build-examples']),
+	    			'cp examples/* build-examples'
 					],
-		'targets' : ['build-examples'],
-		'uptodate' : [run_once],
+		'targets' : [
+						'build-examples/RotatingCube.hs',
+						'build-examples/Gui1.hs',
+						'build-examples/SoundEffects.hs',
+						'build-examples/Cuboid2.hs',
+						'build-examples/Materials.hs',
+						'build-examples/stack.yaml'
+					],
+	    'file_dep': [
+						'examples/RotatingCube.hs',
+						'examples/Gui1.hs',
+						'examples/SoundEffects.hs',
+						'examples/Cuboid2.hs',
+						'examples/Materials.hs',
+					],
 		}
 
 	yield {
 		'name' : "compile",
-		'actions' : [ 
-						'cd examples && stack build',
-					    'cd examples && bash -c "cp `find .stack-work | grep bin/RotatingCube` ../build-examples"',
-					    'cd examples && bash -c "cp `find .stack-work | grep bin/Gui1` ../build-examples"',
-					    'cd examples && bash -c "cp `find .stack-work | grep bin/SoundEffects` ../build-examples"',
-					    'cd examples && bash -c "cp `find .stack-work | grep bin/Cuboid2` ../build-examples"',
-					    'cd examples && bash -c "cp `find .stack-work | grep bin/Materials` ../build-examples"',
+		'actions' : [
+						'cd build-examples && stack build HGamer3D', 
+						'cd build-examples && stack exec ghc -- -threaded RotatingCube.hs',
+						'cd build-examples && stack exec ghc -- -threaded Gui1.hs',
+						'cd build-examples && stack exec ghc -- -threaded SoundEffects.hs',
+						'cd build-examples && stack exec ghc -- -threaded Cuboid2.hs',
+						'cd build-examples && stack exec ghc -- -threaded Materials.hs',
 					],
 		'targets' : [
 						'build-examples/RotatingCube',
