@@ -24,12 +24,12 @@ start = do
             ctLight #: Light PointLight 1.0 1000.0 1.0 
             ]
 
-      -- create GUI
       eText <- newE [
             ctText #: "Rotating Cube Example",
             ctScreenRect #: Rectangle 10 10 100 25
             ]
 
+      -- CH5-1s
       eButton <- newE [
             ctButton #: False,
             ctText #: " Exit",
@@ -37,8 +37,10 @@ start = do
             ]
 
       registerCallback hg3d eButton ctButton (\flag -> if not flag then exitHG3D hg3d else return ())
+      -- CH5-1e
 
       -- create cube
+      -- CH4-1s
       eGeo <- newE [
             ctGeometry #: ShapeGeometry Cube,
             ctMaterial #: matBlue,
@@ -46,6 +48,7 @@ start = do
             ctPosition #: Vec3 0.0 0.0 0.0,
             ctOrientation #: unitU
             ]
+      -- CH4-1e
 
       return (eGeo, eCam, hg3d)
 
@@ -56,12 +59,13 @@ rotateZ eGeo = do
             sleepFor (msecT 12)
       return ()
 
+-- CH4-2s
 rotateX eGeo = do
       forever $ do 
             updateC eGeo ctOrientation (\u -> (rotU vec3X 0.012) .*. u)
             sleepFor (msecT 16)
       return ()
-
+-- CH4-2e
 
 main = do 
       (eGeo, eCam, hg3d) <- start
