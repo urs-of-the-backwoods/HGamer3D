@@ -19,6 +19,8 @@ version_engine = "1.5.0"
 version_media_pack1 = "1.0.0"
 version_hgamer3d = "0.7.1"
 version_intonaco = "0.1.0"
+version_luascripts = "0.1.1"
+version_fresco = "0.1.1"
 
 # where is Urho3D located
 urho3d_home = os.path.abspath("../Urho3D-1.5").replace(os.sep, "/")
@@ -278,6 +280,8 @@ def task_examples():
 						'build-examples/SoundEffects.hs',
 						'build-examples/Cuboid2.hs',
 						'build-examples/Materials.hs',
+						'build-examples/Billion.hs',
+						'build-examples/SpaceInvaders.hs',
 						'build-examples/stack.yaml'
 					],
 	    'file_dep': [
@@ -286,18 +290,22 @@ def task_examples():
 						'examples/SoundEffects.hs',
 						'examples/Cuboid2.hs',
 						'examples/Materials.hs',
+						'examples/Billion.hs',
+						'examples/SpaceInvaders.hs',
 					],
 		}
 
 	yield {
 		'name' : "compile",
 		'actions' : [
-						'cd build-examples && stack build HGamer3D', 
-						'cd build-examples && stack exec ghc -- -threaded RotatingCube.hs',
-						'cd build-examples && stack exec ghc -- -threaded Gui1.hs',
-						'cd build-examples && stack exec ghc -- -threaded SoundEffects.hs',
-						'cd build-examples && stack exec ghc -- -threaded Cuboid2.hs',
-						'cd build-examples && stack exec ghc -- -threaded Materials.hs',
+						'cd build-examples && aio Stack build HGamer3D', 
+						'cd build-examples && aio Stack exec ghc -- -threaded RotatingCube.hs',
+						'cd build-examples && aio Stack exec ghc -- -threaded Gui1.hs',
+						'cd build-examples && aio Stack ghc -- -threaded SoundEffects.hs',
+						'cd build-examples && aio Stack exec ghc -- -threaded Cuboid2.hs',
+						'cd build-examples && aio Stack exec ghc -- -threaded Materials.hs',
+						'cd build-examples && aio Stack exec ghc -- -threaded Billion.hs',
+						'cd build-examples && aio Stack exec ghc -- -threaded SpaceInvaders.hs',
 					],
 		'targets' : [
 						'build-examples/RotatingCube',
@@ -305,6 +313,8 @@ def task_examples():
 						'build-examples/SoundEffects',
 						'build-examples/Cuboid2',
 						'build-examples/Materials',
+						'build-examples/SpaceInvaders',
+						'build-examples/Billion'
 					],
 	    'file_dep': [
 						'examples/RotatingCube.hs',
@@ -312,6 +322,8 @@ def task_examples():
 						'examples/SoundEffects.hs',
 						'examples/Cuboid2.hs',
 						'examples/Materials.hs',
+						'examples/Billion.hs',
+						'examples/SpaceInvaders.hs',
 					],
 	}
 
@@ -336,5 +348,89 @@ def task_runner():
 	    'targets': ['build-runner/arriccio.toml'],
 	    'file_dep': [
 			'component/Run',
-		]
+		],
+	    'uptodate': [
+	    	config_changed(version_hgamer3d),
+	    	config_changed(version_media_pack1),
+	    	config_changed(version_gamegio),
+	    	config_changed(version_intonaco)
+	    	],
 	}
+
+def task_component_dir():
+	return {
+		'actions' : [
+	    			(make_dir, ['build-components']),
+					],
+		'targets' : ['build-components'],
+		'uptodate' : [run_once],
+		}
+
+
+def task_create_project():
+	return {
+	    'actions': [
+	    	(copy_file_replace, ['component/CreateProject', {'{version}' : version_luascripts}]),
+	    	"aio sign build-components/CreateProject ~/.ssh/id_rsa",
+	    ],
+	    'targets': ['build-components/CreateProject'],
+	    'file_dep': [
+			'component/CreateProject',
+		],
+		'task_dep' : ['component_dir'],
+	    'uptodate': [config_changed(version_luascripts)],
+	}
+
+
+def task_script_component():
+	targetdir = 'build-scripts/scripts-' + version_luascripts
+	yield {
+		'name' : 'build-dir',
+		'actions' : [
+	    			(make_dir, [targetdir]),
+					],
+		'targets' : ['build-scripts'],
+		'uptodate' : [run_once],
+		}
+
+	for targetfile in [
+					'create_project.lua',
+					'os_name.lua'
+					]:
+		yield {
+			'name' : 'files-' + targetfile,
+			'actions' : [
+		    	(copy_file_replace, ['tools/lua-scripts/' + targetfile, {
+		    		'{version}' : version_luascripts,
+		    		'{version_hgamer3d}' : version_hgamer3d,
+		    		'{version_fresco}' : version_fresco
+		    		}])
+						],
+
+			'targets' : [targetdir + "/" + targetfile],
+			'file_dep' : ['tools/lua-scripts/' + targetfile],
+		    'uptodate': [config_changed(version_luascripts)],
+		}
+
+	yield {
+		'name' : 'component',
+		'targets' : 
+			[
+			'build-components/scripts-' + version_luascripts + '.tar.gz',
+			'build-components/scripts-' + version_luascripts + '.tar.gz.sig'
+			],
+		'task_dep' : ['component_dir', 
+		],
+		'file_dep' : [
+					targetdir + '/create_project.lua',
+					targetdir + '/os_name.lua'
+					],
+		'actions' : [
+			'cd ' + targetdir + ' && tar czf ../../build-components/scripts-' + version_luascripts + '.tar.gz *',
+			'cd build-components && aio sign scripts-' + version_luascripts + '.tar.gz ~/.ssh/id_rsa',
+		],
+	    'uptodate': [run_once],
+
+	}
+
+

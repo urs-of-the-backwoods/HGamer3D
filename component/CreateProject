@@ -1,0 +1,41 @@
+# arriccio.toml file for HGamer3D - Create Project utility script
+
+Id = "http://www.hgamer3d.org/component/CreateProject"
+Purpose = "Scaffolding a basic HGamer3D project"
+Description = """
+  Using this command you can create a basic project in the current folder.
+  Make sure you start it in an empty target folder.
+"""
+
+License = "Apache 2.0 License"
+
+FullLicenseText = """
+Copyright 2016 Peter Althainz
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+"""
+
+signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
+
+[[Impls]]
+  location = "http://www.hgamer3d.org/downloads/scripts-{version}.tar.gz"
+  signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
+  version = "{version}"
+  architecture = "*"
+  os = "*"
+  command = "create_project.lua"
+
+[[Impls.dependencies]]
+  Id = "http://www.hgamer3d.org/component/Lua"
+  VersionConstraint = "5.2"
+
