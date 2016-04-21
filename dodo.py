@@ -1,6 +1,6 @@
 # dodo file for building HGamer3D components
 
-#	HGamer3D Library (A project to enable 3D game development in Haskell)
+#	HGamer3D hgamer3d (A project to enable 3D game development in Haskell)
 #	Copyright 2015 Peter Althainz
 #	
 #	Distributed under the Apache License, Version 2.0
@@ -84,11 +84,11 @@ def task_gamegio():
 	component = 'GameEngineGio'
 
 	if platform.system() == "Windows":
-		cmake_cmd = 'cd build-gamegio && cmake -D URHO3D_64BIT=1 -D URHO3D_LIB_TYPE=SHARED -D URHO3D_SRC=' + urho3d_home + ' -D URHO3D_HOME=' + urho3d_build + ' ../fresco/game-giornata -G "Visual Studio 14 2015 Win64"'
+		cmake_cmd = 'cd build-gamegio && cmake -D URHO3D_64BIT=1 -D URHO3D_LIB_TYPE=SHARED -D URHO3D_SRC=' + urho3d_home + ' -D URHO3D_HOME=' + urho3d_build + ' ../gamegio -G "Visual Studio 14 2015 Win64"'
 		copy_cmd = 'cp build-gamegio/Release/game_gio_lib.dll build-gamegio/' + comp_name + '/game_engine.gio'
 	else:
-#		cmake_cmd = 'cd build-gamegio && cmake ../fresco/game-giornata'
-		cmake_cmd = 'cd build-gamegio && cmake -D URHO3D_64BIT=1 -D URHO3D_LIB_TYPE=SHARED -D URHO3D_SRC=' + urho3d_home + ' -D URHO3D_HOME=' + urho3d_build + ' ../fresco/game-giornata'
+#		cmake_cmd = 'cd build-gamegio && cmake ../gamegio'
+		cmake_cmd = 'cd build-gamegio && cmake -D URHO3D_64BIT=1 -D URHO3D_LIB_TYPE=SHARED -D URHO3D_SRC=' + urho3d_home + ' -D URHO3D_HOME=' + urho3d_build + ' ../gamegio'
 		copy_cmd = 'cp build-gamegio/libgame_gio_lib.so build-gamegio/' + comp_name + '/game_engine.gio'
 
 	yield {
@@ -98,7 +98,7 @@ def task_gamegio():
 					cmake_cmd
 		],
 	    'file_dep': [
-			'fresco/game-giornata/CMakeLists.txt',
+			'gamegio/CMakeLists.txt',
 			],
 		'targets' : [targetdir]
 	}
@@ -111,22 +111,22 @@ def task_gamegio():
 	    			copy_cmd
 	    ],
 	    'file_dep': [
-			'fresco/game-giornata/gui.hpp',
-			'fresco/game-giornata/audio.hpp',
-			'fresco/game-giornata/input.cpp',
-			'fresco/game-giornata/errors.hpp',
-			'fresco/game-giornata/gui.cpp',
-			'fresco/game-giornata/graphics3d.cpp',
-			'fresco/game-giornata/CMakeLists.txt',
-			'fresco/game-giornata/graphics3d.hpp',
-			'fresco/game-giornata/input.hpp',
-			'fresco/game-giornata/audio.cpp',
-			'fresco/game-giornata/interface.cpp',
-			'fresco/game-giornata/interface.h',
-			'fresco/game-giornata/Slider2.hpp',
-			'fresco/game-giornata/Slider2.cpp',
-			'fresco/game-giornata/LineEdit2.hpp',
-			'fresco/game-giornata/LineEdit2.cpp',
+			'gamegio/gui.hpp',
+			'gamegio/audio.hpp',
+			'gamegio/input.cpp',
+			'gamegio/errors.hpp',
+			'gamegio/gui.cpp',
+			'gamegio/graphics3d.cpp',
+			'gamegio/CMakeLists.txt',
+			'gamegio/graphics3d.hpp',
+			'gamegio/input.hpp',
+			'gamegio/audio.cpp',
+			'gamegio/interface.cpp',
+			'gamegio/interface.h',
+			'gamegio/Slider2.hpp',
+			'gamegio/Slider2.cpp',
+			'gamegio/LineEdit2.hpp',
+			'gamegio/LineEdit2.cpp',
 		],
 	    'targets': ['build-gamegio/' + comp_name + '/game_engine.gio',
 	    ],
@@ -146,7 +146,7 @@ def task_gamegio():
 	} 
 
 	yield {
-		'name' : 'packet',
+		'name' : 'package',
 		'targets' : 
 			[
 			'build-components/' + comp_name + '.tar.gz',
@@ -167,25 +167,28 @@ def task_gamegio():
 	}
 
 
-def task_engine():
-	targetdir = 'build-engine/engine-' + arch_os + '-' + version_engine
+def task_engine_cmp():
+	comp_name = 'engine-' + arch_os + '-' + version_engine
+	targetdir = 'build-engine'
+	component = 'Engine'
+
 	if platform.system() == "Windows":
 		yield {
-			'name' : 'build-dir',
+			'name' : 'init',
 			'actions' : [
-		    			(make_dir, [targetdir]),
-		    			'cp -r ../Urho3D-Build/bin/Urho3D.dll ' + targetdir,
-		    			'cp -r ../Urho3D-Build/bin/d3dcompiler_47.dll ' + targetdir,
+		    			(make_dir, [targetdir + '/' + comp_name]),
+		    			'cp -r ../Urho3D-Build/bin/Urho3D.dll ' + targetdir + '/' + comp_name,
+		    			'cp -r ../Urho3D-Build/bin/d3dcompiler_47.dll ' + targetdir + '/' + comp_name,
 			],
 			'uptodate' : [run_once],
 			'targets' : ['build-engine']
 		}
 	else:
 		yield {
-			'name' : 'build-dir',
+			'name' : 'init',
 			'actions' : [
-		    			(make_dir, [targetdir]),
-		    			'cp -r ../Urho3D-Build/lib/libUrho3D.so* ' + targetdir,
+		    			(make_dir, [targetdir + '/' + comp_name]),
+		    			'cp -r ../Urho3D-Build/lib/libUrho3D.so* ' + targetdir + '/' + comp_name,
 			],
 			'uptodate' : [run_once],
 			'targets' : ['build-engine']
@@ -193,20 +196,19 @@ def task_engine():
 
 
 	yield {
-		'name' : 'arriccio',
+		'name' : 'local',
 	    'actions': [
-	    	(copy_file_replace, ['component/Engine', {'{version}' : version_engine, '{version_media}' : short_version(version_media)} ]),
+	    	(copy_file_replace, ['engine/Engine', {'{version}' : version_engine, '{version_media}' : short_version(version_media)} ]),
 				'aio local http://www.hgamer3d.org/component/Engine build-engine || true'
 	    ],
 	    'targets': ['build-engine/arriccio.toml'],
 	    'uptodate': [config_changed(version_engine)],
 	    'file_dep': [
-			'component/Engine',
+			'engine/Engine',
 		]
 	} 
 
-
-def task_media():
+def task_media_cmp():
 
 	for (tdir, mdir, mversion, msource, mcomponent) in [
 		('build-media', 'build-media/media-', version_media, '../HGamer3D-Media/Plain-1.5', 'MediaPlain'),
@@ -214,7 +216,7 @@ def task_media():
 	]:
 
 		yield {
-			'name' : 'build-dir-' + mcomponent,
+			'name' : 'init-' + mcomponent,
 			'actions' : [
 		    			 (make_dir, [mdir + mversion]),
 						 'cp -r ' + msource + '/* ' + mdir + mversion,
@@ -224,91 +226,91 @@ def task_media():
 		}
 
 		yield {
-			'name' : 'arriccio-plain-' + mcomponent,
+			'name' : 'local-' + mcomponent,
 		    'actions': [
-		    	(copy_file_replace, ['component/' + mcomponent, {'{version}' : mversion} ]),
+		    	(copy_file_replace, ['media/' + mcomponent, {'{version}' : mversion} ]),
 					'aio local http://www.hgamer3d.org/component/' + mcomponent + ' ' + tdir + ' || true'
 		    ],
 		    'targets': [tdir + '/arriccio.toml'],
 		    'file_dep': [
-				'component/' + mcomponent,
+				'media/' + mcomponent,
 			]
 		} 
 
 def task_hgamer3d():
 
 	yield {
-		'name' : 'cabal',
+		'name' : 'init',
 	    'actions': [
-	    	(copy_file_replace, ['library/HGamer3D.cabal.tmpl', {'{version}' : version_hgamer3d} ]),
+	    	(copy_file_replace, ['hgamer3d/HGamer3D.cabal.tmpl', {'{version}' : version_hgamer3d} ]),
 	    ],
-	    'targets': ['library/HGamer3D.cabal'],
+	    'targets': ['hgamer3d/HGamer3D.cabal'],
 	    'uptodate': [config_changed(version_hgamer3d)],
 	    'file_dep': [
-			'library/HGamer3D.cabal.tmpl',
+			'hgamer3d/HGamer3D.cabal.tmpl',
 		]
 	} 
 
 	yield {
-		'name' : 'library',
+		'name' : 'build',
 		'actions' : [
-					 'cd library && stack build',
-					 'cd library && stack sdist',
+					 'cd hgamer3d && stack build',
+					 'cd hgamer3d && stack sdist',
 	    			 (make_dir, ['build-hgamer3d']),
-					 'cd library && bash -c "cp `find .stack-work | grep .tar.gz` ../build-hgamer3d"'
+					 'cd hgamer3d && bash -c "cp `find .stack-work | grep .tar.gz` ../build-hgamer3d"'
 					],
 		'targets' : ['build-hgamer3d/HGamer3D-' + version_hgamer3d + '.tar.gz'],
 	    'file_dep': [
-	    	'library/HGamer3D.cabal',
-	    	'library/LICENSE',
-	    	'library/stack.yaml',
-			'library/HGamer3D/Data/Angle.hs',
-			'library/HGamer3D/Data/Colour.hs',
-			'library/HGamer3D/Data/LMH.hs',
-			'library/HGamer3D/Data/GameTime.hs',
-			'library/HGamer3D/Data/Geometry2D.hs',
-			'library/HGamer3D/Data/Transform3D.hs',
-			'library/HGamer3D/Data/TypeSynonyms.hs',
-			'library/HGamer3D/Data/Vector.hs',
-			'library/HGamer3D/Data/Window.hs',
-			'library/HGamer3D/Data/PlayCmd.hs',
-			'library/HGamer3D/Data.hs',
-			'library/HGamer3D/Util/FileLocation.hs',
-			'library/HGamer3D/Util/UniqueName.hs',
-			'library/HGamer3D/Util/Variable.hs',
-			'library/HGamer3D/Util.hs',
-			'library/HGamer3D/Graphics3D.hs',
-			'library/HGamer3D/Graphics3D/Camera.hs',
-			'library/HGamer3D/Graphics3D/Geometry.hs',
-			'library/HGamer3D/Graphics3D/Light.hs',
-			'library/HGamer3D/Graphics3D/Material.hs',
-			'library/HGamer3D/Graphics3D/Window.hs',
-			'library/HGamer3D/Graphics3D/Graphics3DCommand.hs',
-			'library/HGamer3D/Graphics3D/Graphics3DConfig.hs',
-			'library/HGamer3D/Input/Mouse.hs',
-			'library/HGamer3D/Input/Keyboard.hs',
-			'library/HGamer3D/Input/Joystick.hs',
-			'library/HGamer3D/Input/InputEventHandler.hs',
-			'library/HGamer3D/Input.hs',
-		    'library/HGamer3D/GUI/Button.hs',
-		    'library/HGamer3D/GUI/EditText.hs',
-		    'library/HGamer3D/GUI/Text.hs',
-		    'library/HGamer3D/GUI/Slider.hs',
-		    'library/HGamer3D/GUI/CheckBox.hs',
-		    'library/HGamer3D/GUI/DropDownList.hs',
-		    'library/HGamer3D/GUI.hs',
-		    'library/HGamer3D/Audio/SoundSource.hs',
-		    'library/HGamer3D/Audio/SoundListener.hs',
-		    'library/HGamer3D/Audio/Volume.hs',
-		    'library/HGamer3D/Audio.hs',
-			'library/HGamer3D.hs',
+	    	'hgamer3d/HGamer3D.cabal',
+	    	'hgamer3d/LICENSE',
+	    	'hgamer3d/stack.yaml',
+			'hgamer3d/HGamer3D/Data/Angle.hs',
+			'hgamer3d/HGamer3D/Data/Colour.hs',
+			'hgamer3d/HGamer3D/Data/LMH.hs',
+			'hgamer3d/HGamer3D/Data/GameTime.hs',
+			'hgamer3d/HGamer3D/Data/Geometry2D.hs',
+			'hgamer3d/HGamer3D/Data/Transform3D.hs',
+			'hgamer3d/HGamer3D/Data/TypeSynonyms.hs',
+			'hgamer3d/HGamer3D/Data/Vector.hs',
+			'hgamer3d/HGamer3D/Data/Window.hs',
+			'hgamer3d/HGamer3D/Data/PlayCmd.hs',
+			'hgamer3d/HGamer3D/Data.hs',
+			'hgamer3d/HGamer3D/Util/FileLocation.hs',
+			'hgamer3d/HGamer3D/Util/UniqueName.hs',
+			'hgamer3d/HGamer3D/Util/Variable.hs',
+			'hgamer3d/HGamer3D/Util.hs',
+			'hgamer3d/HGamer3D/Graphics3D.hs',
+			'hgamer3d/HGamer3D/Graphics3D/Camera.hs',
+			'hgamer3d/HGamer3D/Graphics3D/Geometry.hs',
+			'hgamer3d/HGamer3D/Graphics3D/Light.hs',
+			'hgamer3d/HGamer3D/Graphics3D/Material.hs',
+			'hgamer3d/HGamer3D/Graphics3D/Window.hs',
+			'hgamer3d/HGamer3D/Graphics3D/Graphics3DCommand.hs',
+			'hgamer3d/HGamer3D/Graphics3D/Graphics3DConfig.hs',
+			'hgamer3d/HGamer3D/Input/Mouse.hs',
+			'hgamer3d/HGamer3D/Input/Keyboard.hs',
+			'hgamer3d/HGamer3D/Input/Joystick.hs',
+			'hgamer3d/HGamer3D/Input/InputEventHandler.hs',
+			'hgamer3d/HGamer3D/Input.hs',
+		    'hgamer3d/HGamer3D/GUI/Button.hs',
+		    'hgamer3d/HGamer3D/GUI/EditText.hs',
+		    'hgamer3d/HGamer3D/GUI/Text.hs',
+		    'hgamer3d/HGamer3D/GUI/Slider.hs',
+		    'hgamer3d/HGamer3D/GUI/CheckBox.hs',
+		    'hgamer3d/HGamer3D/GUI/DropDownList.hs',
+		    'hgamer3d/HGamer3D/GUI.hs',
+		    'hgamer3d/HGamer3D/Audio/SoundSource.hs',
+		    'hgamer3d/HGamer3D/Audio/SoundListener.hs',
+		    'hgamer3d/HGamer3D/Audio/Volume.hs',
+		    'hgamer3d/HGamer3D/Audio.hs',
+			'hgamer3d/HGamer3D.hs',
 		],
 	}
 
 def task_examples():
 
 	yield {
-		'name' : 'build-dir',
+		'name' : 'init',
 		'actions' : [
 	    			(make_dir, ['build-examples']),
 	    			'cp examples/* build-examples'
@@ -335,7 +337,7 @@ def task_examples():
 		}
 
 	yield {
-		'name' : "compile",
+		'name' : "build",
 		'actions' : [
 						'cd build-examples && aio Stack build HGamer3D', 
 						'cd build-examples && aio Stack exec ghc -- -threaded RotatingCube.hs',
@@ -366,27 +368,27 @@ def task_examples():
 					],
 	}
 
-def task_runner():
+def task_run_cmp():
 
 	yield {
-		'name' : 'build-dir',
+		'name' : 'init',
 		'actions' : [
-	    			(make_dir, ['build-runner']),
+	    			(make_dir, ['build-run']),
 					],
-		'targets' : ['build-runner'],
+		'targets' : ['build-run'],
 		'uptodate' : [run_once],
 		}
 
 	yield {
-		'name' : 'runner',
+		'name' : 'local',
 	    'actions': [
-	    	(copy_file_replace, ['component/Run', {'{version}' : version_hgamer3d, '{version_media_examples}' : short_version(version_media_pack1), '{version_gamegio}' : short_version(version_gamegio), '{version_intonaco}' : short_version(version_intonaco)}]),
-			'aio local http://www.hgamer3d.org/component/Run build-runner || true',
-			'aio alias Run http://www.hgamer3d.org/component/Run || true'
+	    	(copy_file_replace, ['run/Run', {'{version}' : version_hgamer3d, '{version_media_examples}' : short_version(version_media_pack1), '{version_gamegio}' : short_version(version_gamegio), '{version_intonaco}' : short_version(version_intonaco)}]),
+			'aio local http://www.hgamer3d.org/run/Run build-run || true',
+			'aio alias Run http://www.hgamer3d.org/run/Run || true'
 	    ],
-	    'targets': ['build-runner/arriccio.toml'],
+	    'targets': ['build-run/arriccio.toml'],
 	    'file_dep': [
-			'component/Run',
+			'run/Run',
 		],
 	    'uptodate': [
 	    	config_changed(version_hgamer3d),
@@ -406,7 +408,7 @@ def task_component_dir():
 		}
 
 
-def task_create_project():
+def task_scripts_cmp():
 	
 	comp_name = 'scripts-' + version_luascripts
 	targetdir = 'build-scripts'
@@ -428,7 +430,7 @@ def task_create_project():
 		yield {
 			'name' : 'build-' + targetfile,
 			'actions' : [
-		    	(copy_file_replace, ['tools/lua-scripts/' + targetfile, {
+		    	(copy_file_replace, ['scripts/' + targetfile, {
 		    		'{version}' : version_luascripts,
 		    		'{version_hgamer3d}' : version_hgamer3d,
 		    		'{version_fresco}' : version_fresco
@@ -436,7 +438,7 @@ def task_create_project():
 						],
 
 			'targets' : [targetdir + '/' + comp_name + "/" + targetfile],
-			'file_dep' : ['tools/lua-scripts/' + targetfile],
+			'file_dep' : ['scripts/' + targetfile],
 		    'uptodate': [config_changed(version_luascripts)],
 		}
 
@@ -444,13 +446,13 @@ def task_create_project():
 	yield {
 		'name' : 'local',
 	    'actions': [
-	    	(copy_file_replace, ['component/' + component, {'{version}' : version_luascripts} ]),
+	    	(copy_file_replace, ['scripts/' + component, {'{version}' : version_luascripts} ]),
 			'aio local http://www.hgamer3d.org/component/' +  component + ' ' + targetdir + ' || true'
 	    ],
 	    'targets': [targetdir + '/arriccio.toml'],
 	    'uptodate': [config_changed(version_luascripts)],
 	    'file_dep': [
-			'component/' + component,
+			'scripts/' + component,
 		]
 	} 
 
@@ -459,7 +461,9 @@ def task_create_project():
 		'targets' : 
 			[
 			'build-components/' + comp_name + '.tar.gz',
-			'build-components/' + comp_name + '.tar.gz.sig'
+			'build-components/' + comp_name + '.tar.gz.sig',
+			'build-components/' + component,
+			'build-components/' + component + '.sig',
 			],
 		'task_dep' : ['component_dir', 
 		],
