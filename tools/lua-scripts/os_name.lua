@@ -1,4 +1,6 @@
-local function getOS()
+local os_name = {}
+
+function os_name.getOS()
 	local raw_os_name, raw_arch_name = '', ''
 
 	-- LuaJIT shortcut
@@ -64,4 +66,4 @@ local function getOS()
 	return os_name, arch_name
 end
 
-print(("%q %q"):format(getOS()))
+return os_name

@@ -12,6 +12,11 @@
 import os, os.path, platform, string, sys
 from doit.tools import config_changed, run_once
 
+
+#
+# CONFIGURATION
+#
+
 # version information for all subcomponents
 version_gamegio = "0.7.0"
 version_media = "1.5.0"
@@ -25,6 +30,11 @@ version_fresco = "0.1.1"
 # where is Urho3D located
 urho3d_home = os.path.abspath("../Urho3D-1.5").replace(os.sep, "/")
 urho3d_build = os.path.abspath("../Urho3D-Build").replace(os.sep, "/")
+
+
+#
+# SUBROUTINES
+#
 
 def make_dir(d, targets):
 	d = d.replace("/", os.sep)
@@ -49,7 +59,6 @@ def get_arch():
 	print "don't know, which arch this is: ", ar
 	sys.exit()
 
-
 arch_os = get_arch() + "-" + get_os()
 
 def short_version(version):
@@ -64,31 +73,40 @@ def copy_file_replace(file_in, replace_dict, targets):
 	        		line_out = line_out.replace(k, replace_dict[k])
 		        fout.write(line_out)
 
+
+#
+# COMPONENTS
+#
+
 def task_gamegio():
+	comp_name = 'gamegio-' + arch_os + '-' + version_gamegio
+	targetdir = 'build-gamegio'
+	component = 'GameEngineGio'
+
 	if platform.system() == "Windows":
 		cmake_cmd = 'cd build-gamegio && cmake -D URHO3D_64BIT=1 -D URHO3D_LIB_TYPE=SHARED -D URHO3D_SRC=' + urho3d_home + ' -D URHO3D_HOME=' + urho3d_build + ' ../fresco/game-giornata -G "Visual Studio 14 2015 Win64"'
-		copy_cmd = 'cp build-gamegio/Release/game_gio_lib.dll build-gamegio/gamegio-' + arch_os + '-' + version_gamegio + '/game_engine.gio'
+		copy_cmd = 'cp build-gamegio/Release/game_gio_lib.dll build-gamegio/' + comp_name + '/game_engine.gio'
 	else:
 #		cmake_cmd = 'cd build-gamegio && cmake ../fresco/game-giornata'
 		cmake_cmd = 'cd build-gamegio && cmake -D URHO3D_64BIT=1 -D URHO3D_LIB_TYPE=SHARED -D URHO3D_SRC=' + urho3d_home + ' -D URHO3D_HOME=' + urho3d_build + ' ../fresco/game-giornata'
-		copy_cmd = 'cp build-gamegio/libgame_gio_lib.so build-gamegio/gamegio-' + arch_os + '-' + version_gamegio + '/game_engine.gio'
+		copy_cmd = 'cp build-gamegio/libgame_gio_lib.so build-gamegio/' + comp_name + '/game_engine.gio'
 
 	yield {
-		'name' : 'build-dir',
+		'name' : 'init',
 		'actions' : [
-	    			(make_dir, ['build-gamegio']),
+	    			(make_dir, [targetdir]),
 					cmake_cmd
 		],
 	    'file_dep': [
 			'fresco/game-giornata/CMakeLists.txt',
 			],
-		'targets' : ['build-gamegio']
+		'targets' : [targetdir]
 	}
 
 	yield {
-		'name' : 'library',
+		'name' : 'build',
 	    'actions': [
-	    			(make_dir, ['build-gamegio/gamegio-' + arch_os + '-' + version_gamegio]),
+	    			(make_dir, ['build-gamegio/' + comp_name]),
 	    			'cd build-gamegio && cmake --build . --config Release',
 	    			copy_cmd
 	    ],
@@ -110,22 +128,43 @@ def task_gamegio():
 			'fresco/game-giornata/LineEdit2.hpp',
 			'fresco/game-giornata/LineEdit2.cpp',
 		],
-	    'targets': ['build-gamegio/gamegio-' + arch_os + '-' + version_gamegio + '/game_engine.gio',
+	    'targets': ['build-gamegio/' + comp_name + '/game_engine.gio',
 	    ],
 	} 
 
 	yield {
-		'name' : 'arriccio',
+		'name' : 'local',
 	    'actions': [
-	    	(copy_file_replace, ['component/GameEngineGio', {'{version}' : version_gamegio, '{version_engine}' : short_version(version_engine)} ]),
-				'aio local http://www.hgamer3d.org/component/GameEngineGio build-gamegio || true'
+	    	(copy_file_replace, ['component/' + component, {'{version}' : version_gamegio, '{version_engine}' : short_version(version_engine)} ]),
+			'aio local http://www.hgamer3d.org/component/' +  component + ' ' + targetdir + ' || true'
 	    ],
-	    'targets': ['build-gamegio/arriccio.toml'],
+	    'targets': [targetdir + '/arriccio.toml'],
 	    'uptodate': [config_changed(version_gamegio)],
 	    'file_dep': [
-			'component/GameEngineGio',
+			'component/' + component,
 		]
 	} 
+
+	yield {
+		'name' : 'packet',
+		'targets' : 
+			[
+			'build-components/' + comp_name + '.tar.gz',
+			'build-components/' + comp_name + '.tar.gz.sig'
+			],
+		'task_dep' : ['component_dir', 
+		],
+		'file_dep' : [
+					targetdir + '/' + comp_name + '/game_engine.gio',
+					targetdir + '/arriccio.toml'
+					],
+		'actions' : [
+			'cd ' + targetdir + '/' + comp_name + ' && tar czf ../../build-components/' + comp_name + '.tar.gz *',
+			'cd build-components && aio sign ' + comp_name + '.tar.gz ~/.ssh/id_rsa',
+			'cp ' + targetdir + '/arriccio.toml build-components/' +  component,
+			'cd build-components && aio sign ' + component + ' ~/.ssh/id_rsa'
+		]
+	}
 
 
 def task_engine():
@@ -368,28 +407,17 @@ def task_component_dir():
 
 
 def task_create_project():
-	return {
-	    'actions': [
-	    	(copy_file_replace, ['component/CreateProject', {'{version}' : version_luascripts}]),
-	    	"aio sign build-components/CreateProject ~/.ssh/id_rsa",
-	    ],
-	    'targets': ['build-components/CreateProject'],
-	    'file_dep': [
-			'component/CreateProject',
-		],
-		'task_dep' : ['component_dir'],
-	    'uptodate': [config_changed(version_luascripts)],
-	}
+	
+	comp_name = 'scripts-' + version_luascripts
+	targetdir = 'build-scripts'
+	component = 'CreateProject'
 
-
-def task_script_component():
-	targetdir = 'build-scripts/scripts-' + version_luascripts
 	yield {
-		'name' : 'build-dir',
+		'name' : 'init',
 		'actions' : [
-	    			(make_dir, [targetdir]),
+	    			(make_dir, [targetdir + '/' + comp_name]),
 					],
-		'targets' : ['build-scripts'],
+		'targets' : [targetdir + '/' + comp_name],
 		'uptodate' : [run_once],
 		}
 
@@ -398,7 +426,7 @@ def task_script_component():
 					'os_name.lua'
 					]:
 		yield {
-			'name' : 'files-' + targetfile,
+			'name' : 'build-' + targetfile,
 			'actions' : [
 		    	(copy_file_replace, ['tools/lua-scripts/' + targetfile, {
 		    		'{version}' : version_luascripts,
@@ -407,30 +435,47 @@ def task_script_component():
 		    		}])
 						],
 
-			'targets' : [targetdir + "/" + targetfile],
+			'targets' : [targetdir + '/' + comp_name + "/" + targetfile],
 			'file_dep' : ['tools/lua-scripts/' + targetfile],
 		    'uptodate': [config_changed(version_luascripts)],
 		}
 
+
 	yield {
-		'name' : 'component',
+		'name' : 'local',
+	    'actions': [
+	    	(copy_file_replace, ['component/' + component, {'{version}' : version_luascripts} ]),
+			'aio local http://www.hgamer3d.org/component/' +  component + ' ' + targetdir + ' || true'
+	    ],
+	    'targets': [targetdir + '/arriccio.toml'],
+	    'uptodate': [config_changed(version_luascripts)],
+	    'file_dep': [
+			'component/' + component,
+		]
+	} 
+
+	yield {
+		'name' : 'packet',
 		'targets' : 
 			[
-			'build-components/scripts-' + version_luascripts + '.tar.gz',
-			'build-components/scripts-' + version_luascripts + '.tar.gz.sig'
+			'build-components/' + comp_name + '.tar.gz',
+			'build-components/' + comp_name + '.tar.gz.sig'
 			],
 		'task_dep' : ['component_dir', 
 		],
 		'file_dep' : [
-					targetdir + '/create_project.lua',
-					targetdir + '/os_name.lua'
+					targetdir + '/' + comp_name + '/create_project.lua',
+					targetdir + '/' + comp_name + '/os_name.lua',
+					targetdir + '/arriccio.toml'
 					],
 		'actions' : [
-			'cd ' + targetdir + ' && tar czf ../../build-components/scripts-' + version_luascripts + '.tar.gz *',
-			'cd build-components && aio sign scripts-' + version_luascripts + '.tar.gz ~/.ssh/id_rsa',
-		],
-	    'uptodate': [run_once],
-
+			'cd ' + targetdir + '/' + comp_name + ' && tar czf ../../build-components/' + comp_name + '.tar.gz *',
+			'cd build-components && aio sign ' + comp_name + '.tar.gz ~/.ssh/id_rsa',
+			'cp ' + targetdir + '/arriccio.toml build-components/' +  component,
+			'cd build-components && aio sign ' + component + ' ~/.ssh/id_rsa'
+		]
 	}
+
+
 
 

@@ -264,10 +264,10 @@ runLevel varKeysUp allS@(sS, eS, ss) level = do
         pause = sleepFor (msecT 20)
         getMove = do
             keys <- updateVar' varKeysUp (\ks -> ([], ks))
-            if length keys > 0 then
-                case getMoveFromKey (head keys) of
-                    Just m -> return m
-                    Nothing -> pause >> getMove
+            if length keys > 0 
+                then case getMoveFromKey (head keys) of
+                        Just m -> return m
+                        Nothing -> pause >> getMove
                 else pause >> getMove
         processMove pos m = case steps pos m level of
             ([], False) -> blinkCursor sS >> return (pos, False)

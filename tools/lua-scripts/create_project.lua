@@ -1,5 +1,9 @@
 -- this script creates a project
 
+local os_name = require("os_name")
+this_os, _ = os_name.getOS()
+
+
 cabal_file = [[
 name:                game
 version:             0.1.0.0
@@ -125,28 +129,49 @@ main = do
     return ()
 ]]
 
-fout = io.open("stack.yaml", "w")
-io.output(fout)
-io.write(yaml_file)
-io.close(fout)
+local function writeIt(name, content) 
+  fout = io.open(name, "w")
+  io.output(fout)
+  io.write(content)
+  io.close(fout)
+end
 
-fout = io.open("game.hs", "w")
-io.output(fout)
-io.write(haskell_file)
-io.close(fout)
+writeIt("stack.yaml", yaml_file)
+writeIt("game.hs", haskell_file)
+writeIt("LICENSE", license_file)
+writeIt("Setup.hs", setup_file)
+writeIt("game.cabal", cabal_file)
 
-fout = io.open("LICENSE", "w")
-io.output(fout)
-io.write(license_file)
-io.close(fout)
+run_file = [[
+aio http://www.hgamer3d.org/component/Run aio http://www.hgamer3d.org/component/Stack exec game
+]]
 
-fout = io.open("Setup.hs", "w")
-io.output(fout)
-io.write(setup_file)
-io.close(fout)
+if this_os == "Windows" then 
+  writeIt("run.bat", run_file)
+else 
+  writeIt("run", run_file)
+  os.execute("chmod +x run")  
+end
 
-fout = io.open("game.cabal", "w")
-io.output(fout)
-io.write(cabal_file)
-io.close(fout)
+repl_file = [[
+aio http://www.hgamer3d.org/component/Run aio http://www.hgamer3d.org/component/Stack ghci
+]]
+
+if this_os == "Windows" then 
+  writeIt("repl.bat", repl_file)
+else 
+  writeIt("repl", repl_file)
+  os.execute("chmod +x repl")  
+end
+
+build_file = [[
+aio http://www.hgamer3d.org/component/Stack build
+]]
+
+if this_os == "Windows" then 
+  writeIt("build.bat", build_file)
+else 
+  writeIt("build", build_file)
+  os.execute("chmod +x build")  
+end
 
