@@ -2,14 +2,14 @@
 
 {-
     Sample: Cuboid2, a 3D puzzle game, thanks to Pedro Martins for game idea (https://github.com/pedromartins/cuboid)
-	HGamer3D Library (A project to enable 3D game development in Haskell)
-	Copyright 2011-2015 Peter Althainz
-	
-	Distributed under the Apache License, Version 2.0
-	(See attached file LICENSE or copy at 
-	http://www.apache.org/licenses/LICENSE-2.0)
+    HGamer3D Library (A project to enable 3D game development in Haskell)
+    Copyright 2011-2015 Peter Althainz
+    
+    Distributed under the Apache License, Version 2.0
+    (See attached file LICENSE or copy at 
+    http://www.apache.org/licenses/LICENSE-2.0)
  
-	file: Samples/Cuboid.hs
+    file: Samples/Cuboid.hs
 -}
 
 module Main where
@@ -165,13 +165,14 @@ setPos er fp = setC er ctPosition (f2pos fp)
 installKeyHandler :: HG3D -> Var [T.Text] -> Var [T.Text] -> Entity -> IO ()
 installKeyHandler hg3d varKeysUp varKeysPressed ieh = do
     let handleKeys ke = do
-        case ke of  
-            KeyUp _ _ k -> do
-                updateVar varKeysPressed (\keys -> (filter (\k' -> k' /= k) keys, ()))
-                updateVar varKeysUp (\keys -> (keys ++ [k], ()))
-                return ()
-            KeyDown _ _ k -> updateVar varKeysPressed (\keys -> (if not (k `elem` keys) then k:keys else keys, ())) >> return ()
-            _ -> return ()
+                            case ke of  
+                                KeyUp _ _ k -> do
+                                    updateVar varKeysPressed (\keys -> (filter (\k' -> k' /= k) keys, ()))
+                                    updateVar varKeysUp (\keys -> (keys ++ [k], ()))
+                                    return ()
+                                KeyDown _ _ k -> do
+                                    updateVar varKeysPressed (\keys -> (if not (k `elem` keys) then k:keys else keys, ())) >> return ()
+                                _ -> return () 
     registerCallback hg3d ieh ctKeyEvent (\k -> handleKeys k)
     return ()
 -- CH5-3e
@@ -181,12 +182,12 @@ installMoveCamera cam varKeysPressed = do
     let mUX = (Vec3 0.3 0 0.0)
     let mUZ = (Vec3 0 0 0.3)
     let move = do
-        keys <- readVar varKeysPressed
-        if "D" `elem` keys then updateC cam ctPosition (\v -> v &+ mUX) else return ()
-        if "A" `elem` keys then updateC cam ctPosition (\v -> v &- mUX) else return ()
-        if "W" `elem` keys then updateC cam ctPosition (\v -> v &+ mUZ) else return ()
-        if "S" `elem` keys then updateC cam ctPosition (\v -> v &- mUZ) else return ()
-        return ()
+                    keys <- readVar varKeysPressed
+                    if "D" `elem` keys then updateC cam ctPosition (\v -> v &+ mUX) else return ()
+                    if "A" `elem` keys then updateC cam ctPosition (\v -> v &- mUX) else return ()
+                    if "W" `elem` keys then updateC cam ctPosition (\v -> v &+ mUZ) else return ()
+                    if "S" `elem` keys then updateC cam ctPosition (\v -> v &- mUZ) else return ()
+                    return ()
     forkIO $ forever $ move >> sleepFor (msecT 50)
     return()
 
