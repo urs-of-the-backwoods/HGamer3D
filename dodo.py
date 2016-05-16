@@ -27,7 +27,7 @@ build_dir = "build"
 component_dir = "build/components"
 
 # where is Urho3D located
-urho3d_home = os.path.abspath("../Urho3D-1.5").replace(os.sep, "/")
+urho3d_home = os.path.abspath("../Urho3D").replace(os.sep, "/")
 urho3d_build = os.path.abspath("../Urho3D-Build").replace(os.sep, "/")
 
 

@@ -19,7 +19,7 @@ cmake_minimum_required (VERSION 2.8.6)
 project (game-giornata)
 set (game-giornata_VERSION_MAJOR 0)
 set (game-giornata_VERSION_MINOR 7)
-set (game-giornata_VERSION_PATCH 0)
+set (game-giornata_VERSION_PATCH 1)
 
 if (COMMAND cmake_policy)
     cmake_policy (SET CMP0003 NEW)
