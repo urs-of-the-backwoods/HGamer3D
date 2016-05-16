@@ -81,9 +81,9 @@ int Graphics3DSystem::create(char* pdata, int len)
   engineParameters["Multisample"] = 4;
   engineParameters["MaterialQuality"] = 2;
   engineParameters["LogLevel"] = LOG_DEBUG;
-  engineParameters["SoundBuffer"] = 1000;
-  engineParameters["SoundMixRate"] = 11025;
-  engineParameters["SoundInterpolation"] = false;
+//  engineParameters["SoundBuffer"] = 100;
+  engineParameters["SoundMixRate"] = 22050;
+//  engineParameters["SoundInterpolation"] = false;
 
   // engine config
   msgpack::object ec_o = obj.via.array.ptr[0];
