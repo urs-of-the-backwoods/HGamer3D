@@ -4,8 +4,8 @@ language: c
 
 script:
   - sudo apt-get update
-  - tools/building/buildUrho3d.sh
-  - tools/building/buildHGamer3D.sh
+  - /bin/bash -c tools/building/buildUrho3d.sh
+  - /bin/bash -c tools/building/buildHGamer3D.sh
 
 
 
