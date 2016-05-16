@@ -4,8 +4,8 @@ language: c
 
 script:
   - sudo apt-get update
-  - sudo pip install pynt
-  - pynt -f Scripts/build.py travis
+  - tools/building/buildUrho3d.sh
+  - tools/building/buildHGamer3D.sh
 
 
 

@@ -12,14 +12,16 @@ else
    SUDO=""
 fi
 
-$SUDO apt-get -y install cmake
+# install python doit tool
+$SUDO apt-get install python-pip
+$SUDO pip install doit
 
-cd ..
-mkdir -p HGamer3D-Build
-cd HGamer3D-Build
+# clone HGamer3D
+git clone https://github.com/urs-of-the-backwoods/HGamer3D
 
-export LANG=C.UTF-8     # needed for docker files
-stack build c2hs --resolver lts-3.4
-cmake $1/Source/Haskell-Source
-cmake --build . --config Release --target samples
+# compile gamegio, create engine component
+cd HGamer3D
+doit gamegio
+cd components
+doit engine
 
