@@ -75,11 +75,15 @@ int Graphics3DSystem::create(char* pdata, int len)
 
   // misc default engine parameters
   engineParameters = Engine::ParseParameters(GetArguments());
+
   engineParameters["LogName"] = "HGamer3D-Graphics.log";
   engineParameters["WindowTitle"] = "HGamer3D";
   engineParameters["Multisample"] = 4;
   engineParameters["MaterialQuality"] = 2;
   engineParameters["LogLevel"] = LOG_DEBUG;
+  engineParameters["SoundBuffer"] = 1000;
+  engineParameters["SoundMixRate"] = 11025;
+  engineParameters["SoundInterpolation"] = false;
 
   // engine config
   msgpack::object ec_o = obj.via.array.ptr[0];

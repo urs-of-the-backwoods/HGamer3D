@@ -8,10 +8,11 @@
 # 
 #	file: .gitignore
 
-build-*
+build
+components/build
 */.stack-work
-library/CMakeLists.txt
-library/HGamer3D.cabal
+hgamer3d/CMakeLists.txt
+hgamer3d/HGamer3D.cabal
 .doit.db
 .directory
 *.pyc
