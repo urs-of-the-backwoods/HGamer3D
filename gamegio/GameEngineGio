@@ -26,6 +26,8 @@ limitations under the License.
 
 signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
 
+# Linux, 64 Bit
+
 [[Impls]]
   location = "http://www.hgamer3d.org/downloads/gamegio-amd64-linux-{version}.tar.gz"
   signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
@@ -36,8 +38,10 @@ signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
 [[Impls.dependencies]]
   Id = "http://www.hgamer3d.org/component/Engine"
   VersionConstraint = "{version_engine}"
-  Environment = ["add-path LD_LIBRARY_PATH ."]
+  Environment = ["add-val LD_LIBRARY_PATH /lib/x86_64-linux-gnu", "add-path LD_LIBRARY_PATH ."]
 
+
+# Windows, 64 Bit
 
 [[Impls]]
   location = "http://www.hgamer3d.org/downloads/gamegio-amd64-windows-{version}.tar.gz"
@@ -51,6 +55,8 @@ signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
   VersionConstraint = "{version_engine}"
   Environment = ["add-path PATH ."]
 
+
+# Mac, 64 Bit
 
 [[Impls]]
   location = "http://www.hgamer3d.org/downloads/gamegio-amd64-darwin-{version}.tar.gz"

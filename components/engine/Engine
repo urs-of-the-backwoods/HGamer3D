@@ -682,7 +682,6 @@ signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
   VersionConstraint = "{version_media}"
   Environment = ["add-path URHO3D_PREFIX_PATH ."]
 
-
 # Linux implementation, 64 bit
 [[Impls]]
   location = "http://www.hgamer3d.org/downloads/engine-amd64-linux-{version}.tar.gz"
@@ -690,9 +689,23 @@ signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
   version = "{version}"
   architecture = "amd64"
   os = "linux"
+  Environment = ["add-val SDL_AUDIODRIVER pulseaudio"]
 
 [[Impls.dependencies]]
   Id = "http://www.hgamer3d.org/component/MediaPlain"
   VersionConstraint = "{version_media}"
+  Environment = ["add-path URHO3D_PREFIX_PATH ."]
+
+# Mac implementation, 64 bit
+[[Impls]]
+  location = "http://www.hgamer3d.org/downloads/engine-amd64-darwin-{version}.tar.gz"
+  signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
+  version = "{version}"
+  architecture = "amd64"
+  os = "darwin"
+
+[[Impls.dependencies]]
+  Id = "http://www.hgamer3d.org/component/MediaPlain"
+  VersionConstraint = "1.5"
   Environment = ["add-path URHO3D_PREFIX_PATH ."]
 
