@@ -22,7 +22,7 @@ git checkout 5e7a3b12
 cd ..
 mkdir Urho3D-Build
 cd Urho3D-Build
-./cmake ../Urho3D -DURHO3D_LIB_TYPE=SHARED -DENABLE_SAMPLES=0 -DENABLE_TOOLS=0
+cmake ../Urho3D -DURHO3D_LIB_TYPE=SHARED -DENABLE_SAMPLES=0 -DENABLE_TOOLS=0
 cmake --build . --config Release
 # install urho 3d
 $SUDO cmake --build . --config Release --target install
