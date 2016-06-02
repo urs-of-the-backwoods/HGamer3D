@@ -176,6 +176,7 @@ int Graphics3DSystem::create(char* pdata, int len)
 
   context = new Context();
   engine = new Engine(context);
+
   if (!engine->Initialize(engineParameters))
   {
       ErrorExit();
@@ -206,7 +207,7 @@ int Graphics3DSystem::create(char* pdata, int len)
   XMLFile* style = cache->GetResource<XMLFile>("UI/DefaultStyle.xml");
   UI* ui = context->GetSubsystem<UI>();
   ui->GetRoot()->SetDefaultStyle(style);
-    
+
   return OK;
 }
 

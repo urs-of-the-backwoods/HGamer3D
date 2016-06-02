@@ -91,7 +91,7 @@ int Mouse::msgVisible(char* pdata, int len)
 InputEventHandler::InputEventHandler(Graphics3DSystem* g3ds)
 : Object(g3ds->context)
 {
-    input = new Input(g3ds->context);
+    input = g3ds->context->GetSubsystem<Input>();
     
     mouseEventF = NULL;
     mouseDataP = NULL;
@@ -125,7 +125,6 @@ InputEventHandler::~InputEventHandler()
   exitREventF = NULL;
   mouseEventF = NULL;
   keyEventF = NULL;
-  delete input;
 }
 
 void InputEventHandler::registerEvents()
