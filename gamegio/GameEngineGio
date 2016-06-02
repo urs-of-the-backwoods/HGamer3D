@@ -38,7 +38,7 @@ signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
 [[Impls.dependencies]]
   Id = "http://www.hgamer3d.org/component/Engine"
   VersionConstraint = "{version_engine}"
-  Environment = ["add-val LD_LIBRARY_PATH /lib/x86_64-linux-gnu", "add-path LD_LIBRARY_PATH ."]
+  Environment = ["add-val LD_LIBRARY_PATH /usr/lib/x86_64-linux-gnu", "add-path LD_LIBRARY_PATH ."]
 
 
 # Windows, 64 Bit
