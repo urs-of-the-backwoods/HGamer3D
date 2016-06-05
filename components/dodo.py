@@ -136,12 +136,12 @@ def task_engine():
 
 	yield make_dirs_subtask("dirs", [targetdir + '/' + tarfolder])
 
-	if platform.system() == "Windows":
+	if get_os() == "windows":
 		yield untar_data_subtask("data", tarfolder, targetdir, ["Urho3D.dll"])
 		yield copy_files_subtask("files", [
 			urho3d_build_dir + '/bin/Urho3D.dll',
 			], targetdir + '/' + tarfolder)
-	else:
+	elif get_os() == "linux":
 		libgcc = os.popen("find /lib -name libgcc_s.so.?").read()[:-1]
 		libstdcpp = os.popen("find /usr/lib/x86_64-linux-gnu -name libstdc++.so.?").read()[:-1]
 
@@ -150,6 +150,11 @@ def task_engine():
 			libstdcpp,
 			urho3d_build_dir + '/lib/libUrho3D.so.0',
 			], targetdir + '/' + tarfolder)
+	else:
+		yield copy_files_subtask("files", [
+			urho3d_build_dir + '/lib/libUrho3D.dylib*',
+			], targetdir + '/' + tarfolder)
+		
 
 	yield arriccio_subtask("arriccio", "engine/Engine", "Engine", 
 		{'{version}' : version_engine, '{version_media}' : short_version(version_media)},

@@ -41,12 +41,16 @@ def task_gamegio():
 	targetdir = build_dir + '/gamegio'
 	component = 'GameEngineGio'
 
-	if platform.system() == "Windows":
+	if get_os() == "windows":
 		cmake_cmd = 'cd ' + targetdir + ' && cmake -D URHO3D_64BIT=1 -D URHO3D_LIB_TYPE=SHARED -D URHO3D_SRC=' + urho3d_home + ' -D URHO3D_HOME=' + urho3d_build + ' ../../gamegio -G "Visual Studio 14 2015 Win64"'
 		copy_cmd = 'cp ' + targetdir + '/Release/game_gio_lib.dll ' + targetdir + '/' + comp_name + '/game_engine.gio'
-	else:
+	elif get_os() == "linux":
 		cmake_cmd = 'cd ' + targetdir + ' && cmake -D URHO3D_64BIT=1 -D URHO3D_LIB_TYPE=SHARED -D URHO3D_SRC=' + urho3d_home + ' -D URHO3D_HOME=' + urho3d_build + ' ../../gamegio'
 		copy_cmd = 'cp ' + targetdir + '/libgame_gio_lib.so ' + targetdir + '/' + comp_name + '/game_engine.gio'
+	else:
+		cmake_cmd = 'cd ' + targetdir + ' && cmake -D URHO3D_64BIT=1 -D URHO3D_LIB_TYPE=SHARED -D URHO3D_SRC=' + urho3d_home + ' -D URHO3D_HOME=' + urho3d_build + ' ../../gamegio'
+		copy_cmd = 'cp ' + targetdir + '/libgame_gio_lib.dylib ' + targetdir + '/' + comp_name + '/game_engine.gio'
+
 
 	yield {
 		'name' : 'init',

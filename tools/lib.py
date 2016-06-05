@@ -28,6 +28,8 @@ def get_os():
 		return "linux"
 	if os_name == "Windows":
 		return "windows"
+	if os_name == "Darwin":
+		return "darwin"
 	print "don't know, which platform this is: ", os_name
 	sys.exit()
 
