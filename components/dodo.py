@@ -194,9 +194,9 @@ def task_runner():
 
 def task_scripts_cmp():
 	
-	tarfolder = 'scripts-' + version_luascripts
-	targetdir = 'build-scripts'
+	targetdir = build_dir + '/scripts'
 	component = 'CreateProject'
+	tarfolder = 'scripts-' + version_luascripts
 
 	yield make_dirs_subtask("dirs", [targetdir + '/' + tarfolder])
 
@@ -232,29 +232,4 @@ def task_scripts_cmp():
 			'scripts/' + component,
 		]
 	} 
-
-	yield {
-		'name' : 'packet',
-		'targets' : 
-			[
-			'build-components/' + tarfolder + '.tar.gz',
-			'build-components/' + tarfolder + '.tar.gz.sig',
-			'build-components/' + component,
-			'build-components/' + component + '.sig',
-			],
-		'file_dep' : [
-					targetdir + '/' + tarfolder + '/create_project.lua',
-					targetdir + '/' + tarfolder + '/os_name.lua',
-					targetdir + '/arriccio.toml'
-					],
-		'actions' : [
-			'cd ' + targetdir + '/' + tarfolder + ' && tar czf ../../build-components/' + tarfolder + '.tar.gz *',
-			'cd build-components && aio sign ' + tarfolder + '.tar.gz ~/.ssh/id_rsa',
-			'cp ' + targetdir + '/arriccio.toml build-components/' +  component,
-			'cd build-components && aio sign ' + component + ' ~/.ssh/id_rsa'
-		]
-	}
-
-
-
 
