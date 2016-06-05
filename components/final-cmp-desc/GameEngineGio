@@ -29,6 +29,18 @@ signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
 # Linux, 64 Bit
 
 [[Impls]]
+  location = "http://www.hgamer3d.org/downloads/gamegio-amd64-linux-0.7.2.tar.gz"
+  signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
+  version = "0.7.2"
+  architecture = "amd64"
+  os = "linux"
+
+[[Impls.dependencies]]
+  Id = "http://www.hgamer3d.org/component/Engine"
+  VersionConstraint = "1.5"
+  Environment = ["add-val LD_LIBRARY_PATH /usr/lib/x86_64-linux-gnu", "add-path LD_LIBRARY_PATH ."]
+
+[[Impls]]
   location = "http://www.hgamer3d.org/downloads/gamegio-amd64-linux-0.7.1.tar.gz"
   signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
   version = "0.7.1"
@@ -56,6 +68,18 @@ signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
 # Windows, 64 Bit
 
 [[Impls]]
+  location = "http://www.hgamer3d.org/downloads/gamegio-amd64-windows-0.7.2.tar.gz"
+  signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
+  version = "0.7.2"
+  architecture = "amd64"
+  os = "windows"
+
+[[Impls.dependencies]]
+  Id = "http://www.hgamer3d.org/component/Engine"
+  VersionConstraint = "1.5"
+  Environment = ["add-path PATH ."]
+
+[[Impls]]
   location = "http://www.hgamer3d.org/downloads/gamegio-amd64-windows-0.7.0.tar.gz"
   signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
   version = "0.7.0"
@@ -64,7 +88,7 @@ signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
 
 [[Impls.dependencies]]
   Id = "http://www.hgamer3d.org/component/Engine"
-  VersionConstraint = "1.5"
+  VersionConstraint = "1.5.0"
   Environment = ["add-path PATH ."]
 
 

@@ -5,6 +5,10 @@ Purpose = "HGamer3D Runtime Resources - Plain"
 Description = """
   Runtime resources, media files and similar for HGamer3D
   taken from the underlying engine resource folders.
+
+  Version History:
+  	2.0.0 media version from engine version 1.5, checkout 5e7a3b12
+  	1.5.0 initial version - related to engine version
 """
 License = "MIT license"
 FullLicenseText = """
@@ -32,6 +36,15 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
 signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
+
+# wildcard architecture, os
+# data can be used for all architectures
+[[Impls]]
+  location = "http://www.hgamer3d.org/downloads/media-2.0.0.tar.gz"
+  signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
+  version = "2.0.0"
+  architecture = "*"
+  os = "*"
 
 # wildcard architecture, os
 # data can be used for all architectures

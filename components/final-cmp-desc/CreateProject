@@ -28,9 +28,9 @@ limitations under the License.
 signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
 
 [[Impls]]
-  location = "http://www.hgamer3d.org/downloads/scripts-0.1.1.tar.gz"
+  location = "http://www.hgamer3d.org/downloads/scripts-0.1.2.tar.gz"
   signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
-  version = "0.1.1"
+  version = "0.1.2"
   architecture = "*"
   os = "*"
   command = "create_project.lua"

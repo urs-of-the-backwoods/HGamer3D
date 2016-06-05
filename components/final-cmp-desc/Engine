@@ -4,6 +4,10 @@ Id = "http://www.hgamer3d.org/component/Engine"
 Purpose = "HGamer3D 3D graphics engine"
 Description = """
   Graphics / game engine for HGamer3D (Urho3D)
+
+  Version History:
+  1.5.1 - engine version 1.5, checkout 5e7a3b12 (fit to MediaPlain 2.0.0)
+  1.5.0 - engine version 1.5 official release
 """
 License = "MIT license"
 FullLicenseText = """
@@ -671,6 +675,18 @@ signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
 
 # Windows implementation, 64 bit
 [[Impls]]
+  location = "http://www.hgamer3d.org/downloads/engine-amd64-windows-1.5.1.tar.gz"
+  signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
+  version = "1.5.1"
+  architecture = "amd64"
+  os = "windows"
+
+[[Impls.dependencies]]
+  Id = "http://www.hgamer3d.org/component/MediaPlain"
+  VersionConstraint = "2.0"
+  Environment = ["add-path URHO3D_PREFIX_PATH ."]
+
+[[Impls]]
   location = "http://www.hgamer3d.org/downloads/engine-amd64-windows-1.5.0.tar.gz"
   signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
   version = "1.5.0"
@@ -679,7 +695,7 @@ signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
 
 [[Impls.dependencies]]
   Id = "http://www.hgamer3d.org/component/MediaPlain"
-  VersionConstraint = "1.5"
+  VersionConstraint = "1.5.0"
   Environment = ["add-path URHO3D_PREFIX_PATH ."]
 
 
@@ -694,7 +710,7 @@ signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
 
 [[Impls.dependencies]]
   Id = "http://www.hgamer3d.org/component/MediaPlain"
-  VersionConstraint = "1.5"
+  VersionConstraint = "2.0"
   Environment = ["add-path URHO3D_PREFIX_PATH ."]
 
 [[Impls]]
@@ -706,7 +722,7 @@ signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
 
 [[Impls.dependencies]]
   Id = "http://www.hgamer3d.org/component/MediaPlain"
-  VersionConstraint = "1.5"
+  VersionConstraint = "1.5.0"
   Environment = ["add-path URHO3D_PREFIX_PATH ."]
 
 
