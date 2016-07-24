@@ -8,9 +8,8 @@ import qualified Data.Text as T
 import Control.Concurrent
 import Control.Monad
 
-createAll = do
-    hg3d <- configureHG3D
-    res <- mapM newE [
+gameLogic hg3d = do
+    res <- mapM (createE hg3d) [
             [   -- camera
                 ctCamera #: FullViewCamera,
                 ctPosition #: Vec3 1 1 (-30.0),
@@ -75,36 +74,33 @@ createAll = do
             ]
         ]
 
-    return (res, hg3d)
+    let [camera, cube, _, button, _, _, checkbox, _, edittext, _, slider, _, dropdownlist, output] = res
 
-rotate eGeo hg3d = do
-    updateC eGeo ctOrientation (\u -> (rotU vec3Y 0.02) .*. (rotU vec3X 0.005) .*. u)
-    stepHG3D hg3d
-    ex <- isExitHG3D hg3d
-    if not ex then
-        do
-            sleepFor (msecT 20)
-            rotate eGeo hg3d
-        else 
+    let rotate = do
+        updateC cube ctOrientation (\u -> (rotU vec3Y 0.02) .*. (rotU vec3X 0.005) .*. u)
+        sleepFor (msecT 20)
+        rotate 
+
+    forkIO $ rotate
+
+    -- CH6-2s
+    let printEvents = do
+        forever $ do
+            textOut <- do
+                         t1 <- readC button ctButton
+                         t2 <- readC checkbox ctCheckBox
+                         t3 <- readC edittext ctEditText
+                         t4 <- readC slider ctSlider
+                         t5 <- readC dropdownlist ctDropDownList
+                         return (T.pack ("button: " ++ (show t1) ++ "\ncheckbox: " ++ (show t2) ++ "\nedittext: " ++ (show t3) ++ "\nslider: " ++ (show t4) ++ "\ndropdownlist: " ++ (show t5) ++ "\n\n"))
+            setC output ctText textOut
+            sleepFor (msecT 200)
             return ()
 
--- CH6-2s
-printEvents button checkbox edittext slider dropdownlist output = do
-    forever $ do
-        textOut <- do
-                     t1 <- readC button ctButton
-                     t2 <- readC checkbox ctCheckBox
-                     t3 <- readC edittext ctEditText
-                     t4 <- readC slider ctSlider
-                     t5 <- readC dropdownlist ctDropDownList
-                     return (T.pack ("button: " ++ (show t1) ++ "\ncheckbox: " ++ (show t2) ++ "\nedittext: " ++ (show t3) ++ "\nslider: " ++ (show t4) ++ "\ndropdownlist: " ++ (show t5) ++ "\n\n"))
-        setC output ctText textOut
-        sleepFor (msecT 200)
-        return ()
--- CH6-2e
+    forkIO $ printEvents
+
+    return ()
 
 main = do
-    ([camera, cube, _, button, _, _, checkbox, _, edittext, _, slider, _, dropdownlist, output], hg3d) <- createAll
-    forkIO $ printEvents button checkbox edittext slider dropdownlist output
-    rotate cube hg3d
+    runGame standardGraphics3DConfig gameLogic (msecT 20)
     return ()

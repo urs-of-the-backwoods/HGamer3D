@@ -13,24 +13,22 @@ import Control.Concurrent
 import Control.Monad
 import System.Exit
 
-start = do
-
-      hg3d <- configureHG3D      -- initialize
+gameLogic hg3d = do
 
       -- create camera
-      eCam <- newE [
+      eCam <- createE hg3d [
             ctCamera #: FullViewCamera,
             ctPosition #: Vec3 1 1 (-30.0),
             ctLight #: Light PointLight 1.0 1000.0 1.0 
             ]
 
-      eText <- newE [
+      eText <- createE hg3d [
             ctText #: "Rotating Cube Example",
             ctScreenRect #: Rectangle 10 10 100 25
             ]
 
       -- CH5-1s
-      eButton <- newE [
+      eButton <- createE hg3d [
             ctButton #: False,
             ctText #: " Exit",
             ctScreenRect #: Rectangle 200 10 50 25
@@ -41,7 +39,7 @@ start = do
 
       -- create cube
       -- CH4-1s
-      eGeo <- newE [
+      eGeo <- createE hg3d [
             ctGeometry #: ShapeGeometry Cube,
             ctMaterial #: matBlue,
             ctScale #: Vec3 10.0 10.0 10.0,
@@ -50,26 +48,32 @@ start = do
             ]
       -- CH4-1e
 
-      return (eGeo, eCam, hg3d)
 
--- rotate the cube
-rotateZ eGeo = do
-      forever $ do 
-            updateC eGeo ctOrientation (\u -> (rotU vec3Z 0.021) .*. u)
-            sleepFor (msecT 12)
-      return ()
+      -- rotate the cube
+      let rotateZ eGeo = do
+            forever $ do 
+                  updateC eGeo ctOrientation (\u -> (rotU vec3Z 0.021) .*. u)
+                  sleepFor (msecT 12)
+            return ()
 
--- CH4-2s
-rotateX eGeo = do
-      forever $ do 
-            updateC eGeo ctOrientation (\u -> (rotU vec3X 0.012) .*. u)
-            sleepFor (msecT 16)
-      return ()
+      -- CH4-2s
+      let rotateX eGeo = do
+            forever $ do 
+                  updateC eGeo ctOrientation (\u -> (rotU vec3X 0.012) .*. u)
+                  sleepFor (msecT 16)
+            return ()
 -- CH4-2e
 
-main = do 
-      (eGeo, eCam, hg3d) <- start
+
       forkIO $ rotateZ eGeo
+
       forkIO $ rotateX eGeo
-      loopHG3D hg3d (msecT 20) (return True) -- allow close on windows click
+
+
+
+      return ()
+
+
+main = do 
+      runGame standardGraphics3DConfig gameLogic (msecT 20)
       return ()

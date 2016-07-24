@@ -23,22 +23,23 @@
 module HGamer3D
 
 (
-	module Fresco,
-	module HGamer3D.Data,
-	module HGamer3D.Util,
-	module HGamer3D.Graphics3D,
-	module HGamer3D.Input,
+    module Fresco,
+    module HGamer3D.Data,
+    module HGamer3D.Util,
+    module HGamer3D.Graphics3D,
+    module HGamer3D.Input,
     module HGamer3D.GUI,
     module HGamer3D.Audio,
 
-    configureHG3D,
-    stepHG3D,
-    loopHG3D,
+    HG3D,
+    GameLogicFunction,
+    runGame,
+
     registerCallback,
     isExitHG3D,
+    resetExitHG3D,
     exitHG3D,
-
-    HG3D,
+    createE,
 )
 
 where
@@ -56,65 +57,78 @@ import Control.Monad
 import Control.Concurrent.MVar
 import Data.IORef
 
--- run loop
+-- Opaque Value to denote some game-loop data
+data HG3D = HG3D ObjectLibSystem CallbackSystem (Var Bool)
 
-type HG3D = (Entity, CallbackSystem, Var Bool)
+-- runHG3D runs the engine in the main loop (for Mac) and executes game logic
+type GameLogicFunction = HG3D -> IO ()
 
-configureHG3D = do
+-- runGame, runs the game in the main loop, creates threads for GameLogicFunctions
+runGame :: Graphics3DConfig -> GameLogicFunction -> GameTime -> IO ()
+runGame conf glf loopSleepTime = do
 
-	cbsRef <- newEmptyMVar
+    ols <- createOLS
+    cbs <- createCBS
+    varExit <- makeVar False
 
-	-- create graphics system
-	eG3D <- newE [
-	    ctGraphics3DConfig #: standardGraphics3DConfig,
-	    ctGraphics3DCommand #: NoCmd
-	    ]
+    let hg3d = HG3D ols cbs varExit
 
-	eih <- newE [
-	    ctInputEventHandler #: DefaultEventHandler,
-	    ctExitRequestedEvent #: ExitRequestedEvent
-	    ]
+    forkIO $ do
 
-	varExit <- makeVar False
+        -- create graphics system
+        eG3D <- createE hg3d [
+            ctGraphics3DConfig #: conf,
+            ctGraphics3DCommand #: NoCmd
+            ]
 
-	-- create callback loop
-	forkIO $ do
-	    cbs <- createCBS
-	    registerCallback (eG3D, cbs, varExit) eih ctExitRequestedEvent (\_ -> writeVar varExit True >> return ())
-	    putMVar cbsRef cbs
-	    forever (stepCBS cbs)
+        eih <- createE hg3d [
+            ctInputEventHandler #: DefaultEventHandler,
+            ctExitRequestedEvent #: ExitRequestedEvent
+            ]
 
-	cbs <- takeMVar cbsRef
+        -- create callback loop, handle windows exit command
+        forkIO $ do
+            registerReceiverCBS cbs eih ctExitRequestedEvent (\_ -> writeVar varExit True >> return ())
+            forever $ (stepCBS cbs)
 
-	return (eG3D, cbs, varExit)
+        -- create game logic loop
+        forkIO $ glf hg3d
 
-stepHG3D (eG3D, cbs, varExit) = do
-    setC eG3D ctGraphics3DCommand Step
+        -- create game step loop
+        let gameStep = do
+            setC eG3D ctGraphics3DCommand Step
+            sleepFor loopSleepTime
+            gameStep
 
-isExitHG3D (eG3D, cbs, varExit) = do
-	ise <- readVar varExit
-	return ise
+        forkIO $ gameStep
 
-resetExitHG3D (eG3D, cbs, varExit) = writeVar varExit False
+        return ()
 
-loopHG3D hg3d loopSleepTime checkExit = do
-	stepHG3D hg3d
-	sleepFor loopSleepTime
-	ise <- do
-		ise' <- isExitHG3D hg3d
-		if ise' then do
-			resetExitHG3D hg3d
-			checkExit
-			else
-				return False
-	if not ise then do
-		loopHG3D hg3d loopSleepTime checkExit
-		return ()
-		else
-			return ()
+    -- enter into endless game loop
+    let loopGame = do
+        stepOLS ols
+        ex <- readVar varExit
+        if ex
+            then return ()
+            else loopGame
 
-exitHG3D (eG3D, cvs, varExit) = do
-	writeVar varExit True >> return ()
+    loopGame
 
-registerCallback (eG3D, cbs, varExit) e ct f = do
-	registerReceiverCBS cbs e ct f
+isExitHG3D (HG3D ols cbs varExit) = do
+    ise <- readVar varExit
+    return ise
+
+resetExitHG3D (HG3D ols cbs varExit) = writeVar varExit False
+
+exitHG3D (HG3D ols cbs varExit) = do
+    writeVar varExit True >> return ()
+
+registerCallback (HG3D ols cbs varExit) e ct f = do
+    registerReceiverCBS cbs e ct f
+
+createE (HG3D ols cbs varExit) creationList = do
+    e <- newE creationList
+    addEntityOLS ols e
+    return e
+
+

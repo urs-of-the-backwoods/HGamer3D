@@ -3,5 +3,5 @@ resolver: lts-5.8
 flags: {}
 packages:
 - '.'
-- '../../fresco/haskell'
+- '../../fresco-haskell'
 extra-lib-dirs:
