@@ -82,13 +82,13 @@ invaderData = [
 -- actors and collisions
 ------------------------
 
-createActor :: ActorType -> Int -> Int -> IO Actor
-createActor atype x y = do
+createActor :: HG3D -> ActorType -> Int -> Int -> IO Actor
+createActor hg3d atype x y = do
   let (t, _, w, h) = fromJust (M.lookup atype arts)
-  e <- newE [ ctText #: t, ctScreenRect #: Rectangle x y w h]
+  e <- createE hg3d [ ctText #: t, ctScreenRect #: Rectangle x y w h]
   return $ Actor atype e
                 
-createActors actorData = mapM (\(a, x, y) -> createActor a x y) actorData
+createActors hg3d actorData = mapM (\(a, x, y) -> createActor hg3d a x y) actorData
 
 posActor (Actor _ e) = readC e ctScreenRect >>= \(Rectangle x y _ _) -> return (x, y)
 moveActor (Actor _ e) (x, y) = updateC e ctScreenRect (\(Rectangle a b c d) -> (Rectangle (a+x) (b+y) c d))
@@ -116,15 +116,15 @@ getCollisions (Actor a e) actors =
 -- music and sound
 ------------------
   
-music = newE [ 
+music hg3d = createE hg3d [ 
   ctSoundSource #: Music "Sounds/RMN-Music-Pack/OGG/CD 3 - Clash of Wills/3-04 Joyful Ocean.ogg" 1.0 True "Music", 
   ctPlayCmd #: Stop ] >>=
   \m -> setC m ctPlayCmd Play
 
-sounds = do
-  ping <- newE [ ctSoundSource #: Sound "Sounds/inventory_sound_effects/ring_inventory.wav" 1.0 False "Sounds"
+sounds hg3d = do
+  ping <- createE hg3d [ ctSoundSource #: Sound "Sounds/inventory_sound_effects/ring_inventory.wav" 1.0 False "Sounds"
                , ctPlayCmd #: Stop ] -- creates a sound
-  clash <- newE [ ctSoundSource #: Sound "Sounds/inventory_sound_effects/metal-clash.wav" 1.0 False "Sounds"
+  clash <- createE hg3d [ ctSoundSource #: Sound "Sounds/inventory_sound_effects/metal-clash.wav" 1.0 False "Sounds"
               , ctPlayCmd #: Stop ] -- creates another sound
   return (ping, clash)
 
@@ -145,14 +145,14 @@ handleKey k (varMoveState, varNumShots) =
     _ -> return ()
 
 installKeyHandler hg3d varMoveState varNumShots = do
-  ieh <- newE [ctInputEventHandler #: DefaultEventHandler, ctKeyEvent #: NoKeyEvent]
+  ieh <- createE hg3d [ctInputEventHandler #: DefaultEventHandler, ctKeyEvent #: NoKeyEvent]
   registerCallback hg3d ieh ctKeyEvent (\k -> handleKey k (varMoveState, varNumShots))
 
   
 -- canon movements, shooting
 ----------------------------
 
-canonLoop canon varShots varMoveState varNumShots = do
+canonLoop hg3d canon varShots varMoveState varNumShots = do
   (x, y) <- posActor canon
   moving <- readVar varMoveState
   isShot <- updateVar varNumShots (\n -> if n > 0 then (n-1, True) else (0, False))
@@ -161,10 +161,10 @@ canonLoop canon varShots varMoveState varNumShots = do
     MovingRight -> if x < 720 then moveActor canon (5, 0) else return ()
     _ -> return ()
   if isShot
-    then createActor Shot (x + 28) (y - 6) >>= \s -> updateVar varShots (\l -> (s:l, ()))
+    then createActor hg3d Shot (x + 28) (y - 6) >>= \s -> updateVar varShots (\l -> (s:l, ()))
     else return ()
   sleepFor (msecT 20)
-  canonLoop canon varShots varMoveState varNumShots
+  canonLoop hg3d canon varShots varMoveState varNumShots
 
   
 -- bullets flying
@@ -246,23 +246,22 @@ collisionLoop varInvaders varShots varEnd boulders ping clash = do
 handleEnd hg3d varEnd = do
   end <- readVar varEnd
   if end > 0 
-    then  newE [  ctText #: "Congratulations, you won!", 
+    then  createE hg3d [  ctText #: "Congratulations, you won!", 
                   ctScreenRect #: Rectangle 300 180 100 30] >> sleepFor (secT 10) >> exitHG3D hg3d
     else if end < 0
-      then newE [ ctText #: "The invaders got you! Try again!", 
+      then createE hg3d [ ctText #: "The invaders got you! Try again!", 
                   ctScreenRect #: Rectangle 300 180 100 30] >> sleepFor (secT 10) >> exitHG3D hg3d
       else return ()
   sleepFor (secT 1)
   handleEnd hg3d varEnd
 
-    
-main = do
-  hg3d <- configureHG3D
-  music
-  (ping, clash) <- sounds
+
+gameLogic hg3d = do    
+  music hg3d
+  (ping, clash) <- sounds hg3d
   
-  (canon : boulders) <- createActors canonBouldersData
-  invaders <- createActors invaderData
+  (canon : boulders) <- createActors hg3d canonBouldersData
+  invaders <- createActors hg3d invaderData
   
   varInvaders <- makeVar invaders
   varMoveState <- makeVar NotMoving
@@ -272,11 +271,15 @@ main = do
 
   installKeyHandler hg3d varMoveState varNumShots
   
-  forkIO (canonLoop canon varShots varMoveState varNumShots)
+  forkIO (canonLoop hg3d canon varShots varMoveState varNumShots)
   forkIO (shotsLoop varShots)
   forkIO (invadersLoop varInvaders True 0 varEnd)
   forkIO (collisionLoop varInvaders varShots varEnd boulders ping clash)
   forkIO (handleEnd hg3d varEnd)
+
+  return ()
   
-  loopHG3D hg3d (msecT 30) (return True)
   
+main = do
+  runGame standardGraphics3DConfig gameLogic (msecT 20)
+  return ()

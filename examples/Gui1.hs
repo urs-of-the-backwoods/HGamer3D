@@ -8,7 +8,7 @@ import qualified Data.Text as T
 import Control.Concurrent
 import Control.Monad
 
-gameLogic hg3d = do
+createEntities hg3d = do
     res <- mapM (createE hg3d) [
             [   -- camera
                 ctCamera #: FullViewCamera,
@@ -75,15 +75,18 @@ gameLogic hg3d = do
         ]
 
     let [camera, cube, _, button, _, _, checkbox, _, edittext, _, slider, _, dropdownlist, output] = res
+    return (camera, cube, button, checkbox, edittext, slider, dropdownlist, output)
 
+
+startRotation cube = do
     let rotate = do
         updateC cube ctOrientation (\u -> (rotU vec3Y 0.02) .*. (rotU vec3X 0.005) .*. u)
         sleepFor (msecT 20)
         rotate 
-
     forkIO $ rotate
 
-    -- CH6-2s
+
+startPrintEvents button checkbox edittext slider dropdownlist output = do
     let printEvents = do
         forever $ do
             textOut <- do
@@ -96,9 +99,13 @@ gameLogic hg3d = do
             setC output ctText textOut
             sleepFor (msecT 200)
             return ()
-
     forkIO $ printEvents
 
+
+gameLogic hg3d = do
+    (camera, cube, button, checkbox, edittext, slider, dropdownlist, output) <- createEntities hg3d
+    startRotation cube
+    startPrintEvents button checkbox edittext slider dropdownlist output
     return ()
 
 main = do
