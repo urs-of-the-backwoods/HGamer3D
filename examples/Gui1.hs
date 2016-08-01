@@ -27,12 +27,8 @@ createEntities hg3d = do
                 , ctScreenRect #: Rectangle 10 10 120 25
             ]
            ,[   -- button
-                ctButton #: False
+                ctButton #: Button False "Press Me"
                 , ctScreenRect #: Rectangle 130 10 100 25
-            ]
-           ,[   -- button text
-                ctText #: "Press Me"
-                , ctScreenRect #: Rectangle 140 12 100 25
             ]
            ,[   -- descriptive text
                 ctText #: "A Checkbox: \n"
@@ -74,7 +70,7 @@ createEntities hg3d = do
             ]
         ]
 
-    let [camera, cube, _, button, _, _, checkbox, _, edittext, _, slider, _, dropdownlist, output] = res
+    let [camera, cube, _, button, _, checkbox, _, edittext, _, slider, _, dropdownlist, output] = res
     return (camera, cube, button, checkbox, edittext, slider, dropdownlist, output)
 
 

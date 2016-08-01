@@ -10,9 +10,10 @@
 	file: HGamer3D/GUI/Button.hs
 -}
 
--- | Module providing the Mouse functionality and settings
+-- | Module providing the Button functionality and settings
 module HGamer3D.GUI.Button
 (
+	Button (..),
     ctButton
 )
 
@@ -21,10 +22,20 @@ where
 import Fresco
 import Debug.Trace
 import Data.Text
+import Data.MessagePack
 
 import HGamer3D.Data
 
-ctButton :: ComponentType Bool
-ctButton = ComponentType 0x68a1857c27690b30  
-  
+
+data Button = Button {
+    buttonPressed::Bool,
+    buttonLabel::Text
+} deriving (Eq, Show, Read)
+
+instance ComponentClass Button where
+    toObj (Button v1 v2) = ObjectArray [ObjectBool v1, (toObj v2)]
+    fromObj (ObjectArray [ObjectBool v1, v2]) = Button v1 (fromObj v2)
+
+ctButton :: ComponentType Button
+ctButton = ComponentType 0x68a1857c27690b30
 

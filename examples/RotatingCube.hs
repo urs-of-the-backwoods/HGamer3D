@@ -29,12 +29,11 @@ gameLogic hg3d = do
 
       -- CH5-1s
       eButton <- newE hg3d [
-            ctButton #: False,
-            ctText #: " Exit",
+            ctButton #: Button False "Exit",
             ctScreenRect #: Rectangle 200 10 50 25
             ]
 
-      registerCallback hg3d eButton ctButton (\flag -> if not flag then exitHG3D hg3d else return ())
+      registerCallback hg3d eButton ctButton (\(Button flag _) -> if not flag then exitHG3D hg3d else return ())
       -- CH5-1e
 
       -- create cube
