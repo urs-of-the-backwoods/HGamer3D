@@ -16,19 +16,19 @@ import System.Exit
 gameLogic hg3d = do
 
       -- create camera
-      eCam <- createE hg3d [
+      eCam <- newE hg3d [
             ctCamera #: FullViewCamera,
             ctPosition #: Vec3 1 1 (-30.0),
             ctLight #: Light PointLight 1.0 1000.0 1.0 
             ]
 
-      eText <- createE hg3d [
+      eText <- newE hg3d [
             ctText #: "Rotating Cube Example",
             ctScreenRect #: Rectangle 10 10 100 25
             ]
 
       -- CH5-1s
-      eButton <- createE hg3d [
+      eButton <- newE hg3d [
             ctButton #: False,
             ctText #: " Exit",
             ctScreenRect #: Rectangle 200 10 50 25
@@ -39,7 +39,7 @@ gameLogic hg3d = do
 
       -- create cube
       -- CH4-1s
-      eGeo <- createE hg3d [
+      eGeo <- newE hg3d [
             ctGeometry #: ShapeGeometry Cube,
             ctMaterial #: matBlue,
             ctScale #: Vec3 10.0 10.0 10.0,

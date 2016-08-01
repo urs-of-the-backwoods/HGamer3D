@@ -9,7 +9,7 @@ import Control.Concurrent
 import Control.Monad
 
 createEntities hg3d = do
-    res <- mapM (createE hg3d) [
+    res <- mapM (newE hg3d) [
             [   -- camera
                 ctCamera #: FullViewCamera,
                 ctPosition #: Vec3 1 1 (-30.0),

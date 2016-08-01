@@ -39,12 +39,13 @@ module HGamer3D
     isExitHG3D,
     resetExitHG3D,
     exitHG3D,
-    createE,
+    newE,
 )
 
 where
 
-import Fresco
+import Fresco hiding (newE)
+import qualified Fresco as F (newE) 
 import HGamer3D.Data
 import HGamer3D.Util
 import HGamer3D.Graphics3D
@@ -76,12 +77,12 @@ runGame conf glf loopSleepTime = do
     forkIO $ do
 
         -- create graphics system
-        eG3D <- createE hg3d [
+        eG3D <- newE hg3d [
             ctGraphics3DConfig #: conf,
             ctGraphics3DCommand #: NoCmd
             ]
 
-        eih <- createE hg3d [
+        eih <- newE hg3d [
             ctInputEventHandler #: DefaultEventHandler,
             ctExitRequestedEvent #: ExitRequestedEvent
             ]
@@ -126,8 +127,8 @@ exitHG3D (HG3D ols cbs varExit) = do
 registerCallback (HG3D ols cbs varExit) e ct f = do
     registerReceiverCBS cbs e ct f
 
-createE (HG3D ols cbs varExit) creationList = do
-    e <- newE creationList
+newE (HG3D ols cbs varExit) creationList = do
+    e <- F.newE creationList
     addEntityOLS ols e
     return e
 

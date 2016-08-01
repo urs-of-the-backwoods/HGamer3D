@@ -85,7 +85,7 @@ invaderData = [
 createActor :: HG3D -> ActorType -> Int -> Int -> IO Actor
 createActor hg3d atype x y = do
   let (t, _, w, h) = fromJust (M.lookup atype arts)
-  e <- createE hg3d [ ctText #: t, ctScreenRect #: Rectangle x y w h]
+  e <- newE hg3d [ ctText #: t, ctScreenRect #: Rectangle x y w h]
   return $ Actor atype e
                 
 createActors hg3d actorData = mapM (\(a, x, y) -> createActor hg3d a x y) actorData
@@ -116,15 +116,15 @@ getCollisions (Actor a e) actors =
 -- music and sound
 ------------------
   
-music hg3d = createE hg3d [ 
+music hg3d = newE hg3d [ 
   ctSoundSource #: Music "Sounds/RMN-Music-Pack/OGG/CD 3 - Clash of Wills/3-04 Joyful Ocean.ogg" 1.0 True "Music", 
   ctPlayCmd #: Stop ] >>=
   \m -> setC m ctPlayCmd Play
 
 sounds hg3d = do
-  ping <- createE hg3d [ ctSoundSource #: Sound "Sounds/inventory_sound_effects/ring_inventory.wav" 1.0 False "Sounds"
+  ping <- newE hg3d [ ctSoundSource #: Sound "Sounds/inventory_sound_effects/ring_inventory.wav" 1.0 False "Sounds"
                , ctPlayCmd #: Stop ] -- creates a sound
-  clash <- createE hg3d [ ctSoundSource #: Sound "Sounds/inventory_sound_effects/metal-clash.wav" 1.0 False "Sounds"
+  clash <- newE hg3d [ ctSoundSource #: Sound "Sounds/inventory_sound_effects/metal-clash.wav" 1.0 False "Sounds"
               , ctPlayCmd #: Stop ] -- creates another sound
   return (ping, clash)
 
@@ -145,7 +145,7 @@ handleKey k (varMoveState, varNumShots) =
     _ -> return ()
 
 installKeyHandler hg3d varMoveState varNumShots = do
-  ieh <- createE hg3d [ctInputEventHandler #: DefaultEventHandler, ctKeyEvent #: NoKeyEvent]
+  ieh <- newE hg3d [ctInputEventHandler #: DefaultEventHandler, ctKeyEvent #: NoKeyEvent]
   registerCallback hg3d ieh ctKeyEvent (\k -> handleKey k (varMoveState, varNumShots))
 
   
@@ -246,10 +246,10 @@ collisionLoop varInvaders varShots varEnd boulders ping clash = do
 handleEnd hg3d varEnd = do
   end <- readVar varEnd
   if end > 0 
-    then  createE hg3d [  ctText #: "Congratulations, you won!", 
+    then  newE hg3d [  ctText #: "Congratulations, you won!", 
                   ctScreenRect #: Rectangle 300 180 100 30] >> sleepFor (secT 10) >> exitHG3D hg3d
     else if end < 0
-      then createE hg3d [ ctText #: "The invaders got you! Try again!", 
+      then newE hg3d [ ctText #: "The invaders got you! Try again!", 
                   ctScreenRect #: Rectangle 300 180 100 30] >> sleepFor (secT 10) >> exitHG3D hg3d
       else return ()
   sleepFor (secT 1)
