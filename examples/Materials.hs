@@ -42,28 +42,26 @@ mats = [
 -- START SYSTEM
 ---------------
 
-go = do
+go hg3d = do
 
-  hg3d <- configureHG3D
-
-  cam <- newE [
+  cam <- newE hg3d [
        ctCamera #: FullViewCamera,
        ctPosition #: Vec3 1.0 1.0 (-30.0),
        ctOrientation #: unitU
        ]
 
-  li <- newE [
+  li <- newE hg3d [
      ctLight #: Light PointLight 1.0 1000.0 1.0,
      ctPosition #: Vec3 1.0 1.0 (-30.0)
      ]
 
-  return (hg3d, li, cam)
+  return (li, cam)
 
 -- CONTENT CREATION
 
 -- create cube with material, position at n of m
-makeCube mat n m = do
-  eCube <- newE [
+makeCube hg3d mat n m = do
+  eCube <- newE hg3d [
      ctGeometry #: ShapeGeometry Cube,
      ctMaterial #: mat,
      ctScale #: Vec3 10.0 10.0 10.0,
@@ -73,13 +71,13 @@ makeCube mat n m = do
      ]
   return eCube
 
-allCubes mats = do
+allCubes hg3d mats = do
          let m = length mats
-         cubes <- mapM (\(mat, n) -> makeCube mat n m) (zip mats [1..m])
+         cubes <- mapM (\(mat, n) -> makeCube hg3d mat n m) (zip mats [1..m])
          return cubes
 
 camy c d = do
-     updateC c  ctOrientation (\u -> (rotU vec3Y d) .*. u)
+     updateC c ctOrientation (\u -> (rotU vec3Y d) .*. u)
      updateC c ctPosition (\p -> rotate3 d vec3Y p)
 
 rotateWorld c cs d = forever $ do 
@@ -88,14 +86,13 @@ rotateWorld c cs d = forever $ do
                                             sleepFor (msecT 20)
 
 
-demo = do
-     (hg3d, l1, c) <- go
-     cubes <- allCubes mats
-     forkIO $ loopHG3D hg3d (msecT 20) (return True) -- allow close on windows click
+gameLogic hg3d = do
+     (l1, c) <- go hg3d
+     cubes <- allCubes hg3d mats
      rotateWorld c cubes (-0.05)
      return ()
 
 main = do
-      demo 
-      return ()
+    runGame standardGraphics3DConfig gameLogic (msecT 20)
+    return ()
 
