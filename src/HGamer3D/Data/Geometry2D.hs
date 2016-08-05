@@ -10,7 +10,7 @@
 	file: HGamer3D/Data/Geometry2D.hs
 -}
   
-{-# LANGUAGE FlexibleInstances, DatatypeContexts #-}
+{-# LANGUAGE FlexibleInstances #-}
 
 -- | Type definitions for 2D geometry 
 module HGamer3D.Data.Geometry2D

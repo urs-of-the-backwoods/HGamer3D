@@ -24,7 +24,8 @@ module HGamer3D.Graphics3D.Geometry
 (
         Shape (..),
         Geometry (..),
-        ctGeometry
+        ctGeometry,
+        ctGraphicsElement
 )
 
 where
@@ -76,6 +77,12 @@ instance ComponentClass Geometry where
 
 ctGeometry :: ComponentType Geometry
 ctGeometry = ComponentType 0xee433d1a4b964591
+
+ctGraphicsElement :: ComponentType ()
+ctGraphicsElement = ComponentType 0x65114ba821671643
+
+
+
 
 -- CH4-4e
 

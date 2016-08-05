@@ -40,6 +40,17 @@ module HGamer3D
     resetExitHG3D,
     exitHG3D,
     newE,
+
+    ctParent,
+    EntityTree (..),
+    newET,
+
+    (<:),
+    (<|),
+    (-:),
+    (-|),
+
+    (#)
 )
 
 where
@@ -57,6 +68,10 @@ import Control.Concurrent
 import Control.Monad
 import Control.Concurrent.MVar
 import Data.IORef
+
+import qualified Data.Map as M
+import Data.Word
+import Data.Maybe
 
 -- Opaque Value to denote some game-loop data
 data HG3D = HG3D ObjectLibSystem CallbackSystem (Var Bool)
@@ -133,3 +148,48 @@ newE (HG3D ols cbs varExit) creationList = do
     return e
 
 
+
+data EntityTree = ETNode (Maybe String) [(Word64, Component)]
+        | ETChild (Maybe String) [(Word64, Component)] [EntityTree]
+        | ETList [EntityTree]
+
+createET ::  HG3D -> EntityTree -> Maybe Entity -> IO [(String, Entity)]
+
+createET hg3d (ETNode label clist) parent = do
+  clist' <- case parent of
+              Just p -> idE p >>= \id -> return ((ctParent #: id) : clist)
+              Nothing -> return clist
+  e <- newE hg3d clist'
+  case label of
+    Just l -> return [(l, e)]
+    Nothing -> return []
+
+createET hg3d (ETList tlist) parent = do
+  l <- mapM (\et -> createET hg3d et parent) tlist
+  return (Prelude.concat l)
+
+createET hg3d (ETChild label clist tlist) parent = do
+  [(_, e1)] <- createET hg3d (ETNode (Just "label") clist) parent
+  let l1 = case label of
+            Just l -> [(l, e1)]
+            Nothing -> [] 
+  l2 <- createET hg3d (ETList tlist) (Just e1)
+  return (l1 ++ l2)
+
+newET :: HG3D -> [EntityTree] -> IO (M.Map String Entity)
+newET hg3d et = createET hg3d (ETList et) Nothing >>= \l -> return (M.fromList l)
+
+(<:) :: String -> [(Word64, Component)] -> EntityTree
+label <: clist = ETNode (Just label) clist
+
+(<|) :: String -> ([(Word64, Component)], [EntityTree]) -> EntityTree
+label <| (clist, tlist) = ETChild (Just label) clist tlist
+
+(-:) :: () -> [(Word64, Component)] -> EntityTree
+() -: clist = ETNode Nothing clist
+
+(-|) :: () -> ([(Word64, Component)], [EntityTree]) -> EntityTree
+() -| (clist, tlist) = ETChild Nothing clist tlist
+
+(#) :: (M.Map String Entity) -> String -> Entity
+m # s = fromJust $ M.lookup s m

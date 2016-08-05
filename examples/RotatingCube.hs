@@ -9,44 +9,60 @@ module Main where
 import HGamer3D
 
 import qualified Data.Text as T
+import qualified Data.ByteString as B
 import Control.Concurrent
 import Control.Monad
 import System.Exit
 
+import qualified Data.Map as M
+import Data.Maybe
+
 gameLogic hg3d = do
 
-      -- create camera
-      eCam <- newE hg3d [
-            ctCamera #: FullViewCamera,
-            ctPosition #: Vec3 1 1 (-30.0),
-            ctLight #: Light PointLight 1.0 1000.0 1.0 
+      es <- newET hg3d [
+            -- create camera
+            () -: [
+                  ctCamera #: FullViewCamera,
+                  ctPosition #: Vec3 1 1 (-30.0),
+                  ctLight #: Light PointLight 1.0 1000.0 1.0 
+                  ],
+
+            () -: [
+                  ctText #: "Rotating Cube Example",
+                  ctScreenRect #: Rectangle 10 10 100 25
+                  ],
+
+            -- CH5-1s
+            "eButton" <: [
+                  ctButton #: Button False "Exit",
+                  ctScreenRect #: Rectangle 200 10 50 25
+                  ],
+
+            -- CH5-1e
+
+            -- create cube and sphere
+            -- CH4-1s
+            "eGeo" <| ([
+                  ctGeometry #: ShapeGeometry Cube,
+                  ctMaterial #: matBlue,
+                  ctScale #: Vec3 10.0 10.0 10.0,
+                  ctPosition #: Vec3 0.0 0.0 0.0,
+                  ctOrientation #: unitU
+                  ], [
+            -- CH4-1e
+                        () -: [
+                              ctGeometry #: ShapeGeometry Sphere,
+                              ctMaterial #: matRed,
+                              ctScale #: Vec3 1.0 1.0 1.0,
+                              ctPosition #: Vec3 0.0 13.0 0.0,
+                              ctOrientation #: unitU
+                              ]
+                  ])
             ]
 
-      eText <- newE hg3d [
-            ctText #: "Rotating Cube Example",
-            ctScreenRect #: Rectangle 10 10 100 25
-            ]
+      registerCallback hg3d (es # "eButton") ctButton (\(Button flag _) -> if not flag then exitHG3D hg3d else return ())
 
-      -- CH5-1s
-      eButton <- newE hg3d [
-            ctButton #: Button False "Exit",
-            ctScreenRect #: Rectangle 200 10 50 25
-            ]
-
-      registerCallback hg3d eButton ctButton (\(Button flag _) -> if not flag then exitHG3D hg3d else return ())
-      -- CH5-1e
-
-      -- create cube
-      -- CH4-1s
-      eGeo <- newE hg3d [
-            ctGeometry #: ShapeGeometry Cube,
-            ctMaterial #: matBlue,
-            ctScale #: Vec3 10.0 10.0 10.0,
-            ctPosition #: Vec3 0.0 0.0 0.0,
-            ctOrientation #: unitU
-            ]
-      -- CH4-1e
-
+      let eGeo = es # "eGeo"
 
       -- rotate the cube
       let rotateZ eGeo = do
@@ -67,8 +83,6 @@ gameLogic hg3d = do
       forkIO $ rotateZ eGeo
 
       forkIO $ rotateX eGeo
-
-
 
       return ()
 
