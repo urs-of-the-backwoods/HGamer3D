@@ -41,7 +41,7 @@ module HGamer3D
     exitHG3D,
     newE,
 
-    ctParent,
+--    ctParent,
     EntityTree (..),
     newET,
 
@@ -157,7 +157,7 @@ createET ::  HG3D -> EntityTree -> Maybe Entity -> IO [(String, Entity)]
 
 createET hg3d (ETNode label clist) parent = do
   clist' <- case parent of
-              Just p -> idE p >>= \id -> return ((ctParent #: id) : clist)
+              Just p -> idE p >>= \id -> return ((ctParent #: id) : filter (\(ct, c) -> (ComponentType ct) /= ctParent) clist)
               Nothing -> return clist
   e <- newE hg3d clist'
   case label of

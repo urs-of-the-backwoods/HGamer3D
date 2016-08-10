@@ -1,92 +1,47 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-
-:l RotatingCube
-main
--}
-
 module Main where
 
 import HGamer3D
 
 import qualified Data.Text as T
-import qualified Data.ByteString as B
 import Control.Concurrent
 import Control.Monad
 import System.Exit
 
-import qualified Data.Map as M
-import Data.Maybe
-
 gameLogic hg3d = do
 
-      es <- newET hg3d [
-            -- create camera
-            () -: [
-                  ctCamera #: FullViewCamera,
-                  ctPosition #: Vec3 1 1 (-30.0),
-                  ctLight #: Light PointLight 1.0 1000.0 1.0 
-                  ],
+    -- create minimum elements, like a camera
+    eCam <- newE hg3d [
+        ctCamera #: FullViewCamera,
+        ctPosition #: Vec3 1 1 (-30.0),
+        ctLight #: Light PointLight 1.0 1000.0 1.0 
+        ]
 
-            () -: [
-                  ctText #: "Rotating Cube Example",
-                  ctScreenRect #: Rectangle 10 10 100 25
-                  ],
+    -- do something interesting here, in this example case, it is a text and
+    -- a rotating cube
 
-            -- CH5-1s
-            "eButton" <: [
-                  ctButton #: Button False "Exit",
-                  ctScreenRect #: Rectangle 200 10 50 25
-                  ],
+    eText <- newE hg3d [
+        ctText #: "Rotating Cube Example",
+        ctScreenRect #: Rectangle 10 10 100 25
+        ]
 
-            -- CH5-1e
+    eGeo <- newE hg3d [
+        ctGeometry #: ShapeGeometry Cube,
+        ctMaterial #: matBlue,
+        ctScale #: Vec3 10.0 10.0 10.0,
+        ctPosition #: Vec3 0.0 0.0 0.0,
+        ctOrientation #: unitU
+        ]
 
-            -- create cube and sphere
-            -- CH4-1s
-            "eGeo" <| ([
-                  ctGeometry #: ShapeGeometry Cube,
-                  ctMaterial #: matBlue,
-                  ctScale #: Vec3 10.0 10.0 10.0,
-                  ctPosition #: Vec3 0.0 0.0 0.0,
-                  ctOrientation #: unitU
-                  ], [
-            -- CH4-1e
-                        () -: [
-                              ctGeometry #: ShapeGeometry Sphere,
-                              ctMaterial #: matRed,
-                              ctScale #: Vec3 1.0 1.0 1.0,
-                              ctPosition #: Vec3 0.0 13.0 0.0,
-                              ctOrientation #: unitU
-                              ]
-                  ])
-            ]
-
-      registerCallback hg3d (es # "eButton") ctButton (\(Button flag _) -> if not flag then exitHG3D hg3d else return ())
-
-      let eGeo = es # "eGeo"
-
-      -- rotate the cube
-      let rotateZ eGeo = do
+    let rotateCube = do
             forever $ do 
-                  updateC eGeo ctOrientation (\u -> (rotU vec3Z 0.021) .*. u)
-                  sleepFor (msecT 12)
-            return ()
+                updateC eGeo ctOrientation (\u -> (rotU vec3Z 0.02) .*. u)
+                updateC eGeo ctOrientation (\u -> (rotU vec3X 0.015) .*. u)
+                sleepFor (msecT 12)
 
-      -- CH4-2s
-      let rotateX eGeo = do
-            forever $ do 
-                  updateC eGeo ctOrientation (\u -> (rotU vec3X 0.012) .*. u)
-                  sleepFor (msecT 16)
-            return ()
--- CH4-2e
-
-
-      forkIO $ rotateZ eGeo
-
-      forkIO $ rotateX eGeo
-
-      return ()
-
+    forkIO rotateCube
+    return ()
 
 main = do 
-      runGame standardGraphics3DConfig gameLogic (msecT 20)
-      return ()
+    runGame standardGraphics3DConfig gameLogic (msecT 20)
+    return ()

@@ -23,10 +23,9 @@
 module HGamer3D.Util
 
 (
-	module HGamer3D.Util.FileLocation,
-	module HGamer3D.Util.UniqueName,
-	module HGamer3D.Util.Variable,
-	module HGamer3D.Util.EntityTree
+    module HGamer3D.Util.FileLocation,
+    module HGamer3D.Util.UniqueName,
+    module HGamer3D.Util.Variable
 )
 
 where
@@ -34,5 +33,4 @@ where
 import HGamer3D.Util.FileLocation
 import HGamer3D.Util.UniqueName
 import HGamer3D.Util.Variable
-import HGamer3D.Util.EntityTree
 
