@@ -15,22 +15,12 @@ gameLogic hg3d = do
                   ctPosition #: Vec3 1 1 (-30.0),
                   ctLight #: Light PointLight 1.0 1000.0 1.0 
                   ],
-
+            -- create text
             () -: [
                   ctText #: "Rotating Cube Example",
                   ctScreenRect #: Rectangle 10 10 100 25
                   ],
-
-            -- CH5-1s
-            "eButton" <: [
-                  ctButton #: Button False "Exit",
-                  ctScreenRect #: Rectangle 200 10 50 25
-                  ],
-
-            -- CH5-1e
-
-            -- create cube and sphere
-            -- CH4-1s
+            -- create geometry, with child geometry items
             "eGeo" <| ([
                   ctGeometry #: ShapeGeometry Cube,
                   ctMaterial #: matBlue,
@@ -38,11 +28,9 @@ gameLogic hg3d = do
                   ctPosition #: Vec3 0.0 0.0 0.0,
                   ctOrientation #: unitU
                   ], [
-            -- CH4-1e
                         "eSmall" <| ([
                               ctGeometry #: ShapeGeometry Sphere,
                               ctMaterial #: matGreen,
---                              ctGraphicsElement #: (),
                               ctPosition #: Vec3 (-0.5) 0.5 (-0.5),
                               ctScale #: Vec3 0.8 0.8 0.8,
                               ctOrientation #: unitU
@@ -56,10 +44,19 @@ gameLogic hg3d = do
                                     ctOrientation #: unitU
                                     ]
                               ])
-                  ])
+                  ]),
+
+-- HGamer3D website, entities and events, example exit button with callback
+            -- create button
+            "eButton" <: [
+                  ctButton #: Button False "Exit",
+                  ctScreenRect #: Rectangle 200 10 50 25
+                  ]
+
             ]
 
       registerCallback hg3d (es # "eButton") ctButton (\(Button flag _) -> if not flag then exitHG3D hg3d else return ())
+-- end of website text
 
       -- rotate the cube
       let rotate = do
@@ -70,8 +67,8 @@ gameLogic hg3d = do
                   sleepFor (msecT 20)
             return ()
 
--- CH4-2e
       forkIO $ rotate
+
       return ()
 
 main = do 

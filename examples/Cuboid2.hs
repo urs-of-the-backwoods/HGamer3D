@@ -83,10 +83,10 @@ setupWorld hg3d = do
     light2 <- newE hg3d [ctLight #: Light PointLight 0.5 1000.0 0.8, ctPosition #: Vec3 0 0 (-50)]
     light3 <- newE hg3d [ctLight #: Light DirectionalLight 1.0 1000.0 1.0, ctOrientation #: (rotU vec3Y 45 .*. rotU vec3X 45)]
     -- CH3-8e
+    -- HGamer3D website, entities and events, event listener for keys
     -- key input
-    -- CH5-2s
     ieh <- newE hg3d [ctInputEventHandler #: DefaultEventHandler, ctKeyEvent #: NoKeyEvent] 
-    -- CH5-2e
+    -- end of website text
     return (cam, ieh)
 
 -- quat from 2 vectors, normalized input
@@ -158,8 +158,8 @@ setPos er fp = setC er ctPosition (f2pos fp)
 -- Low Level Event Routines
 ---------------------------
 
+-- HGamer3D website, entities and events, WASD logic
 -- install key handler, moves each key up and currently pressed keys in variable
--- CH5-3s
 installKeyHandler :: HG3D -> Var [T.Text] -> Var [T.Text] -> Entity -> IO ()
 installKeyHandler hg3d varKeysUp varKeysPressed ieh = do
     let handleKeys ke = do
@@ -173,7 +173,6 @@ installKeyHandler hg3d varKeysUp varKeysPressed ieh = do
                                 _ -> return () 
     registerCallback hg3d ieh ctKeyEvent (\k -> handleKeys k)
     return ()
--- CH5-3e
 
 -- camera movement
 installMoveCamera cam varKeysPressed = do
@@ -188,7 +187,7 @@ installMoveCamera cam varKeysPressed = do
                     return ()
     forkIO $ forever $ move >> sleepFor (msecT 50)
     return()
-
+-- end of website text
     
 -- Game Preparation Work
 ------------------------

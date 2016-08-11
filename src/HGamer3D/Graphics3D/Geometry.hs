@@ -40,9 +40,8 @@ import HGamer3D.Graphics3D.Material
 
 -- generated
 
--- CH4-4s
+-- HGamer3D website, entities and events, Geometry data type and component
 -- | A shape is a basic geometric formd
-
 data Shape = Sphere
     | Cube
     | Plane
@@ -80,10 +79,5 @@ ctGeometry = ComponentType 0xee433d1a4b964591
 
 ctGraphicsElement :: ComponentType ()
 ctGraphicsElement = ComponentType 0x65114ba821671643
+-- end of website text
 
-
-
-
--- CH4-4e
-
--- generated

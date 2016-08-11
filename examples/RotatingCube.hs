@@ -17,14 +17,14 @@ gameLogic hg3d = do
         ctLight #: Light PointLight 1.0 1000.0 1.0 
         ]
 
-    -- do something interesting here, in this example case, it is a text and
-    -- a rotating cube
-
+    -- create a text
     eText <- newE hg3d [
         ctText #: "Rotating Cube Example",
         ctScreenRect #: Rectangle 10 10 100 25
         ]
 
+-- HGamer3D website, entities and events, example entity
+    -- create the cube geometry entity
     eGeo <- newE hg3d [
         ctGeometry #: ShapeGeometry Cube,
         ctMaterial #: matBlue,
@@ -32,7 +32,10 @@ gameLogic hg3d = do
         ctPosition #: Vec3 0.0 0.0 0.0,
         ctOrientation #: unitU
         ]
+-- end of website text
 
+-- HGamer3D website, entities and events, rotation explanation
+    -- rotate the cube around 2 axes
     let rotateCube = do
             forever $ do 
                 updateC eGeo ctOrientation (\u -> (rotU vec3Z 0.02) .*. u)
@@ -40,6 +43,8 @@ gameLogic hg3d = do
                 sleepFor (msecT 12)
 
     forkIO rotateCube
+-- end of website text
+
     return ()
 
 main = do 

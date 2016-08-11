@@ -13,6 +13,7 @@ import Data.Maybe
 
 data ActorType = Canon | Boulder | Invader Int | Shot deriving (Eq, Show, Ord)
 
+-- HGamer3D website, code space invaders 2d, artwork
 arts :: M.Map ActorType (T.Text, T.Text, Int, Int)
 arts = M.fromList [ 
   (Canon, ("___/=\\___\n###   ###", "", 76, 30)),
@@ -22,6 +23,7 @@ arts = M.fromList [
   (Invader 3, (" #+++#\n# . . #\nx-   x-", " #+++#\n# . . #\n-x   -x", 54, 45)),
   (Shot, ("\"\"", "", 14, 4))
   ]
+-- end of website text  
 
 instance Show Entity where
   show e = "Entity: "
@@ -82,6 +84,7 @@ invaderData = [
 -- actors and collisions
 ------------------------
 
+-- HGamer3D website, code space invaders 2d, create actors
 createActor :: HG3D -> ActorType -> Int -> Int -> IO Actor
 createActor hg3d atype x y = do
   let (t, _, w, h) = fromJust (M.lookup atype arts)
@@ -89,15 +92,18 @@ createActor hg3d atype x y = do
   return $ Actor atype e
                 
 createActors hg3d actorData = mapM (\(a, x, y) -> createActor hg3d a x y) actorData
+-- end of website text  
 
 posActor (Actor _ e) = readC e ctScreenRect >>= \(Rectangle x y _ _) -> return (x, y)
 moveActor (Actor _ e) (x, y) = updateC e ctScreenRect (\(Rectangle a b c d) -> (Rectangle (a+x) (b+y) c d))
+-- HGamer3D website, actions and do notation, first example
 swapPic (Actor atype e) = do
   let (t1, t2, w, h) = fromJust (M.lookup atype arts)
   oldt <- readC e ctText
   if oldt == t1 
     then setC e ctText t2 >> return ()
     else setC e ctText t1 >> return ()
+-- end of website text  
 
 hit (Rectangle x y w h) (Rectangle x' y' w' h') = (not (x > x' + w' || x' > x + w)) && (not (y > y' + h' || y' > y + h)) 
 
@@ -131,7 +137,8 @@ sounds hg3d = do
 
 -- key handling
 ---------------
-  
+
+-- HGamer3D website, code space invaders 2d, move canon
 data CanonMove = NotMoving | MovingRight | MovingLeft
      deriving (Show)
 
@@ -147,6 +154,8 @@ handleKey k (varMoveState, varNumShots) =
 installKeyHandler hg3d varMoveState varNumShots = do
   ieh <- newE hg3d [ctInputEventHandler #: DefaultEventHandler, ctKeyEvent #: NoKeyEvent]
   registerCallback hg3d ieh ctKeyEvent (\k -> handleKey k (varMoveState, varNumShots))
+-- end of website text
+  
 
   
 -- canon movements, shooting
@@ -255,7 +264,7 @@ handleEnd hg3d varEnd = do
   sleepFor (secT 1)
   handleEnd hg3d varEnd
 
-
+-- HGamer3D website, code space invaders 2d, game logic
 gameLogic hg3d = do    
   music hg3d
   (ping, clash) <- sounds hg3d
@@ -278,7 +287,7 @@ gameLogic hg3d = do
   forkIO (handleEnd hg3d varEnd)
 
   return ()
-  
+-- end of website text  
   
 main = do
   runGame standardGraphics3DConfig gameLogic (msecT 20)
