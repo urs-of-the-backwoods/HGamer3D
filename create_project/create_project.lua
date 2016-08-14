@@ -24,7 +24,7 @@ executable game
   hs-source-dirs:      .
   main-is:             game.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  build-depends:       base, text, HGamer3D (>= 0.8.0 && < 0.9.0)
+  build-depends:       base, text, HGamer3D (>= 0.8.0 && < 2.0.0)
   default-language:    Haskell2010
 ]]
 
@@ -137,11 +137,11 @@ writeIt("Setup.hs", setup_file)
 writeIt("game.cabal", cabal_file)
 
 run_file = [[
-aio start http://www.hgamer3d.org/component/Run-0.8 ./game
+aio start http://www.hgamer3d.org/component/Run-1 ./game
 ]]
 
 run_file_windows = [[
-aio start http://www.hgamer3d.org/component/Run-0.8 game.exe
+aio start http://www.hgamer3d.org/component/Run-1 game.exe
 ]]
 
 if this_os == "Windows" then 
@@ -152,7 +152,7 @@ else
 end
 
 repl_file = [[
-aio http://www.hgamer3d.org/component/Run-0.8 aio http://www.hgamer3d.org/component/Stack ghci
+aio http://www.hgamer3d.org/component/Run-1 aio http://www.hgamer3d.org/component/Stack ghci
 ]]
 
 if this_os == "Windows" then 

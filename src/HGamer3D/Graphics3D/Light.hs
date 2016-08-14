@@ -40,10 +40,10 @@ instance ComponentClass LightType where
 
     
 data Light = Light 
-                LightType -- ^ Type of light
-                Float     -- ^ brighness
-                Float     -- ^ range
-                Float     -- ^ specular intensity
+                LightType 
+                Float     
+                Float     
+                Float     -- ^ floats: brightness, range, specular intensity
 
 instance ComponentClass Light where
     toObj (Light lt b r s) = ObjectArray [toObj lt, ObjectFloat b, ObjectFloat r, ObjectFloat s]
