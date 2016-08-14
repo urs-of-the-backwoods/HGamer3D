@@ -24,7 +24,7 @@ executable game
   hs-source-dirs:      .
   main-is:             game.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  build-depends:       base, text, HGamer3D >= 0.7.1
+  build-depends:       base, text, HGamer3D (>= 0.8.0 && < 2.0.0)
   default-language:    Haskell2010
 ]]
 
@@ -67,7 +67,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ]]
 
 yaml_file = [[
-extra-deps: ["HGamer3D-0.7.1", "fresco-binding-0.1.1", "vect-0.4.7"]
+extra-deps: ["HGamer3D-0.8.0", "fresco-binding-0.2.0", "vect-0.4.7"]
 resolver: lts-5.8
 flags: {}
 packages: ["."]
@@ -84,13 +84,10 @@ import Control.Concurrent
 import Control.Monad
 import System.Exit
 
-start = do
-
-    -- initialize system
-    hg3d <- configureHG3D      -- initialize
+gameLogic hg3d = do
 
     -- create minimum elements, like a camera
-    eCam <- newE [
+    eCam <- newE hg3d [
         ctCamera #: FullViewCamera,
         ctPosition #: Vec3 1 1 (-30.0),
         ctLight #: Light PointLight 1.0 1000.0 1.0 
@@ -99,12 +96,12 @@ start = do
     -- do something interesting here, in this example case, it is a text and
     -- a rotating cube
 
-    eText <- newE [
+    eText <- newE hg3d [
         ctText #: "Rotating Cube Example",
         ctScreenRect #: Rectangle 10 10 100 25
         ]
 
-    eGeo <- newE [
+    eGeo <- newE hg3d [
         ctGeometry #: ShapeGeometry Cube,
         ctMaterial #: matBlue,
         ctScale #: Vec3 10.0 10.0 10.0,
@@ -112,20 +109,17 @@ start = do
         ctOrientation #: unitU
         ]
 
-    return (eGeo, hg3d)
+    let rotateCube = do
+            forever $ do 
+                updateC eGeo ctOrientation (\u -> (rotU vec3Z 0.02) .*. u)
+                updateC eGeo ctOrientation (\u -> (rotU vec3X 0.015) .*. u)
+                sleepFor (msecT 12)
 
-
-rotateCube eGeo = do
-    forever $ do 
-        updateC eGeo ctOrientation (\u -> (rotU vec3Z 0.02) .*. u)
-        updateC eGeo ctOrientation (\u -> (rotU vec3X 0.015) .*. u)
-        sleepFor (msecT 12)
+    forkIO rotateCube
     return ()
 
 main = do 
-    (eGeo, hg3d) <- start
-    forkIO $ rotateCube eGeo
-    loopHG3D hg3d (msecT 20) (return True) -- allow close on windows click
+    runGame standardGraphics3DConfig gameLogic (msecT 20)
     return ()
 ]]
 
@@ -143,11 +137,11 @@ writeIt("Setup.hs", setup_file)
 writeIt("game.cabal", cabal_file)
 
 run_file = [[
-aio start http://www.hgamer3d.org/component/Run-0.7 ./game
+aio start http://www.hgamer3d.org/component/Run-1 ./game
 ]]
 
 run_file_windows = [[
-aio start http://www.hgamer3d.org/component/Run-0.7 game.exe
+aio start http://www.hgamer3d.org/component/Run-1 game.exe
 ]]
 
 if this_os == "Windows" then 
@@ -158,7 +152,7 @@ else
 end
 
 repl_file = [[
-aio http://www.hgamer3d.org/component/Run-0.7 aio http://www.hgamer3d.org/component/Stack ghci
+aio http://www.hgamer3d.org/component/Run-1 aio http://www.hgamer3d.org/component/Stack ghci
 ]]
 
 if this_os == "Windows" then 

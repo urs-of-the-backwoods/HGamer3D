@@ -23,22 +23,19 @@ import Control.Monad
 
 import Data.List
 
-startWorld = do
-    eG3D <- configureHG3D
-    return eG3D
 -- CH3-2e
 
 -- CH3-3s
 -- small tool, to create entities
-creator l = newE l
+creator w l = newE w l
 
 -- entity creation tools
-camera pos = creator [
+camera w pos = creator w [
                 ctCamera #: FullViewCamera,
                 ctPosition #: pos
                 ]
     
-item pos shape mat = creator [
+item w pos shape mat = creator w [
                 ctMaterial #: mat,
                 ctGeometry #: ShapeGeometry shape,
                 ctPosition #: pos,
@@ -46,18 +43,18 @@ item pos shape mat = creator [
                 ctOrientation #: unitU
                 ]
     
-light pos = creator [
+light w pos = creator w [
                 ctLight #: Light PointLight 1.0 1000.0 1.0,
                 ctPosition #: pos,
                 ctColour #: white
                 ]
                 
-textOne = creator [  
+textOne w = creator w [  
                 ctText #: "Billion\n"
                 , ctScreenRect #: Rectangle 10 10 120 25
             ]
 
-textTwo  = creator [  
+textTwo w = creator w [  
                 ctText #: ""
                 , ctScreenRect #: Rectangle 10 50 200 500
             ]
@@ -66,12 +63,12 @@ showText e t = setC e ctText t
 
 type Cube = [[[Entity]]]
 
-itemCube shape offset mat = do
+itemCube w shape offset mat = do
     let r = [2.5, 5.0 .. 25.0]
     cubes <-
         mapM (\z -> 
             mapM (\y -> 
-                mapM (\x -> item ((Vec3 x y z) &+ offset) shape mat) r
+                mapM (\x -> item w ((Vec3 x y z) &+ offset) shape mat) r
                 ) r
             ) r
     return cubes
@@ -113,7 +110,7 @@ fUX = Vec3 0.05 0.0 0.0
 fUY = Vec3 0.0 0.05 0.0
 fUZ = Vec3 0.0 0.0 0.05
 
-commandInterpreter cam t2 refCubes refSel cmd = do
+commandInterpreter w cam t2 refCubes refSel cmd = do
     case cmd of
         MoveCamera listOfMoves deltaTime  -> do
             let oneMove (s, d) = do
@@ -146,7 +143,7 @@ commandInterpreter cam t2 refCubes refSel cmd = do
         
         Cubes shape off mat -> do
             cubes <- readVar refCubes
-            newCube <- itemCube shape off mat
+            newCube <- itemCube w shape off mat
             writeVar refCubes (cubes ++ [newCube])
             writeVar refSel newCube
             return ()
@@ -219,16 +216,16 @@ installText w ieh t2 = do
             _ -> return ()
     registerCallback w ieh ctKeyEvent (\key -> handleKeys key)
     
-main = do
-    w <- startWorld
-    c <- camera (Vec3 0.0 0.0 0.0)
-    
-    cubes <- itemCube Pyramid zeroVec3 matBlue
+gameLogic w = do
 
-    l <- light (Vec3 10.0 10.0 0.0)
-    ieh <- creator [ctInputEventHandler #: DefaultEventHandler, ctKeyEvent #: NoKeyEvent] 
-    t1 <- textOne
-    t2 <- textTwo
+    c <- camera w (Vec3 0.0 0.0 0.0)
+    
+    cubes <- itemCube w Pyramid zeroVec3 matBlue
+
+    l <- light w (Vec3 10.0 10.0 0.0)
+    ieh <- creator w [ctInputEventHandler #: DefaultEventHandler, ctKeyEvent #: NoKeyEvent] 
+    t1 <- textOne w
+    t2 <- textTwo w
     refK <- makeVar []
     
     installKeyPressed w ieh refK
@@ -238,8 +235,8 @@ main = do
 
     refCubes <- makeVar [cubes]
     refSel <- makeVar cubes
-    forkIO $ loopHG3D w (msecT 30) (return True)
-    mapM (\cmd -> commandInterpreter c t2 refCubes refSel cmd) (
+
+    mapM (\cmd -> commandInterpreter w c t2 refCubes refSel cmd) (
         [
     
         -- Intro
@@ -293,20 +290,19 @@ main = do
 
         [
         
-        SetText ("imagine each cube is one year\nthere are 1000 green pyramids, 1000 years ...\n\nlet's add 4000 years"),
-        Cubes Pyramid (Vec3 (-30) 0.0 0.0) matAqua,
-        Cubes Pyramid (Vec3 (-60) 0.0 0.0) matTeal,
-        Cubes Pyramid (Vec3 (-90) 0.0 0.0) matBlue,
-        Cubes Pyramid (Vec3 (-120) 0.0 0.0) matNavy,
-        
-        MoveCamera [(Fast, NegZ), (Fast, NegX)] (secT 60)
+        SetText ("to be continued ..."),
+        Wait (secT 30)
        
         ]
         -- 
         
         )
 
+    exitHG3D w
     return ()
 -- CH3-4e
 
     
+main = do 
+      runGame standardGraphics3DConfig gameLogic (msecT 20)
+      return ()

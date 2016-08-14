@@ -37,6 +37,7 @@ module HGamer3D.Data
 
     -- * Misc
     module HGamer3D.Data.PlayCmd, 
+    module HGamer3D.Data.Parent,
     
 	-- * Implementation 
 	module HGamer3D.Data.Window
@@ -54,4 +55,5 @@ import HGamer3D.Data.TypeSynonyms
 import HGamer3D.Data.Vector
 import HGamer3D.Data.Window
 import HGamer3D.Data.PlayCmd
+import HGamer3D.Data.Parent
 

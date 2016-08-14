@@ -24,7 +24,8 @@ module HGamer3D.Graphics3D.Geometry
 (
         Shape (..),
         Geometry (..),
-        ctGeometry
+        ctGeometry,
+        ctGraphicsElement
 )
 
 where
@@ -39,9 +40,8 @@ import HGamer3D.Graphics3D.Material
 
 -- generated
 
--- CH4-4s
+-- HGamer3D website, entities and events, Geometry data type and component
 -- | A shape is a basic geometric formd
-
 data Shape = Sphere
     | Cube
     | Plane
@@ -77,6 +77,7 @@ instance ComponentClass Geometry where
 ctGeometry :: ComponentType Geometry
 ctGeometry = ComponentType 0xee433d1a4b964591
 
--- CH4-4e
+ctGraphicsElement :: ComponentType ()
+ctGraphicsElement = ComponentType 0x65114ba821671643
+-- end of website text
 
--- generated

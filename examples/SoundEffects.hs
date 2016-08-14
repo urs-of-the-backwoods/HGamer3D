@@ -8,12 +8,10 @@ import qualified Data.Text as T
 import Control.Concurrent
 import Control.Monad
 
-createAll = do
-
-    hg3d <- configureHG3D      -- initialize
+createAll hg3d = do
 
     -- create all elements
-    res <- mapM newE [
+    res <- mapM (newE hg3d) [
 
             [   -- camera
                 ctCamera #: FullViewCamera,
@@ -31,24 +29,21 @@ createAll = do
             -- SOUND BUTTONS AND SOUNDSOURCE
             
            ,[   -- metal-clash button and sound
-                ctText #: "metal clash"
-                , ctButton #: False
+                ctButton #: Button False "metal clash"
                 , ctScreenRect #: Rectangle 10 10 150 50
                 , ctSoundSource #: Sound "Sounds/inventory_sound_effects/metal-clash.wav" 1.0 False "Sounds"
                 , ctPlayCmd #: Stop
             ]
 -- CH7-1s
            ,[   -- ring-inventory button and sound
-                ctText #: "ring inventory"
-                , ctButton #: False
+                ctButton #: Button False "ring inventory"
                 , ctScreenRect #: Rectangle 180 10 150 50
                 , ctSoundSource #: Sound "Sounds/inventory_sound_effects/ring_inventory.wav" 1.0 False "Sounds"
                 , ctPlayCmd #: Stop
             ]
 -- CH7-1e
            ,[   -- sell_buy_item button and sound
-                ctText #: "sell buy item"
-                , ctButton #: False
+                ctButton #: Button False "sell buy item"
                 , ctScreenRect #: Rectangle 350 10 150 50
                 , ctSoundSource #: Sound "Sounds/inventory_sound_effects/sell_buy_item.wav" 1.0 False "Sounds"
                 , ctPlayCmd #: Stop
@@ -57,13 +52,11 @@ createAll = do
             -- MUSIC BUTTONS AND SLIDERS
             
            ,[   -- Music Start
-                ctText #: "Start Music"
-                , ctButton #: False
+                ctButton #: Button False "Start Music"
                 , ctScreenRect #: Rectangle 10 80 150 50
             ]
            ,[   -- Music Start
-                ctText #: "Stop Music"
-                , ctButton #: False
+                ctButton #: Button False "Stop Music"
                 , ctScreenRect #: Rectangle 180 80 150 50
             ]
            ,[   -- Music item
@@ -100,7 +93,7 @@ createAll = do
             
             
         ]
-    return (res, hg3d)
+    return res
 
 rotate eGeo = do
     forever $ do 
@@ -108,7 +101,7 @@ rotate eGeo = do
         sleepFor (msecT 20)
     return ()
 
-addActionButton hg3d button action = registerCallback hg3d button ctButton (\flag -> if flag then action else return ()) 
+addActionButton hg3d button action = registerCallback hg3d button ctButton (\(Button flag _) -> if flag then action else return ()) 
     
 registerSoundButtons hg3d sound1 sound2 sound3 = do
     mapM (\sound -> addActionButton hg3d sound (setC sound ctPlayCmd Play)) [sound1, sound2, sound3]
@@ -124,15 +117,19 @@ registerVolumeSliders hg3d sliderSound sliderMusic volume = do
     registerCallback hg3d sliderMusic ctSlider (\val -> setC volume ctVolume (Volume "Music" (sliderVal val)))
 -- CH7-3e
 
-main = do
-    ([camera, cube,
+gameLogic hg3d = do
+    [camera, cube,
      sound1, sound2, sound3,
      musicStart, musicStop, music, _, 
-     sliderSound, sliderMusic, volume, _, _], hg3d) <- createAll
+     sliderSound, sliderMusic, volume, _, _] <- createAll hg3d
     registerSoundButtons hg3d sound1 sound2 sound3
     registerMusicButtons hg3d musicStart musicStop music
     registerVolumeSliders hg3d sliderSound sliderMusic volume
     forkIO $ rotate cube
-    loopHG3D hg3d (msecT 20) (return True) -- allow close
     return ()
+
+main = do
+    runGame standardGraphics3DConfig gameLogic (msecT 20)
+    return ()
+
 

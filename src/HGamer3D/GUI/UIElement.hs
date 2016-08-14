@@ -11,10 +11,9 @@
 -}
 
 -- | Module providing the Button functionality and settings
-module HGamer3D.GUI.Button
+module HGamer3D.GUI.UIElement
 (
-	Button (..),
-    ctButton
+    ctUIElement
 )
 
 where
@@ -26,16 +25,7 @@ import Data.MessagePack
 
 import HGamer3D.Data
 
+ctUIElement :: ComponentType ()
+ctUIElement = ComponentType 0xd5b79f5837e52274;
 
-data Button = Button {
-    buttonPressed::Bool,
-    buttonLabel::Text
-} deriving (Eq, Show, Read)
-
-instance ComponentClass Button where
-    toObj (Button v1 v2) = ObjectArray [ObjectBool v1, (toObj v2)]
-    fromObj (ObjectArray [ObjectBool v1, v2]) = Button v1 (fromObj v2)
-
-ctButton :: ComponentType Button
-ctButton = ComponentType 0x68a1857c27690b30
 

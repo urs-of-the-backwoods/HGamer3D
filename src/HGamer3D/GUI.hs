@@ -22,8 +22,10 @@ module HGamer3D.GUI
     , module HGamer3D.GUI.CheckBox
 )
 
+
 where
 
+import HGamer3D.GUI.UIElement
 import HGamer3D.GUI.Button
 import HGamer3D.GUI.EditText
 import HGamer3D.GUI.Text

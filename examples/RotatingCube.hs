@@ -1,9 +1,4 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-
-:l RotatingCube
-main
--}
-
 module Main where
 
 import HGamer3D
@@ -13,63 +8,45 @@ import Control.Concurrent
 import Control.Monad
 import System.Exit
 
-start = do
+gameLogic hg3d = do
 
-      hg3d <- configureHG3D      -- initialize
+    -- create minimum elements, like a camera
+    eCam <- newE hg3d [
+        ctCamera #: FullViewCamera,
+        ctPosition #: Vec3 1 1 (-30.0),
+        ctLight #: Light PointLight 1.0 1000.0 1.0 
+        ]
 
-      -- create camera
-      eCam <- newE [
-            ctCamera #: FullViewCamera,
-            ctPosition #: Vec3 1 1 (-30.0),
-            ctLight #: Light PointLight 1.0 1000.0 1.0 
-            ]
+    -- create a text
+    eText <- newE hg3d [
+        ctText #: "Rotating Cube Example",
+        ctScreenRect #: Rectangle 10 10 100 25
+        ]
 
-      eText <- newE [
-            ctText #: "Rotating Cube Example",
-            ctScreenRect #: Rectangle 10 10 100 25
-            ]
+-- HGamer3D website, entities and events, example entity
+    -- create the cube geometry entity
+    eGeo <- newE hg3d [
+        ctGeometry #: ShapeGeometry Cube,
+        ctMaterial #: matBlue,
+        ctScale #: Vec3 10.0 10.0 10.0,
+        ctPosition #: Vec3 0.0 0.0 0.0,
+        ctOrientation #: unitU
+        ]
+-- end of website text
 
-      -- CH5-1s
-      eButton <- newE [
-            ctButton #: False,
-            ctText #: " Exit",
-            ctScreenRect #: Rectangle 200 10 50 25
-            ]
+-- HGamer3D website, entities and events, rotation explanation
+    -- rotate the cube around 2 axes
+    let rotateCube = do
+            forever $ do 
+                updateC eGeo ctOrientation (\u -> (rotU vec3Z 0.02) .*. u)
+                updateC eGeo ctOrientation (\u -> (rotU vec3X 0.015) .*. u)
+                sleepFor (msecT 12)
 
-      registerCallback hg3d eButton ctButton (\flag -> if not flag then exitHG3D hg3d else return ())
-      -- CH5-1e
+    forkIO rotateCube
+-- end of website text
 
-      -- create cube
-      -- CH4-1s
-      eGeo <- newE [
-            ctGeometry #: ShapeGeometry Cube,
-            ctMaterial #: matBlue,
-            ctScale #: Vec3 10.0 10.0 10.0,
-            ctPosition #: Vec3 0.0 0.0 0.0,
-            ctOrientation #: unitU
-            ]
-      -- CH4-1e
-
-      return (eGeo, eCam, hg3d)
-
--- rotate the cube
-rotateZ eGeo = do
-      forever $ do 
-            updateC eGeo ctOrientation (\u -> (rotU vec3Z 0.021) .*. u)
-            sleepFor (msecT 12)
-      return ()
-
--- CH4-2s
-rotateX eGeo = do
-      forever $ do 
-            updateC eGeo ctOrientation (\u -> (rotU vec3X 0.012) .*. u)
-            sleepFor (msecT 16)
-      return ()
--- CH4-2e
+    return ()
 
 main = do 
-      (eGeo, eCam, hg3d) <- start
-      forkIO $ rotateZ eGeo
-      forkIO $ rotateX eGeo
-      loopHG3D hg3d (msecT 20) (return True) -- allow close on windows click
-      return ()
+    runGame standardGraphics3DConfig gameLogic (msecT 20)
+    return ()
