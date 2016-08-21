@@ -35,12 +35,13 @@ camera w pos = creator w [
                 ctPosition #: pos
                 ]
     
-item w pos shape mat = creator w [
+item w pos shape mat parent = creator w [
                 ctMaterial #: mat,
                 ctGeometry #: ShapeGeometry shape,
                 ctPosition #: pos,
                 ctScale #: unitVec3,
-                ctOrientation #: unitU
+                ctOrientation #: unitU,
+                ctParent #: parent
                 ]
     
 light w pos = creator w [
@@ -63,13 +64,18 @@ showText e t = setC e ctText t
 
 type Cube = [[[Entity]]]
 
+
 itemCube w shape offset mat = do
     let r = [2.5, 5.0 .. 25.0]
+    pNode <- creator w [
+            ctGraphicsElement #: ()
+        ]
+    idNode <- idE pNode
     cubes <-
-        mapM (\z -> 
+        mapM (\z -> -- sleepFor (secT 1) >>
             mapM (\y -> 
-                mapM (\x -> item w ((Vec3 x y z) &+ offset) shape mat) r
-                ) r
+                mapM (\x -> item w ((Vec3 x y z) &+ offset) shape mat idNode) r
+                ) r 
             ) r
     return cubes
     
@@ -142,9 +148,8 @@ commandInterpreter w cam t2 refCubes refSel cmd = do
         SetText t -> showText t2 t
         
         Cubes shape off mat -> do
-            cubes <- readVar refCubes
             newCube <- itemCube w shape off mat
-            writeVar refCubes (cubes ++ [newCube])
+            updateVar refCubes (\cubes -> (cubes ++ [newCube], cubes))
             writeVar refSel newCube
             return ()
             
@@ -258,7 +263,7 @@ gameLogic w = do
         Wait (secT 10),
         
         -- How to count years
-        SetText "imagine each cube is one year\nthere are 1000 blue pyramids, 1000 years ...\n\ncounting starts at lower left front corner"
+        SetText "imagine each cube is one year\nthere are 1000 blue pyramids, 1000 years ...\n\nlet's count them"
         
         ] ++ 
         
@@ -266,8 +271,8 @@ gameLogic w = do
                             (x, y, z) = coordFromN (n-1)
                          in
                             [
-                                Wait (msecT 300),
-                                SetText (T.pack ("imagine each cube is one year\nthere are 1000 blue pyramids, 1000 years ...\n\ncounting starts at lower left front corner\nYear " ++ (show n))),
+                                Wait (msecT 100),
+                                SetText (T.pack ("imagine each cube is one year\nthere are 1000 blue pyramids, 1000 years ...\n\nlet's count them\nYear " ++ (show n))),
                                 Material x y z matGreen
                             ] ) [1..200]
                             
@@ -281,8 +286,8 @@ gameLogic w = do
                             (x, y, z) = coordFromN (n-1)
                          in
                             [
-                                Wait (msecT 50),
-                                SetText (T.pack ("imagine each cube is one year\nthere are 1000 blue pyramids, 1000 years ...\n\ncounting starts at lower left front corner\nYear " ++ (show n))),
+                                Wait (msecT 30),
+                                SetText (T.pack ("imagine each cube is one year\nthere are 1000 blue pyramids, 1000 years ...\n\nlet's count them\nYear " ++ (show n))),
                                 Material x y z matGreen
                             ] ) [201..1000]
                             
@@ -290,10 +295,17 @@ gameLogic w = do
 
         [
         
-        SetText ("to be continued ..."),
-        Wait (secT 30)
+        SetText ("imagine each cube is one year\nthere are 1000 green pyramids, 1000 years ...\n\nlet's add 4000 years"),
+        Cubes Pyramid (Vec3 (-30) 0.0 0.0) matAqua,
+        Cubes Pyramid (Vec3 (-60) 0.0 0.0) matTeal,
+        Cubes Pyramid (Vec3 (-90) 0.0 0.0) matBlue,
+        Cubes Pyramid (Vec3 (-120) 0.0 0.0) matNavy,
+        
+        MoveCamera [(Fast, NegZ), (Fast, NegX)] (secT 120),
+        Wait (secT 300)
+
        
-        ]
+        ]        
         -- 
         
         )
