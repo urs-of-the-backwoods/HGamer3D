@@ -6,7 +6,7 @@
 function relToScriptPath(localPath)
 	local p = debug.getinfo(2).source:gsub('\\', '/'):match("@?(.*/)")
 	if p then
-		print(p)
+--		print(p)
 		return(p..localPath)
 	else
 		return localPath
