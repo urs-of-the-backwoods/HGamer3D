@@ -1,7 +1,7 @@
 # arriccio.toml file for HGamer3D - Create Project utility script
 
 Id = "http://www.hgamer3d.org/component/CreateProject"
-Purpose = "Scaffolding a basic HGamer3D project"
+Purpose = "Scaffolding a basic HGamer3D project, copy Version 1"
 Description = """
   Using this command you can create a basic project in the current folder.
   Make sure you start it in an empty target folder.
@@ -28,9 +28,9 @@ limitations under the License.
 signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
 
 [[Impls]]
-  location = "http://www.hgamer3d.org/downloads/scripts-0.2.0.tar.gz"
+  location = "http://www.hgamer3d.org/downloads/scripts-1.0.0.tar.gz"
   signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
-  version = "0.2.0"
+  version = "1.0.0"
   architecture = "*"
   os = "*"
   command = "create_project.lua"
@@ -38,5 +38,5 @@ signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
 
 [[Impls.dependencies]]
   Id = "http://www.hgamer3d.org/component/Lua"
-  VersionConstraint = "5.2"
+  VersionConstraint = "1.0"
 

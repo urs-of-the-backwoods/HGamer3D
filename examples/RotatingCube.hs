@@ -14,7 +14,7 @@ gameLogic hg3d = do
     eCam <- newE hg3d [
         ctCamera #: FullViewCamera,
         ctPosition #: Vec3 1 1 (-30.0),
-        ctLight #: Light PointLight 1.0 1000.0 1.0 
+        ctLight #: Light PointLight 1.0 1000.0 1.0
         ]
 
     -- create a text
