@@ -34,13 +34,15 @@ createAll hg3d = do
                 , ctSoundSource #: Sound "Sounds/inventory_sound_effects/metal-clash.wav" 1.0 False "Sounds"
                 , ctPlayCmd #: Stop
             ]
--- CH7-1s
+
+            -- HGamer3D website, events, create sound source
            ,[   -- ring-inventory button and sound
                 ctButton #: Button False "ring inventory"
                 , ctScreenRect #: Rectangle 180 10 150 50
                 , ctSoundSource #: Sound "Sounds/inventory_sound_effects/ring_inventory.wav" 1.0 False "Sounds"
                 , ctPlayCmd #: Stop
             ]
+            -- end of website text
 -- CH7-1e
            ,[   -- sell_buy_item button and sound
                 ctButton #: Button False "sell buy item"
@@ -103,8 +105,10 @@ rotate eGeo = do
 
 addActionButton hg3d button action = registerCallback hg3d button ctButton (\(Button flag _) -> if flag then action else return ()) 
     
+-- HGamer3D website, events, send play event
 registerSoundButtons hg3d sound1 sound2 sound3 = do
     mapM (\sound -> addActionButton hg3d sound (setC sound ctPlayCmd Play)) [sound1, sound2, sound3]
+-- end of website text
           
 registerMusicButtons hg3d musicStart musicStop music = do
     addActionButton hg3d musicStart (setC music ctPlayCmd Play)

@@ -27,11 +27,12 @@ gameLogic hg3d = do
             ctScreenRect #: Rectangle 10 10 100 25
             ]
 
-      -- CH5-1s
+      -- HGamer3D website, events, register callback on button 1
       eButton <- newE hg3d [
             ctButton #: Button False "Exit",
             ctScreenRect #: Rectangle 200 10 50 25
             ]
+      -- end of website text
 
       eButtonNew <- newE hg3d [
             ctButton #: Button False "New",
@@ -72,7 +73,9 @@ gameLogic hg3d = do
                   Just g -> delE g >> return ()
                   Nothing -> return ()
 
+      -- HGamer3D website, events, register callback on button 2
       registerCallback hg3d eButton ctButton (\(Button flag _) -> if not flag then exitHG3D hg3d else return ())
+      -- end of website text
       registerCallback hg3d eButtonNew ctButton (\(Button flag _) -> if not flag then createCube else return ())
       registerCallback hg3d eButtonDel ctButton (\(Button flag _) -> if not flag then delCube else return ())
       -- CH5-1e

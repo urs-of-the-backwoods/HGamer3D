@@ -82,7 +82,7 @@ import Data.Text
 
 import HGamer3D.Data
 
--- generated
+-- HGamer3D website, entities, example 1 for data types
 
 data Material = ResourceMaterial Text
     deriving (Eq, Read, Show)
@@ -93,8 +93,6 @@ instance ComponentClass Material where
 
 ctMaterial :: ComponentType Material
 ctMaterial = ComponentType 0xb4bae8b0d0d8c162
-
--- generated
 
 -- some materials from the material folder
 matOrangeCrossMetal = ResourceMaterial "Materials/Pattern_01.xml"
@@ -140,5 +138,7 @@ matBlue = ResourceMaterial "Materials/ColourBlue.xml"
 matNavy = ResourceMaterial "Materials/ColourNavy.xml"
 matFuchsia = ResourceMaterial "Materials/ColourFuchsia.xml"
 matPurple = ResourceMaterial "Materials/ColourPurple.xml"
+
+-- end of website text
 
 

@@ -25,6 +25,8 @@ import Data.MessagePack
 import Fresco
 import HGamer3D.Data
 
+-- HGamer3D website, entities, example 2 for data types
+
 data LightType =    PointLight              -- ^ casting light in all directions, from position 
                     | DirectionalLight      -- ^ like a very far light source (the Sun)
                     | SpotLight Angle Float -- ^ a light with a field of view (Angle) and an aspect-ratio (Float)
@@ -38,7 +40,6 @@ instance ComponentClass LightType where
     fromObj (ObjectArray [ObjectInt 1]) = DirectionalLight 
     fromObj (ObjectArray [ObjectInt 2, fov_o, ObjectFloat ar]) = SpotLight (fromObj fov_o) ar
 
-    
 data Light = Light 
                 LightType 
                 Float     
@@ -51,4 +52,6 @@ instance ComponentClass Light where
     
 ctLight :: ComponentType Light
 ctLight = ComponentType 0x981e80e50d994ea9
+
+-- end of website text
 
