@@ -20,35 +20,31 @@
 
 -- | Module providing the CmdGraphics3D type
 module HGamer3D.Graphics3D.Graphics3DCommand
-
-(
-        Graphics3DCommand (..),
-        ctGraphics3DCommand
-)
-
 where
 
-import Data.MessagePack
 import Fresco
-import HGamer3D.Data
+import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Decoding
 
--- | Component Type of Graphics3DCommand
-ctGraphics3DCommand :: ComponentType Graphics3DCommand
-ctGraphics3DCommand = ComponentType 0xea06bc20a9334af3
+import Data.Text
+import Data.Monoid
+import Control.Applicative
 
--- OUTPUT SINOPIA START HERE
 
--- | Commands, which can be sent to graphics system
 data Graphics3DCommand = NoCmd
     | Step
     deriving (Eq, Read, Show)
 
-instance ComponentClass Graphics3DCommand where
-    toObj (NoCmd) = ObjectArray [ObjectInt 0, ObjectArray []]
-    toObj (Step) = ObjectArray [ObjectInt 1, ObjectArray []]
-    fromObj (ObjectArray [ObjectInt 0, ObjectArray []]) = NoCmd
-    fromObj (ObjectArray [ObjectInt 1, ObjectArray []]) = Step
 
--- OUTPUT SINOPIA ENDS HERE
+instance Serialise Graphics3DCommand where
+    encode (NoCmd) = encode (0::Int) 
+    encode (Step) = encode (1::Int) 
+    decode = do
+        i <- decode :: Decoder Int
+        case i of
+            0 -> (pure NoCmd)
+            1 -> (pure Step)
 
+ctGraphics3DCommand :: ComponentType Graphics3DCommand
+ctGraphics3DCommand = ComponentType 0xea06bc20a9334af3
 
