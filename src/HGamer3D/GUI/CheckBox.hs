@@ -12,19 +12,19 @@
 
 -- | Module providing the CheckBox gui element
 module HGamer3D.GUI.CheckBox
-(
-    ctCheckBox
-)
-
-where
+where 
 
 import Fresco
-import Debug.Trace
+import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Decoding
+
 import Data.Text
+import Data.Monoid
+import Control.Applicative
 
-import HGamer3D.Data
 
-ctCheckBox :: ComponentType Bool
-ctCheckBox = ComponentType 0xd2425f880fcdd9a4  
-  
+type CheckBox = Bool
+
+ctCheckBox :: ComponentType CheckBox
+ctCheckBox = ComponentType 0xd2425f880fcdd9a4
 

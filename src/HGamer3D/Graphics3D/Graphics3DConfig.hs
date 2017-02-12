@@ -33,6 +33,8 @@ import Data.Text
 import Data.Monoid
 import Control.Applicative
 
+import HGamer3D.Data.LMH
+
 
 data EngineConfig = EngineConfig {
     engineConfigHeadless::Bool,
@@ -74,23 +76,6 @@ instance Serialise Logging where
     encode (Logging v1 v2 v3) = encode v1 <> encode v2 <> encode v3
     decode = Logging <$> decode <*> decode <*> decode
 
-data QualityLMH = Low
-    | Medium
-    | High
-    deriving (Eq, Read, Show)
-
-
-instance Serialise QualityLMH where
-    encode (Low) = encode (0::Int) 
-    encode (Medium) = encode (1::Int) 
-    encode (High) = encode (2::Int) 
-    decode = do
-        i <- decode :: Decoder Int
-        case i of
-            0 -> (pure Low)
-            1 -> (pure Medium)
-            2 -> (pure High)
-
 data WindowG3D = WindowG3D {
     windowG3DWidth::Int,
     windowG3DHeight::Int,
@@ -105,10 +90,10 @@ instance Serialise WindowG3D where
     decode = WindowG3D <$> decode <*> decode <*> decode <*> decode <*> decode
 
 data GraphicsQuality = GraphicsQuality {
-    graphicsQualityShadow::QualityLMH,
-    graphicsQualityMaterial::QualityLMH,
-    graphicsQualityTexture::QualityLMH,
-    graphicsQualityMultisample::QualityLMH
+    graphicsQualityShadow::LMH,
+    graphicsQualityMaterial::LMH,
+    graphicsQualityTexture::LMH,
+    graphicsQualityMultisample::LMH
     } deriving (Eq, Read, Show)
 
 
@@ -137,7 +122,7 @@ standardGraphics3DConfig = Graphics3DConfig
     (EngineConfig False False True False)
     (GraphicsQuality Medium Medium Medium Medium) 
     (Logging Debug False "hgamer3d.log") 
-    (800 600 False False True) 
+    (WindowG3D 800 600 False False True) 
 
 
 

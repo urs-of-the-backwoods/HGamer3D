@@ -1,7 +1,7 @@
 {-
 	Mouse functionality and settings
 	HGamer3D Library (A project to enable 3D game development in Haskell)
-	Copyright 2015 Peter Althainz
+	Copyright 2015 - 2017 Peter Althainz
 	
 	Distributed under the Apache License, Version 2.0
 	(See attached file LICENSE or copy at 
@@ -12,73 +12,100 @@
 
 -- | Module providing the Mouse functionality and settings
 module HGamer3D.Input.Mouse
-(
-    MouseMode (..),
-    Mouse (..),
-    MouseEvent (..),
-    ctMouse,
-    ctMouseEvent
-)
-
 where
 
 import Fresco
-import Data.MessagePack
-import Debug.Trace
+import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Decoding
+
 import Data.Text
+import Data.Monoid
+import Control.Applicative
 
-import HGamer3D.Data
 
+data MouseMode = Absolute
+    | Relative
+    | Wrap
+    deriving (Eq, Read, Show)
 
--- Mouse mode and Mouse datatype
+data MouseConfig = MouseConfig {
+    mouseConfigMode::MouseMode
+    } deriving (Eq, Read, Show)
 
-data MouseMode = MMAbsolute
-                | MMRelative
-                | MMWrap
-                deriving (Eq, Show)
-                
-instance ComponentClass MouseMode where
-    toObj MMAbsolute = ObjectInt 1
-    toObj MMRelative = ObjectInt 2
-    toObj MMWrap = ObjectInt 3
-    fromObj (ObjectInt 1) = MMAbsolute
-    fromObj (ObjectInt 2) = MMRelative
-    fromObj (ObjectInt 3) = MMWrap
-    
-data Mouse = Mouse MouseMode deriving (Eq, Show) 
+ctMouseConfig :: ComponentType MouseConfig
+ctMouseConfig = ComponentType 0xa532f43b1c1c6bc7
 
-instance ComponentClass Mouse where
-    toObj (Mouse mm) = ObjectArray [ObjectInt 1, toObj mm]
-    fromObj (ObjectArray [ObjectInt 1, mm_o]) = Mouse (fromObj mm_o)
+data MouseButtonData = MouseButtonData {
+    mouseButtonDataButton::Int,
+    mouseButtonDataButtons::Int,
+    mouseButtonDataQualifiers::Int
+    } deriving (Eq, Read, Show)
 
-ctMouse :: ComponentType Mouse
-ctMouse = ComponentType 0xa532f43b1c1c6bc7
+data MouseMoveData = MouseMoveData {
+    mouseMoveDataX::Int,
+    mouseMoveDataY::Int,
+    mouseMoveDataDx::Int,
+    mouseMoveDataDy::Int,
+    mouseMoveDataButtons::Int,
+    mouseMoveDataQualifiers::Int
+    } deriving (Eq, Read, Show)
 
--- Mouse Events
+data MouseWheelData = MouseWheelData {
+    mouseWheelDataWheel::Int,
+    mouseWheelDataButtons::Int,
+    mouseWheelDataQualifiers::Int
+    } deriving (Eq, Read, Show)
 
-data MouseEvent =   NoMouseEvent
-                    | MouseButtonUp Int Int Int         -- Button, Buttons, Qualifiers
-                    | MouseButtonDown Int Int Int       -- Button, Buttons, Qualifiers
-                    | MouseMove Int Int Int Int Int Int -- X, Y, DX, DY, Buttons, Qualifiers
-                    | MouseWheel Int Int Int            -- Wheel, Buttons, Qualifiers
-                    | MouseVisibleChanged Bool          -- Visible
-                      deriving (Eq, Show)
+data MouseEvent = NoMouseEvent
+    | MouseButtonUpEvent MouseButtonData
+    | MouseButtonDownEvent MouseButtonData
+    | MouseMoveEvent MouseMoveData
+    | MouseWheelEvent MouseWheelData
+    deriving (Eq, Read, Show)
 
-instance ComponentClass MouseEvent where
-    toObj NoMouseEvent = ObjectArray [ObjectInt 0]
-    toObj (MouseButtonUp b bs qs) = ObjectArray [ObjectInt 1, ObjectInt (fromIntegral b), ObjectInt (fromIntegral bs), ObjectInt (fromIntegral qs)]
-    toObj (MouseButtonDown b bs qs) = ObjectArray [ObjectInt 2, ObjectInt (fromIntegral b), ObjectInt (fromIntegral bs), ObjectInt (fromIntegral qs)]
-    toObj (MouseMove x y dx dy bs qs) = ObjectArray [ObjectInt 3, ObjectInt (fromIntegral x), ObjectInt (fromIntegral y), ObjectInt (fromIntegral dx), ObjectInt (fromIntegral dy), ObjectInt (fromIntegral bs), ObjectInt (fromIntegral qs)]
-    toObj (MouseWheel w bs qs) = ObjectArray [ObjectInt 4, ObjectInt (fromIntegral w), ObjectInt (fromIntegral bs), ObjectInt (fromIntegral qs)]
-    toObj (MouseVisibleChanged v) = ObjectArray [ObjectInt 5, ObjectBool v]
-    
-    fromObj (ObjectArray [ObjectInt 0]) = NoMouseEvent
-    fromObj (ObjectArray [ObjectInt 1, ObjectInt b, ObjectInt bs, ObjectInt qs]) = MouseButtonUp (fromIntegral b) (fromIntegral bs) (fromIntegral qs)
-    fromObj (ObjectArray [ObjectInt 2, ObjectInt b, ObjectInt bs, ObjectInt qs]) = MouseButtonDown (fromIntegral b) (fromIntegral bs) (fromIntegral qs)
-    fromObj (ObjectArray [ObjectInt 3, ObjectInt x, ObjectInt y, ObjectInt dx, ObjectInt dy, ObjectInt bs, ObjectInt qs]) = MouseMove (fromIntegral x) (fromIntegral y) (fromIntegral dx) (fromIntegral dy) (fromIntegral bs) (fromIntegral qs)
-    fromObj (ObjectArray [ObjectInt 4, ObjectInt w, ObjectInt bs, ObjectInt qs]) = MouseWheel (fromIntegral w) (fromIntegral bs) (fromIntegral qs)
-    fromObj (ObjectArray [ObjectInt 5, ObjectBool v]) = MouseVisibleChanged v
-    
 ctMouseEvent :: ComponentType MouseEvent
 ctMouseEvent = ComponentType 0x27eaf3fd46595d08
+
+instance Serialise MouseMode where
+    encode (Absolute) = encode (0::Int) 
+    encode (Relative) = encode (1::Int) 
+    encode (Wrap) = encode (2::Int) 
+    decode = do
+        i <- decode :: Decoder Int
+        case i of
+            0 -> (pure Absolute)
+            1 -> (pure Relative)
+            2 -> (pure Wrap)
+
+instance Serialise MouseConfig where
+    encode (MouseConfig v1) = encode v1
+    decode = MouseConfig <$> decode
+
+instance Serialise MouseButtonData where
+    encode (MouseButtonData v1 v2 v3) = encode v1 <> encode v2 <> encode v3
+    decode = MouseButtonData <$> decode <*> decode <*> decode
+
+instance Serialise MouseMoveData where
+    encode (MouseMoveData v1 v2 v3 v4 v5 v6) = encode v1 <> encode v2 <> encode v3 <> encode v4 <> encode v5 <> encode v6
+    decode = MouseMoveData <$> decode <*> decode <*> decode <*> decode <*> decode <*> decode
+
+instance Serialise MouseWheelData where
+    encode (MouseWheelData v1 v2 v3) = encode v1 <> encode v2 <> encode v3
+    decode = MouseWheelData <$> decode <*> decode <*> decode
+
+instance Serialise MouseEvent where
+    encode (NoMouseEvent) = encode (0::Int) 
+    encode (MouseButtonUpEvent v1) = encode (1::Int) <> encode v1
+    encode (MouseButtonDownEvent v1) = encode (2::Int) <> encode v1
+    encode (MouseMoveEvent v1) = encode (3::Int) <> encode v1
+    encode (MouseWheelEvent v1) = encode (4::Int) <> encode v1
+    decode = do
+        i <- decode :: Decoder Int
+        case i of
+            0 -> (pure NoMouseEvent)
+            1 -> (MouseButtonUpEvent <$> decode)
+            2 -> (MouseButtonDownEvent <$> decode)
+            3 -> (MouseMoveEvent <$> decode)
+            4 -> (MouseWheelEvent <$> decode)
+
 

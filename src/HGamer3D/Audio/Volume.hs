@@ -12,27 +12,27 @@
 
 -- | Module providing the Mouse functionality and settings
 module HGamer3D.Audio.Volume
-(
-    Volume (..),
-    ctVolume
-)
-
 where
 
-import Fresco
-import Data.MessagePack
-import Debug.Trace
-import Data.Text
+import Fresco                                                                                                                                          
+import Data.Binary.Serialise.CBOR                                                                                                                      
+import Data.Binary.Serialise.CBOR.Decoding                                                                                                             
+                                                                                                                                                       
+import Data.Text                                                                                                                                       
+import Data.Monoid                                                                                                                                     
+import Control.Applicative
 
-import HGamer3D.Data
 
-data Volume = Volume Text Float deriving (Eq, Show)
+data Volume = Volume {
+    volumeGroup::Text,
+    volumeGain::Float
+    } deriving (Eq, Read, Show)
 
-instance ComponentClass Volume where
-    toObj (Volume cat vol) = ObjectArray [toObj cat, ObjectFloat vol]
-    fromObj (ObjectArray [cat_o, ObjectFloat vol]) = Volume (fromObj cat_o) vol
+
+instance Serialise Volume where
+    encode (Volume v1 v2) = encode v1 <> encode v2
+    decode = Volume <$> decode <*> decode
 
 ctVolume :: ComponentType Volume
 ctVolume = ComponentType 0x659d20e6e65f85fe
-  
 

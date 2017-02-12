@@ -2,7 +2,7 @@
 -- (A project to enable 3D game development in Haskell)
 -- For the latest info, see http://www.hgamer3d.org
 --
--- (c) 2011 - 2015 Peter Althainz
+-- (c) 2011 - 2017 Peter Althainz
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -24,61 +24,65 @@
 module HGamer3D.Graphics3D.Material
 
 (
-		-- * The Material Type and ComponentType
-        Material (..),
-        ctMaterial,
+    -- * The Material Type and ComponentType
+    Material (..),
+    ctMaterial,
 
-        -- * Some materials to play with
-		matOrangeCrossMetal,
-		matCrossMetal,
-		matCrossMetalBlue,
-		matMetal,
-		matMetalZigZag,
-		matMetalBumps,
-		matFishEye,
-		matMetalOrnament,
-		matMetalScratch,
-		matMetalLine,
-		matGreenGrass,
-		matBrownGrass,
-		matGreyGrass,
-		matSand,
-		matRedRock,
-		matBlackRock,
-		matBrownStone,
-		matStoneMetalWall,
-		matCoalWall,
-		matBrickWallGray,
-		matBrickWallRed,
-		matTilesOrange,
-		matWoodTiles,
-		matColourTiles,
-		matBlackTiles,
+    -- * Some materials to play with
+    matOrangeCrossMetal,
+    matCrossMetal,
+    matCrossMetalBlue,
+    matMetal,
+    matMetalZigZag,
+    matMetalBumps,
+    matFishEye,
+    matMetalOrnament,
+    matMetalScratch,
+    matMetalLine,
+    matGreenGrass,
+    matBrownGrass,
+    matGreyGrass,
+    matSand,
+    matRedRock,
+    matBlackRock,
+    matBrownStone,
+    matStoneMetalWall,
+    matCoalWall,
+    matBrickWallGray,
+    matBrickWallRed,
+    matTilesOrange,
+    matWoodTiles,
+    matColourTiles,
+    matBlackTiles,
 
-		matWhite,
-		matSilver,
-		matGrey,
-		matDarkGrey,
-		matBlack,
-		matRed,
-		matMaroon,
-		matYellow,
-		matOlive,
-		matLime,
-		matGreen,
-		matAqua,
-		matTeal,
-		matBlue,
-		matNavy,
-		matFuchsia,
-		matPurple 
+    matWhite,
+    matSilver,
+    matGrey,
+    matDarkGrey,
+    matBlack,
+    matRed,
+    matMaroon,
+    matYellow,
+    matOlive,
+    matLime,
+    matGreen,
+    matAqua,
+    matTeal,
+    matBlue,
+    matNavy,
+    matFuchsia,
+    matPurple 
 )
 
 where
 
-import Data.MessagePack
 import Fresco
+import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Decoding
+
 import Data.Text
+import Data.Monoid
+import Control.Applicative
 
 import HGamer3D.Data
 
@@ -87,12 +91,16 @@ import HGamer3D.Data
 data Material = ResourceMaterial Text
     deriving (Eq, Read, Show)
 
-instance ComponentClass Material where
-    toObj (ResourceMaterial v1) = ObjectArray [ObjectInt 0, ObjectArray [(toObj v1)]]
-    fromObj (ObjectArray [ObjectInt 0, ObjectArray [v1]]) = ResourceMaterial (fromObj v1)
-
 ctMaterial :: ComponentType Material
 ctMaterial = ComponentType 0xb4bae8b0d0d8c162
+
+instance Serialise Material where
+    encode (ResourceMaterial v1) = encode (0::Int) <> encode v1
+    decode = do
+        i <- decode :: Decoder Int
+        case i of
+            0 -> (ResourceMaterial <$> decode)
+
 
 -- some materials from the material folder
 matOrangeCrossMetal = ResourceMaterial "Materials/Pattern_01.xml"

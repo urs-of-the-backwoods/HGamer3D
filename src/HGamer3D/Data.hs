@@ -23,24 +23,25 @@
 module HGamer3D.Data 
 
 (
-	-- * Baisc Datatypes 
-	module HGamer3D.Data.Angle,
-	module HGamer3D.Data.Colour,
-	module HGamer3D.Data.LMH,
-	module HGamer3D.Data.GameTime,
+    -- * Baisc Datatypes 
+    module HGamer3D.Data.Angle,
+    module HGamer3D.Data.Colour,
+    module HGamer3D.Data.LMH,
+    module HGamer3D.Data.GameTime,
 
-	-- * Geometry Datatypes
-	module HGamer3D.Data.Vector,
-	module HGamer3D.Data.Geometry2D,
-	module HGamer3D.Data.Transform3D,
-	module HGamer3D.Data.TypeSynonyms,
+    -- * Geometry Datatypes
+    module HGamer3D.Data.Vector,
+    module HGamer3D.Data.ScreenRect,
+    module HGamer3D.Data.Geometry2D,
+    module HGamer3D.Data.Transform3D,
+    module HGamer3D.Data.TypeSynonyms,
 
     -- * Misc
     module HGamer3D.Data.PlayCmd, 
     module HGamer3D.Data.Parent,
-    
-	-- * Implementation 
-	module HGamer3D.Data.Window
+
+    -- * Implementation 
+    module HGamer3D.Data.Window
 )
 
 where
@@ -49,6 +50,7 @@ import HGamer3D.Data.Angle
 import HGamer3D.Data.Colour
 import HGamer3D.Data.LMH
 import HGamer3D.Data.GameTime
+import HGamer3D.Data.ScreenRect
 import HGamer3D.Data.Geometry2D
 import HGamer3D.Data.Transform3D
 import HGamer3D.Data.TypeSynonyms

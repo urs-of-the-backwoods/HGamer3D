@@ -1,7 +1,7 @@
 {-
 	GUI: Button functionality
 	HGamer3D Library (A project to enable 3D game development in Haskell)
-	Copyright 2015 Peter Althainz
+	Copyright 2015 - 2017 Peter Althainz
 	
 	Distributed under the Apache License, Version 2.0
 	(See attached file LICENSE or copy at 
@@ -12,30 +12,26 @@
 
 -- | Module providing the Button functionality and settings
 module HGamer3D.GUI.Button
-(
-	Button (..),
-    ctButton
-)
-
 where
 
 import Fresco
-import Debug.Trace
-import Data.Text
-import Data.MessagePack
+import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Decoding
 
-import HGamer3D.Data
+import Data.Text
+import Data.Monoid
+import Control.Applicative
 
 
 data Button = Button {
     buttonPressed::Bool,
     buttonLabel::Text
-} deriving (Eq, Show, Read)
-
-instance ComponentClass Button where
-    toObj (Button v1 v2) = ObjectArray [ObjectBool v1, (toObj v2)]
-    fromObj (ObjectArray [ObjectBool v1, v2]) = Button v1 (fromObj v2)
+    } deriving (Eq, Read, Show)
 
 ctButton :: ComponentType Button
 ctButton = ComponentType 0x68a1857c27690b30
+
+instance Serialise Button where
+    encode (Button v1 v2) = encode v1 <> encode v2
+    decode = Button <$> decode <*> decode
 

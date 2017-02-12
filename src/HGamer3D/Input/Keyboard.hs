@@ -12,37 +12,44 @@
 
 -- | Module providing the keyboard functionality and settings
 module HGamer3D.Input.Keyboard
-
-(
-    KeyEvent (..),
-    ctKeyEvent
-)
-
 where
 
 import Fresco
-import Data.MessagePack
-import Debug.Trace
+import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Decoding
+
 import Data.Text
+import Data.Monoid
+import Control.Applicative
 
-import HGamer3D.Data
 
-data KeyEvent =   NoKeyEvent
-                | KeyUp Int Int Text      -- Key, Scancode, Name
-                | KeyDown Int Int Text    -- Key, Scancode, Name
-                deriving (Eq, Show)
-                
-instance ComponentClass KeyEvent where
-    toObj NoKeyEvent = ObjectArray [ObjectInt 0]
-    toObj (KeyUp k s n) = ObjectArray [ObjectInt 1, ObjectInt (fromIntegral k), ObjectInt (fromIntegral s), toObj n]
-    toObj (KeyDown k s n) = ObjectArray [ObjectInt 2, ObjectInt (fromIntegral k), ObjectInt (fromIntegral s), toObj n]
+data KeyData = KeyData {
+    keyDataKey::Int,
+    keyDataScancode::Int,
+    keyDataName::Text
+    } deriving (Eq, Read, Show)
 
-    fromObj (ObjectArray [ObjectInt 0]) = NoKeyEvent
-    fromObj (ObjectArray [ObjectInt 1, ObjectInt k, ObjectInt s, n_o]) = KeyUp (fromIntegral k) (fromIntegral s) (fromObj n_o)
-    fromObj (ObjectArray [ObjectInt 2, ObjectInt k, ObjectInt s, n_o]) = KeyDown (fromIntegral k) (fromIntegral s) (fromObj n_o)
-    
+data KeyEvent = NoKeyEvent
+    | KeyUpEvent KeyData
+    | KeyDownEvent KeyData
+    deriving (Eq, Read, Show)
+
 ctKeyEvent :: ComponentType KeyEvent
 ctKeyEvent = ComponentType 0x5ba1617fb50e97e5
 
+instance Serialise KeyData where
+    encode (KeyData v1 v2 v3) = encode v1 <> encode v2 <> encode v3
+    decode = KeyData <$> decode <*> decode <*> decode
 
-    
+instance Serialise KeyEvent where
+    encode (NoKeyEvent) = encode (0::Int) 
+    encode (KeyUpEvent v1) = encode (1::Int) <> encode v1
+    encode (KeyDownEvent v1) = encode (2::Int) <> encode v1
+    decode = do
+        i <- decode :: Decoder Int
+        case i of
+            0 -> (pure NoKeyEvent)
+            1 -> (KeyUpEvent <$> decode)
+            2 -> (KeyDownEvent <$> decode)
+
+

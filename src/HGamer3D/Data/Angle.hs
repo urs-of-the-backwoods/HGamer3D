@@ -1,7 +1,7 @@
 {-
 	Datatypes to specify a geometric angle
 	HGamer3D Library (A project to enable 3D game development in Haskell)
-	Copyright 2011-2015 Peter Althainz
+	Copyright 2011-2017 Peter Althainz
 	
 	Distributed under the Apache License, Version 2.0
 	(See attached file LICENSE or copy at 
@@ -34,11 +34,27 @@ module HGamer3D.Data.Angle
 
 where
 
-import Data.MessagePack
 import Fresco
+import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Decoding
 
--- | construct an Angle either by giving it in degrees or radians
-data Angle = Rad Float | Deg Float deriving (Eq, Ord, Show)
+import Data.Text
+import Data.Monoid
+import Control.Applicative
+
+
+data Angle = Rad Float
+    | Deg Float
+    deriving (Eq, Read, Show)
+
+instance Serialise Angle where
+    encode (Rad v1) = encode (0::Int) <> encode v1
+    encode (Deg v1) = encode (1::Int) <> encode v1
+    decode = do
+        i <- decode :: Decoder Int
+        case i of
+            0 -> (Rad <$> decode)
+            1 -> (Deg <$> decode)
 
 -- | value of an Angle as radiant
 asRad :: Angle -> Float
@@ -80,10 +96,4 @@ mulA a b = Rad $ (asRad a) * b
 
 divA :: Angle -> Float -> Angle
 divA a b = Rad $ (asRad a) / b
-
-instance ComponentClass Angle where
-    toObj (Rad v1) = ObjectArray [ObjectInt 0, ObjectArray [ObjectFloat v1]]
-    toObj (Deg v1) = ObjectArray [ObjectInt 1, ObjectArray [ObjectFloat v1]]
-    fromObj (ObjectArray [ObjectInt 0, ObjectArray [ObjectFloat v1]]) = Rad v1
-    fromObj (ObjectArray [ObjectInt 1, ObjectArray [ObjectFloat v1]]) = Deg v1
 

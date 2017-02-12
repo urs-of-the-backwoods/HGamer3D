@@ -1,7 +1,7 @@
 {-
 	Low, Medium, High Datatype
 	HGamer3D Library (A project to enable 3D game development in Haskell)
-	Copyright 2011-2015 Peter Althainz
+	Copyright 2011-2017 Peter Althainz
 	
 	Distributed under the Apache License, Version 2.0
 	(See attached file LICENSE or copy at 
@@ -12,36 +12,39 @@
 
 -- | Data type to specify a 3 choice volume of anything: Low, Medium, High
 module HGamer3D.Data.LMH
-(
-    ctOnOff,
-    QualityLMH (..),
-    ctLMH
-)
+where 
 
-where
-
-import Data.MessagePack
 import Fresco
+import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Decoding
 
-ctOnOff :: ComponentType Bool
-ctOnOff = ComponentType 0x30b235f8b63df8b0
+import Data.Text
+import Data.Monoid
+import Control.Applicative
 
-data QualityLMH = Low
+
+type Switch = Bool
+
+ctSwitch :: ComponentType Switch
+ctSwitch = ComponentType 0x30b235f8b63df8b0
+
+data LMH = Low
     | Medium
     | High
     deriving (Eq, Read, Show)
 
-instance ComponentClass QualityLMH where
-    toObj (Low) = ObjectArray [ObjectInt 0, ObjectArray []]
-    toObj (Medium) = ObjectArray [ObjectInt 1, ObjectArray []]
-    toObj (High) = ObjectArray [ObjectInt 2, ObjectArray []]
-    fromObj (ObjectArray [ObjectInt 0, ObjectArray []]) = Low
-    fromObj (ObjectArray [ObjectInt 1, ObjectArray []]) = Medium
-    fromObj (ObjectArray [ObjectInt 2, ObjectArray []]) = High
+type QualityLMH = LMH
 
+ctQualityLMH :: ComponentType QualityLMH
+ctQualityLMH = ComponentType 0xd632bb5447a6c93c
 
-ctLMH :: ComponentType QualityLMH
-ctLMH = ComponentType 0xd632bb5447a6c93c
-
-
-
+instance Serialise LMH where
+    encode (Low) = encode (0::Int) 
+    encode (Medium) = encode (1::Int) 
+    encode (High) = encode (2::Int) 
+    decode = do
+        i <- decode :: Decoder Int
+        case i of
+            0 -> (pure Low)
+            1 -> (pure Medium)
+            2 -> (pure High)

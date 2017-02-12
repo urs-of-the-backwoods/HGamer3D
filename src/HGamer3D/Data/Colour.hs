@@ -1,7 +1,7 @@
 {-
 	Datatypes to specify a geometric angle
 	HGamer3D Library (A project to enable 3D game development in Haskell)
-	Copyright 2011-2015 Peter Althainz
+	Copyright 2011 - 2017 Peter Althainz
 	
 	Distributed under the Apache License, Version 2.0
 	(See attached file LICENSE or copy at 
@@ -37,24 +37,29 @@ module HGamer3D.Data.Colour
 
 where
 
-import Data.MessagePack
 import Fresco
+import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Decoding
 
--- generated
+import Data.Text
+import Data.Monoid
+import Control.Applicative
+
 
 data Colour = Colour {
-    cRed::Float,
-    cGreen::Float,
-    cBlue::Float,
-    cAlpha::Float
-}
-
-instance ComponentClass Colour where
-    toObj (Colour v1 v2 v3 v4) = ObjectArray [ObjectFloat v1, ObjectFloat v2, ObjectFloat v3, ObjectFloat v4]
-    fromObj (ObjectArray [ObjectFloat v1, ObjectFloat v2, ObjectFloat v3, ObjectFloat v4]) = Colour v1 v2 v3 v4
+    colourRed::Float,
+    colourGreen::Float,
+    colourBlue::Float,
+    colourAlpha::Float
+    } deriving (Eq, Read, Show)
 
 ctColour :: ComponentType Colour
 ctColour = ComponentType 0xe202add0521cde41
+
+instance Serialise Colour where
+    encode (Colour v1 v2 v3 v4) = encode v1 <> encode v2 <> encode v3 <> encode v4
+    decode = Colour <$> decode <*> decode <*> decode <*> decode
+
 
 -- generated
 

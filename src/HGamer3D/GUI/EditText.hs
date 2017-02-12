@@ -12,18 +12,20 @@
 
 -- | Module providing the Mouse functionality and settings
 module HGamer3D.GUI.EditText
-(
-    ctEditText
-)
-
 where
 
 import Fresco
-import Data.MessagePack
-import Debug.Trace
+import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Decoding
+
 import Data.Text
+import Data.Monoid
+import Control.Applicative
 
-import HGamer3D.Data
 
-ctEditText :: ComponentType Text
+type EditText = Text
+
+ctEditText :: ComponentType EditText
 ctEditText = ComponentType 0x8c79de2199331f3a
+
+

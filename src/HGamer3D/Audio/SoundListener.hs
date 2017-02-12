@@ -12,20 +12,11 @@
 
 -- | Sound Listener
 module HGamer3D.Audio.SoundListener
-(
-    ctSoundListener
-)
-
 where
 
 import Fresco
-import Data.MessagePack
-import Debug.Trace
-import Data.Text
 
-import HGamer3D.Data
+type SoundListener = ()
 
-ctSoundListener :: ComponentType ()
+ctSoundListener :: ComponentType SoundListener
 ctSoundListener = ComponentType 0x7aacf4ee5bd2f958
-  
-

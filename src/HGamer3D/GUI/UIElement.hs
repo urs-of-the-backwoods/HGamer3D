@@ -12,20 +12,19 @@
 
 -- | Module providing the Button functionality and settings
 module HGamer3D.GUI.UIElement
-(
-    ctUIElement
-)
-
 where
 
 import Fresco
-import Debug.Trace
+import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Decoding
+
 import Data.Text
-import Data.MessagePack
+import Data.Monoid
+import Control.Applicative
 
-import HGamer3D.Data
 
-ctUIElement :: ComponentType ()
-ctUIElement = ComponentType 0xd5b79f5837e52274;
+type UIElement = ()
 
+ctUIElement :: ComponentType UIElement
+ctUIElement = ComponentType 0xd5b79f5837e52274
 

@@ -1,7 +1,7 @@
 {-
 	Input Event handler and settings
 	HGamer3D Library (A project to enable 3D game development in Haskell)
-	Copyright 2015 Peter Althainz
+	Copyright 2015 - 2017 Peter Althainz
 	
 	Distributed under the Apache License, Version 2.0
 	(See attached file LICENSE or copy at 
@@ -12,77 +12,71 @@
 
 -- | Module providing settings for all input events (Mouse, Keyboard, Joystick)
 module HGamer3D.Input.InputEventHandler
-(
-    InputEventType (..),
-    InputEventHandler (..),
-    ctInputEventHandler,
-    ExitRequestedEvent (..),
-    ctExitRequestedEvent
-)
-
 where
 
 import Fresco
-import Data.MessagePack
-import Debug.Trace
+import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Decoding
+
 import Data.Text
+import Data.Monoid
+import Control.Applicative
 
-import HGamer3D.Data
 
-data InputEventType  =  IEMouseButtonUp
-                        | IEMouseButtonDown
-                        | IEMouseMove
-                        | IEMouseButtonWheel
-                        | IEMouseButtonVisibleChanged
-                        | IEKeyUp
-                        | IEKeyDown
-                        | IEExitRequested
+data InputEventType = IEMouseButtonUp
+    | IEMouseButtonDown
+    | IEMouseButtonWheel
+    | IEMouseVisible
+    | IEKeyUp
+    | IEKeyDown
+    | IEExitRequested
+    deriving (Eq, Read, Show)
 
-                        deriving (Eq, Show)
-
-instance ComponentClass InputEventType where
-
-    toObj iet = case iet of
-        IEMouseButtonUp -> ObjectInt 1
-        IEMouseButtonDown -> ObjectInt 2
-        IEMouseMove -> ObjectInt 3
-        IEMouseButtonWheel -> ObjectInt 4
-        IEMouseButtonVisibleChanged -> ObjectInt 5
-        IEKeyUp -> ObjectInt 6
-        IEKeyDown -> ObjectInt 7
-        IEExitRequested -> ObjectInt 8
-    fromObj (ObjectInt n) = case n of
-        1 -> IEMouseButtonUp
-        2 -> IEMouseButtonDown
-        3 -> IEMouseMove
-        4 -> IEMouseButtonWheel
-        5 -> IEMouseButtonVisibleChanged
-        6 -> IEKeyUp
-        7 -> IEKeyDown
-        8 -> IEExitRequested
-        
 data InputEventHandler = DefaultEventHandler
-                         | SpecificEventHandler [InputEventType]
+    | SpecificEventHandler [InputEventType]
+    deriving (Eq, Read, Show)
 
-instance ComponentClass InputEventHandler where
-    toObj DefaultEventHandler = ObjectArray [ObjectInt 0]
-    toObj (SpecificEventHandler iets) = ObjectArray [ObjectInt 1, ObjectArray (Prelude.map toObj iets)]
+data ExitRequestedEvent = ExitRequestedEvent
+    deriving (Eq, Read, Show)
 
-    fromObj (ObjectArray [ObjectInt 0]) = DefaultEventHandler
-    fromObj (ObjectArray [ObjectInt 1, (ObjectArray iets_os)]) = SpecificEventHandler (Prelude.map fromObj iets_os)
-    
 ctInputEventHandler :: ComponentType InputEventHandler
 ctInputEventHandler = ComponentType 0xfc0edefcebcb5878
 
-
--- ExitRequestedEvent
-
-data ExitRequestedEvent = ExitRequestedEvent
-                      deriving (Eq, Show)
-
-instance ComponentClass ExitRequestedEvent where
-    toObj ExitRequestedEvent = ObjectArray [ObjectInt 0]
-    fromObj (ObjectArray [ObjectInt 0]) = ExitRequestedEvent
-    
 ctExitRequestedEvent :: ComponentType ExitRequestedEvent
 ctExitRequestedEvent = ComponentType 0x824517eb48d5c653
+
+instance Serialise InputEventType where
+    encode (IEMouseButtonUp) = encode (0::Int) 
+    encode (IEMouseButtonDown) = encode (1::Int) 
+    encode (IEMouseButtonWheel) = encode (2::Int) 
+    encode (IEMouseVisible) = encode (3::Int) 
+    encode (IEKeyUp) = encode (4::Int) 
+    encode (IEKeyDown) = encode (5::Int) 
+    encode (IEExitRequested) = encode (6::Int) 
+    decode = do
+        i <- decode :: Decoder Int
+        case i of
+            0 -> (pure IEMouseButtonUp)
+            1 -> (pure IEMouseButtonDown)
+            2 -> (pure IEMouseButtonWheel)
+            3 -> (pure IEMouseVisible)
+            4 -> (pure IEKeyUp)
+            5 -> (pure IEKeyDown)
+            6 -> (pure IEExitRequested)
+
+instance Serialise InputEventHandler where
+    encode (DefaultEventHandler) = encode (0::Int) 
+    encode (SpecificEventHandler v1) = encode (1::Int) <> encode v1
+    decode = do
+        i <- decode :: Decoder Int
+        case i of
+            0 -> (pure DefaultEventHandler)
+            1 -> (SpecificEventHandler <$> decode)
+
+instance Serialise ExitRequestedEvent where
+    encode (ExitRequestedEvent) = encode (0::Int) 
+    decode = do
+        i <- decode :: Decoder Int
+        case i of
+            0 -> (pure ExitRequestedEvent)
+

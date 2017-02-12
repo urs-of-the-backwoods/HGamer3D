@@ -1,7 +1,15 @@
-extra-deps: ["vect-0.4.7"]
-resolver: lts-5.8
-flags: {}
+resolver: lts-6.27
+
+flags:
+  binary-serialise-cbor:
+    newtime15: true
+
 packages:
-- '.'
+- '../../binary-serialise-cbor'
 - '../../fresco-haskell'
+- '.'
+
+extra-deps: ["vect-0.4.7"]
+
 extra-lib-dirs:
+

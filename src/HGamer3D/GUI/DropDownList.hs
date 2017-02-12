@@ -12,27 +12,35 @@
 
 -- | Module providing the Mouse functionality and settings
 module HGamer3D.GUI.DropDownList
-(
-    ctDropDownList,
-    DropDownList (..)
-)
-
 where
 
 import Fresco
-import Data.MessagePack
-import Debug.Trace
+import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Decoding
+
 import Data.Text
+import Data.Monoid
+import Control.Applicative
 
-import HGamer3D.Data
 
-data DropDownList = DropDownList [Text] (Maybe Int) deriving (Eq, Show)   -- int is selected item index, starting at 0
-
-instance ComponentClass DropDownList where
-    toObj (DropDownList textlist mb) = ObjectArray [ ObjectArray (Prelude.map toObj textlist), toObj mb]
-    fromObj (ObjectArray [ ObjectArray textlist_o, mb]) = DropDownList (Prelude.map fromObj textlist_o) (fromObj mb)
+data DropDownList = DropDownList {
+    dropDownListContent::[Text],
+	dropDownListSelected::(Maybe Int)
+    } deriving (Eq, Read, Show)
 
 ctDropDownList :: ComponentType DropDownList
 ctDropDownList = ComponentType 0x200de0e837a8e590
-  
+
+instance Serialise DropDownList where
+    encode (DropDownList v1 (Just v2)) = encode v1 <> encode (0::Int) <> encode v2
+    encode (DropDownList v1 Nothing) = encode v1 <> encode (0::Int)
+    decode = DropDownList <$> decode <*> decodeMI where
+		decodeMI = do
+			i <- decode :: Decoder Int
+			case i of
+				0 -> (Just <$> decode)
+				1 -> (pure Nothing)
+
+
+
 

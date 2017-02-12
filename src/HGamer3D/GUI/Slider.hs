@@ -20,20 +20,27 @@ module HGamer3D.GUI.Slider
 where
 
 import Fresco
-import Data.MessagePack
-import Debug.Trace
+import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Decoding
+
 import Data.Text
+import Data.Monoid
+import Control.Applicative
 
-import HGamer3D.Data
 
-data Slider = Slider Float Float        -- range end (start = 0) and value
-              deriving (Eq, Show)           
-
-instance ComponentClass Slider where
-    toObj (Slider range value) = ObjectArray [ObjectFloat range, ObjectFloat value]
-    fromObj (ObjectArray [ObjectFloat range, ObjectFloat value]) = Slider range value
+data Slider = Slider {
+    sliderRange::Float,
+    sliderValue::Float
+    } deriving (Eq, Read, Show)
 
 ctSlider :: ComponentType Slider
 ctSlider = ComponentType 0x60636b107c77a533
+
+instance Serialise Slider where
+    encode (Slider v1 v2) = encode v1 <> encode v2
+    decode = Slider <$> decode <*> decode
+
+
+
   
 

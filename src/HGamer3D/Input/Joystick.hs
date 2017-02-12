@@ -18,9 +18,5 @@ module HGamer3D.Input.Joystick
 where
 
 import Fresco
-import Data.MessagePack
-import Debug.Trace
-import Data.Text
-
 import HGamer3D.Data
 

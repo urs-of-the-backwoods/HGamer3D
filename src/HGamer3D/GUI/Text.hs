@@ -12,20 +12,20 @@
 
 -- | Module providing the Mouse functionality and settings
 module HGamer3D.GUI.Text
-(
-    ctText
-)
-
 where
 
 import Fresco
-import Data.MessagePack
-import Debug.Trace
+import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Decoding
+
 import Data.Text
+import Data.Monoid
+import Control.Applicative
 
-import HGamer3D.Data
 
-ctText :: ComponentType Text
-ctText = ComponentType 0xda9601eaf3319280
-  
+type StaticText = Text
+
+ctStaticText :: ComponentType StaticText
+ctStaticText = ComponentType 0xda9601eaf3319280
+
 

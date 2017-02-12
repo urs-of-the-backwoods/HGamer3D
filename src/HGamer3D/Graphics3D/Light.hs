@@ -1,7 +1,7 @@
 {-
     Light Datatype
 	HGamer3D Library (A project to enable 3D game development in Haskell)
-	Copyright 2011-2015 Peter Althainz
+	Copyright 2011 - 2017 Peter Althainz
 	
 	Distributed under the Apache License, Version 2.0
 	(See attached file LICENSE or copy at 
@@ -12,46 +12,48 @@
 
 -- | Module providing the Light type
 module HGamer3D.Graphics3D.Light
-
-(
-    LightType (..),
-    Light (..),
-    ctLight
-)
-
 where
 
-import Data.MessagePack
 import Fresco
-import HGamer3D.Data
+import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Decoding
 
--- HGamer3D website, entities, example 2 for data types
+import Data.Text
+import Data.Monoid
+import Control.Applicative
 
-data LightType =    PointLight              -- ^ casting light in all directions, from position 
-                    | DirectionalLight      -- ^ like a very far light source (the Sun)
-                    | SpotLight Angle Float -- ^ a light with a field of view (Angle) and an aspect-ratio (Float)
-                
-instance ComponentClass LightType where
-    toObj PointLight = ObjectArray [ObjectInt 0]
-    toObj DirectionalLight =  ObjectArray [ObjectInt 1]
-    toObj (SpotLight fov ar) = ObjectArray [ObjectInt 2, toObj fov, ObjectFloat ar]
+import HGamer3D.Data.Angle
 
-    fromObj (ObjectArray [ObjectInt 0]) = PointLight
-    fromObj (ObjectArray [ObjectInt 1]) = DirectionalLight 
-    fromObj (ObjectArray [ObjectInt 2, fov_o, ObjectFloat ar]) = SpotLight (fromObj fov_o) ar
 
-data Light = Light 
-                LightType 
-                Float     
-                Float     
-                Float     -- ^ floats: brightness, range, specular intensity
+data LightType = PointLight
+    | DirectionalLight
+    | SpotLight Angle Float
+    deriving (Eq, Read, Show)
 
-instance ComponentClass Light where
-    toObj (Light lt b r s) = ObjectArray [toObj lt, ObjectFloat b, ObjectFloat r, ObjectFloat s]
-    fromObj (ObjectArray [lt_o, ObjectFloat b, ObjectFloat r, ObjectFloat s]) = Light (fromObj lt_o) b r s
-    
+data Light = Light {
+    lightType::LightType,
+    lightBrightness::Float,
+    lightRange::Float,
+    lightSpecularIntensity::Float
+    } deriving (Eq, Read, Show)
+
 ctLight :: ComponentType Light
 ctLight = ComponentType 0x981e80e50d994ea9
 
--- end of website text
+instance Serialise LightType where
+    encode (PointLight) = encode (0::Int) 
+    encode (DirectionalLight) = encode (1::Int) 
+    encode (SpotLight v1 v2) = encode (2::Int) <> encode v1<> encode v2
+    decode = do
+        i <- decode :: Decoder Int
+        case i of
+            0 -> (pure PointLight)
+            1 -> (pure DirectionalLight)
+            2 -> (SpotLight <$> decode <*> decode)
+
+instance Serialise Light where
+    encode (Light v1 v2 v3 v4) = encode v1 <> encode v2 <> encode v3 <> encode v4
+    decode = Light <$> decode <*> decode <*> decode <*> decode
+
+
 
