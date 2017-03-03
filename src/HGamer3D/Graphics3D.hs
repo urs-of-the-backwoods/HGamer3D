@@ -2,7 +2,7 @@
 -- (A project to enable 3D game development in Haskell)
 -- For the latest info, see http://www.hgamer3d.org
 -- 
--- (c) 2015 Peter Althainz
+-- (c) 2015 - 2017 Peter Althainz
 -- 
 -- Licensed under the Apache License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -23,12 +23,12 @@
 module HGamer3D.Graphics3D
 
 (
-	module HGamer3D.Graphics3D.Camera,
-	module HGamer3D.Graphics3D.Geometry,
-	module HGamer3D.Graphics3D.Light,
-	module HGamer3D.Graphics3D.Material,
-	module HGamer3D.Graphics3D.Graphics3DCommand,
-	module HGamer3D.Graphics3D.Graphics3DConfig,
+  module HGamer3D.Graphics3D.Camera,
+  module HGamer3D.Graphics3D.Geometry,
+  module HGamer3D.Graphics3D.Light,
+  module HGamer3D.Graphics3D.Material,
+  module HGamer3D.Graphics3D.Graphics3DCommand,
+  module HGamer3D.Graphics3D.Graphics3DConfig,
 )
 
 where

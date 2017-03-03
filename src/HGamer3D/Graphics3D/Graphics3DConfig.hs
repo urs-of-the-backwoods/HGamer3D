@@ -28,6 +28,7 @@ where
 import Fresco
 import Data.Binary.Serialise.CBOR
 import Data.Binary.Serialise.CBOR.Decoding
+import Data.Binary.Serialise.CBOR.Encoding
 
 import Data.Text
 import Data.Monoid
@@ -44,26 +45,11 @@ data EngineConfig = EngineConfig {
     } deriving (Eq, Read, Show)
 
 
-instance Serialise EngineConfig where
-    encode (EngineConfig v1 v2 v3 v4) = encode v1 <> encode v2 <> encode v3 <> encode v4
-    decode = EngineConfig <$> decode <*> decode <*> decode <*> decode
-
 data LogLevel = Warning
     | Info
     | Debug
     deriving (Eq, Read, Show)
 
-
-instance Serialise LogLevel where
-    encode (Warning) = encode (0::Int) 
-    encode (Info) = encode (1::Int) 
-    encode (Debug) = encode (2::Int) 
-    decode = do
-        i <- decode :: Decoder Int
-        case i of
-            0 -> (pure Warning)
-            1 -> (pure Info)
-            2 -> (pure Debug)
 
 data Logging = Logging {
     loggingLogLevel::LogLevel,
@@ -71,10 +57,6 @@ data Logging = Logging {
     loggingLogFileName::Text
     } deriving (Eq, Read, Show)
 
-
-instance Serialise Logging where
-    encode (Logging v1 v2 v3) = encode v1 <> encode v2 <> encode v3
-    decode = Logging <$> decode <*> decode <*> decode
 
 data WindowG3D = WindowG3D {
     windowG3DWidth::Int,
@@ -85,10 +67,6 @@ data WindowG3D = WindowG3D {
     } deriving (Eq, Read, Show)
 
 
-instance Serialise WindowG3D where
-    encode (WindowG3D v1 v2 v3 v4 v5) = encode v1 <> encode v2 <> encode v3 <> encode v4 <> encode v5
-    decode = WindowG3D <$> decode <*> decode <*> decode <*> decode <*> decode
-
 data GraphicsQuality = GraphicsQuality {
     graphicsQualityShadow::LMH,
     graphicsQualityMaterial::LMH,
@@ -96,10 +74,6 @@ data GraphicsQuality = GraphicsQuality {
     graphicsQualityMultisample::LMH
     } deriving (Eq, Read, Show)
 
-
-instance Serialise GraphicsQuality where
-    encode (GraphicsQuality v1 v2 v3 v4) = encode v1 <> encode v2 <> encode v3 <> encode v4
-    decode = GraphicsQuality <$> decode <*> decode <*> decode <*> decode
 
 data Graphics3DConfig = Graphics3DConfig {
     graphics3DConfigEngine::EngineConfig,
@@ -109,12 +83,43 @@ data Graphics3DConfig = Graphics3DConfig {
     } deriving (Eq, Read, Show)
 
 
-instance Serialise Graphics3DConfig where
-    encode (Graphics3DConfig v1 v2 v3 v4) = encode v1 <> encode v2 <> encode v3 <> encode v4
-    decode = Graphics3DConfig <$> decode <*> decode <*> decode <*> decode
-
 ctGraphics3DConfig :: ComponentType Graphics3DConfig
 ctGraphics3DConfig = ComponentType 0x884eb62b6674bff
+
+instance Serialise EngineConfig where
+    encode (EngineConfig v1 v2 v3 v4) = encodeListLen 4 <> encode v1 <> encode v2 <> encode v3 <> encode v4
+    decode = decodeListLenOf 4 >> EngineConfig <$> decode <*> decode <*> decode <*> decode
+
+instance Serialise LogLevel where
+    encode (Warning) = encodeListLen 1 <>  encode (0::Int) 
+    encode (Info) = encodeListLen 1 <>  encode (1::Int) 
+    encode (Debug) = encodeListLen 1 <>  encode (2::Int) 
+    decode = do
+        decodeListLen
+        i <- decode :: Decoder Int
+        case i of
+            0 -> (pure Warning)
+            1 -> (pure Info)
+            2 -> (pure Debug)
+
+instance Serialise Logging where
+    encode (Logging v1 v2 v3) = encodeListLen 3 <> encode v1 <> encode v2 <> encode v3
+    decode = decodeListLenOf 3 >> Logging <$> decode <*> decode <*> decode
+
+instance Serialise WindowG3D where
+    encode (WindowG3D v1 v2 v3 v4 v5) = encodeListLen 5 <> encode v1 <> encode v2 <> encode v3 <> encode v4 <> encode v5
+    decode = decodeListLenOf 5 >> WindowG3D <$> decode <*> decode <*> decode <*> decode <*> decode
+
+instance Serialise GraphicsQuality where
+    encode (GraphicsQuality v1 v2 v3 v4) = encodeListLen 4 <> encode v1 <> encode v2 <> encode v3 <> encode v4
+    decode = decodeListLenOf 4 >> GraphicsQuality <$> decode <*> decode <*> decode <*> decode
+
+instance Serialise Graphics3DConfig where
+    encode (Graphics3DConfig v1 v2 v3 v4) = encodeListLen 4 <> encode v1 <> encode v2 <> encode v3 <> encode v4
+    decode = decodeListLenOf 4 >> Graphics3DConfig <$> decode <*> decode <*> decode <*> decode
+
+
+
 
 -- output sinopia ends here
 

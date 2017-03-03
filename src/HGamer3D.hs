@@ -2,7 +2,7 @@
 -- (A project to enable 3D game development in Haskell)
 -- For the latest info, see http://www.hgamer3d.org
 -- 
--- (c) 2011 - 2015 Peter Althainz
+-- (c) 2011 - 2017 Peter Althainz
 -- 
 -- Licensed under the Apache License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.

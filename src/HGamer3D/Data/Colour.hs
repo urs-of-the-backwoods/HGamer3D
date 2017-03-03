@@ -40,6 +40,7 @@ where
 import Fresco
 import Data.Binary.Serialise.CBOR
 import Data.Binary.Serialise.CBOR.Decoding
+import Data.Binary.Serialise.CBOR.Encoding
 
 import Data.Text
 import Data.Monoid
@@ -56,9 +57,11 @@ data Colour = Colour {
 ctColour :: ComponentType Colour
 ctColour = ComponentType 0xe202add0521cde41
 
+
 instance Serialise Colour where
-    encode (Colour v1 v2 v3 v4) = encode v1 <> encode v2 <> encode v3 <> encode v4
-    decode = Colour <$> decode <*> decode <*> decode <*> decode
+    encode (Colour v1 v2 v3 v4) = encodeListLen 4 <> encode v1 <> encode v2 <> encode v3 <> encode v4
+    decode = decodeListLenOf 4 >> Colour <$> decode <*> decode <*> decode <*> decode
+
 
 
 -- generated

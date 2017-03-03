@@ -24,6 +24,7 @@ where
 
 import Fresco
 import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Encoding
 import Data.Binary.Serialise.CBOR.Decoding
 
 import Data.Text
@@ -37,13 +38,15 @@ data Graphics3DCommand = NoCmd
 
 
 instance Serialise Graphics3DCommand where
-    encode (NoCmd) = encode (0::Int) 
-    encode (Step) = encode (1::Int) 
+    encode (NoCmd) = encodeListLen 1 <>  encode (0::Int) 
+    encode (Step) = encodeListLen 1 <>  encode (1::Int) 
     decode = do
+        decodeListLen
         i <- decode :: Decoder Int
         case i of
             0 -> (pure NoCmd)
             1 -> (pure Step)
+
 
 ctGraphics3DCommand :: ComponentType Graphics3DCommand
 ctGraphics3DCommand = ComponentType 0xea06bc20a9334af3

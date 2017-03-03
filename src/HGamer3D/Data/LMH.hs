@@ -16,6 +16,7 @@ where
 
 import Fresco
 import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Encoding
 import Data.Binary.Serialise.CBOR.Decoding
 
 import Data.Text
@@ -39,12 +40,14 @@ ctQualityLMH :: ComponentType QualityLMH
 ctQualityLMH = ComponentType 0xd632bb5447a6c93c
 
 instance Serialise LMH where
-    encode (Low) = encode (0::Int) 
-    encode (Medium) = encode (1::Int) 
-    encode (High) = encode (2::Int) 
+    encode (Low) = encodeListLen 1 <>  encode (0::Int) 
+    encode (Medium) = encodeListLen 1 <>  encode (1::Int) 
+    encode (High) = encodeListLen 1 <>  encode (2::Int) 
     decode = do
+        decodeListLen
         i <- decode :: Decoder Int
         case i of
             0 -> (pure Low)
             1 -> (pure Medium)
             2 -> (pure High)
+
