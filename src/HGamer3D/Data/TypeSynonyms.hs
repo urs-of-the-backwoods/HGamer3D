@@ -39,7 +39,4 @@ ctOrientation :: ComponentType Orientation
 ctOrientation = ComponentType 0x815eb4d9c7bfaa74
 -- end of website text
 
-ctVisible :: ComponentType Bool
-ctVisible = ComponentType 0x98e7a78e949e1c6e
-
 

@@ -16,6 +16,7 @@ where
 
 import Fresco
 import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Encoding
 import Data.Binary.Serialise.CBOR.Decoding
 
 import Data.Text
@@ -38,14 +39,15 @@ ctKeyEvent :: ComponentType KeyEvent
 ctKeyEvent = ComponentType 0x5ba1617fb50e97e5
 
 instance Serialise KeyData where
-    encode (KeyData v1 v2 v3) = encode v1 <> encode v2 <> encode v3
-    decode = KeyData <$> decode <*> decode <*> decode
+    encode (KeyData v1 v2 v3) = encodeListLen 3 <> encode v1 <> encode v2 <> encode v3
+    decode = decodeListLenOf 3 >> KeyData <$> decode <*> decode <*> decode
 
 instance Serialise KeyEvent where
-    encode (NoKeyEvent) = encode (0::Int) 
-    encode (KeyUpEvent v1) = encode (1::Int) <> encode v1
-    encode (KeyDownEvent v1) = encode (2::Int) <> encode v1
+    encode (NoKeyEvent) = encodeListLen 1 <>  encode (0::Int) 
+    encode (KeyUpEvent v1) = encodeListLen 2 <>  encode (1::Int) <> encode v1
+    encode (KeyDownEvent v1) = encodeListLen 2 <>  encode (2::Int) <> encode v1
     decode = do
+        decodeListLen
         i <- decode :: Decoder Int
         case i of
             0 -> (pure NoKeyEvent)
