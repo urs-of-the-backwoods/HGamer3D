@@ -14,23 +14,6 @@
 module HGamer3D.Input.Mouse
 where
 
-<<<<<<< HEAD
-import Fresco                                                                                                                                
-import Data.Binary.Serialise.CBOR                                                                                                             
-import Data.Binary.Serialise.CBOR.Encoding                                                                                                    
-import Data.Binary.Serialise.CBOR.Decoding                                                                                                    
-                                                                                                                                               
-import Data.Text                                                                                                                               
-import Data.Monoid                                                                                                                             
-import Control.Applicative                                                                                                                     
-                                                                                                                                               
-                                                                                                                                                
-data MouseMode = Absolute                                                                                                                       
-    | Relative                                                                                                                                  
-    | Wrap                                                                                                                                       
-    deriving (Eq, Read, Show)                                                                                                                    
-                                                                                                                                                 
-=======
 import Fresco
 import Data.Binary.Serialise.CBOR
 import Data.Binary.Serialise.CBOR.Encoding
@@ -46,7 +29,6 @@ data MouseMode = Absolute
     | Wrap
     deriving (Eq, Read, Show)
 
->>>>>>> 240fcd2ecf5e307d2125f24ed3ceb59c70d33d73
 data MouseConfig = MouseConfig {
     mouseConfigMode::MouseMode
     } deriving (Eq, Read, Show)
