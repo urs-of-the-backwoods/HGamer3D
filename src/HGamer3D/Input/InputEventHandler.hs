@@ -16,6 +16,7 @@ where
 
 import Fresco
 import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Encoding
 import Data.Binary.Serialise.CBOR.Decoding
 
 import Data.Text
@@ -25,6 +26,7 @@ import Control.Applicative
 
 data InputEventType = IEMouseButtonUp
     | IEMouseButtonDown
+    | IEMouseMove
     | IEMouseButtonWheel
     | IEMouseVisible
     | IEKeyUp
@@ -36,47 +38,43 @@ data InputEventHandler = DefaultEventHandler
     | SpecificEventHandler [InputEventType]
     deriving (Eq, Read, Show)
 
-data ExitRequestedEvent = ExitRequestedEvent
-    deriving (Eq, Read, Show)
-
 ctInputEventHandler :: ComponentType InputEventHandler
 ctInputEventHandler = ComponentType 0xfc0edefcebcb5878
+
+type ExitRequestedEvent = ()
 
 ctExitRequestedEvent :: ComponentType ExitRequestedEvent
 ctExitRequestedEvent = ComponentType 0x824517eb48d5c653
 
 instance Serialise InputEventType where
-    encode (IEMouseButtonUp) = encode (0::Int) 
-    encode (IEMouseButtonDown) = encode (1::Int) 
-    encode (IEMouseButtonWheel) = encode (2::Int) 
-    encode (IEMouseVisible) = encode (3::Int) 
-    encode (IEKeyUp) = encode (4::Int) 
-    encode (IEKeyDown) = encode (5::Int) 
-    encode (IEExitRequested) = encode (6::Int) 
+    encode (IEMouseButtonUp) = encodeListLen 1 <>  encode (0::Int) 
+    encode (IEMouseButtonDown) = encodeListLen 1 <>  encode (1::Int) 
+    encode (IEMouseMove) = encodeListLen 1 <>  encode (2::Int) 
+    encode (IEMouseButtonWheel) = encodeListLen 1 <>  encode (3::Int) 
+    encode (IEMouseVisible) = encodeListLen 1 <>  encode (4::Int) 
+    encode (IEKeyUp) = encodeListLen 1 <>  encode (5::Int) 
+    encode (IEKeyDown) = encodeListLen 1 <>  encode (6::Int) 
+    encode (IEExitRequested) = encodeListLen 1 <>  encode (7::Int) 
     decode = do
+        decodeListLen
         i <- decode :: Decoder Int
         case i of
             0 -> (pure IEMouseButtonUp)
             1 -> (pure IEMouseButtonDown)
-            2 -> (pure IEMouseButtonWheel)
-            3 -> (pure IEMouseVisible)
-            4 -> (pure IEKeyUp)
-            5 -> (pure IEKeyDown)
-            6 -> (pure IEExitRequested)
+            2 -> (pure IEMouseMove)
+            3 -> (pure IEMouseButtonWheel)
+            4 -> (pure IEMouseVisible)
+            5 -> (pure IEKeyUp)
+            6 -> (pure IEKeyDown)
+            7 -> (pure IEExitRequested)
 
 instance Serialise InputEventHandler where
-    encode (DefaultEventHandler) = encode (0::Int) 
-    encode (SpecificEventHandler v1) = encode (1::Int) <> encode v1
+    encode (DefaultEventHandler) = encodeListLen 1 <>  encode (0::Int) 
+    encode (SpecificEventHandler v1) = encodeListLen 2 <>  encode (1::Int) <> encode v1
     decode = do
+        decodeListLen
         i <- decode :: Decoder Int
         case i of
             0 -> (pure DefaultEventHandler)
             1 -> (SpecificEventHandler <$> decode)
-
-instance Serialise ExitRequestedEvent where
-    encode (ExitRequestedEvent) = encode (0::Int) 
-    decode = do
-        i <- decode :: Decoder Int
-        case i of
-            0 -> (pure ExitRequestedEvent)
 

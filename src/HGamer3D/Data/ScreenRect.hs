@@ -16,13 +16,12 @@ where
 
 import Fresco
 import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Encoding
 import Data.Binary.Serialise.CBOR.Decoding
 
 import Data.Text
 import Data.Monoid
 import Control.Applicative
-
-import Data.Word
 
 
 data ScreenRect = ScreenRect {
@@ -36,6 +35,5 @@ ctScreenRect :: ComponentType ScreenRect
 ctScreenRect = ComponentType 0x16877957e32da6b1
 
 instance Serialise ScreenRect where
-    encode (ScreenRect v1 v2 v3 v4) = encode v1 <> encode v2 <> encode v3 <> encode v4
-    decode = ScreenRect <$> decode <*> decode <*> decode <*> decode
-
+    encode (ScreenRect v1 v2 v3 v4) = encodeListLen 4 <> encode v1 <> encode v2 <> encode v3 <> encode v4
+    decode = decodeListLenOf 4 >> ScreenRect <$> decode <*> decode <*> decode <*> decode

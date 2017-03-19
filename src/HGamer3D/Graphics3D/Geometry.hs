@@ -24,14 +24,14 @@ module HGamer3D.Graphics3D.Geometry
 (
         Shape (..),
         Geometry (..),
-        ctGeometry,
-        ctGraphicsElement
+        ctGeometry
 )
 
 where
 
 import Fresco
 import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Encoding
 import Data.Binary.Serialise.CBOR.Decoding
 
 import Data.Text
@@ -39,7 +39,8 @@ import Data.Monoid
 import Control.Applicative
 
 
-data Shape = Cube
+data Shape = Sphere
+    | Cube
     | Plane
     | Cylinder
     | Pyramid
@@ -54,30 +55,31 @@ ctGeometry :: ComponentType Geometry
 ctGeometry = ComponentType 0xee433d1a4b964591
 
 instance Serialise Shape where
-    encode (Cube) = encode (0::Int) 
-    encode (Plane) = encode (1::Int) 
-    encode (Cylinder) = encode (2::Int) 
-    encode (Pyramid) = encode (3::Int) 
-    encode (Torus) = encode (4::Int) 
+    encode (Sphere) = encodeListLen 1 <>  encode (0::Int) 
+    encode (Cube) = encodeListLen 1 <>  encode (1::Int) 
+    encode (Plane) = encodeListLen 1 <>  encode (2::Int) 
+    encode (Cylinder) = encodeListLen 1 <>  encode (3::Int) 
+    encode (Pyramid) = encodeListLen 1 <>  encode (4::Int) 
+    encode (Torus) = encodeListLen 1 <>  encode (5::Int) 
     decode = do
+        decodeListLen
         i <- decode :: Decoder Int
         case i of
-            0 -> (pure Cube)
-            1 -> (pure Plane)
-            2 -> (pure Cylinder)
-            3 -> (pure Pyramid)
-            4 -> (pure Torus)
+            0 -> (pure Sphere)
+            1 -> (pure Cube)
+            2 -> (pure Plane)
+            3 -> (pure Cylinder)
+            4 -> (pure Pyramid)
+            5 -> (pure Torus)
 
 instance Serialise Geometry where
-    encode (ShapeGeometry v1) = encode (0::Int) <> encode v1
-    encode (ResourceGeometry v1) = encode (1::Int) <> encode v1
+    encode (ShapeGeometry v1) = encodeListLen 2 <>  encode (0::Int) <> encode v1
+    encode (ResourceGeometry v1) = encodeListLen 2 <>  encode (1::Int) <> encode v1
     decode = do
+        decodeListLen
         i <- decode :: Decoder Int
         case i of
             0 -> (ShapeGeometry <$> decode)
             1 -> (ResourceGeometry <$> decode)
 
-ctGraphicsElement :: ComponentType ()
-ctGraphicsElement = ComponentType 0x65114ba821671643
--- end of website text
 

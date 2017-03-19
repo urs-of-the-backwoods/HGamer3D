@@ -39,6 +39,7 @@ import Data.Vect.Float.Util.Quaternion
 import Fresco
 import Data.Binary.Serialise.CBOR
 import Data.Binary.Serialise.CBOR.Decoding
+import Data.Binary.Serialise.CBOR.Encoding
 
 import Data.Text
 import Data.Monoid
@@ -63,12 +64,12 @@ zeroVec3 = Vec3 0.0 0.0 0.0
 unitVec3 = Vec3 1.0 1.0 1.0
 
 instance Serialise Vec3 where
-    encode (Vec3 v1 v2 v3) = encode v1 <> encode v2 <> encode v3
-    decode = Vec3 <$> decode <*> decode <*> decode
+    encode (Vec3 v1 v2 v3) = encodeListLen 3 <> encode v1 <> encode v2 <> encode v3
+    decode = decodeListLenOf 3 >> Vec3 <$> decode <*> decode <*> decode
 
 instance Serialise UnitQuaternion where
-    encode (U (Vec4 v1 v2 v3 v4)) = encode v1 <> encode v2 <> encode v3 <> encode v4
-    decode = do
-        v4 <- Vec4 <$> decode <*> decode <*> decode <*> decode
-        return $ U v4
+    encode (U (Vec4 v1 v2 v3 v4)) = encodeListLen 4 <> encode v1 <> encode v2 <> encode v3 <> encode v4
+    decode = decodeListLenOf 4 >> do
+            v <- Vec4 <$> decode <*> decode <*> decode <*> decode
+            return $ U v
 

@@ -36,6 +36,7 @@ where
 
 import Fresco
 import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Encoding
 import Data.Binary.Serialise.CBOR.Decoding
 
 import Data.Text
@@ -48,13 +49,15 @@ data Angle = Rad Float
     deriving (Eq, Read, Show)
 
 instance Serialise Angle where
-    encode (Rad v1) = encode (0::Int) <> encode v1
-    encode (Deg v1) = encode (1::Int) <> encode v1
+    encode (Rad v1) = encodeListLen 2 <>  encode (0::Int) <> encode v1
+    encode (Deg v1) = encodeListLen 2 <>  encode (1::Int) <> encode v1
     decode = do
+        decodeListLen
         i <- decode :: Decoder Int
         case i of
             0 -> (Rad <$> decode)
             1 -> (Deg <$> decode)
+
 
 -- | value of an Angle as radiant
 asRad :: Angle -> Float

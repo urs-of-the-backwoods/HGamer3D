@@ -16,6 +16,7 @@ where
 
 import Fresco
 import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Encoding
 import Data.Binary.Serialise.CBOR.Decoding
 
 import Data.Text
@@ -41,10 +42,11 @@ ctLight :: ComponentType Light
 ctLight = ComponentType 0x981e80e50d994ea9
 
 instance Serialise LightType where
-    encode (PointLight) = encode (0::Int) 
-    encode (DirectionalLight) = encode (1::Int) 
-    encode (SpotLight v1 v2) = encode (2::Int) <> encode v1<> encode v2
+    encode (PointLight) = encodeListLen 1 <>  encode (0::Int) 
+    encode (DirectionalLight) = encodeListLen 1 <>  encode (1::Int) 
+    encode (SpotLight v1 v2) = encodeListLen 3 <>  encode (2::Int) <> encode v1<> encode v2
     decode = do
+        decodeListLen
         i <- decode :: Decoder Int
         case i of
             0 -> (pure PointLight)
@@ -52,8 +54,6 @@ instance Serialise LightType where
             2 -> (SpotLight <$> decode <*> decode)
 
 instance Serialise Light where
-    encode (Light v1 v2 v3 v4) = encode v1 <> encode v2 <> encode v3 <> encode v4
-    decode = Light <$> decode <*> decode <*> decode <*> decode
-
-
+    encode (Light v1 v2 v3 v4) = encodeListLen 4 <> encode v1 <> encode v2 <> encode v3 <> encode v4
+    decode = decodeListLenOf 4 >> Light <$> decode <*> decode <*> decode <*> decode
 

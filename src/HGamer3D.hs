@@ -99,7 +99,7 @@ runGame conf glf loopSleepTime = do
 
         eih <- newE hg3d [
             ctInputEventHandler #: DefaultEventHandler,
-            ctExitRequestedEvent #: ExitRequestedEvent
+            ctExitRequestedEvent #: ()
             ]
 
         -- create callback loop, handle windows exit command

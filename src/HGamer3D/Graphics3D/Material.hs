@@ -78,15 +78,13 @@ where
 
 import Fresco
 import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Encoding
 import Data.Binary.Serialise.CBOR.Decoding
 
 import Data.Text
 import Data.Monoid
 import Control.Applicative
 
-import HGamer3D.Data
-
--- HGamer3D website, entities, example 1 for data types
 
 data Material = ResourceMaterial Text
     deriving (Eq, Read, Show)
@@ -95,12 +93,12 @@ ctMaterial :: ComponentType Material
 ctMaterial = ComponentType 0xb4bae8b0d0d8c162
 
 instance Serialise Material where
-    encode (ResourceMaterial v1) = encode (0::Int) <> encode v1
+    encode (ResourceMaterial v1) = encodeListLen 2 <>  encode (0::Int) <> encode v1
     decode = do
+        decodeListLen
         i <- decode :: Decoder Int
         case i of
             0 -> (ResourceMaterial <$> decode)
-
 
 -- some materials from the material folder
 matOrangeCrossMetal = ResourceMaterial "Materials/Pattern_01.xml"

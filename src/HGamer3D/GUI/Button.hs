@@ -16,6 +16,7 @@ where
 
 import Fresco
 import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Encoding
 import Data.Binary.Serialise.CBOR.Decoding
 
 import Data.Text
@@ -32,6 +33,7 @@ ctButton :: ComponentType Button
 ctButton = ComponentType 0x68a1857c27690b30
 
 instance Serialise Button where
-    encode (Button v1 v2) = encode v1 <> encode v2
-    decode = Button <$> decode <*> decode
+    encode (Button v1 v2) = encodeListLen 2 <> encode v1 <> encode v2
+    decode = decodeListLenOf 2 >> Button <$> decode <*> decode
+
 
