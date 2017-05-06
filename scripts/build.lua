@@ -34,55 +34,38 @@ local function versionGameGio()
 	return major .. "." .. minor .. "." .. patch
 end
 
+local function aio()
+	return ".." .. pathSep() .. "scripts" .. pathSep() .."aio"
+end
+
 local function buildGameGio()
 	-- change into build dir
 	local currDir = lfs.currentdir()
 	local version = versionGameGio()
+	o, a = getOS()
 	lfs.chdir(glue.bin .. "/..")
 	lfs.mkdir("gamegio-build") 
 	lfs.chdir("gamegio-build")
 	-- build dll
-	os.execute(".." .. pathSep() .. "scripts" .. pathSep() .."aio http://www.hgamer3d.org/tools/Urho3D-1.6 cmd /C cmake ../gamegio-library/src -G \"Visual Studio 15 2017 Win64\"")
+	os.execute(aio() .. " http://www.hgamer3d.org/tools/Urho3D-1.6 cmd /C cmake ../gamegio-library/src -G \"Visual Studio 15 2017 Win64\"")
 	os.execute("cmake --build . --config Release")
 	-- package component
 	lfs.mkdir("package")
-	local platdir = "package/" .. getPlatString("gamegio", version)
-	lfs.mkdir(platdir)
-
-
+	local plat = getPlatString("gamegio", version)
+	lfs.mkdir("package/" .. plat)
+	if o == "windows" then
+		local platdir = "package\\" .. plat 
+		os.execute("copy ..\\gamegio-library\\arriccio.toml package\\arriccio.toml")
+		os.execute("copy Release\\game_gio_lib.dll " .. platdir .. "\\game_engine.gio")
+	else
+		local platdir = "package/" .. plat
+		os.execute("cp ../gamegio-library/arriccio.toml arriccio.toml")
+		os.execute("cp Release/game_gio_lib.dll " .. platdir .. "/game_engine.gio")
+	end
 	-- change dir back
 	lfs.chdir(currDir)
 end
 
-
-local function runPackage()
-	local packageDir = absPath(relToScriptPath("../gamegio/package"))
-	-- recreate empty package dir
-	os.execute("rm -rf " .. packageDir)
-	os.execute("mkdir " .. packageDir)
-	local platDir = packageDir .. "/" .. getPlatString("gamegio", version)
-	os.execute("mkdir " .. platDir)
-
-	-- copy toml file
-	os.execute("cp gamegio/arriccio.toml " .. packageDir .. "/arriccio.toml")
-	
-	-- copy executable
-	local fs = assert(io.popen("ls gamegio/build"), "ls not working on your system")
-	local s = nil
-	while true do
-		s = fs:read()
-		if s then
-			local m = s:match("libgame_gio")
-			if m then
-				os.execute("cp gamegio/build/" .. s .. " " .. platDir .. "/game_engine.gio")
-				break
-			end
-		else
-			break
-		end
-	end
-	fs:close()
-end
 
 if #arg > 0 then
 
@@ -91,54 +74,17 @@ if #arg > 0 then
 		buildGameGio()
 		os.exit(0)
 
-
---[[
-	-- build dependencies
-	elseif arg[1] == "deps" then
-		runDeps()
-		os.exit(0)
-
-	-- download dependencies (not needed, included in git, just first time or to check)
-	elseif arg[1] == "download-deps" then
-		runDownload()
-		os.exit(0)
-
-	-- prepare: setup missing libraries, build Urho3D
-	elseif arg[1] == "build" then
-		runBuild()
-		os.exit(0)
-
-	-- package build library for distribution
-	elseif arg[1] == "package" then
-		runPackage()
-		os.exit(0)
-
-	-- update build and package
-	elseif arg[1] == "update" then
-		runBuild()
-		runPackage()
-		os.exit(0)
-
-	-- output version information
-	elseif arg[1] == "version" then
-		io.write(version)
-		os.exit(0)
-
 	-- register component for local use
-	elseif arg[1] == "register" then
-		os.execute("aio local http://www.hgamer3d.org/component/GameEngineGio gamegio/package")
+	elseif arg[1] == "register-gamegio" then
+		lfs.chdir("gamegio-build")
+		os.execute(aio() .. " local http://www.hgamer3d.org/component/GameEngineGio package")
 		os.exit(0)
 
 	-- unregister component for local use
-	elseif arg[1] == "unregister" then
-		os.execute("aio remove-local http://www.hgamer3d.org/component/GameEngineGio")
+	elseif arg[1] == "unregister-gamegio" then
+		lfs.chdir("gamegio-build")
+		os.execute(aio() .. " remove-local http://www.hgamer3d.org/component/GameEngineGio")
 		os.exit(0)
-
-	end
-
-	print("wrong argument to build script:", arg[1])
-	os.exit(-1)  -- wrong argument given
---]]
 	end
 
 -- give hints about commands
@@ -148,6 +94,8 @@ else
 HGamer3D build script, commands:
 
   build-gamegio
+  register-gamegio
+  unregister-gamegio
 
 	]])
 	os.exit(0)
