@@ -1,0 +1,2 @@
+#!/bin/bash
+sudo docker run -v `pwd`:/gamegio-library debian:wheezy bash -c "cd /gamegio-library && apt-get update && apt-get install lua5.2 && LUA_PATH=scripts/?.lua lua scripts/build.lua prepare&& LUA_PATH=scripts/?.lua lua scripts/build.lua deps && LUA_PATH=scripts/?.lua lua scripts/build.lua build && LUA_PATH=scripts/?.lua lua scripts/build.lua package"

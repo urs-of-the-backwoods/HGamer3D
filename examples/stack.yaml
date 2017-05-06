@@ -1,7 +1,0 @@
-extra-deps: ["fresco-binding-0.2.0", "vect-0.4.7"]
-resolver: lts-5.8
-flags: {}
-packages: 
-- '../src'
-- '../../fresco-haskell'
-
