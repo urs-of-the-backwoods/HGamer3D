@@ -65,12 +65,10 @@ Library::~Library()
 
 GCOFactory* Library::getFactory(FrComponentType ct)
 {
-    std::map<long unsigned int, GCOFactory*>::iterator f = _factories.find(ct);
-    if (f != _factories.end()) {
-        return f->second;
-    } 
-    else {
-        return NULL;
+    auto iter = _factories.find(ct);
+    if (iter != _factories.end())
+    {
+        return iter->second;
     }
 }
 

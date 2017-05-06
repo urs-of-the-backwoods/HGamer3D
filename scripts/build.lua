@@ -1,14 +1,13 @@
 local glue = require("glue")
-glue.luapath(glue.bin .. "/../lualib")
+glue.luapath(glue.bin .. "/lualib")
 
 require("os_arch")
 require("util")
 require("lfs")
 
-
 -- get version of gamegio from CMakeLists file
-local function getVersion()
-	cmakeFile = relToScriptPath("../gamegio/src/CMakeLists.txt")
+local function versionGameGio()
+	cmakeFile = glue.bin .. "/../gamegio-library/src/CMakeLists.txt"
 	io.input(cmakeFile)
 
 	local major = ""
@@ -35,75 +34,26 @@ local function getVersion()
 	return major .. "." .. minor .. "." .. patch
 end
 
--- start script
-local var version = getVersion()
+local function buildGameGio()
+	-- change into build dir
+	local currDir = lfs.currentdir()
+	local version = versionGameGio()
+	lfs.chdir(glue.bin .. "/..")
+	lfs.mkdir("gamegio-build") 
+	lfs.chdir("gamegio-build")
+	-- build dll
+	os.execute(".." .. pathSep() .. "scripts" .. pathSep() .."aio http://www.hgamer3d.org/tools/Urho3D-1.6 cmd /C cmake ../gamegio-library/src -G \"Visual Studio 15 2017 Win64\"")
+	os.execute("cmake --build . --config Release")
+	-- package component
+	lfs.mkdir("package")
+	local platdir = "package/" .. getPlatString("gamegio", version)
+	lfs.mkdir(platdir)
 
-local function runPrepare()
-	local scriptPath = absPath(relToScriptPath("."))
-	local cmd = scriptPath .. "/prepareHostLinux.sh"
-	os.execute(cmd)
+
+	-- change dir back
+	lfs.chdir(currDir)
 end
 
-local function runDownload()
-	-- download urho3d
-	print("downloading Urho3d to downloads directory")
-	local urhoDownloadPath = absPath(relToScriptPath("../urho3d"))
-	local cmd = "wget -P " .. urhoDownloadPath .. " -nv https://github.com/Urho3D/urho3d/archive/7a16f9ca.zip"
-	os.execute(cmd)
-	-- download tinycbor
-	local cborDownloadPath = absPath(relToScriptPath("../tinycbor"))
-	print("downloading tinycbor to downloads directory")
-	local cmd = "wget -P " .. cborDownloadPath .. " -nv https://github.com/01org/tinycbor/archive/a088996.zip"
-	os.execute(cmd)
-end
-
-local function runCBOR()
-	-- build tinycbor
-	local cborZipFile = relToScriptPath("../tinycbor/a088996.zip")
-	local buildPath = relToScriptPath("../tinycbor/build")
-	-- create build directory
-	lfs.mkdir(buildPath)
-	-- extract zipfile
-	os.execute("unzip -d " .. buildPath .. " " .. cborZipFile)
-	os.rename(buildPath .. "/tinycbor-a088996aa5f59b4f27f20fadad053d88bee357d4", buildPath .. "/tinycbor")
-	-- apply makefile patch
-	os.execute("cd " .. buildPath .. " && patch tinycbor/Makefile ../patch-makefile")
-	-- build tinycbor
-	os.execute("cd " .. buildPath .. "/tinycbor && make")
-end
-
-local function runURHO()
-	-- build urho3d
-	local urho3dZipFile = absPath(relToScriptPath("../urho3d/7a16f9ca.zip"))
-	local buildPath = absPath(relToScriptPath("../urho3d/build"))
-	-- create build directory
-	os.execute("mkdir " .. buildPath)
-	-- extract zipfile
-	os.execute("cd " .. buildPath .. " && unzip " .. urho3dZipFile .. " && mv Urho3D-* Urho3D")
-	-- build Urho3d
-	local urhoSrcPath = absPath(relToScriptPath("../urho3d/build/Urho3D"))
-	local urhoBuildPath = absPath(relToScriptPath("../urho3d/build/Urho3D-Build"))
-	os.execute("mkdir " .. urhoBuildPath)
-	os.execute("cd " .. urhoBuildPath .. " && cmake -DURHO3D_LIB_TYPE=SHARED -DURHO3D_SAMPLES=0 -DURHO3D_64BIT=1 -DURHO3D_DEPLOYMENT_TARGET=core2 ../Urho3D")
-	os.execute("cd " .. urhoBuildPath .. " && cmake --build . --config Release")
-end
-
-local function runDeps()
-	runCBOR()
---	runURHO()
-end
-
-local function runBuild()
-	local buildPath = absPath(relToScriptPath("../gamegio/build"))
-	local urhoSrcPath = absPath(relToScriptPath("../urho3d/build/Urho3D"))
-	local urhoBuildPath = absPath(relToScriptPath("../urho3d/build/Urho3D-Build"))
-	-- create build directory
-	os.execute("mkdir " .. buildPath)
-	-- build gamegio
-	os.execute("cd " .. buildPath .. " && cmake -DURHO3D_SRC=" .. urhoSrcPath .. " -DURHO3D_HOME=" .. urhoBuildPath .. " -DURHO3D_DEPLOYMENT_TARGET=core2 ../src")
-	os.execute("cd " .. buildPath .. " && cmake --build . --config Release")
---	local cmd = "sudo docker run -v " .. gamegioPath .. ":/gamegio-library -v " .. buildPath .. ":/build debian:wheezy bash -c \"GAMEGIO_BUILD_DIR=/build GAMEGIO_SRC_DIR=/gamegio-library IS64BIT=1 ARCH_TARGET=core2 /gamegio-library/scripts/buildLinux.sh\""
-end
 
 local function runPackage()
 	local packageDir = absPath(relToScriptPath("../gamegio/package"))
@@ -137,10 +87,12 @@ end
 if #arg > 0 then
 
 	-- prepare host for building
-	if arg[1] == "prepare" then
-		runPrepare()
+	if arg[1] == "gamegio" then
+		buildGameGio()
 		os.exit(0)
 
+
+--[[
 	-- build dependencies
 	elseif arg[1] == "deps" then
 		runDeps()
@@ -186,22 +138,16 @@ if #arg > 0 then
 
 	print("wrong argument to build script:", arg[1])
 	os.exit(-1)  -- wrong argument given
+--]]
+	end
 
 -- give hints about commands
 else
 	print([[
 
-gamegio-library build script, commands:
+HGamer3D build script, commands:
 
-  prepare - prepare host for build (once)
-  deps - build deps
-  build - build library
-  package - create package after build
-  update - rebuild and repackage
-  version - give version of library
-  register - register local version in aio
-  unregister - remove registration in aio
-  download-deps - not needed, zips are included in git repo
+  build-gamegio
 
 	]])
 	os.exit(0)
