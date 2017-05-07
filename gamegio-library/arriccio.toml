@@ -1,6 +1,6 @@
 # arriccio.toml file for HGamer3D - game engine gio
 
-Id = "http://www.hgamer3d.org/component/HG3DEngineGio"
+Id = "http://www.hgamer3d.org/component/HG3DEngineGio.0517"
 Purpose = "HGamer3D Game Engine Giornata"
 Description = """
   Fresco component which delivers the C++ binding towards the 

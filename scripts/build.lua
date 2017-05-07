@@ -77,13 +77,13 @@ if #arg > 0 then
 	-- register component for local use
 	elseif arg[1] == "register-gamegio" then
 		lfs.chdir("gamegio-build")
-		os.execute(aio() .. " local http://www.hgamer3d.org/component/GameEngineGio package")
+		os.execute(aio() .. " local http://www.hgamer3d.org/component/HG3DEngineGio.0517 package")
 		os.exit(0)
 
 	-- unregister component for local use
 	elseif arg[1] == "unregister-gamegio" then
 		lfs.chdir("gamegio-build")
-		os.execute(aio() .. " remove-local http://www.hgamer3d.org/component/GameEngineGio")
+		os.execute(aio() .. " remove-local http://www.hgamer3d.org/component/HG3DEngineGio.0517")
 		os.exit(0)
 	end
 
