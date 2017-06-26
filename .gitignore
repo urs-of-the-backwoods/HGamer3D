@@ -9,5 +9,9 @@
 #	file: .gitignore
 
 gamegio-build
-*/.stack-work
+haskell/src/.stack-work
+haskell/samples/.stack-work
+
+haskell/samples/*.exe
+haskell/samples/*.log
 

@@ -34,7 +34,7 @@ instance Serialise PlayCmd where
     encode (Pause) = encode (1::Int) 
     encode (Stop) = encode (2::Int) 
     decode = do
-        i <- decode :: Decoder Int
+        i <- decode :: Decoder s Int
         case i of
             0 -> (pure Play)
             1 -> (pure Pause)

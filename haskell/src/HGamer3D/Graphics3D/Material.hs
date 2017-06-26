@@ -96,7 +96,7 @@ instance Serialise Material where
     encode (ResourceMaterial v1) = encodeListLen 2 <>  encode (0::Int) <> encode v1
     decode = do
         decodeListLen
-        i <- decode :: Decoder Int
+        i <- decode :: Decoder s Int
         case i of
             0 -> (ResourceMaterial <$> decode)
 

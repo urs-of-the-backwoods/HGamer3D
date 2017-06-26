@@ -90,7 +90,6 @@ runGame conf glf loopSleepTime = do
     let hg3d = HG3D ols cbs varExit
 
     forkIO $ do
-
         -- create graphics system
         eG3D <- newE hg3d [
             ctGraphics3DConfig #: conf,
@@ -122,11 +121,11 @@ runGame conf glf loopSleepTime = do
 
     -- enter into endless game loop
     let loopGame = do
-        stepOLS ols
-        ex <- readVar varExit
-        if ex
-            then return ()
-            else loopGame
+            stepOLS ols
+            ex <- readVar varExit
+            if ex
+                then return ()
+                else loopGame
 
     loopGame
 

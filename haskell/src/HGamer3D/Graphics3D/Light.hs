@@ -47,7 +47,7 @@ instance Serialise LightType where
     encode (SpotLight v1 v2) = encodeListLen 3 <>  encode (2::Int) <> encode v1<> encode v2
     decode = do
         decodeListLen
-        i <- decode :: Decoder Int
+        i <- decode :: Decoder s Int
         case i of
             0 -> (pure PointLight)
             1 -> (pure DirectionalLight)

@@ -26,5 +26,4 @@ class Library
         GCOFactory* getFactory(FrItemType);
 };
 
-
 #endif

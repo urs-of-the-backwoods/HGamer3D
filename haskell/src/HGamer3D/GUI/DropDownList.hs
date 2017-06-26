@@ -41,7 +41,7 @@ instance Serialise MaybeInt where
     encode (NothingMI) = encodeListLen 1 <>  encode (1::Int) 
     decode = do
         decodeListLen
-        i <- decode :: Decoder Int
+        i <- decode :: Decoder s Int
         case i of
             0 -> (JustMI <$> decode)
             1 -> (pure NothingMI)

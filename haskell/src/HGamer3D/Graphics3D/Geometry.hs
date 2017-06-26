@@ -63,7 +63,7 @@ instance Serialise Shape where
     encode (Torus) = encodeListLen 1 <>  encode (5::Int) 
     decode = do
         decodeListLen
-        i <- decode :: Decoder Int
+        i <- decode :: Decoder s Int
         case i of
             0 -> (pure Sphere)
             1 -> (pure Cube)
@@ -77,7 +77,7 @@ instance Serialise Geometry where
     encode (ResourceGeometry v1) = encodeListLen 2 <>  encode (1::Int) <> encode v1
     decode = do
         decodeListLen
-        i <- decode :: Decoder Int
+        i <- decode :: Decoder s Int
         case i of
             0 -> (ShapeGeometry <$> decode)
             1 -> (ResourceGeometry <$> decode)

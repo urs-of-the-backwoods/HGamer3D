@@ -45,7 +45,7 @@ instance Serialise LMH where
     encode (High) = encodeListLen 1 <>  encode (2::Int) 
     decode = do
         decodeListLen
-        i <- decode :: Decoder Int
+        i <- decode :: Decoder s Int
         case i of
             0 -> (pure Low)
             1 -> (pure Medium)

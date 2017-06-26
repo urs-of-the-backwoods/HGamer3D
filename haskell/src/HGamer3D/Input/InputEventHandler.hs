@@ -57,7 +57,7 @@ instance Serialise InputEventType where
     encode (IEExitRequested) = encodeListLen 1 <>  encode (7::Int) 
     decode = do
         decodeListLen
-        i <- decode :: Decoder Int
+        i <- decode :: Decoder s Int
         case i of
             0 -> (pure IEMouseButtonUp)
             1 -> (pure IEMouseButtonDown)
@@ -73,7 +73,7 @@ instance Serialise InputEventHandler where
     encode (SpecificEventHandler v1) = encodeListLen 2 <>  encode (1::Int) <> encode v1
     decode = do
         decodeListLen
-        i <- decode :: Decoder Int
+        i <- decode :: Decoder s Int
         case i of
             0 -> (pure DefaultEventHandler)
             1 -> (SpecificEventHandler <$> decode)

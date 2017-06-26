@@ -127,6 +127,7 @@ IEHClass::IEHClass()
     bMouseVisibleChanged = false;
     bKeyUp = false;
     bKeyDown = false;
+
 }
 
 IEHClass::~IEHClass()
@@ -199,7 +200,7 @@ void IEHClass::registerEvents()
 }
 
 void IEHClass::msgInputEventHandler(FrMsg m, FrMsgLength l)
-{
+{ 
     CborParser parser; CborValue it;
     cbor_parser_init(m, l, 0, &parser, &it);
     InputEventHandler ieh;

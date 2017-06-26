@@ -34,7 +34,7 @@ instance Serialise SoundType where
     encode (Sound3D) = encode (1::Int) 
     encode (Music) = encode (2::Int) 
     decode = do
-        i <- decode :: Decoder Int
+        i <- decode :: Decoder s Int
         case i of
             0 -> (pure Sound)
             1 -> (pure Sound3D)

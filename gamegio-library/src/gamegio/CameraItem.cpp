@@ -51,6 +51,7 @@ CameraItem::CameraItem()
 
 FrItem CameraItem::msgCreate(FrMsg m, FrMsgLength l)
 {
+  std::cout << "CameraItem::msgCreate 0\n";
   Graphics3DSystem *g3ds = Graphics3DSystem::getG3DS();
 
   CborParser parser; CborValue it;

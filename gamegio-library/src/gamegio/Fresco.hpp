@@ -58,10 +58,23 @@ typedef void (*FrMessageFn2) (FrEntity e, FrEventType pr, FrMsg m, FrMsgLength l
     And there is a function to set a property change callback. 
 */
 
+#ifdef _WIN32
+#define FRESCO_EXPORT __declspec(dllexport)
+#else
+#define FRESCO_EXPORT
+#endif
+
+FRESCO_EXPORT FrItem gioCreateItem(FrItemType ct, FrMsg m, FrMsgLength l);
+FRESCO_EXPORT void gioDestroyItem(FrComponentType ct, FrItem it);
+FRESCO_EXPORT FrMessageFn gioGetMsgSender(FrComponentType ob, FrComponentType pr);
+FRESCO_EXPORT void gioRegisterMsgReceiver(FrItemType ctItem, FrEventType ctEvent, FrItem item, FrEntity receiver, FrMessageFn2 f);
+
+/*
 FrItem gioCreateItem(FrItemType ct, FrMsg m, FrMsgLength l);
 void gioDestroyItem(FrItemType ct, FrItem it);
 FrMessageFn gioGetMsgSender(FrItemType ob, FrPropertyType pr); 
 void gioRegisterMsgReceiver(FrItemType ct, FrEventType pr, FrItem it, FrEntity rcv, FrMessageFn2);
+*/
 
 typedef std::map<FrPropertyType, FrMessageFn> PropertyMap;
 typedef std::map<FrItemType, PropertyMap> ComponentPropertyMap;

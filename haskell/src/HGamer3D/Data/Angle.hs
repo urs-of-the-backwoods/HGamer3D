@@ -53,7 +53,7 @@ instance Serialise Angle where
     encode (Deg v1) = encodeListLen 2 <>  encode (1::Int) <> encode v1
     decode = do
         decodeListLen
-        i <- decode :: Decoder Int
+        i <- decode :: Decoder s Int
         case i of
             0 -> (Rad <$> decode)
             1 -> (Deg <$> decode)

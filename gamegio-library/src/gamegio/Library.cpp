@@ -70,6 +70,7 @@ GCOFactory* Library::getFactory(FrComponentType ct)
     {
         return iter->second;
     }
+    return NULL;
 }
 
 Library theLibrary = Library();

@@ -75,6 +75,7 @@ Graphics3DSystem::Graphics3DSystem()
 
 Graphics3DSystem::~Graphics3DSystem()
 {
+//  std::cout << "Graphics3DSystem Destructor\n";
   engine->Exit();
   delete context;
 }
@@ -201,7 +202,6 @@ FrItem Graphics3DSystem::msgCreate(FrMsg m, FrMsgLength l)
   XMLFile* style = cache->GetResource<XMLFile>("UI/DefaultStyle.xml");
   UI* ui = g3ds->context->GetSubsystem<UI>();
   ui->GetRoot()->SetDefaultStyle(style);
-
   singleton = g3ds;
   return (void *)g3ds;
 }

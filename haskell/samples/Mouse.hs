@@ -37,18 +37,18 @@ createAll hg3d = do
             ]
 
             ,[
-                ctText #: "Keys: A - Absolute Mouse Mode, R - Relative Mouse Mode, W - Wrap Mouse Mode",
-                ctScreenRect #: Rectangle 10 10 200 10
+                ctEditText #: "Keys: A - Absolute Mouse Mode, R - Relative Mouse Mode, W - Wrap Mouse Mode",
+                ctScreenRect #: ScreenRect 10 10 200 10
             ]
 
             ,[
-                ctText #: "Mouse Mode Set To ...",
-                ctScreenRect #: Rectangle 10 25 200 10
+                ctEditText #: "Mouse Mode Set To ...",
+                ctScreenRect #: ScreenRect 10 25 200 10
             ]
 
             ,[
-                ctText #: "Mouse Event",
-                ctScreenRect #: Rectangle 10 40 200 10
+                ctEditText #: "Mouse Event",
+                ctScreenRect #: ScreenRect 10 40 200 10
             ]
             
         ]
@@ -59,15 +59,15 @@ createAll hg3d = do
 showMode mode txtMode = do
     forever $ do 
         m <- readC mode ctMouse
-        setC txtMode ctText (T.pack (show m))
+        setC txtMode ctEditText (T.pack (show m))
         sleepFor (msecT 20)
     return ()
 
-addMouseEventCallback hg3d event txtEvent = registerCallback hg3d event ctMouseEvent (\evt -> setC txtEvent ctText (T.pack (show evt))) 
+addMouseEventCallback hg3d event txtEvent = registerCallback hg3d event ctMouseEvent (\evt -> setC txtEvent ctEditText (T.pack (show evt))) 
 addKeyEventCallback hg3d event mode = registerCallback hg3d event ctKeyEvent (\evt -> case evt of
-                                                                                            KeyUp _ _ "A" -> setC mode ctMouse (Mouse MMAbsolute)
-                                                                                            KeyUp _ _ "R" -> setC mode ctMouse (Mouse MMRelative)
-                                                                                            KeyUp _ _ "W" -> setC mode ctMouse (Mouse MMWrap) 
+                                                                                            IEKeyUp "A" -> setC mode ctMouse (Mouse MMAbsolute)
+                                                                                            IEKeyUp "R" -> setC mode ctMouse (Mouse MMRelative)
+                                                                                            IEKeyUp "W" -> setC mode ctMouse (Mouse MMWrap) 
                                                                                             _ -> return ())
 
 rotateCube cube = do

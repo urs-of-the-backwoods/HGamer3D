@@ -42,7 +42,7 @@ instance Serialise Graphics3DCommand where
     encode (Step) = encodeListLen 1 <>  encode (1::Int) 
     decode = do
         decodeListLen
-        i <- decode :: Decoder Int
+        i <- decode :: Decoder s Int
         case i of
             0 -> (pure NoCmd)
             1 -> (pure Step)

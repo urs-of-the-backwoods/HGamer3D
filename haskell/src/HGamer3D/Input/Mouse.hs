@@ -73,7 +73,7 @@ instance Serialise MouseMode where
     encode (Wrap) = encodeListLen 1 <>  encode (2::Int) 
     decode = do
         decodeListLen
-        i <- decode :: Decoder Int
+        i <- decode :: Decoder s Int
         case i of
             0 -> (pure Absolute)
             1 -> (pure Relative)
@@ -103,7 +103,7 @@ instance Serialise MouseEvent where
     encode (MouseWheelEvent v1) = encodeListLen 2 <>  encode (4::Int) <> encode v1
     decode = do
         decodeListLen
-        i <- decode :: Decoder Int
+        i <- decode :: Decoder s Int
         case i of
             0 -> (pure NoMouseEvent)
             1 -> (MouseButtonUpEvent <$> decode)

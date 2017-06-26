@@ -56,7 +56,7 @@ instance Serialise Camera where
     encode (OverlayCamera v1 v2) = encodeListLen 3 <>  encode (1::Int) <> encode v1<> encode v2
     decode = do
         decodeListLen
-        i <- decode :: Decoder Int
+        i <- decode :: Decoder s Int
         case i of
             0 -> (pure FullViewCamera)
             1 -> (OverlayCamera <$> decode <*> decode)
