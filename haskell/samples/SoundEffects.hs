@@ -30,24 +30,24 @@ createAll hg3d = do
             
            ,[   -- metal-clash button and sound
                 ctButton #: Button False "metal clash"
-                , ctScreenRect #: Rectangle 10 10 150 50
-                , ctSoundSource #: Sound "Sounds/inventory_sound_effects/metal-clash.wav" 1.0 False "Sounds"
+                , ctScreenRect #: ScreenRect 10 10 150 50
+                , ctSoundSource #: SoundSource Sound "Sounds/inventory_sound_effects/metal-clash.wav" False 1.0 "Sounds"
                 , ctPlayCmd #: Stop
             ]
 
             -- HGamer3D website, events, create sound source
            ,[   -- ring-inventory button and sound
                 ctButton #: Button False "ring inventory"
-                , ctScreenRect #: Rectangle 180 10 150 50
-                , ctSoundSource #: Sound "Sounds/inventory_sound_effects/ring_inventory.wav" 1.0 False "Sounds"
+                , ctScreenRect #: ScreenRect 180 10 150 50
+                , ctSoundSource #: SoundSource Sound "Sounds/inventory_sound_effects/ring_inventory.wav" False 1.0 "Sounds"
                 , ctPlayCmd #: Stop
             ]
             -- end of website text
 -- CH7-1e
            ,[   -- sell_buy_item button and sound
                 ctButton #: Button False "sell buy item"
-                , ctScreenRect #: Rectangle 350 10 150 50
-                , ctSoundSource #: Sound "Sounds/inventory_sound_effects/sell_buy_item.wav" 1.0 False "Sounds"
+                , ctScreenRect #: ScreenRect 350 10 150 50
+                , ctSoundSource #: SoundSource Sound "Sounds/inventory_sound_effects/sell_buy_item.wav" False 1.0 "Sounds"
                 , ctPlayCmd #: Stop
             ]
             
@@ -55,29 +55,29 @@ createAll hg3d = do
             
            ,[   -- Music Start
                 ctButton #: Button False "Start Music"
-                , ctScreenRect #: Rectangle 10 80 150 50
+                , ctScreenRect #: ScreenRect 10 80 150 50
             ]
            ,[   -- Music Start
                 ctButton #: Button False "Stop Music"
-                , ctScreenRect #: Rectangle 180 80 150 50
+                , ctScreenRect #: ScreenRect 180 80 150 50
             ]
            ,[   -- Music item
-                ctSoundSource #: Music "Sounds/RMN-Music-Pack/OGG/CD 3 - Clash of Wills/3-04 Joyful Ocean.ogg" 1.0 True "Music"
+                ctSoundSource #: SoundSource Music "Sounds/RMN-Music-Pack/OGG/CD 3 - Clash of Wills/3-04 Joyful Ocean.ogg" True 1.0 "Music"
                 , ctPlayCmd #: Stop
             ]
            ,[   -- Art Credits
-                ctText #: "Music: Joyful Ocean by Jasprelao"
-                , ctScreenRect #: Rectangle 350 80 150 50
+                ctStaticText #: "Music: Joyful Ocean by Jasprelao"
+                , ctScreenRect #: ScreenRect 350 80 150 50
             ]
 
             -- VOLUME SLIDERS 
            ,[   -- slider sounds
                 ctSlider #: Slider 1.0 0.75
-                , ctScreenRect #: Rectangle 10 160 150 25
+                , ctScreenRect #: ScreenRect 10 160 150 25
             ]
            ,[   -- slider music
                 ctSlider #: Slider 1.0 0.75
-                , ctScreenRect #: Rectangle 180 160 150 25
+                , ctScreenRect #: ScreenRect 180 160 150 25
             ]
 -- CH7-2s
            ,[   -- volume
@@ -85,12 +85,12 @@ createAll hg3d = do
             ]
 -- CH7-2e
            ,[   -- Slider Text
-                ctText #: "Sound Volume"
-                , ctScreenRect #: Rectangle 10 200 150 25
+                ctStaticText #: "Sound Volume"
+                , ctScreenRect #: ScreenRect 10 200 150 25
             ]
            ,[   -- Art Credits
-                ctText #: "Music Volume"
-                , ctScreenRect #: Rectangle 180 200 150 25
+                ctStaticText #: "Music Volume"
+                , ctScreenRect #: ScreenRect 180 200 150 25
             ]
             
             

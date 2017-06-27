@@ -27,7 +27,7 @@ createAll hg3d = do
             ]
             
             ,[
-                ctMouse #: Mouse MMAbsolute
+                ctMouseConfig #: MouseConfig Absolute
             ]
 
             ,[
@@ -58,16 +58,16 @@ createAll hg3d = do
 
 showMode mode txtMode = do
     forever $ do 
-        m <- readC mode ctMouse
+        m <- readC mode ctMouseConfig
         setC txtMode ctEditText (T.pack (show m))
         sleepFor (msecT 20)
     return ()
 
 addMouseEventCallback hg3d event txtEvent = registerCallback hg3d event ctMouseEvent (\evt -> setC txtEvent ctEditText (T.pack (show evt))) 
 addKeyEventCallback hg3d event mode = registerCallback hg3d event ctKeyEvent (\evt -> case evt of
-                                                                                            IEKeyUp "A" -> setC mode ctMouse (Mouse MMAbsolute)
-                                                                                            IEKeyUp "R" -> setC mode ctMouse (Mouse MMRelative)
-                                                                                            IEKeyUp "W" -> setC mode ctMouse (Mouse MMWrap) 
+                                                                                            KeyUpEvent (KeyData _ _ "A") -> setC mode ctMouseConfig (MouseConfig Absolute)
+                                                                                            KeyUpEvent (KeyData _ _ "R") -> setC mode ctMouseConfig (MouseConfig Relative)
+                                                                                            KeyUpEvent (KeyData _ _ "W") -> setC mode ctMouseConfig (MouseConfig Wrap) 
                                                                                             _ -> return ())
 
 rotateCube cube = do

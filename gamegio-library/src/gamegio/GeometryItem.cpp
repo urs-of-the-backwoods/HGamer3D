@@ -55,7 +55,7 @@ GeometryItem::GeometryItem()
 
 FrItem GeometryItem::msgCreate(FrMsg m, FrMsgLength l)
 {
-  std::cout << "in msgCreate GeometryItem\n";
+//  std::cout << "in msgCreate GeometryItem\n";
   GeometryItem *geo = new GeometryItem();
   geo->node->CreateComponent<StaticModel>();
   return (FrItem)geo;
@@ -73,7 +73,7 @@ void GeometryItem::msgDestroy()
 
 void GeometryItem::msgGeometry(FrMsg m, FrMsgLength l)
 {
-  std::cout << "in Con GeometryItem\n";
+//  std::cout << "in Con GeometryItem\n";
 
   CborParser parser; CborValue it;
   cbor_parser_init(m, l, 0, &parser, &it);
@@ -114,7 +114,7 @@ void GeometryItem::msgMaterial(FrMsg m, FrMsgLength l)
 
   if (mat.selector == cbd::ResourceMaterial) {
     material = mat.data.ResourceMaterial.value0.c_str();
-    cout << "in material: " << material.CString() << "\n";
+//    cout << "in material: " << material.CString() << "\n";
     model->SetMaterial(cache->GetResource<Material>(material));
   }
 

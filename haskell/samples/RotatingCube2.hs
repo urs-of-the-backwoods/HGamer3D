@@ -17,8 +17,8 @@ gameLogic hg3d = do
                   ],
             -- create text
             () -: [
-                  ctText #: "Rotating Cube Example",
-                  ctScreenRect #: Rectangle 10 10 100 25
+                  ctStaticText #: "Rotating Cube Example",
+                  ctScreenRect #: ScreenRect 10 10 100 25
                   ],
             -- create geometry, with child geometry items
             "eGeo" <| ([
@@ -50,7 +50,7 @@ gameLogic hg3d = do
             -- create button
             "eButton" <: [
                   ctButton #: Button False "Exit",
-                  ctScreenRect #: Rectangle 200 10 50 25
+                  ctScreenRect #: ScreenRect 200 10 50 25
                   ]
 
             ]

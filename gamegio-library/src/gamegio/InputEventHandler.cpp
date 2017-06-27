@@ -366,10 +366,10 @@ void IEHClass::HandleKeyDown(StringHash eventType, VariantMap& eventData)
           KeyEvent kevt;
 
           kevt.selector = KeyDownEvent;
-          int scancode = eventData[KeyUp::P_SCANCODE].GetInt();
-          kevt.data.KeyUpEvent.value0.key = eventData[KeyUp::P_KEY].GetInt();
-          kevt.data.KeyUpEvent.value0.scancode = scancode;
-          kevt.data.KeyUpEvent.value0.name = std::string(input->GetScancodeName(scancode).CString());
+          int scancode = eventData[KeyDown::P_SCANCODE].GetInt();
+          kevt.data.KeyDownEvent.value0.key = eventData[KeyDown::P_KEY].GetInt();
+          kevt.data.KeyDownEvent.value0.scancode = scancode;
+          kevt.data.KeyDownEvent.value0.name = std::string(input->GetScancodeName(scancode).CString());
 
           writeKeyEvent(&encoder, kevt);
           size_t len = cbor_encoder_get_buffer_size(&encoder, buf);

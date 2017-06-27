@@ -97,7 +97,7 @@ void HasNode::msgParent(FrMsg m, FrMsgLength l)
     newParent->second->AddChild(node);
   }
   else {
-    std::cout << "HasNode-msgParent: parent id not found";
+//    std::cout << "HasNode-msgParent: parent id not found";
   }
 }
 

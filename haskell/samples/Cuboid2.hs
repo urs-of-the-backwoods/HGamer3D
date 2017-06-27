@@ -163,11 +163,11 @@ installKeyHandler :: HG3D -> Var [T.Text] -> Var [T.Text] -> Entity -> IO ()
 installKeyHandler hg3d varKeysUp varKeysPressed ieh = do
     let handleKeys ke = do
                             case ke of  
-                                KeyUp _ _ k -> do
+                                KeyUpEvent (KeyData _ _ k) -> do
                                     updateVar varKeysPressed (\keys -> (filter (\k' -> k' /= k) keys, ()))
                                     updateVar varKeysUp (\keys -> (keys ++ [k], ()))
                                     return ()
-                                KeyDown _ _ k -> do
+                                KeyDownEvent (KeyData _ _ k) -> do
                                     updateVar varKeysPressed (\keys -> (if not (k `elem` keys) then k:keys else keys, ())) >> return ()
                                 _ -> return () 
     registerCallback hg3d ieh ctKeyEvent (\k -> handleKeys k)

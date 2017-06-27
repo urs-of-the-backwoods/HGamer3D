@@ -23,25 +23,25 @@ gameLogic hg3d = do
             ]
 
       eText <- newE hg3d [
-            ctText #: "Rotating Cube Example",
-            ctScreenRect #: Rectangle 10 10 100 25
+            ctStaticText #: "Rotating Cube Example",
+            ctScreenRect #: ScreenRect 10 10 100 25
             ]
 
       -- HGamer3D website, events, register callback on button 1
       eButton <- newE hg3d [
             ctButton #: Button False "Exit",
-            ctScreenRect #: Rectangle 200 10 50 25
+            ctScreenRect #: ScreenRect 200 10 50 25
             ]
       -- end of website text
 
       eButtonNew <- newE hg3d [
             ctButton #: Button False "New",
-            ctScreenRect #: Rectangle 200 70 50 25
+            ctScreenRect #: ScreenRect 200 70 50 25
             ]
 
       eButtonDel <- newE hg3d [
             ctButton #: Button False "Del",
-            ctScreenRect #: Rectangle 200 130 50 25
+            ctScreenRect #: ScreenRect 200 130 50 25
             ]
 
       eGeo <- newE hg3d [

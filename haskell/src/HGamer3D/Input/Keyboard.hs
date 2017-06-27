@@ -23,6 +23,7 @@ import Data.Text
 import Data.Monoid
 import Control.Applicative
 
+import Debug.Trace
 
 data KeyData = KeyData {
     keyDataKey::Int,
@@ -48,7 +49,7 @@ instance Serialise KeyEvent where
     encode (KeyDownEvent v1) = encodeListLen 2 <>  encode (2::Int) <> encode v1
     decode = do
         decodeListLen
-        i <- decode :: Decoder s Int
+        i <- (decode :: Decoder s Int) 
         case i of
             0 -> (pure NoKeyEvent)
             1 -> (KeyUpEvent <$> decode)

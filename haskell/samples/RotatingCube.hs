@@ -19,8 +19,8 @@ gameLogic hg3d = do
 
     -- create a text
     eText <- newE hg3d [
-        ctText #: "Rotating Cube Example",
-        ctScreenRect #: Rectangle 10 10 100 25
+        ctStaticText #: "Rotating Cube Example",
+        ctScreenRect #: ScreenRect 10 10 100 25
         ]
 
 -- HGamer3D website, entities and events, example entity

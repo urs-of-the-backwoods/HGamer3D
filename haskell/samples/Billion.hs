@@ -51,16 +51,16 @@ light w pos = creator w [
                 ]
                 
 textOne w = creator w [  
-                ctText #: "Billion\n"
-                , ctScreenRect #: Rectangle 10 10 120 25
+                ctStaticText #: "Billion\n"
+                , ctScreenRect #: ScreenRect 10 10 120 25
             ]
 
 textTwo w = creator w [  
-                ctText #: ""
-                , ctScreenRect #: Rectangle 10 50 200 500
+                ctStaticText #: ""
+                , ctScreenRect #: ScreenRect 10 50 200 500
             ]
 
-showText e t = setC e ctText t
+showText e t = setC e ctStaticText t
 
 type Cube = [[[Entity]]]
 
@@ -120,27 +120,27 @@ commandInterpreter w cam t2 refCubes refSel cmd = do
     case cmd of
         MoveCamera listOfMoves deltaTime  -> do
             let oneMove (s, d) = do
-                case (s, d) of
-                    (Slow, PosX) -> updateC cam ctPosition (\v -> v &+ mUX)
-                    (Slow, NegX) -> updateC cam ctPosition (\v -> v &- mUX)
-                    (Slow, PosY) -> updateC cam ctPosition (\v -> v &- mUY)
-                    (Slow, NegY) -> updateC cam ctPosition (\v -> v &+ mUY)
-                    (Slow, PosZ) -> updateC cam ctPosition (\v -> v &+ mUZ)
-                    (Slow, NegZ) -> updateC cam ctPosition (\v -> v &- mUZ)
-                    (Fast, PosX) -> updateC cam ctPosition (\v -> v &+ fUX)
-                    (Fast, NegX) -> updateC cam ctPosition (\v -> v &- fUX)
-                    (Fast, PosY) -> updateC cam ctPosition (\v -> v &- fUY)
-                    (Fast, NegY) -> updateC cam ctPosition (\v -> v &+ fUY)
-                    (Fast, PosZ) -> updateC cam ctPosition (\v -> v &+ fUZ)
-                    (Fast, NegZ) -> updateC cam ctPosition (\v -> v &- fUZ)
+                    case (s, d) of
+                        (Slow, PosX) -> updateC cam ctPosition (\v -> v &+ mUX)
+                        (Slow, NegX) -> updateC cam ctPosition (\v -> v &- mUX)
+                        (Slow, PosY) -> updateC cam ctPosition (\v -> v &- mUY)
+                        (Slow, NegY) -> updateC cam ctPosition (\v -> v &+ mUY)
+                        (Slow, PosZ) -> updateC cam ctPosition (\v -> v &+ mUZ)
+                        (Slow, NegZ) -> updateC cam ctPosition (\v -> v &- mUZ)
+                        (Fast, PosX) -> updateC cam ctPosition (\v -> v &+ fUX)
+                        (Fast, NegX) -> updateC cam ctPosition (\v -> v &- fUX)
+                        (Fast, PosY) -> updateC cam ctPosition (\v -> v &- fUY)
+                        (Fast, NegY) -> updateC cam ctPosition (\v -> v &+ fUY)
+                        (Fast, PosZ) -> updateC cam ctPosition (\v -> v &+ fUZ)
+                        (Fast, NegZ) -> updateC cam ctPosition (\v -> v &- fUZ)
             let moves startT = do
-                t <- getTime
-                if t < (startT + deltaTime) then do
-                    mapM oneMove listOfMoves
-                    sleepFor (msecT 50)
-                    moves startT
-                    else
-                        return ()
+                    t <- getTime
+                    if t < (startT + deltaTime) then do
+                            mapM oneMove listOfMoves
+                            sleepFor (msecT 50)
+                            moves startT
+                            else
+                                return ()
             tNow <- getTime
             forkIO (moves tNow)
             return ()
@@ -181,44 +181,43 @@ commandInterpreter w cam t2 refCubes refSel cmd = do
 installKeyPressed :: HG3D -> Entity -> Var [T.Text] -> IO ()
 installKeyPressed w eventHandler varKeysPressed = do
     let handleKeys ke = do
-        case ke of  
-            KeyUp _ _ k -> updateVar varKeysPressed (\keys -> (filter (\k' -> k' /= k) keys, ()))
-            KeyDown _ _ k -> updateVar varKeysPressed (\keys -> (if not (k `elem` keys) then k:keys else keys, ()))
-            _ -> return ()
+            case ke of  
+                KeyUpEvent (KeyData _ _ k) -> updateVar varKeysPressed (\keys -> (filter (\k' -> k' /= k) keys, ()))
+                KeyDownEvent (KeyData _ _ k) -> updateVar varKeysPressed (\keys -> (if not (k `elem` keys) then k:keys else keys, ()))
+                _ -> return ()
     registerCallback w eventHandler ctKeyEvent (\key -> handleKeys key)
 
 installMoveCamera cam varKeysPressed = do
     let move = do
-        keys <- readVar varKeysPressed
-        if "A" `elem` keys then updateC cam ctPosition (\v -> v &- mUX) else return ()
-        if "D" `elem` keys then updateC cam ctPosition (\v -> v &+ mUX) else return ()
-        if "W" `elem` keys then updateC cam ctPosition (\v -> v &+ mUY) else return ()
-        if "S" `elem` keys then updateC cam ctPosition (\v -> v &- mUY) else return ()
-        if "E" `elem` keys then updateC cam ctPosition (\v -> v &+ mUZ) else return ()
-        if "C" `elem` keys then updateC cam ctPosition (\v -> v &- mUZ) else return ()
-        return ()
+            keys <- readVar varKeysPressed
+            if "A" `elem` keys then updateC cam ctPosition (\v -> v &- mUX) else return ()
+            if "D" `elem` keys then updateC cam ctPosition (\v -> v &+ mUX) else return ()
+            if "W" `elem` keys then updateC cam ctPosition (\v -> v &+ mUY) else return ()
+            if "S" `elem` keys then updateC cam ctPosition (\v -> v &- mUY) else return ()
+            if "E" `elem` keys then updateC cam ctPosition (\v -> v &+ mUZ) else return ()
+            if "C" `elem` keys then updateC cam ctPosition (\v -> v &- mUZ) else return ()
+            return ()
     forkIO $ forever $ move >> sleepFor (msecT 50)
     return()
     
 installChangeCubes w ieh cubes = do
     let handleKeys k = do
-        case k of
-            KeyUp _ _ "Right" -> mapM (\c -> setC c ctMaterial matYellow) (lineFromCube cubes 0 0) >> return ()
-            KeyUp _ _ "Up" -> mapM (\c -> setC c ctMaterial matRed) (concat (planeFromCube cubes 0)) >> return ()
-            KeyUp _ _ "G" -> setC (((cubes !! 3) !! 4) !! 5) ctMaterial matGreen >> return ()
-            KeyUp _ _ k -> return ()
-            _ -> return ()
+            case k of
+                KeyUpEvent (KeyData _ _ "Right") -> mapM (\c -> setC c ctMaterial matYellow) (lineFromCube cubes 0 0) >> return ()
+                KeyUpEvent (KeyData _ _ "Up") -> mapM (\c -> setC c ctMaterial matRed) (concat (planeFromCube cubes 0)) >> return ()
+                KeyUpEvent (KeyData _ _ "G") -> setC (((cubes !! 3) !! 4) !! 5) ctMaterial matGreen >> return ()
+                _ -> return ()
             
     registerCallback w ieh ctKeyEvent (\key -> handleKeys key)
 
 installText w ieh t2 = do
     let handleKeys k = do
-        case k of
-            KeyUp _ _ "F1" -> showText t2 "imagine each cube is one year ...\n"
-            KeyUp _ _ "F2" -> showText t2 "imagine each cube is one year\nthere are 10 yellow cubes, 10 years ...\n"
-            KeyUp _ _ "F3" -> showText t2 "imagine each cube is one year\nthere are 10 yellow cubes, 10 years\nthere are 100 yellow and red cubes, 100 years ...\n"
-            KeyUp _ _ "F4" -> showText t2 "imagine each cube is one year\nthere are 10 yellow cubes, 10 years\nthere are 100 yellow and red cubes, 100 years\nthere are 1000 cubes in total, 1000 years ..."
-            _ -> return ()
+            case k of
+                KeyUpEvent (KeyData _ _ "F1") -> showText t2 "imagine each cube is one year ...\n"
+                KeyUpEvent (KeyData _ _ "F2") -> showText t2 "imagine each cube is one year\nthere are 10 yellow cubes, 10 years ...\n"
+                KeyUpEvent (KeyData _ _ "F3") -> showText t2 "imagine each cube is one year\nthere are 10 yellow cubes, 10 years\nthere are 100 yellow and red cubes, 100 years ...\n"
+                KeyUpEvent (KeyData _ _ "F4") -> showText t2 "imagine each cube is one year\nthere are 10 yellow cubes, 10 years\nthere are 100 yellow and red cubes, 100 years\nthere are 1000 cubes in total, 1000 years ..."
+                _ -> return ()
     registerCallback w ieh ctKeyEvent (\key -> handleKeys key)
     
 gameLogic w = do

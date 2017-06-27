@@ -24,7 +24,8 @@ module HGamer3D.Graphics3D.Geometry
 (
         Shape (..),
         Geometry (..),
-        ctGeometry
+        ctGeometry,
+        ctGraphicsElement
 )
 
 where
@@ -53,6 +54,9 @@ data Geometry = ShapeGeometry Shape
 
 ctGeometry :: ComponentType Geometry
 ctGeometry = ComponentType 0xee433d1a4b964591
+
+ctGraphicsElement :: ComponentType ()
+ctGraphicsElement = ComponentType 0x65114ba821671643
 
 instance Serialise Shape where
     encode (Sphere) = encodeListLen 1 <>  encode (0::Int) 
