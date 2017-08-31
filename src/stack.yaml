@@ -1,0 +1,19 @@
+resolver: lts-8.20
+
+flags:
+  binary-serialise-cbor:
+    newtime15: true
+
+packages:
+- location:
+    git: https://github.com/well-typed/binary-serialise-cbor.git
+    commit: c617075
+  extra-dep: true
+- location: '../../fresco/haskell-binding'
+  extra-dep: true
+- '.'
+
+extra-deps: ["vect-0.4.7"]
+
+extra-lib-dirs:
+

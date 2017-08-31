@@ -1,0 +1,32 @@
+Name:                HGamer3D
+Version:             0.9.0
+Synopsis:            Toolset for the Haskell Game Programmer
+Description:         
+	HGamer3D is a toolset for developing 3D games in the programming 
+	language Haskell. 
+
+License:             OtherLicense
+License-file:        LICENSE
+Author:              Peter Althainz
+Maintainer:          althainz@gmail.com
+Build-Type:          Simple
+Cabal-Version:       >=1.4
+Homepage:            http://www.hgamer3d.org
+Category:            Game Engine
+Extra-source-files:  Setup.hs 
+ 
+Library
+  Build-Depends:     base >= 4.9 && < 4.10, containers, bytestring, text, filepath, directory, vect, binary-serialise-cbor, clock, cereal, fresco-binding
+
+  Exposed-modules:   HGamer3D.Data.Angle, HGamer3D.Data.Colour, HGamer3D.Data.LMH, HGamer3D.Data.GameTime, HGamer3D.Data.ScreenRect, HGamer3D.Data.Transform3D, HGamer3D.Data.Visible, HGamer3D.Data.TypeSynonyms, HGamer3D.Data.Vector, HGamer3D.Data.Window, HGamer3D.Data.PlayCmd, HGamer3D.Data.Parent, HGamer3D.Data.Geometry2D, HGamer3D.Data, HGamer3D.Util.FileLocation, HGamer3D.Util.UniqueName, HGamer3D.Util.Variable, HGamer3D.Util, HGamer3D.Graphics3D.Camera, HGamer3D.Graphics3D.Graphics3DCommand, HGamer3D.Graphics3D.Geometry, HGamer3D.Graphics3D.Graphics3DConfig, HGamer3D.Graphics3D.Light, HGamer3D.Graphics3D.Material, HGamer3D.Input.Mouse, HGamer3D.Input.Keyboard, HGamer3D.Input.Joystick, HGamer3D.Input.InputEventHandler, HGamer3D.Input, HGamer3D.Graphics3D, HGamer3D.GUI.UIElement, HGamer3D.GUI.Button, HGamer3D.GUI.EditText, HGamer3D.GUI.DropDownList, HGamer3D.GUI.Slider, HGamer3D.GUI.Text, HGamer3D.GUI.CheckBox, HGamer3D.GUI, HGamer3D.Audio.SoundSource, HGamer3D.Audio.SoundListener, HGamer3D.Audio.Volume, HGamer3D.Audio, HGamer3D
+
+  Other-modules:     
+
+  c-sources:         
+  
+  ghc-options:       
+  cc-options:        -Wno-attributes 
+  hs-source-dirs:    .
+  Include-dirs:      .
+  build-depends:
+     

@@ -1,0 +1,15 @@
+extra-deps: ["HGamer3D-0.9.0", "fresco-binding-0.3.0", "vect-0.4.7"]
+resolver: lts-8.20
+flags:
+  binary-serialise-cbor:
+    newtime15: true
+packages: 
+- location:
+    git: https://github.com/well-typed/binary-serialise-cbor.git
+    commit: c617075
+  extra-dep: true
+- location: "../../fresco/haskell-binding"
+  extra-dep: true
+- location: "../src"
+  extra-dep: true
+- "."

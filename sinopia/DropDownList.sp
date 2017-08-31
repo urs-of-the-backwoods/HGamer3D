@@ -1,11 +1,11 @@
-enum MaybeInt {
-    Just Int32;
-    Nothing;
+enum TextSelection {
+    Selection Int32;
+    NoSelection;
 }
 
 struct DropDownList {
     content : List(Text);
-    selected : MaybeInt;
+    selected : TextSelection;
 }
 
 id64 DropDownList = 0x200de0e837a8e590

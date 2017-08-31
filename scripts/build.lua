@@ -5,6 +5,8 @@ require("os_arch")
 require("util")
 require("lfs")
 
+-- local utility functions
+
 -- get version of gamegio from CMakeLists file
 local function versionGameGio()
 	cmakeFile = glue.bin .. "/../gamegio-library/src/CMakeLists.txt"
@@ -34,10 +36,6 @@ local function versionGameGio()
 	return major .. "." .. minor .. "." .. patch
 end
 
-local function aio()
-	return ".." .. pathSep() .. "scripts" .. pathSep() .."aio"
-end
-
 local function buildGameGio()
 	-- change into build dir
 	local currDir = lfs.currentdir()
@@ -47,7 +45,7 @@ local function buildGameGio()
 	lfs.mkdir("gamegio-build") 
 	lfs.chdir("gamegio-build")
 	-- build dll
-	os.execute(aio() .. " http://www.hgamer3d.org/tools/Urho3D-1.6 cmd /C cmake ../gamegio-library/src -G \"Visual Studio 15 2017 Win64\"")
+	os.execute("aio http://www.hgamer3d.org/tools/Urho3D-1.6 cmd /C cmake ../gamegio-library/src -G \"Visual Studio 15 2017 Win64\"")
 	os.execute("cmake --build . --config Release")
 	-- package component
 	lfs.mkdir("package")
@@ -66,6 +64,39 @@ local function buildGameGio()
 	lfs.chdir(currDir)
 end
 
+local function buildHGamer3D()
+	lfs.chdir("src")
+	os.execute("aio http://www.hgamer3d.org/tools/Stack.0617 build")
+	--os.execute("aio http://www.hgamer3d.org/tools/Stack.0617 sdist")
+	os.exit(0)
+end
+
+local function buildSamples()
+	lfs.chdir("samples")
+	os.execute("aio http://www.hgamer3d.org/tools/Stack.0617 install --local-bin-path .")
+	--os.execute("aio http://www.hgamer3d.org/tools/Stack.0617 sdist")
+	os.exit(0)
+end
+
+local function helpText()
+	print([[
+
+HGamer3D build script, usage:
+
+build <command>
+
+command might be:
+  samples
+  run-sample <sample>
+  HGamer3D
+  gamegio
+  version-gamegio
+  register-gamegio
+  unregister-gamegio
+	]])
+end
+
+-- main script
 
 if #arg > 0 then
 
@@ -74,32 +105,48 @@ if #arg > 0 then
 		buildGameGio()
 		os.exit(0)
 
+	-- version of gamegio component
+	elseif arg[1] == "version-gamegio" then
+		print(versionGameGio())
+		os.exit(0)
+
 	-- register component for local use
 	elseif arg[1] == "register-gamegio" then
 		lfs.chdir("gamegio-build")
-		os.execute(aio() .. " local http://www.hgamer3d.org/component/HG3DEngineGio.0517 package")
+		os.execute("aio local http://www.hgamer3d.org/component/HG3DEngineGio.0517 package")
 		os.exit(0)
 
 	-- unregister component for local use
 	elseif arg[1] == "unregister-gamegio" then
 		lfs.chdir("gamegio-build")
-		os.execute(aio() .. " remove-local http://www.hgamer3d.org/component/HG3DEngineGio.0517")
+		os.execute("aio remove-local http://www.hgamer3d.org/component/HG3DEngineGio.0517")
+		os.exit(0)
+
+	-- build HGamer3D
+	elseif arg[1] == "HGamer3D" then
+		buildHGamer3D()
+		os.exit(0)
+
+	-- build HGamer3D
+	elseif arg[1] == "samples" then
+		buildSamples()
+		os.exit(0)
+
+	elseif arg[1] == "run-sample" and #arg > 1 then
+		lfs.chdir("samples")
+		os.execute("aio http://www.hgamer3d.org/tools/Run.0517 " .. arg[2])
 		os.exit(0)
 	end
 
+
+	print("wrong argument to build script:", arg[1])
+
 -- give hints about commands
-else
-	print([[
-
-HGamer3D build script, commands:
-
-  build-gamegio
-  register-gamegio
-  unregister-gamegio
-
-	]])
-	os.exit(0)
 end
+
+-- in case no command exits, still give help and exit then
+helpText()
+os.exit(-1)
 
 
 

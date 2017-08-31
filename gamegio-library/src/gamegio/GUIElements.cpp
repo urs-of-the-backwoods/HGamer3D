@@ -562,19 +562,16 @@ DropDownListItem::~DropDownListItem()
 
 void DropDownListItem::msgDropDownList(FrMsg m, FrMsgLength l)
 {
-    /*
-    msgpack::unpacked msg;
-    msgpack::unpack(&msg, pdata, len);
-    msgpack::object obj = msg.get();
-//    std::cout << "msgDropDownList: " << obj << std::endl;
-    if (obj.type != msgpack::type::ARRAY || obj.via.array.size != 2) return ERROR_TYPE_NOT_KNOWN;
-    // remove all items
+
+    CborParser parser; CborValue it;
+    cbor_parser_init(m, l, 0, &parser, &it);
+    cbd::DropDownList ddl;
+    cbd::readDropDownList(&it, &ddl);
+
     dropdownlist->RemoveAllItems();
     // create list of text items
-    msgpack::object texts_o = obj.via.array.ptr[0];
-    std::vector<std::string> texts;
-    texts_o.convert(&texts);
-    for(std::vector<std::string>::iterator it = texts.begin(); it != texts.end(); ++it) {
+    for(std::vector<std::string>::iterator it = ddl.content.begin(); it != ddl.content.end(); ++it) {
+        std::cout << "found dd element: " << it->c_str() << std::endl;
         Text* t = new Text(g->context);
         t->SetText(it->c_str());
         t->SetStyleAuto();
@@ -583,14 +580,12 @@ void DropDownListItem::msgDropDownList(FrMsg m, FrMsgLength l)
     }
     dropdownlist->SetResizePopup(true);
     
-    // create selection from maybe list
-    msgpack::object sel_o = obj.via.array.ptr[1];
-    if (sel_o.via.array.ptr[0].as<int>() == 0) {
+    // create selection
+    if (ddl.selected.selector == cbd::NoSelection) {
         dropdownlist->SetSelection(-1);
     } else {
-        dropdownlist->SetSelection(sel_o.via.array.ptr[1].as<int>());
+        dropdownlist->SetSelection(ddl.selected.data.Selection.value0);
     }
-    */
 }
 
 void DropDownListItem::registerDropDownListFunction(FrMessageFn2 f, void* p2, uint64_t cbet)
