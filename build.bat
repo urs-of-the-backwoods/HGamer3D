@@ -6,14 +6,14 @@ if %errorlevel%==1 (
     @echo you need cmake in your path, see https://cmake.org/download
     call :halt 1
 )
-call :setvar VS2017_PATH scripts/win/aio.exe http://www.hgamer3d.org/tools/DetectVS.0717
+call :setvar VS2017_PATH scripts\win\aio.exe http://www.hgamer3d.org/tools/DetectVS.0717
 if "%VS2017_PATH%"=="" (
 	@echo you need Visual Studio 2017, see https://www.visualstudio.com/de/downloads
 	call :halt 1
 )
 
 :: do the work
-scripts/win/aio.exe http://www.hgamer3d.org/tools/Lua.0717 scripts\build.lua %1 %2 %3 %4 %5 %6
+scripts\win\aio.exe http://www.hgamer3d.org/tools/Lua.0717 scripts\build.lua %1 %2 %3 %4 %5 %6
 goto :eof
 
 :: helper routines below

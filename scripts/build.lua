@@ -6,6 +6,16 @@ require("util")
 require("lfs")
 
 -- local utility functions
+local function aioString()
+	o, a = getOS()
+	if o == "windows" then
+		return "..\\" .. glue.bin .. "\\win\\aio.exe"	
+	elseif o == "darwin" then
+		return "../" .. glue.bin .. "/mac/aio"	
+	elseif o == "linux" then
+		return "../" .. glue.bin .. "/linux/aio"	
+	end
+end
 
 -- get version of gamegio from CMakeLists file
 local function versionGameGio()
@@ -45,7 +55,7 @@ local function buildGameGio()
 	lfs.mkdir("gamegio-build") 
 	lfs.chdir("gamegio-build")
 	-- build dll
-	os.execute("aio http://www.hgamer3d.org/tools/Urho3D-1.6 cmd /C cmake ../gamegio-library/src -G \"Visual Studio 15 2017 Win64\"")
+	os.execute(aioString() .. " http://www.hgamer3d.org/tools/Urho3D-1.6 cmd /C cmake ../gamegio-library/src -G \"Visual Studio 15 2017 Win64\"")
 	os.execute("cmake --build . --config Release")
 	-- package component
 	lfs.mkdir("package")
@@ -66,14 +76,14 @@ end
 
 local function buildHGamer3D()
 	lfs.chdir("src")
-	os.execute("aio http://www.hgamer3d.org/tools/Stack.0617 build")
+	os.execute(aioString() .. " http://www.hgamer3d.org/tools/Stack.0617 build")
 	--os.execute("aio http://www.hgamer3d.org/tools/Stack.0617 sdist")
 	os.exit(0)
 end
 
 local function buildSamples()
 	lfs.chdir("samples")
-	os.execute("aio http://www.hgamer3d.org/tools/Stack.0617 install --local-bin-path .")
+	os.execute(aioString() .. " http://www.hgamer3d.org/tools/Stack.0617 install --local-bin-path .")
 	--os.execute("aio http://www.hgamer3d.org/tools/Stack.0617 sdist")
 	os.exit(0)
 end
@@ -113,13 +123,13 @@ if #arg > 0 then
 	-- register component for local use
 	elseif arg[1] == "register-gamegio" then
 		lfs.chdir("gamegio-build")
-		os.execute("aio local http://www.hgamer3d.org/component/HG3DEngineGio.0517 package")
+		os.execute(aioString() .. " local http://www.hgamer3d.org/component/HG3DEngineGio.0517 package")
 		os.exit(0)
 
 	-- unregister component for local use
 	elseif arg[1] == "unregister-gamegio" then
 		lfs.chdir("gamegio-build")
-		os.execute("aio remove-local http://www.hgamer3d.org/component/HG3DEngineGio.0517")
+		os.execute(aioString() .. " remove-local http://www.hgamer3d.org/component/HG3DEngineGio.0517")
 		os.exit(0)
 
 	-- build HGamer3D
@@ -134,7 +144,7 @@ if #arg > 0 then
 
 	elseif arg[1] == "run-sample" and #arg > 1 then
 		lfs.chdir("samples")
-		os.execute("aio http://www.hgamer3d.org/tools/Run.0517 " .. arg[2])
+		os.execute(aioString() .. " http://www.hgamer3d.org/tools/Run.0517 " .. arg[2])
 		os.exit(0)
 	end
 
