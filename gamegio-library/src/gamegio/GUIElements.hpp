@@ -229,35 +229,6 @@ public:
   void HandleToggled(StringHash eventType, VariantMap& eventData);
 };
 
-GIO_METHOD_DEC(DropDownListItem, ScreenRect)
-GIO_METHOD_DEC(DropDownListItem, Parent)
-GIO_METHOD_DEC(DropDownListItem, EntityId)
-GIO_METHOD_DEC(DropDownListItem, DropDownList)
-GCO_FACTORY_DEC(DropDownListItem)
-
-class DropDownListItem : public HasUIElement, public Object  {
-
-URHO3D_OBJECT(DropDownListItem, Object);
-
-protected:
-    SharedPtr<DropDownList> dropdownlist;
-    FrMessageFn2 callbackF;
-    void* callbackData;
-    uint64_t cbEventType;
-
-public:
-  DropDownListItem();
-  ~DropDownListItem();
- 
-  static FrItem msgCreate(FrMsg m, FrMsgLength l);
-  void msgDestroy();
-  
-  void msgDropDownList(FrMsg m, FrMsgLength l);
-
-  void registerEvents();
-  void registerDropDownListFunction(FrMessageFn2 f, void* p2, uint64_t evt_t);
-  void HandleSelectionChanged(StringHash eventType, VariantMap& eventData);
-};
 
 
 #endif

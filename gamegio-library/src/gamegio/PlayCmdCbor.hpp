@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <string>
+#include <vector>
 #include "cbor.h"
 #include "cborconstants_p.h"
 
@@ -27,10 +28,11 @@ typedef struct {
     } data;
 } PlayCmd;
 
-void readPlayCmd(CborValue *it0, PlayCmd *playCmd);
-void writePlayCmd(CborEncoder *enc0, PlayCmd playCmd);
+void readPlayCmd(CborValue *it, PlayCmd *playCmd);
+void writePlayCmd(CborEncoder *enc, PlayCmd playCmd);
 
 } // end of namespacd cdb
 
 extern const uint64_t ctPlayCmd;
+
 #endif

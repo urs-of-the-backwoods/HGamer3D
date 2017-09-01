@@ -32,11 +32,11 @@ using namespace cbd;
 // Mouse
 //
 
-GIO_METHOD_FUNC(Mouse, Mouse)
+GIO_METHOD_FUNC(Mouse, MouseConfig)
 GIO_METHOD_FUNC(Mouse, Visible)
 
 GCO_FACTORY_IMP(Mouse)
-  GCO_FACTORY_METHOD(Mouse, ctMouseConfig, Mouse)
+  GCO_FACTORY_METHOD(Mouse, ctMouseConfig, MouseConfig)
   GCO_FACTORY_METHOD(Mouse, ctVisible, Visible)
 GCO_FACTORY_IMP_END
 
@@ -60,7 +60,7 @@ void Mouse::msgDestroy()
     delete this;
 }
 
-void Mouse::msgMouse(FrMsg m, FrMsgLength l)
+void Mouse::msgMouseConfig(FrMsg m, FrMsgLength l)
 {
   // read message data
   CborParser parser; CborValue it;

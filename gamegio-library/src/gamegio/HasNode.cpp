@@ -84,8 +84,8 @@ void HasNode::msgParent(FrMsg m, FrMsgLength l)
   // set new parent
   Graphics3DSystem* g3ds = Graphics3DSystem::getG3DS();
 
-//  std::cout << "HasNode - msgParent: ";
-//  printEID(eid);
+  std::cout << "HasNode - msgParent: ";
+  printEID(eid);
 
   std::map<EntityId, Node*>::iterator newParent = g3ds->node_map.find(eid);
 
@@ -97,7 +97,7 @@ void HasNode::msgParent(FrMsg m, FrMsgLength l)
     newParent->second->AddChild(node);
   }
   else {
-//    std::cout << "HasNode-msgParent: parent id not found";
+    std::cout << "HasNode-msgParent: parent id not found";
   }
 }
 
@@ -107,8 +107,8 @@ void HasNode::msgEntityId(FrMsg m, FrMsgLength l)
   cbor_parser_init(m, l, 0, &parser, &it);
   EntityId eid;
   readEntityId(&it, &eid);
-//  std::cout << "HasNode - set id: ";
-//  printEID(eid);
+  std::cout << "HasNode - set id: ";
+  printEID(eid);
 
   Graphics3DSystem::getG3DS()->node_map[eid] = node;
 }

@@ -14,12 +14,13 @@
 module HGamer3D.Audio.Volume
 where
 
-import Fresco                                                                                                                                          
-import Data.Binary.Serialise.CBOR                                                                                                                      
-import Data.Binary.Serialise.CBOR.Decoding                                                                                                             
-                                                                                                                                                       
-import Data.Text                                                                                                                                       
-import Data.Monoid                                                                                                                                     
+import Fresco
+import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Encoding
+import Data.Binary.Serialise.CBOR.Decoding
+
+import Data.Text
+import Data.Monoid
 import Control.Applicative
 
 
@@ -28,11 +29,13 @@ data Volume = Volume {
     volumeGain::Float
     } deriving (Eq, Read, Show)
 
-
-instance Serialise Volume where
-    encode (Volume v1 v2) = encode v1 <> encode v2
-    decode = Volume <$> decode <*> decode
-
 ctVolume :: ComponentType Volume
 ctVolume = ComponentType 0x659d20e6e65f85fe
+
+instance Serialise Volume where
+    encode (Volume v1 v2) = encodeListLen 2 <> encode v1 <> encode v2
+    decode = decodeListLenOf 2 >> Volume <$> decode <*> decode
+
+
+
 

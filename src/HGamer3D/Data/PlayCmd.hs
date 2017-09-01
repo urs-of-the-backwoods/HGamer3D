@@ -16,6 +16,7 @@ where
 
 import Fresco
 import Data.Binary.Serialise.CBOR
+import Data.Binary.Serialise.CBOR.Encoding
 import Data.Binary.Serialise.CBOR.Decoding
 
 import Data.Text
@@ -28,20 +29,21 @@ data PlayCmd = Play
     | Stop
     deriving (Eq, Read, Show)
 
+ctPlayCmd :: ComponentType PlayCmd
+ctPlayCmd = ComponentType 0x35f7752020f7f1cd
 
 instance Serialise PlayCmd where
-    encode (Play) = encode (0::Int) 
-    encode (Pause) = encode (1::Int) 
-    encode (Stop) = encode (2::Int) 
+    encode (Play) = encodeListLen 1 <>  encode (0::Int)
+    encode (Pause) = encodeListLen 1 <>  encode (1::Int)
+    encode (Stop) = encodeListLen 1 <>  encode (2::Int)
     decode = do
+        decodeListLen
         i <- decode :: Decoder s Int
         case i of
             0 -> (pure Play)
             1 -> (pure Pause)
             2 -> (pure Stop)
 
-ctPlayCmd :: ComponentType PlayCmd
-ctPlayCmd = ComponentType 0x35f7752020f7f1cd
 
 
 

@@ -27,6 +27,7 @@
 #include "CameraItem.hpp"
 #include "LightItem.hpp"
 #include "GeometryItem.hpp"
+#include "DropDownListItem.hpp"
 
 #include "GUIElements.hpp"
 #include "ButtonCbor.hpp"
@@ -56,6 +57,7 @@ Library::Library()
     _factories[ctSlider] = new SliderItemFactory();
     _factories[ctStaticText] = new TextItemFactory();
     _factories[ctUIElement] = new HasUIElementFactory();
+    _factories[ctMouseConfig] = new MouseFactory();
 }
 
 Library::~Library()

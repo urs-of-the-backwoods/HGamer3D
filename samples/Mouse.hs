@@ -37,17 +37,17 @@ createAll hg3d = do
             ]
 
             ,[
-                ctEditText #: "Keys: A - Absolute Mouse Mode, R - Relative Mouse Mode, W - Wrap Mouse Mode",
+                ctStaticText #: "Keys: A - Absolute Mouse Mode, R - Relative Mouse Mode, W - Wrap Mouse Mode",
                 ctScreenRect #: ScreenRect 10 10 200 10
             ]
 
             ,[
-                ctEditText #: "Mouse Mode Set To ...",
+                ctStaticText #: "Mouse Mode Set To ...",
                 ctScreenRect #: ScreenRect 10 25 200 10
             ]
 
             ,[
-                ctEditText #: "Mouse Event",
+                ctStaticText #: "Mouse Event",
                 ctScreenRect #: ScreenRect 10 40 200 10
             ]
             
@@ -59,11 +59,11 @@ createAll hg3d = do
 showMode mode txtMode = do
     forever $ do 
         m <- readC mode ctMouseConfig
-        setC txtMode ctEditText (T.pack (show m))
+        setC txtMode ctStaticText (T.pack (show m))
         sleepFor (msecT 20)
     return ()
 
-addMouseEventCallback hg3d event txtEvent = registerCallback hg3d event ctMouseEvent (\evt -> setC txtEvent ctEditText (T.pack (show evt))) 
+addMouseEventCallback hg3d event txtEvent = registerCallback hg3d event ctMouseEvent (\evt -> setC txtEvent ctStaticText (T.pack (show evt))) 
 addKeyEventCallback hg3d event mode = registerCallback hg3d event ctKeyEvent (\evt -> case evt of
                                                                                             KeyUpEvent (KeyData _ _ "A") -> setC mode ctMouseConfig (MouseConfig Absolute)
                                                                                             KeyUpEvent (KeyData _ _ "R") -> setC mode ctMouseConfig (MouseConfig Relative)

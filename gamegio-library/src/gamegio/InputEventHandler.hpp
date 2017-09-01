@@ -55,7 +55,7 @@
 
 using namespace Urho3D;
 
-GIO_METHOD_DEC(Mouse, Mouse)
+GIO_METHOD_DEC(Mouse, MouseConfig)
 GIO_METHOD_DEC(Mouse, Visible)
 
 GCO_FACTORY_DEC(Mouse)
@@ -72,7 +72,7 @@ public:
   ~Mouse();
  
   static FrItem msgCreate(FrMsg m, FrMsgLength l);
-  void msgMouse(FrMsg m, FrMsgLength l);
+  void msgMouseConfig(FrMsg m, FrMsgLength l);
   void msgVisible(FrMsg m, FrMsgLength l);
   void msgDestroy();
 };

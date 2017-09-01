@@ -117,6 +117,7 @@ void SoundSourceItem::msgSoundSource(FrMsg m, FrMsgLength l)
     // load resource
     if (sound == NULL)
     {
+        std::cout << ssrc.resource << std::endl;
         sound = cache->GetResource<Sound>(ssrc.resource.c_str());
     }
     // modify loop

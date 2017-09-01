@@ -17,41 +17,42 @@ where
 import Fresco
 import Data.Binary.Serialise.CBOR
 import Data.Binary.Serialise.CBOR.Decoding
+import Data.Binary.Serialise.CBOR.Encoding
 
 import Data.Text
 import Data.Monoid
 import Control.Applicative
 
-
-data SoundType = Sound
-    | Sound3D
-    | Music
-    deriving (Eq, Read, Show)
-
-
-instance Serialise SoundType where
-    encode (Sound) = encode (0::Int) 
-    encode (Sound3D) = encode (1::Int) 
-    encode (Music) = encode (2::Int) 
-    decode = do
-        i <- decode :: Decoder s Int
-        case i of
-            0 -> (pure Sound)
-            1 -> (pure Sound3D)
-            2 -> (pure Music)
-
-data SoundSource = SoundSource {
-    soundSourceType::SoundType,
-    soundSourceResource::Text,
-    soundSourceLoop::Bool,
-    soundSourceVolume::Float,
-    soundSourceVolumeGroup::Text
-    } deriving (Eq, Read, Show)
-
-
-instance Serialise SoundSource where
-    encode (SoundSource v1 v2 v3 v4 v5) = encode v1 <> encode v2 <> encode v3 <> encode v4 <> encode v5
-    decode = SoundSource <$> decode <*> decode <*> decode <*> decode <*> decode
-
-ctSoundSource :: ComponentType SoundSource
-ctSoundSource = ComponentType 0xafcef7aa41d88c0d
+data SoundType = Sound                                                                                                             
+    | Sound3D                                                                                                                      
+    | Music                                                                                                                        
+    deriving (Eq, Read, Show)                                                                                                      
+                                                                                                                                   
+data SoundSource = SoundSource {                                                                                                   
+    soundSourceType::SoundType,                                                                                                    
+    soundSourceResource::Text,                                                                                                     
+    soundSourceLoop::Bool,                                                                                                         
+    soundSourceVolume::Float,                                                                                                      
+    soundSourceVolumeGroup::Text                                                                                                   
+    } deriving (Eq, Read, Show)                                                                                                    
+                                                                                                                                   
+ctSoundSource :: ComponentType SoundSource                                                                                         
+ctSoundSource = ComponentType 0xafcef7aa41d88c0d                                                                                   
+                                                                                                                                   
+instance Serialise SoundType where                                                                                                 
+    encode (Sound) = encodeListLen 1 <>  encode (0::Int)                                                                           
+    encode (Sound3D) = encodeListLen 1 <>  encode (1::Int)                                                                         
+    encode (Music) = encodeListLen 1 <>  encode (2::Int)                                                                           
+    decode = do                                                                                                                    
+        decodeListLen                                                                                                              
+        i <- decode :: Decoder s Int                                                                                               
+        case i of                                                                                                                  
+            0 -> (pure Sound)                                                                                                      
+            1 -> (pure Sound3D)                                                                                                    
+            2 -> (pure Music)                                                                                                      
+                                                                                                                                   
+instance Serialise SoundSource where                                                                                               
+    encode (SoundSource v1 v2 v3 v4 v5) = encodeListLen 5 <> encode v1 <> encode v2 <> encode v3 <> encode v4 <> encode v5         
+    decode = decodeListLenOf 5 >> SoundSource <$> decode <*> decode <*> decode <*> decode <*> decode                               
+                                                                                                                                   
+                                                                                                                                   

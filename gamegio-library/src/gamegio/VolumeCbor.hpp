@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <string>
+#include <vector>
 #include "cbor.h"
 #include "cborconstants_p.h"
 
@@ -14,8 +15,8 @@ typedef struct {
     float gain;
 } Volume;
 
-void readVolume(CborValue *it0, Volume *volume);
-void writeVolume(CborEncoder *enc0, Volume volume);
+void readVolume(CborValue *it, Volume *volume);
+void writeVolume(CborEncoder *enc, Volume volume);
 
 } // end of namespacd cdb
 

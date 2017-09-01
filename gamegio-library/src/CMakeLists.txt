@@ -91,6 +91,7 @@ set(CPP_SRCS
     gamegio/LightItem.cpp
     gamegio/GeometryItem.cpp
     gamegio/GUIElements.cpp
+    gamegio/DropDownListItem.cpp
     gamegio/Slider2.cpp
     gamegio/LineEdit2.cpp
     gamegio/ButtonCbor.cpp
