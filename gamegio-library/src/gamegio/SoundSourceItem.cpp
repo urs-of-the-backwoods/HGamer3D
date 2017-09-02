@@ -70,6 +70,7 @@ SoundSourceItem::~SoundSourceItem()
     {
         delete sound;
         node->RemoveComponent<SoundSource>();
+        sound = NULL;
     }
 }
 
@@ -93,10 +94,9 @@ void SoundSourceItem::msgSoundSource(FrMsg m, FrMsgLength l)
     cbd::SoundSource ssrc;
     cbd::readSoundSource(&it, &ssrc);
 
-    // create or modify sound source
-    if (soundType.selector != ssrc.type.selector)
-    {
-        if (sound != NULL) node->RemoveComponent<SoundSource>();
+    // handle sound source, it's independent from the sound itself
+    if (soundSource == NULL || soundType.selector != ssrc.type.selector) {
+        if (soundSource != NULL) node->RemoveComponent<SoundSource>();
         if (ssrc.type.selector == cbd::Sound3D)
             soundSource = node->CreateComponent<SoundSource3D>();
         else
@@ -117,7 +117,7 @@ void SoundSourceItem::msgSoundSource(FrMsg m, FrMsgLength l)
     // load resource
     if (sound == NULL)
     {
-        std::cout << ssrc.resource << std::endl;
+//        std::cout << ssrc.resource << std::endl;
         sound = cache->GetResource<Sound>(ssrc.resource.c_str());
     }
     // modify loop

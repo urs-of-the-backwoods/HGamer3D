@@ -129,7 +129,7 @@ gameLogic hg3d = do
     registerSoundButtons hg3d sound1 sound2 sound3
     registerMusicButtons hg3d musicStart musicStop music
     registerVolumeSliders hg3d sliderSound sliderMusic volume
-    forkIO $ rotate cube
+    rotate cube
     return ()
 
 main = do
