@@ -91,3 +91,4 @@ void writeGeometry(CborEncoder *enc0, Geometry geometry)
 } // end of namespacd cdb
 
 const uint64_t ctGeometry = 0xee433d1a4b964591;
+const uint64_t ctGraphicsElement = 0x65114ba821671643;

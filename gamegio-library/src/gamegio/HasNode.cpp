@@ -26,7 +26,30 @@
 using namespace std;
 using namespace cbd;
 
+GIO_METHOD_FUNC(HasNode, Pos)
+GIO_METHOD_FUNC(HasNode, Scale)
+GIO_METHOD_FUNC(HasNode, Ori)
+GIO_METHOD_FUNC(HasNode, EntityId)
+GIO_METHOD_FUNC(HasNode, Parent)
+
+// Factory Implementation
+GCO_FACTORY_IMP(HasNode)
+    GCO_FACTORY_METHOD(HasNode, ctPosition, Pos)
+    GCO_FACTORY_METHOD(HasNode, ctScale, Scale)
+    GCO_FACTORY_METHOD(HasNode, ctOrientation, Ori)
+    GCO_FACTORY_METHOD(HasNode, ctEntityId, EntityId)
+    GCO_FACTORY_METHOD(HasNode, ctParent, Parent)
+GCO_FACTORY_IMP_END
+
+
 // Orientation, Position, Scale
+
+FrItem HasNode::msgCreate(FrMsg m, FrMsgLength l)
+{
+  HasNode *hn = new HasNode();
+  // hn->node->CreateComponent<StaticModel>();
+  return (FrItem)hn;
+}
 
 // HasNode::HasNode(Graphics3DSystem *g)
 HasNode::HasNode()
@@ -38,6 +61,11 @@ HasNode::HasNode()
 HasNode::~HasNode()
 {
   node->Remove();
+}
+
+void HasNode::msgDestroy()
+{
+    delete this;
 }
 
 void HasNode::msgOri(FrMsg m, FrMsgLength l)

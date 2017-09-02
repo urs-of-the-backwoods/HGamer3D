@@ -52,6 +52,11 @@
 
 using namespace Urho3D;
 
+GIO_METHOD_DEC(HasNode, Pos)
+GIO_METHOD_DEC(HasNode, Scale)
+GIO_METHOD_DEC(HasNode, Ori)
+GCO_FACTORY_DEC(HasNode)
+
 class HasNode
 {
 
@@ -63,6 +68,8 @@ public:
   HasNode();
 //  HasNode(Graphics3DSystem*g3ds);
   ~HasNode();
+  static FrItem msgCreate(FrMsg m, FrMsgLength l);
+  void virtual msgDestroy();
 
   virtual void msgOri(FrMsg m, FrMsgLength l);
   virtual void msgPos(FrMsg m, FrMsgLength l);

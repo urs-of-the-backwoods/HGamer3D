@@ -61,4 +61,5 @@ void writeGeometry(CborEncoder *enc0, Geometry geometry);
 } // end of namespacd cdb
 
 extern const uint64_t ctGeometry;
+extern const uint64_t ctGraphicsElement;
 #endif

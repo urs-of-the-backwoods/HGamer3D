@@ -58,6 +58,7 @@ Library::Library()
     _factories[ctStaticText] = new TextItemFactory();
     _factories[ctUIElement] = new HasUIElementFactory();
     _factories[ctMouseConfig] = new MouseFactory();
+    _factories[ctGraphicsElement] = new HasNodeFactory();
 }
 
 Library::~Library()
