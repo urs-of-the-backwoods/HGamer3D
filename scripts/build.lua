@@ -54,9 +54,16 @@ local function buildGameGio()
 	lfs.chdir(glue.bin .. "/..")
 	lfs.mkdir("gamegio-build") 
 	lfs.chdir("gamegio-build")
+
 	-- build dll
-	os.execute(aioString() .. " http://www.hgamer3d.org/tools/Urho3D-1.6 cmd /C cmake ../gamegio-library/src -G \"Visual Studio 15 2017 Win64\"")
-	os.execute("cmake --build . --config Release")
+	if o == "windows" then
+		os.execute(aioString() .. " http://www.hgamer3d.org/tools/Urho3D-1.6 cmd /C cmake ../gamegio-library/src -G \"Visual Studio 15 2017 Win64\"")
+		os.execute("cmake --build . --config Release")
+	else
+		os.execute(aioString() .. " http://www.hgamer3d.org/tools/Urho3D-1.6 bash -c \"cmake ../gamegio-library/src\"")
+		os.execute("cmake --build . --config Release")
+	end
+
 	-- package component
 	lfs.mkdir("package")
 	local plat = getPlatString("gamegio", version)
@@ -67,8 +74,8 @@ local function buildGameGio()
 		os.execute("copy Release\\game_gio_lib.dll " .. platdir .. "\\game_engine.gio")
 	else
 		local platdir = "package/" .. plat
-		os.execute("cp ../gamegio-library/arriccio.toml arriccio.toml")
-		os.execute("cp Release/game_gio_lib.dll " .. platdir .. "/game_engine.gio")
+		os.execute("cp ../gamegio-library/arriccio.toml package/arriccio.toml")
+		os.execute("cp libgame_gio_lib.so " .. platdir .. "/game_engine.gio")
 	end
 	-- change dir back
 	lfs.chdir(currDir)

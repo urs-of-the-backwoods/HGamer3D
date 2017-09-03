@@ -1,2 +1,2 @@
 #!/bin/bash
-aio http://www.hgamer3d.org/tools/Lua.0717 scripts/build.lua $1 $2 $3 $4 $5 $6
+scripts/linux/aio http://www.hgamer3d.org/tools/Lua.0717 scripts/build.lua $1 $2 $3 $4 $5 $6

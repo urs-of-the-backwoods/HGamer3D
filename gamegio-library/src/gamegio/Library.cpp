@@ -68,7 +68,7 @@ Library::~Library()
 
 GCOFactory* Library::getFactory(FrComponentType ct)
 {
-    auto iter = _factories.find(ct);
+    std::map<FrItemType, GCOFactory*>::iterator iter = _factories.find(ct);
     if (iter != _factories.end())
     {
         return iter->second;

@@ -123,7 +123,11 @@ generate_export_header(game_gio_lib)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories($ENV{URHO3D_HOME}/include $ENV{URHO3D_HOME}/include/Urho3D/ThirdParty)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/gamegio ${CMAKE_CURRENT_SOURCE_DIR}/third-party/tinycbor/src)
-target_link_libraries(game_gio_lib $ENV{URHO3D_HOME}/lib/Urho3D.lib)
+if(WINDOWS)
+	target_link_libraries(game_gio_lib $ENV{URHO3D_HOME}/lib/Urho3D.a)
+else()
+	target_link_libraries(game_gio_lib $ENV{URHO3D_HOME}/lib/libUrho3D.so)
+endif()
 
 # add specific C Flags
 
