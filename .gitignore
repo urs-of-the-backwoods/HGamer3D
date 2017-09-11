@@ -16,3 +16,14 @@ samples/.stack-work
 samples/*.exe
 samples/*.log
 
+samples/Billion
+samples/Cuboid2
+samples/SoundEffects
+samples/RotatingCube
+samples/RotatingCube2
+samples/SpaceInvaders
+samples/Gui1
+samples/Materials
+samples/Mouse
+samples/TestDel
+
