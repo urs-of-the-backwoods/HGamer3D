@@ -34,19 +34,39 @@ namespace cbd {
                     cbor_encoder_close_container_checked(enca, enc); }                                                                                                            
             }                                                                                                                                                             
 
+
+
+
+	static int hexDump(FILE *out, const uint8_t *buffer, size_t n)
+	{
+		    while (n--) {
+			            int r = fprintf(out, "%02X", *buffer++);
+				            if (r < 0)
+						                return r;
+					        }
+		        return 0;   /* should be n * 2, but we don't have the original n anymore */
+	}
+
+
             void readDropDownList(CborValue *it, DropDownList *dropDownList) {                                                                                            
-		cbor_value_to_pretty(stdout, it);
 
                 { CborValue itb; CborValue *ita = it; CborValue *it = &itb; cbor_value_enter_container(ita, it);                                                              
-                      size_t l; cbor_value_get_array_length(it, &l);                                                                                                              
+
                     { CborValue itb; CborValue *ita = it; CborValue *it = &itb; cbor_value_enter_container(ita, it);                                                          
                       dropDownList->content.clear();
-                      for (int i = 0; i < l; i++) {   std::string item; { size_t l; cbor_value_calculate_string_length(it, &l); item.resize(l+1);                                 
-                        cbor_value_copy_text_string(it, (char *)(item.c_str()), &l, NULL); cbor_value_advance(it);}                                                           
-                        ; dropDownList->content.push_back(item); }                                                                                                                    
-                        cbor_value_leave_container(ita, it); }                                                                                                                        
-                        readTextSelection(it, &(dropDownList->selected));                                                                                                         
-                        cbor_value_leave_container(ita, it); }                                                                                                                        
+                      while (!cbor_value_at_end(it)) {   
+                        std::string item; { 
+                            size_t l; cbor_value_calculate_string_length(it, &l); 
+                            item.resize(l+1);                                 
+                            cbor_value_copy_text_string(it, (char *)(item.c_str()), &l, NULL); 
+                            cbor_value_advance(it);
+                            dropDownList->content.push_back(item); 
+                        };                                                           
+                      }                                                                                                                    
+                      cbor_value_leave_container(ita, it); 
+                    }                                                                                                                        
+                    readTextSelection(it, &(dropDownList->selected));                                                                                                         
+                    cbor_value_leave_container(ita, it); }                                                                                                                        
             }                                                                                                                                                             
 
             void writeDropDownList(CborEncoder *enc, DropDownList dropDownList) {                                                                                         
