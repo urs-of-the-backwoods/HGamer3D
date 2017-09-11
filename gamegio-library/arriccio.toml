@@ -1,16 +1,36 @@
-# arriccio.toml file for HGamer3D - game engine gio
+id-url = "http://www.hgamer3d.org/component/HG3DEngineGio.0517"
+description = "HGamer3D fresco component which delivers the C++ binding towards the Urho3D engine."
+license-short = "Apache 2.0 License"
+signing-key = "https://www.github.com/urs-of-the-backwoods.keys"
 
-Id = "http://www.hgamer3d.org/component/HG3DEngineGio.0517"
-Purpose = "HGamer3D Game Engine Giornata"
+[[implementation]]
+  architecture = "amd64"
+  operating-system = "windows"
+  archive-download-location = "http://www.hgamer3d.org/downloads/gamegio-amd64-windows-2.0.0.tar.gz"
 
-Description = '''
-  Fresco component which delivers the C++ binding towards the 
-  Urho3D Engine.
-'''
+[[implementation.dependency]]
+  id-url = "http://www.hgamer3d.org/tools/Urho3D-1.6"
+  environment-settings = ["add-path PATH ./bin"]
 
-License = "Apache 2.0 License"
+[[implementation]]
+  architecture = "amd64"
+  operating-system = "linux"
+  archive-download-location = "http://www.hgamer3d.org/downloads/gamegio-amd64-linux-2.0.0.tar.gz"
 
-FullLicenseText = '''
+[[implementation.dependency]]
+  id-url = "http://www.hgamer3d.org/tools/Urho3D-1.6"
+  environment-settings = ["add-path LD_LIBRARY_PATH ./bin"]
+
+[[implementation]]
+  architecture = "amd64"
+  operating-system = "darwin"
+  archive-download-location = "http://www.hgamer3d.org/downloads/gamegio-amd64-darwin-2.0.0.tar.gz"
+
+[[implementation.dependency]]
+  id-url = "http://www.hgamer3d.org/tools/Urho3D-1.6"
+  environment-settings = ["add-path LD_LIBRARY_PATH ./bin"]
+
+license-full = '''
 Copyright 2016 Peter Althainz
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,33 +45,3 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 '''
-
-signingkey = "https://www.github.com/urs-of-the-backwoods.keys"
-
-[[Implementations]]
-  location = "http://www.hgamer3d.org/downloads/gamegio-amd64-windows-2.0.0.tar.gz"
-  architecture = "amd64"
-  os = "windows"
-
-[[Implementations.Dependencies]]
-  Id = "http://www.hgamer3d.org/tools/Urho3D-1.6"
-  Environment = ["add-path PATH ./bin"]
-
-[[Implementations]]
-  location = "http://www.hgamer3d.org/downloads/gamegio-amd64-linux-2.0.0.tar.gz"
-  architecture = "amd64"
-  os = "linux"
-
-[[Implementations.Dependencies]]
-  Id = "http://www.hgamer3d.org/tools/Urho3D-1.6"
-  Environment = ["add-path LD_LIBRARY_PATH ./bin"]
-
-[[Implementations]]
-  location = "http://www.hgamer3d.org/downloads/gamegio-amd64-darwin-2.0.0.tar.gz"
-  architecture = "amd64"
-  os = "darwin"
-
-[[Implementations.Dependencies]]
-  Id = "http://www.hgamer3d.org/tools/Urho3D-1.6"
-  Environment = ["add-path LD_LIBRARY_PATH ./bin"]
-
