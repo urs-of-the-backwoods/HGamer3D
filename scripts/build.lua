@@ -151,7 +151,7 @@ if #arg > 0 then
 
 	elseif arg[1] == "run-sample" and #arg > 1 then
 		lfs.chdir("samples")
-		os.execute(aioString() .. " start http://www.hgamer3d.org/tools/Run.0517 " .. arg[2])
+		os.execute(aioString() .. " http://www.hgamer3d.org/tools/Run.0517 " .. arg[2])
 		os.exit(0)
 	end
 

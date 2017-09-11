@@ -35,9 +35,11 @@ namespace cbd {
             }                                                                                                                                                             
 
             void readDropDownList(CborValue *it, DropDownList *dropDownList) {                                                                                            
+		cbor_value_to_pretty(stdout, it);
+
                 { CborValue itb; CborValue *ita = it; CborValue *it = &itb; cbor_value_enter_container(ita, it);                                                              
-                    { CborValue itb; CborValue *ita = it; CborValue *it = &itb; cbor_value_enter_container(ita, it);                                                          
                       size_t l; cbor_value_get_array_length(it, &l);                                                                                                              
+                    { CborValue itb; CborValue *ita = it; CborValue *it = &itb; cbor_value_enter_container(ita, it);                                                          
                       dropDownList->content.clear();
                       for (int i = 0; i < l; i++) {   std::string item; { size_t l; cbor_value_calculate_string_length(it, &l); item.resize(l+1);                                 
                         cbor_value_copy_text_string(it, (char *)(item.c_str()), &l, NULL); cbor_value_advance(it);}                                                           

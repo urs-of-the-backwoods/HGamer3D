@@ -109,7 +109,7 @@ set(CBOR_SRCS
     third-party/tinycbor/src/cborerrorstrings.c
     third-party/tinycbor/src/cborparser.c
     third-party/tinycbor/src/cborparser_dup_string.c
-#    third-party/tinycbor/src/cborpretty.c
+    third-party/tinycbor/src/cborpretty.c
 #    third-party/tinycbor/src/cbortojson.c
 #    third-party/tinycbor/src/open_memstream.c
 )
