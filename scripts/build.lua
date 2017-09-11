@@ -6,6 +6,7 @@ require("util")
 require("lfs")
 
 -- local utility functions
+
 local function aioString()
 	o, a = getOS()
 	if o == "windows" then
@@ -18,6 +19,7 @@ local function aioString()
 end
 
 -- get version of gamegio from CMakeLists file
+
 local function versionGameGio()
 	cmakeFile = glue.bin .. "/../gamegio-library/src/CMakeLists.txt"
 	io.input(cmakeFile)
@@ -45,6 +47,26 @@ local function versionGameGio()
 
 	return major .. "." .. minor .. "." .. patch
 end
+
+
+local function runSample(para)
+	o, a = getOS()
+	if o == "windows" then
+		os.execute(aioString() .. " start http://www.hgamer3d.org/tools/Run.0517 " .. para .. ".exe")
+		os.exit(0)
+	else
+		os.execute(aioString() .. " start http://www.hgamer3d.org/tools/Run.0517 ./" .. para)
+		os.exit(0)
+	end
+end
+
+
+
+local function initBuildSystem()
+	lfs.chdir(glue.bin)	
+	os.execute(aioString() .. " http://www.hgamer3d.org/tools/Stack.0617 setup --resolver lts-8.20")
+end
+
 
 local function buildGameGio()
 	-- change into build dir
@@ -103,6 +125,7 @@ HGamer3D build script, usage:
 build <command>
 
 command might be:
+  init-build-system
   samples
   run-sample <sample>
   HGamer3D
@@ -120,6 +143,11 @@ if #arg > 0 then
 	-- prepare host for building
 	if arg[1] == "gamegio" then
 		buildGameGio()
+		os.exit(0)
+
+	-- version of gamegio component
+	elseif arg[1] == "init-build-system" then
+	 	initBuildSystem()	
 		os.exit(0)
 
 	-- version of gamegio component
@@ -151,8 +179,7 @@ if #arg > 0 then
 
 	elseif arg[1] == "run-sample" and #arg > 1 then
 		lfs.chdir("samples")
-		os.execute(aioString() .. " http://www.hgamer3d.org/tools/Run.0517 " .. arg[2])
-		os.exit(0)
+		runSample(arg[2])
 	end
 
 
