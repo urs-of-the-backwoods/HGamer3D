@@ -99,6 +99,7 @@ void GeometryItem::msgGeometry(FrMsg m, FrMsgLength l)
     model->SetMaterial(cache->GetResource<Material>(material));
   } else if (geo.selector == cbd::ResourceGeometry) { // mesh geometry
       model->SetModel(cache->GetResource<Model>(String(geo.data.ResourceGeometry.value0.c_str())));
+      model->ApplyMaterialList(); // sets materials from material list file (AssetImporter)
   }
 };
 
