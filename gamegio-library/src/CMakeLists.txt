@@ -125,6 +125,8 @@ include_directories($ENV{URHO3D_HOME}/include $ENV{URHO3D_HOME}/include/Urho3D/T
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/gamegio ${CMAKE_CURRENT_SOURCE_DIR}/third-party/tinycbor/src)
 if(WIN32)
 	target_link_libraries(game_gio_lib $ENV{URHO3D_HOME}/lib/Urho3D.lib)
+elseif(APPLE)
+	target_link_libraries(game_gio_lib $ENV{URHO3D_HOME}/lib/libUrho3D.dylib)
 else()
 	target_link_libraries(game_gio_lib $ENV{URHO3D_HOME}/lib/libUrho3D.so)
 endif()
