@@ -1,9 +1,33 @@
 local glue = require("glue")
+local ffi = require("ffi")
 glue.luapath(glue.bin .. "/lualib")
 
-require("os_arch")
-require("util")
 require("lfs")
+
+local function getOS()
+	local os = string.lower(ffi.os)
+	local arch
+	if ffi.arch == "x64" then
+		arch = "amd64"
+	else
+		arch = ffi.arch
+	end
+	return os, arch 
+end
+
+function pathSep()
+	o, a = getOS()
+	if o == "windows" then
+		return '\\'
+	else 
+		return '/'
+	end
+end
+
+function getPlatString(name, version)
+	o, a = getOS()
+	return (name .. '-' .. a .. '-' .. o .. '-' .. version)
+end
 
 -- local utility functions
 
