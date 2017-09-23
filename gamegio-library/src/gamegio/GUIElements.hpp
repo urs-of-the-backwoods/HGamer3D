@@ -1,6 +1,6 @@
 //	C++ part of bindings for gui
 //	HGamer3D Library (A project to enable 3D game development in Haskell)
-//	Copyright 2015 Peter Althainz
+//	Copyright 2015 - 2017 Peter Althainz
 //	
 //	Distributed under the Apache License, Version 2.0
 //	(See attached file LICENSE or copy at 
@@ -46,6 +46,7 @@
 #include <Urho3D/UI/Window.h>
 #include <Urho3D/UI/UI.h>
 #include <Urho3D/UI/UIEvents.h>
+#include <Urho3D/UI/UIElement.h>
 
 #include <exception>
 
@@ -54,6 +55,10 @@
 #include "Slider2.hpp"
 #include "EntityIdCbor.hpp"
 #include "LineEdit2.hpp"
+#include "FontCbor.hpp"
+#include "FontSizeCbor.hpp"
+#include "AlignmentCbor.hpp"
+#include "ColourCbor.hpp"
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -64,6 +69,7 @@
 using namespace Urho3D;
 
 GIO_METHOD_DEC(HasUIElement, ScreenRect)
+GIO_METHOD_DEC(HasUIElement, Alignment)
 GIO_METHOD_DEC(HasUIElement, Parent)
 GIO_METHOD_DEC(HasUIElement, EntityId)
 GCO_FACTORY_DEC(HasUIElement)
@@ -83,12 +89,14 @@ public:
   void msgDestroy();
   
   void msgScreenRect(FrMsg m, FrMsgLength l);
+  void msgAlignment(FrMsg m, FrMsgLength l);
   void msgParent(FrMsg m, FrMsgLength l);
   void msgEntityId(FrMsg m, FrMsgLength l);
 };
 
 
 GIO_METHOD_DEC(ButtonItem, ScreenRect)
+GIO_METHOD_DEC(ButtonItem, Alignment)
 GIO_METHOD_DEC(ButtonItem, Parent)
 GIO_METHOD_DEC(ButtonItem, EntityId)
 GCO_FACTORY_DEC(ButtonItem)
@@ -118,6 +126,7 @@ public:
 };
 
 GIO_METHOD_DEC(EditTextItem, ScreenRect)
+GIO_METHOD_DEC(EditTextItem, Alignment)
 GIO_METHOD_DEC(EditTextItem, Parent)
 GIO_METHOD_DEC(EditTextItem, EntityId)
 GIO_METHOD_DEC(EditTextItem, EditText)
@@ -148,9 +157,13 @@ public:
 };
 
 GIO_METHOD_DEC(TextItem, ScreenRect)
+GIO_METHOD_DEC(TextItem, Alignment)
 GIO_METHOD_DEC(TextItem, Parent)
 GIO_METHOD_DEC(TextItem, EntityId)
 GIO_METHOD_DEC(TextItem, Text)
+GIO_METHOD_DEC(TextItem, Font)
+GIO_METHOD_DEC(TextItem, FontSize)
+GIO_METHOD_DEC(TextItem, Colour)
 GCO_FACTORY_DEC(TextItem)
 
 class TextItem : public HasUIElement {
@@ -166,10 +179,14 @@ public:
   void msgDestroy();
   
   void msgText(FrMsg m, FrMsgLength l);
+  void msgFont(FrMsg m, FrMsgLength l);
+  void msgFontSize(FrMsg m, FrMsgLength l);
+  void msgColour(FrMsg m, FrMsgLength l);
 };
 
 
 GIO_METHOD_DEC(SliderItem, ScreenRect)
+GIO_METHOD_DEC(SliderItem, Alignment)
 GIO_METHOD_DEC(SliderItem, Parent)
 GIO_METHOD_DEC(SliderItem, EntityId)
 GIO_METHOD_DEC(SliderItem, Slider)
@@ -200,6 +217,7 @@ public:
 };
 
 GIO_METHOD_DEC(CheckBoxItem, ScreenRect)
+GIO_METHOD_DEC(CheckBoxItem, Alignment)
 GIO_METHOD_DEC(CheckBoxItem, Parent)
 GIO_METHOD_DEC(CheckBoxItem, EntityId)
 GIO_METHOD_DEC(CheckBoxItem, CheckBox)

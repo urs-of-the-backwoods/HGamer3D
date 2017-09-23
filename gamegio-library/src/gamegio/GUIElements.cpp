@@ -1,6 +1,6 @@
 //	C++ part of bindings for gui
 //	HGamer3D Library (A project to enable 3D game development in Haskell)
-//	Copyright 2015 Peter Althainz
+//	Copyright 2015 - 2017 Peter Althainz
 //	
 //	Distributed under the Apache License, Version 2.0
 //	(See attached file LICENSE or copy at 
@@ -26,8 +26,13 @@
 #include "DropDownListCbor.hpp"
 #include "EditTextCbor.hpp"
 #include "SliderCbor.hpp"
+
 #include "StaticTextCbor.hpp"
 #include "UIElementCbor.hpp"
+#include "FontCbor.hpp"
+#include "FontSizeCbor.hpp"
+#include "AlignmentCbor.hpp"
+#include "ColourCbor.hpp"
 
 using namespace std;
 
@@ -36,11 +41,13 @@ using namespace std;
 //
 
 GIO_METHOD_FUNC(HasUIElement, ScreenRect)
+GIO_METHOD_FUNC(HasUIElement, Alignment)
 GIO_METHOD_FUNC(HasUIElement, Parent)
 GIO_METHOD_FUNC(HasUIElement, EntityId)
 
 GCO_FACTORY_IMP(HasUIElement)
     GCO_FACTORY_METHOD(HasUIElement, ctScreenRect, ScreenRect)
+    GCO_FACTORY_METHOD(HasUIElement, ctAlignment, Alignment)
     GCO_FACTORY_METHOD(HasUIElement, ctParent, Parent)
     GCO_FACTORY_METHOD(HasUIElement, ctEntityId, EntityId)
 GCO_FACTORY_IMP_END
@@ -76,6 +83,17 @@ void HasUIElement::msgScreenRect(FrMsg m, FrMsgLength l)
   uiElement->SetSize(rect.width, rect.height);
 }
 
+void HasUIElement::msgAlignment(FrMsg m, FrMsgLength l)
+{
+  CborParser parser; CborValue it;
+  cbor_parser_init(m, l, 0, &parser, &it);
+  cbd::Alignment align;
+  readAlignment(&it, &align);
+  
+  uiElement->SetHorizontalAlignment((Urho3D::HorizontalAlignment)align.horizontal.selector);
+  uiElement->SetVerticalAlignment((Urho3D::VerticalAlignment)align.vertical.selector);
+}
+
 void HasUIElement::msgParent(FrMsg m, FrMsgLength l)
 {
   CborParser parser; CborValue it;
@@ -103,11 +121,13 @@ void HasUIElement::msgEntityId(FrMsg m, FrMsgLength l)
 //
 
 GIO_METHOD_FUNC(ButtonItem, ScreenRect)
+GIO_METHOD_FUNC(ButtonItem, Alignment)
 GIO_METHOD_FUNC(ButtonItem, Parent)
 GIO_METHOD_FUNC(ButtonItem, EntityId)
 
 GCO_FACTORY_IMP(ButtonItem)
     GCO_FACTORY_METHOD(ButtonItem, ctScreenRect, ScreenRect)
+    GCO_FACTORY_METHOD(ButtonItem, ctAlignment, Alignment)
     GCO_FACTORY_METHOD(ButtonItem, ctParent, Parent)
     GCO_FACTORY_METHOD(ButtonItem, ctEntityId, EntityId)
 GCO_FACTORY_IMP_END
@@ -197,12 +217,14 @@ void ButtonItem::HandlePressedReleasedChanged(StringHash eventType, VariantMap& 
 //
 
 GIO_METHOD_FUNC(EditTextItem, ScreenRect)
+GIO_METHOD_FUNC(EditTextItem, Alignment)
 GIO_METHOD_FUNC(EditTextItem, Parent)
 GIO_METHOD_FUNC(EditTextItem, EntityId)
 GIO_METHOD_FUNC(EditTextItem, EditText)
 
 GCO_FACTORY_IMP(EditTextItem)
     GCO_FACTORY_METHOD(EditTextItem, ctScreenRect, ScreenRect)
+    GCO_FACTORY_METHOD(EditTextItem, ctAlignment, Alignment)
     GCO_FACTORY_METHOD(EditTextItem, ctParent, Parent)
     GCO_FACTORY_METHOD(EditTextItem, ctEntityId, EntityId)
     GCO_FACTORY_METHOD(EditTextItem, ctEditText, EditText)
@@ -285,14 +307,22 @@ void EditTextItem::HandleTextChanged (StringHash eventType, VariantMap& eventDat
 //
 
 GIO_METHOD_FUNC(TextItem, ScreenRect)
+GIO_METHOD_FUNC(TextItem, Alignment)
 GIO_METHOD_FUNC(TextItem, Parent)
 GIO_METHOD_FUNC(TextItem, EntityId)
 GIO_METHOD_FUNC(TextItem, Text)
+GIO_METHOD_FUNC(TextItem, Font)
+GIO_METHOD_FUNC(TextItem, FontSize)
+GIO_METHOD_FUNC(TextItem, Colour)
 
 GCO_FACTORY_IMP(TextItem)
     GCO_FACTORY_METHOD(TextItem, ctScreenRect, ScreenRect)
+    GCO_FACTORY_METHOD(TextItem, ctAlignment, Alignment)
     GCO_FACTORY_METHOD(TextItem, ctParent, Parent)
     GCO_FACTORY_METHOD(TextItem, ctEntityId, EntityId)
+    GCO_FACTORY_METHOD(TextItem, ctFont, Font)
+    GCO_FACTORY_METHOD(TextItem, ctFontSize, FontSize)
+    GCO_FACTORY_METHOD(TextItem, ctColour, Colour)
     GCO_FACTORY_METHOD(TextItem, ctStaticText, Text)
 GCO_FACTORY_IMP_END
 
@@ -333,17 +363,46 @@ void TextItem::msgText(FrMsg m, FrMsgLength l)
     text->SetText(st.c_str());
 }
 
+void TextItem::msgFont(FrMsg m, FrMsgLength l)
+{
+    CborParser parser; CborValue it;
+    cbor_parser_init(m, l, 0, &parser, &it);
+    cbd::Font f;
+    cbd::readFont(&it, &f);
+    text->SetFont(f.c_str());
+}
+
+void TextItem::msgFontSize(FrMsg m, FrMsgLength l)
+{
+    CborParser parser; CborValue it;
+    cbor_parser_init(m, l, 0, &parser, &it);
+    cbd::FontSize s;
+    cbd::readFontSize(&it, &s);
+    text->SetFontSize(s);    
+}
+
+void TextItem::msgColour(FrMsg m, FrMsgLength l)
+{
+    CborParser parser; CborValue it;
+    cbor_parser_init(m, l, 0, &parser, &it);
+    cbd::Colour c;
+    cbd::readColour(&it, &c);
+    text->SetColor(Color(c.red, c.green, c.blue));    
+}
+
 //
 // SliderItem
 //
 
 GIO_METHOD_FUNC(SliderItem, ScreenRect)
+GIO_METHOD_FUNC(SliderItem, Alignment)
 GIO_METHOD_FUNC(SliderItem, Parent)
 GIO_METHOD_FUNC(SliderItem, EntityId)
 GIO_METHOD_FUNC(SliderItem, Slider)
 
 GCO_FACTORY_IMP(SliderItem)
     GCO_FACTORY_METHOD(SliderItem, ctScreenRect, ScreenRect)
+    GCO_FACTORY_METHOD(SliderItem, ctAlignment, Alignment)
     GCO_FACTORY_METHOD(SliderItem, ctParent, Parent)
     GCO_FACTORY_METHOD(SliderItem, ctEntityId, EntityId)
     GCO_FACTORY_METHOD(SliderItem, ctSlider, Slider)
@@ -426,12 +485,14 @@ void SliderItem::HandleSliderChanged(StringHash eventType, VariantMap& eventData
 //
 
 GIO_METHOD_FUNC(CheckBoxItem, ScreenRect)
+GIO_METHOD_FUNC(CheckBoxItem, Alignment)
 GIO_METHOD_FUNC(CheckBoxItem, Parent)
 GIO_METHOD_FUNC(CheckBoxItem, EntityId)
 GIO_METHOD_FUNC(CheckBoxItem, CheckBox)
 
 GCO_FACTORY_IMP(CheckBoxItem)
     GCO_FACTORY_METHOD(CheckBoxItem, ctScreenRect, ScreenRect)
+    GCO_FACTORY_METHOD(CheckBoxItem, ctAlignment, Alignment)
     GCO_FACTORY_METHOD(CheckBoxItem, ctParent, Parent)
     GCO_FACTORY_METHOD(CheckBoxItem, ctEntityId, EntityId)
     GCO_FACTORY_METHOD(CheckBoxItem, ctCheckBox, CheckBox)

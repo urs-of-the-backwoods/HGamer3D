@@ -101,6 +101,9 @@ set(CPP_SRCS
     gamegio/SliderCbor.cpp
     gamegio/StaticTextCbor.cpp
     gamegio/UIElementCbor.cpp
+    gamegio/FontCbor.cpp
+    gamegio/FontSizeCbor.cpp
+    gamegio/AlignmentCbor.cpp
 )
 
 set(CBOR_SRCS
