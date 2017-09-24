@@ -56,7 +56,6 @@
 #include "EntityIdCbor.hpp"
 #include "LineEdit2.hpp"
 #include "FontCbor.hpp"
-#include "FontSizeCbor.hpp"
 #include "AlignmentCbor.hpp"
 #include "ColourCbor.hpp"
 

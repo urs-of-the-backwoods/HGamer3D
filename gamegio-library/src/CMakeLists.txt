@@ -102,7 +102,6 @@ set(CPP_SRCS
     gamegio/StaticTextCbor.cpp
     gamegio/UIElementCbor.cpp
     gamegio/FontCbor.cpp
-    gamegio/FontSizeCbor.cpp
     gamegio/AlignmentCbor.cpp
 )
 

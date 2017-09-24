@@ -17,8 +17,7 @@ gameLogic hg3d = do
     -- create Hello World Text
     eText <- newE hg3d [
         ctStaticText #: "HGamer3D: Hello World" 
-        , ctFont #: "Fonts/Anonymous Pro.ttf"
-        , ctFontSize #: 30
+        , ctFont #: Font "Fonts/Anonymous Pro.ttf" 30
         , ctColour  #: Colour 0.0 1.0 0.0 0.0
         , ctAlignment #: Alignment HACenter VACenter
         ]

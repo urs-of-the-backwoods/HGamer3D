@@ -17,76 +17,76 @@ executable Billion
   hs-source-dirs:      .
   main-is:             Billion.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  build-depends:       base, text, containers, HGamer3D (>= 0.9.0 && < 2.0.0)
+  build-depends:       base, text, containers, HGamer3D (>= 0.9.1 && < 2.0.0)
   default-language:    Haskell2010
 
 executable Cuboid2
   hs-source-dirs:      .
   main-is:             Cuboid2.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  build-depends:       base, text, containers, HGamer3D (>= 0.9.0 && < 2.0.0)
+  build-depends:       base, text, containers, HGamer3D (>= 0.9.1 && < 2.0.0)
   default-language:    Haskell2010
 
 executable Gui1
   hs-source-dirs:      .
   main-is:             Gui1.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  build-depends:       base, text, containers, HGamer3D (>= 0.9.0 && < 2.0.0)
+  build-depends:       base, text, containers, HGamer3D (>= 0.9.1 && < 2.0.0)
   default-language:    Haskell2010
 
 executable Materials
   hs-source-dirs:      .
   main-is:             Materials.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  build-depends:       base, text, containers, HGamer3D (>= 0.9.0 && < 2.0.0)
+  build-depends:       base, text, containers, HGamer3D (>= 0.9.1 && < 2.0.0)
   default-language:    Haskell2010
 
 executable Mouse
   hs-source-dirs:      .
   main-is:             Mouse.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  build-depends:       base, text, containers, HGamer3D (>= 0.9.0 && < 2.0.0)
+  build-depends:       base, text, containers, HGamer3D (>= 0.9.1 && < 2.0.0)
   default-language:    Haskell2010
 
 executable RotatingCube
   hs-source-dirs:      .
   main-is:             RotatingCube.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  build-depends:       base, text, containers, HGamer3D (>= 0.9.0 && < 2.0.0)
+  build-depends:       base, text, containers, HGamer3D (>= 0.9.1 && < 2.0.0)
   default-language:    Haskell2010
 
 executable RotatingCube2
   hs-source-dirs:      .
   main-is:             RotatingCube2.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  build-depends:       base, text, containers, HGamer3D (>= 0.9.0 && < 2.0.0)
+  build-depends:       base, text, containers, HGamer3D (>= 0.9.1 && < 2.0.0)
   default-language:    Haskell2010
 
 executable SoundEffects
   hs-source-dirs:      .
   main-is:             SoundEffects.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  build-depends:       base, text, containers, HGamer3D (>= 0.9.0 && < 2.0.0)
+  build-depends:       base, text, containers, HGamer3D (>= 0.9.1 && < 2.0.0)
   default-language:    Haskell2010
 
 executable SpaceInvaders
   hs-source-dirs:      .
   main-is:             SpaceInvaders.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  build-depends:       base, text, containers, HGamer3D (>= 0.9.0 && < 2.0.0)
+  build-depends:       base, text, containers, HGamer3D (>= 0.9.1 && < 2.0.0)
   default-language:    Haskell2010
 
 executable TestDel
   hs-source-dirs:      .
   main-is:             TestDel.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  build-depends:       base, text, containers, HGamer3D (>= 0.9.0 && < 2.0.0)
+  build-depends:       base, text, containers, HGamer3D (>= 0.9.1 && < 2.0.0)
   default-language:    Haskell2010
 
 executable 01_HelloWorld
   hs-source-dirs:      .
   main-is:             01_HelloWorld.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  build-depends:       base, text, containers, HGamer3D (>= 0.9.0 && < 2.0.0)
+  build-depends:       base, text, containers, HGamer3D (>= 0.9.1 && < 2.0.0)
   default-language:    Haskell2010
 

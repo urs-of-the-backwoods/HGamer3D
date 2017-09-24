@@ -10,7 +10,10 @@
 
 namespace cbd {
 
-typedef std::string Font;
+typedef struct {
+    std::string typeface;
+    int32_t size;
+} Font;
 
 void readFont(CborValue *it, Font *font);
 void writeFont(CborEncoder *enc, Font font);
@@ -18,5 +21,4 @@ void writeFont(CborEncoder *enc, Font font);
 } // end of namespacd cdb
 
 extern const uint64_t ctFont;
-
 #endif

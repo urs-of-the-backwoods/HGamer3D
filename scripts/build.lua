@@ -145,6 +145,35 @@ local function buildSamples()
 	os.exit(0)
 end
 
+local function buildCmd(c)
+	local cmd = c
+	if o == "windows" then
+		cmd = string.gsub(cmd, "/", "\\")
+	end
+	return cmd
+end
+
+local function buildSinopia(para, mod)
+	o, a = getOS()
+	lfs.chdir(glue.bin .. "/..")
+
+	-- hpp
+	local cmd = buildCmd("../fresco/sinopia/sinopia -i sinopia/" .. para .. ".sp -o gamegio-library/src/gamegio/" .. para .. "Cbor.hpp -f " .. para .. " -g C-hpp")
+	print(cmd)
+	os.execute(cmd)
+	-- cpp
+	local cmd = buildCmd("../fresco/sinopia/sinopia -i sinopia/" .. para .. ".sp -o gamegio-library/src/gamegio/" .. para .. "Cbor.cpp -f " .. para .. " -g C-cpp")
+	print(cmd)
+	os.execute(cmd)
+	-- Haskell
+	local cmd = buildCmd("../fresco/sinopia/sinopia -i sinopia/" .. para .. ".sp -o src/" .. string.gsub(mod, "%.", "/") .. "/" .. para .. ".hs -f " .. para .. " -g Haskell")
+	print(cmd)
+	os.execute(cmd)
+
+	os.exit(0)
+end
+
+
 local function helpText()
 	print([[
 
@@ -161,6 +190,7 @@ command might be:
   version-gamegio
   register-gamegio
   unregister-gamegio
+  sinopia <sp-file> <module>
 	]])
 end
 
@@ -203,6 +233,11 @@ if #arg > 0 then
 	-- build HGamer3D
 	elseif arg[1] == "samples" then
 		buildSamples()
+		os.exit(0)
+
+	-- sinopia
+	elseif arg[1] == "sinopia" and #arg > 2 then
+		buildSinopia(arg[2], arg[3])
 		os.exit(0)
 
 	elseif arg[1] == "run-sample" and #arg > 1 then

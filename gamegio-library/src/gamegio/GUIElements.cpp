@@ -30,7 +30,6 @@
 #include "StaticTextCbor.hpp"
 #include "UIElementCbor.hpp"
 #include "FontCbor.hpp"
-#include "FontSizeCbor.hpp"
 #include "AlignmentCbor.hpp"
 #include "ColourCbor.hpp"
 
@@ -312,7 +311,6 @@ GIO_METHOD_FUNC(TextItem, Parent)
 GIO_METHOD_FUNC(TextItem, EntityId)
 GIO_METHOD_FUNC(TextItem, Text)
 GIO_METHOD_FUNC(TextItem, Font)
-GIO_METHOD_FUNC(TextItem, FontSize)
 GIO_METHOD_FUNC(TextItem, Colour)
 
 GCO_FACTORY_IMP(TextItem)
@@ -321,7 +319,6 @@ GCO_FACTORY_IMP(TextItem)
     GCO_FACTORY_METHOD(TextItem, ctParent, Parent)
     GCO_FACTORY_METHOD(TextItem, ctEntityId, EntityId)
     GCO_FACTORY_METHOD(TextItem, ctFont, Font)
-    GCO_FACTORY_METHOD(TextItem, ctFontSize, FontSize)
     GCO_FACTORY_METHOD(TextItem, ctColour, Colour)
     GCO_FACTORY_METHOD(TextItem, ctStaticText, Text)
 GCO_FACTORY_IMP_END
@@ -369,16 +366,9 @@ void TextItem::msgFont(FrMsg m, FrMsgLength l)
     cbor_parser_init(m, l, 0, &parser, &it);
     cbd::Font f;
     cbd::readFont(&it, &f);
-    text->SetFont(f.c_str());
-}
 
-void TextItem::msgFontSize(FrMsg m, FrMsgLength l)
-{
-    CborParser parser; CborValue it;
-    cbor_parser_init(m, l, 0, &parser, &it);
-    cbd::FontSize s;
-    cbd::readFontSize(&it, &s);
-    text->SetFontSize(s);    
+    text->SetFont(f.typeface.c_str());
+    text->SetFontSize(f.size);
 }
 
 void TextItem::msgColour(FrMsg m, FrMsgLength l)
