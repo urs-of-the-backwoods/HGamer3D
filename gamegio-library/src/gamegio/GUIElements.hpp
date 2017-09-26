@@ -71,6 +71,7 @@
 #include "ButtonCbor.hpp"
 #include "CheckBoxCbor.hpp"
 #include "StaticTextCbor.hpp"
+#include "UIStyleCbor.hpp"
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -103,6 +104,7 @@ public:
   void msgName(FrMsg m, FrMsgLength l);
   void msgLayout(FrMsg m, FrMsgLength l);
   void msgMinSize(FrMsg m, FrMsgLength l);
+  void msgUIStyle(FrMsg m, FrMsgLength l);
 };
 
 

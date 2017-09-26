@@ -15,6 +15,7 @@
 #include <cmath>
 
 #include "GUIElements.hpp"
+#include "HasNode.hpp"
 
 using namespace std;
 
@@ -29,6 +30,7 @@ GIO_METHOD_FUNC(HasUIElement, EntityId)
 GIO_METHOD_FUNC(HasUIElement, Name)
 GIO_METHOD_FUNC(HasUIElement, Layout)
 GIO_METHOD_FUNC(HasUIElement, MinSize)
+GIO_METHOD_FUNC(HasUIElement, UIStyle)
 
 GCO_FACTORY_IMP(HasUIElement)
     GCO_FACTORY_METHOD(HasUIElement, ctScreenRect, ScreenRect)
@@ -38,6 +40,7 @@ GCO_FACTORY_IMP(HasUIElement)
     GCO_FACTORY_METHOD(HasUIElement, ctName, Name)
     GCO_FACTORY_METHOD(HasUIElement, ctLayout, Layout)
     GCO_FACTORY_METHOD(HasUIElement, ctMinSize, MinSize)
+    GCO_FACTORY_METHOD(HasUIElement, ctUIStyle, UIStyle)
 GCO_FACTORY_IMP_END
 
 HasUIElement::HasUIElement()
@@ -52,7 +55,14 @@ HasUIElement::~HasUIElement()
 
 FrItem HasUIElement::msgCreate(FrMsg m, FrMsgLength l)
 {
-    return (FrItem)(new HasUIElement());
+
+    HasUIElement *item = new HasUIElement();
+    UI* ui = item->g->context->GetSubsystem<UI>();
+    item->uiElement = new UIElement(item->g->context);
+    ui->GetRoot()->AddChild(item->uiElement);
+    item->uiElement->SetStyleAuto();
+
+    return (FrItem)item;
 }
 
 void HasUIElement::msgDestroy()
@@ -91,6 +101,10 @@ void HasUIElement::msgParent(FrMsg m, FrMsgLength l)
 
   // add to map
   UIElement* parent = g->ui_map[eid];
+//  std::cout << "get ";
+//  printEID(eid);
+//  std::cout << " is " << parent << std::endl;
+//  std::cout << "set " << parent << " as parent of " << uiElement << std::endl;
   uiElement->SetParent(parent);
 }
 
@@ -101,6 +115,9 @@ void HasUIElement::msgEntityId(FrMsg m, FrMsgLength l)
   cbd::EntityId eid;
   cbd::readEntityId(&it, &eid);
 
+//  std::cout << "map ";
+//  printEID(eid);
+//  std::cout << " to " << uiElement << std::endl;
   g->ui_map[eid] = uiElement;
 }
 
@@ -140,6 +157,16 @@ void HasUIElement::msgMinSize(FrMsg m, FrMsgLength l)
   uiElement->SetMinSize(ms.minWidth, ms.minHeight);
 }
 
+void HasUIElement::msgUIStyle(FrMsg m, FrMsgLength l)
+{
+  CborParser parser; CborValue it;
+  cbor_parser_init(m, l, 0, &parser, &it);
+  cbd::UIStyle us;
+  cbd::readUIStyle(&it, &us);
+
+  uiElement->SetStyle(us.c_str());
+}
+
 //
 // ButtonItem
 //
@@ -151,6 +178,7 @@ GIO_METHOD_FUNC(ButtonItem, EntityId)
 GIO_METHOD_FUNC(ButtonItem, Name)
 GIO_METHOD_FUNC(ButtonItem, Layout)
 GIO_METHOD_FUNC(ButtonItem, MinSize)
+GIO_METHOD_FUNC(ButtonItem, UIStyle)
 
 GCO_FACTORY_IMP(ButtonItem)
     GCO_FACTORY_METHOD(ButtonItem, ctScreenRect, ScreenRect)
@@ -160,6 +188,7 @@ GCO_FACTORY_IMP(ButtonItem)
     GCO_FACTORY_METHOD(ButtonItem, ctName, Name)
     GCO_FACTORY_METHOD(ButtonItem, ctLayout, Layout)
     GCO_FACTORY_METHOD(ButtonItem, ctMinSize, MinSize)
+    GCO_FACTORY_METHOD(ButtonItem, ctUIStyle, UIStyle)
 GCO_FACTORY_IMP_END
 
 ButtonItem::ButtonItem() : HasUIElement(), Object(Graphics3DSystem::getG3DS()->context)
@@ -249,6 +278,7 @@ GIO_METHOD_FUNC(EditTextItem, EditText)
 GIO_METHOD_FUNC(EditTextItem, Name)
 GIO_METHOD_FUNC(EditTextItem, Layout)
 GIO_METHOD_FUNC(EditTextItem, MinSize)
+GIO_METHOD_FUNC(EditTextItem, UIStyle)
 
 GCO_FACTORY_IMP(EditTextItem)
     GCO_FACTORY_METHOD(EditTextItem, ctScreenRect, ScreenRect)
@@ -259,6 +289,7 @@ GCO_FACTORY_IMP(EditTextItem)
     GCO_FACTORY_METHOD(EditTextItem, ctName, Name)
     GCO_FACTORY_METHOD(EditTextItem, ctLayout, Layout)
     GCO_FACTORY_METHOD(EditTextItem, ctMinSize, MinSize)
+    GCO_FACTORY_METHOD(EditTextItem, ctUIStyle, UIStyle)
 GCO_FACTORY_IMP_END
 
 EditTextItem::EditTextItem() : HasUIElement(), Object(Graphics3DSystem::getG3DS()->context)
@@ -344,6 +375,7 @@ GIO_METHOD_FUNC(TextItem, Colour)
 GIO_METHOD_FUNC(TextItem, Name)
 GIO_METHOD_FUNC(TextItem, Layout)
 GIO_METHOD_FUNC(TextItem, MinSize)
+GIO_METHOD_FUNC(TextItem, UIStyle)
 
 GCO_FACTORY_IMP(TextItem)
     GCO_FACTORY_METHOD(TextItem, ctScreenRect, ScreenRect)
@@ -354,6 +386,7 @@ GCO_FACTORY_IMP(TextItem)
     GCO_FACTORY_METHOD(TextItem, ctColour, Colour)
     GCO_FACTORY_METHOD(TextItem, ctStaticText, Text)
     GCO_FACTORY_METHOD(TextItem, ctName, Name)
+    GCO_FACTORY_METHOD(TextItem, ctLayout, Layout)
     GCO_FACTORY_METHOD(TextItem, ctMinSize, MinSize)
 GCO_FACTORY_IMP_END
 
@@ -423,6 +456,7 @@ GIO_METHOD_FUNC(SliderItem, Slider)
 GIO_METHOD_FUNC(SliderItem, Name)
 GIO_METHOD_FUNC(SliderItem, Layout)
 GIO_METHOD_FUNC(SliderItem, MinSize)
+GIO_METHOD_FUNC(SliderItem, UIStyle)
 
 GCO_FACTORY_IMP(SliderItem)
     GCO_FACTORY_METHOD(SliderItem, ctScreenRect, ScreenRect)
@@ -433,6 +467,7 @@ GCO_FACTORY_IMP(SliderItem)
     GCO_FACTORY_METHOD(SliderItem, ctName, Name)
     GCO_FACTORY_METHOD(SliderItem, ctLayout, Layout)
     GCO_FACTORY_METHOD(SliderItem, ctMinSize, MinSize)
+    GCO_FACTORY_METHOD(SliderItem, ctUIStyle, UIStyle)
 GCO_FACTORY_IMP_END
 
 SliderItem::SliderItem() : HasUIElement(), Object(Graphics3DSystem::getG3DS()->context)
@@ -516,6 +551,7 @@ GIO_METHOD_FUNC(CheckBoxItem, CheckBox)
 GIO_METHOD_FUNC(CheckBoxItem, Name)
 GIO_METHOD_FUNC(CheckBoxItem, Layout)
 GIO_METHOD_FUNC(CheckBoxItem, MinSize)
+GIO_METHOD_FUNC(CheckBoxItem, UIStyle)
 
 GCO_FACTORY_IMP(CheckBoxItem)
     GCO_FACTORY_METHOD(CheckBoxItem, ctScreenRect, ScreenRect)
@@ -526,6 +562,7 @@ GCO_FACTORY_IMP(CheckBoxItem)
     GCO_FACTORY_METHOD(CheckBoxItem, ctName, Name)
     GCO_FACTORY_METHOD(CheckBoxItem, ctLayout, Layout)
     GCO_FACTORY_METHOD(CheckBoxItem, ctMinSize, MinSize)
+    GCO_FACTORY_METHOD(CheckBoxItem, ctUIStyle, UIStyle)
 GCO_FACTORY_IMP_END
 
 CheckBoxItem::CheckBoxItem() : HasUIElement(), Object(Graphics3DSystem::getG3DS()->context)
@@ -606,6 +643,7 @@ GIO_METHOD_FUNC(WindowGUI, EntityId)
 GIO_METHOD_FUNC(WindowGUI, Name)
 GIO_METHOD_FUNC(WindowGUI, Layout)
 GIO_METHOD_FUNC(WindowGUI, MinSize)
+GIO_METHOD_FUNC(WindowGUI, UIStyle)
 
 GCO_FACTORY_IMP(WindowGUI)
     GCO_FACTORY_METHOD(WindowGUI, ctScreenRect, ScreenRect)
@@ -615,6 +653,7 @@ GCO_FACTORY_IMP(WindowGUI)
     GCO_FACTORY_METHOD(WindowGUI, ctName, Name)
     GCO_FACTORY_METHOD(WindowGUI, ctLayout, Layout)
     GCO_FACTORY_METHOD(WindowGUI, ctMinSize, MinSize)
+    GCO_FACTORY_METHOD(WindowGUI, ctUIStyle, UIStyle)
 GCO_FACTORY_IMP_END
 
 WindowGUI::WindowGUI() : HasUIElement()
@@ -654,6 +693,7 @@ GIO_METHOD_FUNC(Tooltip, EntityId)
 GIO_METHOD_FUNC(Tooltip, Name)
 GIO_METHOD_FUNC(Tooltip, Layout)
 GIO_METHOD_FUNC(Tooltip, MinSize)
+GIO_METHOD_FUNC(Tooltip, UIStyle)
 GIO_METHOD_FUNC(Tooltip, Tooltip)
 
 GCO_FACTORY_IMP(Tooltip)
@@ -665,6 +705,7 @@ GCO_FACTORY_IMP(Tooltip)
     GCO_FACTORY_METHOD(Tooltip, ctLayout, Layout)
     GCO_FACTORY_METHOD(Tooltip, ctMinSize, MinSize)
     GCO_FACTORY_METHOD(Tooltip, ctTooltip, Tooltip)
+    GCO_FACTORY_METHOD(Tooltip, ctUIStyle, UIStyle)
 GCO_FACTORY_IMP_END
 
 Tooltip::Tooltip() : HasUIElement(), Object(Graphics3DSystem::getG3DS()->context)

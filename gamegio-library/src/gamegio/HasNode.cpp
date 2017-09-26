@@ -20,7 +20,6 @@
 
 #include "Vec3Cbor.hpp"
 #include "UnitQuaternionCbor.hpp"
-#include "EntityIdCbor.hpp"
 #include "ParentCbor.hpp"
 
 using namespace std;

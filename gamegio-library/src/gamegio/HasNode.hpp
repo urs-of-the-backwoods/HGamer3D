@@ -46,6 +46,7 @@
 #include <exception>
 
 #include "Urho3D/DebugNew.h"
+#include "EntityIdCbor.hpp"
 
 // #include "errors.hpp"
 #include "Fresco.hpp"
@@ -56,6 +57,8 @@ GIO_METHOD_DEC(HasNode, Pos)
 GIO_METHOD_DEC(HasNode, Scale)
 GIO_METHOD_DEC(HasNode, Ori)
 GCO_FACTORY_DEC(HasNode)
+
+void printEID(cbd::EntityId eid);
 
 class HasNode
 {

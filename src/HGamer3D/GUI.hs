@@ -26,6 +26,8 @@ module HGamer3D.GUI
     , module HGamer3D.GUI.Tooltip
     , module HGamer3D.GUI.Layout
     , module HGamer3D.GUI.MinSize
+    , module HGamer3D.GUI.UIElement
+    , module HGamer3D.GUI.UIStyle
 )
 
 
@@ -44,5 +46,7 @@ import HGamer3D.GUI.WindowGUI
 import HGamer3D.GUI.Tooltip
 import HGamer3D.GUI.Layout
 import HGamer3D.GUI.MinSize
+import HGamer3D.GUI.UIElement
+import HGamer3D.GUI.UIStyle
 
 

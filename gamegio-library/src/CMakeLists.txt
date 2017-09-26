@@ -108,6 +108,7 @@ set(CPP_SRCS
     gamegio/NameCbor.cpp
     gamegio/LayoutCbor.cpp
     gamegio/MinSizeCbor.cpp
+    gamegio/UIStyleCbor.cpp
 )
 
 set(CBOR_SRCS
