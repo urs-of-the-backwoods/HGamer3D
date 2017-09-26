@@ -103,6 +103,11 @@ set(CPP_SRCS
     gamegio/UIElementCbor.cpp
     gamegio/FontCbor.cpp
     gamegio/AlignmentCbor.cpp
+    gamegio/WindowGUICbor.cpp
+    gamegio/TooltipCbor.cpp
+    gamegio/NameCbor.cpp
+    gamegio/LayoutCbor.cpp
+    gamegio/MinSizeCbor.cpp
 )
 
 set(CBOR_SRCS

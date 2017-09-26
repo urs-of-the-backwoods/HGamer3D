@@ -166,7 +166,7 @@ local function buildSinopia(para, mod)
 	print(cmd)
 	os.execute(cmd)
 	-- Haskell
-	local cmd = buildCmd("../fresco/sinopia/sinopia -i sinopia/" .. para .. ".sp -o src/" .. string.gsub(mod, "%.", "/") .. "/" .. para .. ".hs -f " .. para .. " -g Haskell")
+	local cmd = buildCmd("../fresco/sinopia/sinopia -i sinopia/" .. para .. ".sp -o src/" .. string.gsub(mod, "%.", "/") .. "/" .. para .. ".hs -f " .. para .. " -m " .. mod .. " -g Haskell")
 	print(cmd)
 	os.execute(cmd)
 

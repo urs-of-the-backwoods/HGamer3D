@@ -1,0 +1,3 @@
+# 2D area on the screen, which can be moved, ...
+type WindowGUI = Null
+id64 WindowGUI = 0x39b4f64b33f5cb41

@@ -15,23 +15,6 @@
 #include <cmath>
 
 #include "GUIElements.hpp"
-#include "Slider2.hpp"
-
-#include "ScreenRectCbor.hpp"
-#include "ParentCbor.hpp"
-#include "EntityIdCbor.hpp"
-
-#include "ButtonCbor.hpp"
-#include "CheckBoxCbor.hpp"
-#include "DropDownListCbor.hpp"
-#include "EditTextCbor.hpp"
-#include "SliderCbor.hpp"
-
-#include "StaticTextCbor.hpp"
-#include "UIElementCbor.hpp"
-#include "FontCbor.hpp"
-#include "AlignmentCbor.hpp"
-#include "ColourCbor.hpp"
 
 using namespace std;
 
@@ -43,12 +26,18 @@ GIO_METHOD_FUNC(HasUIElement, ScreenRect)
 GIO_METHOD_FUNC(HasUIElement, Alignment)
 GIO_METHOD_FUNC(HasUIElement, Parent)
 GIO_METHOD_FUNC(HasUIElement, EntityId)
+GIO_METHOD_FUNC(HasUIElement, Name)
+GIO_METHOD_FUNC(HasUIElement, Layout)
+GIO_METHOD_FUNC(HasUIElement, MinSize)
 
 GCO_FACTORY_IMP(HasUIElement)
     GCO_FACTORY_METHOD(HasUIElement, ctScreenRect, ScreenRect)
     GCO_FACTORY_METHOD(HasUIElement, ctAlignment, Alignment)
     GCO_FACTORY_METHOD(HasUIElement, ctParent, Parent)
     GCO_FACTORY_METHOD(HasUIElement, ctEntityId, EntityId)
+    GCO_FACTORY_METHOD(HasUIElement, ctName, Name)
+    GCO_FACTORY_METHOD(HasUIElement, ctLayout, Layout)
+    GCO_FACTORY_METHOD(HasUIElement, ctMinSize, MinSize)
 GCO_FACTORY_IMP_END
 
 HasUIElement::HasUIElement()
@@ -58,7 +47,7 @@ HasUIElement::HasUIElement()
 
 HasUIElement::~HasUIElement()
 {
-    delete uiElement;
+    uiElement->Remove();
 }
 
 FrItem HasUIElement::msgCreate(FrMsg m, FrMsgLength l)
@@ -115,6 +104,42 @@ void HasUIElement::msgEntityId(FrMsg m, FrMsgLength l)
   g->ui_map[eid] = uiElement;
 }
 
+void HasUIElement::msgName(FrMsg m, FrMsgLength l)
+{
+  CborParser parser; CborValue it;
+  cbor_parser_init(m, l, 0, &parser, &it);
+  cbd::Name name;
+  cbd::readName(&it, &name);
+
+  uiElement->SetName(name.c_str());
+}
+
+void HasUIElement::msgLayout(FrMsg m, FrMsgLength l)
+{
+  CborParser parser; CborValue it;
+  cbor_parser_init(m, l, 0, &parser, &it);
+  cbd::Layout layout;
+  cbd::readLayout(&it, &layout);
+
+  IntRect rect;
+  rect.top_ = layout.borders.top;
+  rect.bottom_ = layout.borders.bottom;
+  rect.left_ = layout.borders.left;
+  rect.right_ = layout.borders.right;
+
+  uiElement->SetLayout((LayoutMode)layout.mode.selector, layout.spacing, rect);
+}
+
+void HasUIElement::msgMinSize(FrMsg m, FrMsgLength l)
+{
+  CborParser parser; CborValue it;
+  cbor_parser_init(m, l, 0, &parser, &it);
+  cbd::MinSize ms;
+  cbd::readMinSize(&it, &ms);
+
+  uiElement->SetMinSize(ms.minWidth, ms.minHeight);
+}
+
 //
 // ButtonItem
 //
@@ -123,12 +148,18 @@ GIO_METHOD_FUNC(ButtonItem, ScreenRect)
 GIO_METHOD_FUNC(ButtonItem, Alignment)
 GIO_METHOD_FUNC(ButtonItem, Parent)
 GIO_METHOD_FUNC(ButtonItem, EntityId)
+GIO_METHOD_FUNC(ButtonItem, Name)
+GIO_METHOD_FUNC(ButtonItem, Layout)
+GIO_METHOD_FUNC(ButtonItem, MinSize)
 
 GCO_FACTORY_IMP(ButtonItem)
     GCO_FACTORY_METHOD(ButtonItem, ctScreenRect, ScreenRect)
     GCO_FACTORY_METHOD(ButtonItem, ctAlignment, Alignment)
     GCO_FACTORY_METHOD(ButtonItem, ctParent, Parent)
     GCO_FACTORY_METHOD(ButtonItem, ctEntityId, EntityId)
+    GCO_FACTORY_METHOD(ButtonItem, ctName, Name)
+    GCO_FACTORY_METHOD(ButtonItem, ctLayout, Layout)
+    GCO_FACTORY_METHOD(ButtonItem, ctMinSize, MinSize)
 GCO_FACTORY_IMP_END
 
 ButtonItem::ButtonItem() : HasUIElement(), Object(Graphics3DSystem::getG3DS()->context)
@@ -179,11 +210,6 @@ ButtonItem::~ButtonItem()
 {
     UnsubscribeFromEvent(uiElement, E_PRESSED);
     UnsubscribeFromEvent(uiElement, E_RELEASED);
-    UI* ui = g->context->GetSubsystem<UI>();
-    ui->GetRoot()->RemoveChild(button);
-    button->RemoveChild(text);
-    delete button;
-    delete text;
 }
 
 void ButtonItem::registerButtonFunction(FrMessageFn2 f, void* p2, uint64_t cbet)
@@ -220,6 +246,9 @@ GIO_METHOD_FUNC(EditTextItem, Alignment)
 GIO_METHOD_FUNC(EditTextItem, Parent)
 GIO_METHOD_FUNC(EditTextItem, EntityId)
 GIO_METHOD_FUNC(EditTextItem, EditText)
+GIO_METHOD_FUNC(EditTextItem, Name)
+GIO_METHOD_FUNC(EditTextItem, Layout)
+GIO_METHOD_FUNC(EditTextItem, MinSize)
 
 GCO_FACTORY_IMP(EditTextItem)
     GCO_FACTORY_METHOD(EditTextItem, ctScreenRect, ScreenRect)
@@ -227,6 +256,9 @@ GCO_FACTORY_IMP(EditTextItem)
     GCO_FACTORY_METHOD(EditTextItem, ctParent, Parent)
     GCO_FACTORY_METHOD(EditTextItem, ctEntityId, EntityId)
     GCO_FACTORY_METHOD(EditTextItem, ctEditText, EditText)
+    GCO_FACTORY_METHOD(EditTextItem, ctName, Name)
+    GCO_FACTORY_METHOD(EditTextItem, ctLayout, Layout)
+    GCO_FACTORY_METHOD(EditTextItem, ctMinSize, MinSize)
 GCO_FACTORY_IMP_END
 
 EditTextItem::EditTextItem() : HasUIElement(), Object(Graphics3DSystem::getG3DS()->context)
@@ -263,9 +295,6 @@ void EditTextItem::msgDestroy()
 EditTextItem::~EditTextItem()
 {
     UnsubscribeFromEvent(uiElement, E_TEXTCHANGED);
-    UI* ui = g->context->GetSubsystem<UI>();
-    ui->GetRoot()->RemoveChild(edittext);
-    delete edittext;
 }
 
 void EditTextItem::msgEditText(FrMsg m, FrMsgLength l)
@@ -312,6 +341,9 @@ GIO_METHOD_FUNC(TextItem, EntityId)
 GIO_METHOD_FUNC(TextItem, Text)
 GIO_METHOD_FUNC(TextItem, Font)
 GIO_METHOD_FUNC(TextItem, Colour)
+GIO_METHOD_FUNC(TextItem, Name)
+GIO_METHOD_FUNC(TextItem, Layout)
+GIO_METHOD_FUNC(TextItem, MinSize)
 
 GCO_FACTORY_IMP(TextItem)
     GCO_FACTORY_METHOD(TextItem, ctScreenRect, ScreenRect)
@@ -321,6 +353,8 @@ GCO_FACTORY_IMP(TextItem)
     GCO_FACTORY_METHOD(TextItem, ctFont, Font)
     GCO_FACTORY_METHOD(TextItem, ctColour, Colour)
     GCO_FACTORY_METHOD(TextItem, ctStaticText, Text)
+    GCO_FACTORY_METHOD(TextItem, ctName, Name)
+    GCO_FACTORY_METHOD(TextItem, ctMinSize, MinSize)
 GCO_FACTORY_IMP_END
 
 TextItem::TextItem() : HasUIElement()
@@ -346,9 +380,6 @@ void TextItem::msgDestroy()
 
 TextItem::~TextItem()
 {
-    UI* ui = g->context->GetSubsystem<UI>();
-    ui->GetRoot()->RemoveChild(text);
-    delete text;
 }
 
 void TextItem::msgText(FrMsg m, FrMsgLength l)
@@ -389,6 +420,9 @@ GIO_METHOD_FUNC(SliderItem, Alignment)
 GIO_METHOD_FUNC(SliderItem, Parent)
 GIO_METHOD_FUNC(SliderItem, EntityId)
 GIO_METHOD_FUNC(SliderItem, Slider)
+GIO_METHOD_FUNC(SliderItem, Name)
+GIO_METHOD_FUNC(SliderItem, Layout)
+GIO_METHOD_FUNC(SliderItem, MinSize)
 
 GCO_FACTORY_IMP(SliderItem)
     GCO_FACTORY_METHOD(SliderItem, ctScreenRect, ScreenRect)
@@ -396,6 +430,9 @@ GCO_FACTORY_IMP(SliderItem)
     GCO_FACTORY_METHOD(SliderItem, ctParent, Parent)
     GCO_FACTORY_METHOD(SliderItem, ctEntityId, EntityId)
     GCO_FACTORY_METHOD(SliderItem, ctSlider, Slider)
+    GCO_FACTORY_METHOD(SliderItem, ctName, Name)
+    GCO_FACTORY_METHOD(SliderItem, ctLayout, Layout)
+    GCO_FACTORY_METHOD(SliderItem, ctMinSize, MinSize)
 GCO_FACTORY_IMP_END
 
 SliderItem::SliderItem() : HasUIElement(), Object(Graphics3DSystem::getG3DS()->context)
@@ -429,9 +466,6 @@ void SliderItem::msgDestroy()
 SliderItem::~SliderItem()
 {
     UnsubscribeFromEvent(uiElement, E_SLIDERCHANGED);
-    UI* ui = g->context->GetSubsystem<UI>();
-    ui->GetRoot()->RemoveChild(slider);
-    delete slider;
 }
 
 void SliderItem::msgSlider(FrMsg m, FrMsgLength l)
@@ -479,6 +513,9 @@ GIO_METHOD_FUNC(CheckBoxItem, Alignment)
 GIO_METHOD_FUNC(CheckBoxItem, Parent)
 GIO_METHOD_FUNC(CheckBoxItem, EntityId)
 GIO_METHOD_FUNC(CheckBoxItem, CheckBox)
+GIO_METHOD_FUNC(CheckBoxItem, Name)
+GIO_METHOD_FUNC(CheckBoxItem, Layout)
+GIO_METHOD_FUNC(CheckBoxItem, MinSize)
 
 GCO_FACTORY_IMP(CheckBoxItem)
     GCO_FACTORY_METHOD(CheckBoxItem, ctScreenRect, ScreenRect)
@@ -486,6 +523,9 @@ GCO_FACTORY_IMP(CheckBoxItem)
     GCO_FACTORY_METHOD(CheckBoxItem, ctParent, Parent)
     GCO_FACTORY_METHOD(CheckBoxItem, ctEntityId, EntityId)
     GCO_FACTORY_METHOD(CheckBoxItem, ctCheckBox, CheckBox)
+    GCO_FACTORY_METHOD(CheckBoxItem, ctName, Name)
+    GCO_FACTORY_METHOD(CheckBoxItem, ctLayout, Layout)
+    GCO_FACTORY_METHOD(CheckBoxItem, ctMinSize, MinSize)
 GCO_FACTORY_IMP_END
 
 CheckBoxItem::CheckBoxItem() : HasUIElement(), Object(Graphics3DSystem::getG3DS()->context)
@@ -519,9 +559,6 @@ void CheckBoxItem::msgDestroy()
 CheckBoxItem::~CheckBoxItem()
 {
     UnsubscribeFromEvent(uiElement, E_TOGGLED);
-    UI* ui = g->context->GetSubsystem<UI>();
-    ui->GetRoot()->RemoveChild(checkbox);
-    delete checkbox;
 }
 
 void CheckBoxItem::msgCheckBox(FrMsg m, FrMsgLength l)
@@ -558,3 +595,115 @@ void CheckBoxItem::HandleToggled(StringHash eventType, VariantMap& eventData)
 }
 
 
+// 
+// WindowGUI
+//
+
+GIO_METHOD_FUNC(WindowGUI, ScreenRect)
+GIO_METHOD_FUNC(WindowGUI, Alignment)
+GIO_METHOD_FUNC(WindowGUI, Parent)
+GIO_METHOD_FUNC(WindowGUI, EntityId)
+GIO_METHOD_FUNC(WindowGUI, Name)
+GIO_METHOD_FUNC(WindowGUI, Layout)
+GIO_METHOD_FUNC(WindowGUI, MinSize)
+
+GCO_FACTORY_IMP(WindowGUI)
+    GCO_FACTORY_METHOD(WindowGUI, ctScreenRect, ScreenRect)
+    GCO_FACTORY_METHOD(WindowGUI, ctAlignment, Alignment)
+    GCO_FACTORY_METHOD(WindowGUI, ctParent, Parent)
+    GCO_FACTORY_METHOD(WindowGUI, ctEntityId, EntityId)
+    GCO_FACTORY_METHOD(WindowGUI, ctName, Name)
+    GCO_FACTORY_METHOD(WindowGUI, ctLayout, Layout)
+    GCO_FACTORY_METHOD(WindowGUI, ctMinSize, MinSize)
+GCO_FACTORY_IMP_END
+
+WindowGUI::WindowGUI() : HasUIElement()
+{
+  std::cout << "WindowGUI con\n";
+}
+
+WindowGUI::~WindowGUI()
+{
+}
+
+FrItem WindowGUI::msgCreate(FrMsg m, FrMsgLength l)
+{
+    WindowGUI *item = new WindowGUI();
+    item->window = new Window(item->g->context);
+    item->uiElement.StaticCast(item->window);
+    UI* ui = item->g->context->GetSubsystem<UI>();
+    ui->GetRoot()->AddChild(item->window);
+    item->window->SetStyleAuto();
+    return (FrItem)(item);
+}
+
+void WindowGUI::msgDestroy()
+{
+    delete this;
+}
+
+
+// 
+// Tooltip
+//
+
+GIO_METHOD_FUNC(Tooltip, ScreenRect)
+GIO_METHOD_FUNC(Tooltip, Alignment)
+GIO_METHOD_FUNC(Tooltip, Parent)
+GIO_METHOD_FUNC(Tooltip, EntityId)
+GIO_METHOD_FUNC(Tooltip, Name)
+GIO_METHOD_FUNC(Tooltip, Layout)
+GIO_METHOD_FUNC(Tooltip, MinSize)
+GIO_METHOD_FUNC(Tooltip, Tooltip)
+
+GCO_FACTORY_IMP(Tooltip)
+    GCO_FACTORY_METHOD(Tooltip, ctScreenRect, ScreenRect)
+    GCO_FACTORY_METHOD(Tooltip, ctAlignment, Alignment)
+    GCO_FACTORY_METHOD(Tooltip, ctParent, Parent)
+    GCO_FACTORY_METHOD(Tooltip, ctEntityId, EntityId)
+    GCO_FACTORY_METHOD(Tooltip, ctName, Name)
+    GCO_FACTORY_METHOD(Tooltip, ctLayout, Layout)
+    GCO_FACTORY_METHOD(Tooltip, ctMinSize, MinSize)
+    GCO_FACTORY_METHOD(Tooltip, ctTooltip, Tooltip)
+GCO_FACTORY_IMP_END
+
+Tooltip::Tooltip() : HasUIElement(), Object(Graphics3DSystem::getG3DS()->context)
+{
+}
+
+Tooltip::~Tooltip()
+{
+}
+
+FrItem Tooltip::msgCreate(FrMsg m, FrMsgLength l)
+{
+    Tooltip *item = new Tooltip();
+    item->toolTip = new ToolTip(item->g->context);
+    item->uiElement.StaticCast(item->toolTip);
+    UI* ui = item->g->context->GetSubsystem<UI>();
+    ui->GetRoot()->AddChild(item->toolTip);
+    item->toolTip->SetStyleAuto();
+
+    BorderImage* textHolder = new BorderImage(item->g->context);
+    item->toolTip->AddChild(textHolder);
+    textHolder->SetStyle("ToolTipBorderImage");
+    item->toolTipText = new Text(item->g->context);
+    textHolder->AddChild(item->toolTipText);
+    item->toolTipText->SetStyle("ToolTipText");
+    return (FrItem)item;
+}
+
+void Tooltip::msgDestroy()
+{
+    delete this;
+}
+
+void Tooltip::msgTooltip(FrMsg m, FrMsgLength l)
+{
+  CborParser parser; CborValue it;
+  cbor_parser_init(m, l, 0, &parser, &it);
+  cbd::Tooltip tt;
+  cbd::readTooltip(&it, &tt);
+  
+  toolTipText->SetText(tt.c_str());
+}

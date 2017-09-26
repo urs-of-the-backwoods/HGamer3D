@@ -22,6 +22,10 @@ module HGamer3D.GUI
     , module HGamer3D.GUI.CheckBox
     , module HGamer3D.GUI.Font
     , module HGamer3D.GUI.Alignment
+    , module HGamer3D.GUI.WindowGUI
+    , module HGamer3D.GUI.Tooltip
+    , module HGamer3D.GUI.Layout
+    , module HGamer3D.GUI.MinSize
 )
 
 
@@ -36,5 +40,9 @@ import HGamer3D.GUI.DropDownList
 import HGamer3D.GUI.CheckBox
 import HGamer3D.GUI.Font
 import HGamer3D.GUI.Alignment
+import HGamer3D.GUI.WindowGUI
+import HGamer3D.GUI.Tooltip
+import HGamer3D.GUI.Layout
+import HGamer3D.GUI.MinSize
 
 

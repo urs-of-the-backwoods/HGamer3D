@@ -44,6 +44,7 @@
 #include <Urho3D/UI/CheckBox.h>
 #include <Urho3D/UI/DropDownList.h>
 #include <Urho3D/UI/Window.h>
+#include <Urho3D/UI/ToolTip.h>
 #include <Urho3D/UI/UI.h>
 #include <Urho3D/UI/UIEvents.h>
 #include <Urho3D/UI/UIElement.h>
@@ -53,11 +54,23 @@
 #include "Graphics3DSystem.hpp"
 #include "Urho3D/DebugNew.h"
 #include "Slider2.hpp"
+
+#include "SliderCbor.hpp"
+#include "EditTextCbor.hpp"
 #include "EntityIdCbor.hpp"
 #include "LineEdit2.hpp"
 #include "FontCbor.hpp"
 #include "AlignmentCbor.hpp"
 #include "ColourCbor.hpp"
+#include "WindowGUICbor.hpp"
+#include "TooltipCbor.hpp"
+#include "NameCbor.hpp"
+#include "LayoutCbor.hpp"
+#include "ParentCbor.hpp"
+#include "MinSizeCbor.hpp"
+#include "ButtonCbor.hpp"
+#include "CheckBoxCbor.hpp"
+#include "StaticTextCbor.hpp"
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -67,10 +80,6 @@
 
 using namespace Urho3D;
 
-GIO_METHOD_DEC(HasUIElement, ScreenRect)
-GIO_METHOD_DEC(HasUIElement, Alignment)
-GIO_METHOD_DEC(HasUIElement, Parent)
-GIO_METHOD_DEC(HasUIElement, EntityId)
 GCO_FACTORY_DEC(HasUIElement)
 
 class HasUIElement {
@@ -91,13 +100,12 @@ public:
   void msgAlignment(FrMsg m, FrMsgLength l);
   void msgParent(FrMsg m, FrMsgLength l);
   void msgEntityId(FrMsg m, FrMsgLength l);
+  void msgName(FrMsg m, FrMsgLength l);
+  void msgLayout(FrMsg m, FrMsgLength l);
+  void msgMinSize(FrMsg m, FrMsgLength l);
 };
 
 
-GIO_METHOD_DEC(ButtonItem, ScreenRect)
-GIO_METHOD_DEC(ButtonItem, Alignment)
-GIO_METHOD_DEC(ButtonItem, Parent)
-GIO_METHOD_DEC(ButtonItem, EntityId)
 GCO_FACTORY_DEC(ButtonItem)
 
 class ButtonItem : public HasUIElement, public Object {
@@ -124,11 +132,6 @@ public:
   void HandlePressedReleasedChanged(StringHash eventType, VariantMap& eventData);
 };
 
-GIO_METHOD_DEC(EditTextItem, ScreenRect)
-GIO_METHOD_DEC(EditTextItem, Alignment)
-GIO_METHOD_DEC(EditTextItem, Parent)
-GIO_METHOD_DEC(EditTextItem, EntityId)
-GIO_METHOD_DEC(EditTextItem, EditText)
 GCO_FACTORY_DEC(EditTextItem)
 
 class EditTextItem : public HasUIElement, public Object {
@@ -155,14 +158,6 @@ public:
   void HandleTextChanged(StringHash eventType, VariantMap& eventData);
 };
 
-GIO_METHOD_DEC(TextItem, ScreenRect)
-GIO_METHOD_DEC(TextItem, Alignment)
-GIO_METHOD_DEC(TextItem, Parent)
-GIO_METHOD_DEC(TextItem, EntityId)
-GIO_METHOD_DEC(TextItem, Text)
-GIO_METHOD_DEC(TextItem, Font)
-GIO_METHOD_DEC(TextItem, FontSize)
-GIO_METHOD_DEC(TextItem, Colour)
 GCO_FACTORY_DEC(TextItem)
 
 class TextItem : public HasUIElement {
@@ -184,11 +179,6 @@ public:
 };
 
 
-GIO_METHOD_DEC(SliderItem, ScreenRect)
-GIO_METHOD_DEC(SliderItem, Alignment)
-GIO_METHOD_DEC(SliderItem, Parent)
-GIO_METHOD_DEC(SliderItem, EntityId)
-GIO_METHOD_DEC(SliderItem, Slider)
 GCO_FACTORY_DEC(SliderItem)
 
 class SliderItem : public HasUIElement, public Object  {
@@ -215,11 +205,6 @@ public:
   void HandleSliderChanged(StringHash eventType, VariantMap& eventData);
 };
 
-GIO_METHOD_DEC(CheckBoxItem, ScreenRect)
-GIO_METHOD_DEC(CheckBoxItem, Alignment)
-GIO_METHOD_DEC(CheckBoxItem, Parent)
-GIO_METHOD_DEC(CheckBoxItem, EntityId)
-GIO_METHOD_DEC(CheckBoxItem, CheckBox)
 GCO_FACTORY_DEC(CheckBoxItem)
 
 class CheckBoxItem : public HasUIElement, public Object  {
@@ -246,6 +231,42 @@ public:
   void HandleToggled(StringHash eventType, VariantMap& eventData);
 };
 
+
+GCO_FACTORY_DEC(WindowGUI)
+
+class WindowGUI : public HasUIElement {
+
+protected:
+  SharedPtr<Window> window;
+  
+public:
+  WindowGUI();
+  ~WindowGUI();
+
+  static FrItem msgCreate(FrMsg m, FrMsgLength l);
+  void msgDestroy();
+};
+
+
+
+GCO_FACTORY_DEC(Tooltip)
+
+class Tooltip : public HasUIElement, public Object {
+
+URHO3D_OBJECT(Tooltip, Object);
+
+protected:
+  SharedPtr<ToolTip> toolTip;
+  SharedPtr<Text> toolTipText;
+  
+public:
+  Tooltip();
+  ~Tooltip();
+
+  static FrItem msgCreate(FrMsg m, FrMsgLength l);
+  void msgDestroy();
+  void msgTooltip(FrMsg m, FrMsgLength l);
+};
 
 
 #endif

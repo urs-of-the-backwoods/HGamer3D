@@ -63,7 +63,7 @@ FrItem GeometryItem::msgCreate(FrMsg m, FrMsgLength l)
 
 GeometryItem::~GeometryItem()
 {
-//  node->RemoveComponent<StaticModel>();
+  node->RemoveComponent<StaticModel>();
 }
 
 void GeometryItem::msgDestroy()

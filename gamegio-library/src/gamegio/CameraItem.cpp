@@ -117,7 +117,6 @@ CameraItem::~CameraItem()
     renderer->SetNumViewports(viewportSlot);
   }
   node->RemoveComponent<Camera>();
-  delete viewport;
 }
 
 void CameraItem::msgDestroy()

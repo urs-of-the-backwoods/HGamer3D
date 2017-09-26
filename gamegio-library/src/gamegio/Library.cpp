@@ -59,6 +59,8 @@ Library::Library()
     _factories[ctUIElement] = new HasUIElementFactory();
     _factories[ctMouseConfig] = new MouseFactory();
     _factories[ctGraphicsElement] = new HasNodeFactory();
+    _factories[ctWindowGUI] = new WindowGUIFactory();
+    _factories[ctTooltip] = new TooltipFactory();
 }
 
 Library::~Library()

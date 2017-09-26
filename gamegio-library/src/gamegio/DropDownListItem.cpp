@@ -74,8 +74,6 @@ DropDownListItem::~DropDownListItem()
 {
     UnsubscribeFromEvent(uiElement, E_ITEMSELECTED);
     UI* ui = g->context->GetSubsystem<UI>();
-    ui->GetRoot()->RemoveChild(dropdownlist);
-    delete dropdownlist;
 }
 
 void DropDownListItem::msgDropDownList(FrMsg m, FrMsgLength l)
