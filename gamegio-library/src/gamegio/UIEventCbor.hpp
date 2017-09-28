@@ -11,83 +11,108 @@
 #include "IntVec2Cbor.hpp"
 #include "MouseCbor.hpp"
 
+
 namespace cbd {
 
-typedef struct {
-    Position2D mousePosition;
-    Position2D elementPosition;
-    std::string elementName;
-} UIEventPosition;
-
 typedef enum {
-    Down = 0,
-    Up = 1,
-} EnumUIClick;
+    NoClick = 0,
+    SingleClick = 1,
+    DoubleClick = 2,
+    ClickEnd = 3,
+} EnumUIClickEvent;
 
 typedef struct {
-    EnumUIClick selector;
+    EnumUIClickEvent selector;
     struct {
         struct {
-            UIEventPosition value0;
-            MouseButtonData value1;
-        } Down;
+        } NoClick;
         struct {
-            UIEventPosition value0;
-            MouseButtonData value1;
-        } Up;
+            std::string value0;
+            Position2D value1;
+            MouseButtonData value2;
+        } SingleClick;
+        struct {
+            std::string value0;
+            Position2D value1;
+            MouseButtonData value2;
+        } DoubleClick;
+        struct {
+            std::string value0;
+            Position2D value1;
+            MouseButtonData value2;
+        } ClickEnd;
     } data;
-} UIClick;
+} UIClickEvent;
 
 typedef enum {
-    Hover = 0,
-} EnumUIHover;
+    NoHover = 0,
+    HoverBegin = 1,
+    HoverEnd = 2,
+} EnumUIHoverEvent;
 
 typedef struct {
-    EnumUIHover selector;
+    EnumUIHoverEvent selector;
     struct {
         struct {
-            UIEventPosition value0;
-            MouseButtonData value1;
-        } Hover;
+        } NoHover;
+        struct {
+            std::string value0;
+            Position2D value1;
+            Position2D value2;
+        } HoverBegin;
+        struct {
+            std::string value0;
+        } HoverEnd;
     } data;
-} UIHover;
+} UIHoverEvent;
 
 typedef enum {
-    Begin = 0,
-    Move = 1,
-    End = 2,
-} EnumUIDrag;
+    NoDrag = 0,
+    DragBegin = 1,
+    DragMove = 2,
+    DragEnd = 3,
+    DragCancel = 4,
+} EnumUIDragEvent;
 
 typedef struct {
-    EnumUIDrag selector;
+    EnumUIDragEvent selector;
     struct {
         struct {
-            UIEventPosition value0;
-            MouseButtonData value1;
-        } Begin;
+        } NoDrag;
         struct {
-            UIEventPosition value0;
-            MouseButtonData value1;
-        } Move;
+            std::string value0;
+            Position2D value1;
+            Position2D value2;
+        } DragBegin;
         struct {
-            UIEventPosition value0;
-            MouseButtonData value1;
-        } End;
+            std::string value0;
+            Position2D value1;
+            Position2D value2;
+            Position2D value3;
+        } DragMove;
+        struct {
+            std::string value0;
+            Position2D value1;
+            Position2D value2;
+        } DragEnd;
+        struct {
+            std::string value0;
+            Position2D value1;
+            Position2D value2;
+        } DragCancel;
     } data;
-} UIDrag;
+} UIDragEvent;
 
-void readUIEventPosition(CborValue *it, UIEventPosition *uIEventPosition);
-void writeUIEventPosition(CborEncoder *enc, UIEventPosition uIEventPosition);
-void readUIClick(CborValue *it, UIClick *uIClick);
-void writeUIClick(CborEncoder *enc, UIClick uIClick);
-void readUIHover(CborValue *it, UIHover *uIHover);
-void writeUIHover(CborEncoder *enc, UIHover uIHover);
-void readUIDrag(CborValue *it, UIDrag *uIDrag);
-void writeUIDrag(CborEncoder *enc, UIDrag uIDrag);
+void readUIClickEvent(CborValue *it, UIClickEvent *uIClickEvent);
+void writeUIClickEvent(CborEncoder *enc, UIClickEvent uIClickEvent);
+void readUIHoverEvent(CborValue *it, UIHoverEvent *uIHoverEvent);
+void writeUIHoverEvent(CborEncoder *enc, UIHoverEvent uIHoverEvent);
+void readUIDragEvent(CborValue *it, UIDragEvent *uIDragEvent);
+void writeUIDragEvent(CborEncoder *enc, UIDragEvent uIDragEvent);
 
 } // end of namespacd cdb
 
-extern const uint64_t ctUIClick;
-extern const uint64_t ctUIHover;
-extern const uint64_t ctUIDrag;
+extern const uint64_t ctUIClickEvent;
+extern const uint64_t ctUIHoverEvent;
+extern const uint64_t ctUIDragEvent;
 #endif

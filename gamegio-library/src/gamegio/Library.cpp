@@ -37,6 +37,7 @@
 #include "StaticTextCbor.hpp"
 #include "SliderCbor.hpp"
 #include "UIElementCbor.hpp"
+#include "UIEventCbor.hpp"
 
 
 Library::Library()
@@ -47,6 +48,7 @@ Library::Library()
     _factories[ctSoundSource] = new SoundSourceItemFactory();
     _factories[ctSoundListener] = new SoundListenerItemFactory();
     _factories[ctInputEventHandler] = new IEHClassFactory();
+    _factories[ctInputEvents] = new BasicEventHandlerFactory();
     _factories[ctCamera] = new CameraItemFactory();
     _factories[ctLight] = new LightItemFactory();
     _factories[ctGeometry] = new GeometryItemFactory();
@@ -110,13 +112,47 @@ FrMessageFn gioGetMsgSender(FrComponentType ob, FrComponentType pr)
 
 void gioRegisterMsgReceiver(FrItemType ctItem, FrEventType ctEvent, FrItem item, FrEntity receiver, FrMessageFn2 f)
 {
+    // old api, for compatibility
     GIO_REG_EVENT(IEHClass, InputEventHandler, MouseEvent)
     GIO_REG_EVENT(IEHClass, InputEventHandler, KeyEvent)
     GIO_REG_EVENT(IEHClass, InputEventHandler, ExitRequestedEvent)
+    // new event api, based on InputEvents ct
+    GIO_REG_EVENT(BasicEventHandler, InputEvents, MouseMoveEvent)
+    GIO_REG_EVENT(BasicEventHandler, InputEvents, MouseClickEvent)
+    GIO_REG_EVENT(BasicEventHandler, InputEvents, MouseWheelEvent)
+    GIO_REG_EVENT(BasicEventHandler, InputEvents, KeyEvent)
+    GIO_REG_EVENT(BasicEventHandler, InputEvents, ExitRequestedEvent)
+    GIO_REG_EVENT(BasicEventHandler, InputEvents, UIClickEvent)
+
     GIO_REG_EVENT(EditTextItem, EditText, EditText)
     GIO_REG_EVENT(CheckBoxItem, CheckBox, CheckBox)
     GIO_REG_EVENT(ButtonItem, Button, Button)
     GIO_REG_EVENT(SliderItem, Slider, Slider)
     GIO_REG_EVENT(DropDownListItem, DropDownList, DropDownList)
+
+    // hover & drag for all elements
+    GIO_REG_EVENT(HasUIElement, UIElement, UIHoverEvent)
+    GIO_REG_EVENT(HasUIElement, UIElement, UIDragEvent)
+    
+    GIO_REG_EVENT(HasUIElement, StaticText, UIHoverEvent)
+    GIO_REG_EVENT(HasUIElement, StaticText, UIDragEvent)
+    
+    GIO_REG_EVENT(HasUIElement, EditText, UIHoverEvent)
+    GIO_REG_EVENT(HasUIElement, EditText, UIDragEvent)
+
+    GIO_REG_EVENT(HasUIElement, Button, UIHoverEvent)
+    GIO_REG_EVENT(HasUIElement, Button, UIDragEvent)
+    
+    GIO_REG_EVENT(HasUIElement, Slider, UIHoverEvent)
+    GIO_REG_EVENT(HasUIElement, Slider, UIDragEvent)
+    
+    GIO_REG_EVENT(HasUIElement, CheckBox, UIHoverEvent)
+    GIO_REG_EVENT(HasUIElement, CheckBox, UIDragEvent)
+    
+    GIO_REG_EVENT(HasUIElement, WindowGUI, UIHoverEvent)
+    GIO_REG_EVENT(HasUIElement, WindowGUI, UIDragEvent)
+    
+    GIO_REG_EVENT(HasUIElement, DropDownList, UIHoverEvent)
+    GIO_REG_EVENT(HasUIElement, DropDownList, UIDragEvent)
 }
 

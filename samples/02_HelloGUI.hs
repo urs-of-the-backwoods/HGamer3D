@@ -15,12 +15,20 @@ gameLogic hg3d = do
 
     -- create Window
     entities <- newET hg3d [
+        "events" <: [
+            ctInputEvents #: ()
+            , ctUIClickEvent #: NoClick
+        ], 
+
         "window" <| ([
             ctWindowGUI #: ()
             , ctLayout #: Layout LMVertical 10 (ScreenRect2 6 6 6 6) 
+            , ctPosition2D #: IntVec2 0 0
             , ctAlignment #: Alignment HACenter VACenter
             , ctMinSize #: MinSize 384 0
             , ctName #: "Window"
+            , ctUIHoverEvent #: NoHover
+            , ctUIDragEvent #: NoDrag
             ] , [
 
                 () -| ([
@@ -58,7 +66,10 @@ gameLogic hg3d = do
             ])
         ]
 
-    return ()
+    registerCallback hg3d (entities # "window") ctUIDragEvent (\de -> case de of
+                                                                    (DragMove _ (IntVec2 dx dy) _ _) -> updateC (entities # "window") ctPosition2D (\(IntVec2 x y) -> (IntVec2 (x + dx) (y + dy))) >> return ()
+                                                                    _ -> return ()
+                                                                    )
 
 main = do 
     runGame standardGraphics3DConfig gameLogic (msecT 20)

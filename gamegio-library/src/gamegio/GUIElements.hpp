@@ -72,6 +72,8 @@
 #include "CheckBoxCbor.hpp"
 #include "StaticTextCbor.hpp"
 #include "UIStyleCbor.hpp"
+#include "IntVec2Cbor.hpp"
+#include "UIEventCbor.hpp"
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -91,6 +93,15 @@ protected:
   SharedPtr<UIElement> uiElement;
   Graphics3DSystem* g;
   cbd::EntityId myId;
+
+  // hover
+  FrMessageFn2 cbfHover;
+  void* cbdHover;
+  uint64_t cbetHover;
+  // drag
+  FrMessageFn2 cbfDrag;
+  void* cbdDrag;
+  uint64_t cbetDrag;
   
 public:
   HasUIElement();
@@ -106,7 +117,17 @@ public:
   void msgName(FrMsg m, FrMsgLength l);
   void msgLayout(FrMsg m, FrMsgLength l);
   void msgMinSize(FrMsg m, FrMsgLength l);
+  void msgPosition2D(FrMsg m, FrMsgLength l);
+  void msgSize2D(FrMsg m, FrMsgLength l);
   void msgUIStyle(FrMsg m, FrMsgLength l);
+
+
+  // Hover
+  void registerUIHoverEventFunction(FrMessageFn2 f, void* p2, uint64_t evt_t);
+  void HandleHover(StringHash eventType, VariantMap& eventData);
+  // Drag
+  void registerUIDragEventFunction(FrMessageFn2 f, void* p2, uint64_t evt_t);
+  void HandleDrag(StringHash eventType, VariantMap& eventData);
 };
 
 

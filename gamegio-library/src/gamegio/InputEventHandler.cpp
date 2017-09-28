@@ -40,8 +40,7 @@ GCO_FACTORY_IMP(Mouse)
   GCO_FACTORY_METHOD(Mouse, ctVisible, Visible)
 GCO_FACTORY_IMP_END
 
-Mouse::Mouse()
-: Object(Graphics3DSystem::getG3DS()->context)
+Mouse::Mouse() : Object(Graphics3DSystem::getG3DS()->context)
 {
     input =  Graphics3DSystem::getG3DS()->context->GetSubsystem<Input>();
 }
@@ -95,70 +94,27 @@ void Mouse::msgVisible(FrMsg m, FrMsgLength l)
 }
 
 //
-// InputEventHandler
+// BasicEventHandler
 //
 
-GIO_METHOD_FUNC(IEHClass, InputEventHandler)
-
-GCO_FACTORY_IMP(IEHClass)
-  GCO_FACTORY_METHOD(IEHClass, ctInputEventHandler, InputEventHandler)
+GCO_FACTORY_IMP(BasicEventHandler)
 GCO_FACTORY_IMP_END
 
-IEHClass::IEHClass()
-: Object(Graphics3DSystem::getG3DS()->context)
+BasicEventHandler::BasicEventHandler() : Object(Graphics3DSystem::getG3DS()->context)
 {
     input = Graphics3DSystem::getG3DS()->context->GetSubsystem<Input>();
     
-    mouseEventF = NULL;
-    mouseDataP = NULL;
+    mouseMoveF = NULL;
+    mouseClickF = NULL;
+    mouseWheelF = NULL;
+
     keyEventF = NULL;
-    keyDataP = NULL;
     exitREventF = NULL;
-    exitRDataP = NULL;
-    
-    bDefaultEvents = true;
-
-    bMouseEvents = false;
-    bKeyEvents = false;
-    bMouseButtonUp = false;
-    bMouseButtonDown = false;
-    bMouseMove = false;
-    bMouseWheel = false;
-    bMouseVisibleChanged = false;
-    bKeyUp = false;
-    bKeyDown = false;
-
 }
 
-IEHClass::~IEHClass()
+BasicEventHandler::~BasicEventHandler()
 {
-  // deregister all events by following procedure
-  bDefaultEvents = true;
-  bMouseEvents = false;
-  bKeyEvents = false;
-  bExitRequestedEvent = false;
-  registerEvents();
-  
-  exitREventF = NULL;
-  mouseEventF = NULL;
-  keyEventF = NULL;
-}
-
-FrItem IEHClass::msgCreate(FrMsg m, FrMsgLength l)
-{
-    return new IEHClass();
-}
-
-void IEHClass::msgDestroy()
-{
-    delete this;
-}
-
-
-
-void IEHClass::registerEvents()
-{
-  // does the registration, depending on event flags
+  // deregister all events 
   UnsubscribeFromEvent(E_MOUSEBUTTONUP);
   UnsubscribeFromEvent(E_MOUSEBUTTONDOWN);
   UnsubscribeFromEvent(E_MOUSEMOVE);
@@ -167,176 +123,190 @@ void IEHClass::registerEvents()
   UnsubscribeFromEvent(E_KEYUP);
   UnsubscribeFromEvent(E_KEYDOWN);
   UnsubscribeFromEvent(E_EXITREQUESTED);
-  
-  if (bDefaultEvents) {
-      // register only events, for which we have components active
-      if (bMouseEvents) {
-          SubscribeToEvent(E_MOUSEBUTTONUP, URHO3D_HANDLER(IEHClass, HandleMouseButtonUp));
-          SubscribeToEvent(E_MOUSEBUTTONDOWN, URHO3D_HANDLER(IEHClass, HandleMouseButtonDown));
-          SubscribeToEvent(E_MOUSEMOVE, URHO3D_HANDLER(IEHClass, HandleMouseMove));
-          SubscribeToEvent(E_MOUSEWHEEL, URHO3D_HANDLER(IEHClass, HandleMouseWheel));
-          SubscribeToEvent(E_MOUSEVISIBLECHANGED, URHO3D_HANDLER(IEHClass, HandleMouseVisibleChanged));
-      }
-      if (bKeyEvents) {
-          SubscribeToEvent(E_KEYUP, URHO3D_HANDLER(IEHClass, HandleKeyUp));
-          SubscribeToEvent(E_KEYDOWN, URHO3D_HANDLER(IEHClass, HandleKeyDown));
-      }
-      if (bExitRequestedEvent) {
-          SubscribeToEvent(E_EXITREQUESTED, URHO3D_HANDLER(IEHClass, HandleExitRequestedEvent));
-      }
-      
-  } else
-      // register only events, for which we have a registration setting in input event handler
-  {
-    if (bMouseButtonUp) SubscribeToEvent(E_MOUSEBUTTONUP, URHO3D_HANDLER(IEHClass, HandleMouseButtonUp));
-    if (bMouseButtonDown) SubscribeToEvent(E_MOUSEBUTTONDOWN, URHO3D_HANDLER(IEHClass, HandleMouseButtonDown));
-    if (bMouseMove) SubscribeToEvent(E_MOUSEMOVE, URHO3D_HANDLER(IEHClass, HandleMouseMove));
-    if (bMouseWheel) SubscribeToEvent(E_MOUSEWHEEL, URHO3D_HANDLER(IEHClass, HandleMouseWheel));
-    if (bMouseVisibleChanged) SubscribeToEvent(E_MOUSEVISIBLECHANGED, URHO3D_HANDLER(IEHClass, HandleMouseVisibleChanged));
-    if (bKeyUp) SubscribeToEvent(E_KEYUP, URHO3D_HANDLER(IEHClass, HandleKeyUp));
-    if (bKeyDown) SubscribeToEvent(E_KEYDOWN, URHO3D_HANDLER(IEHClass, HandleKeyDown));
+  UnsubscribeFromEvent(E_UIMOUSECLICK);
+  UnsubscribeFromEvent(E_UIMOUSECLICKEND);
+  UnsubscribeFromEvent(E_UIMOUSEDOUBLECLICK);
+}
+
+FrItem BasicEventHandler::msgCreate(FrMsg m, FrMsgLength l)
+{
+    return new BasicEventHandler();
+}
+
+void BasicEventHandler::msgDestroy()
+{
+    delete this;
+}
+
+
+void BasicEventHandler::registerMouseClickEventFunction(FrMessageFn2 f, void* p2, uint64_t mouseET)
+{
+    mouseClickF = f;
+    mouseClickD = p2;
+    mouseClickET = mouseET;
+
+    SubscribeToEvent(E_MOUSEBUTTONUP, URHO3D_HANDLER(BasicEventHandler, HandleMouseButtonUp));
+    SubscribeToEvent(E_MOUSEBUTTONDOWN, URHO3D_HANDLER(BasicEventHandler, HandleMouseButtonDown));
+}
+
+void BasicEventHandler::registerMouseMoveEventFunction(FrMessageFn2 f, void* p2, uint64_t mouseET)
+{
+    mouseMoveF = f;
+    mouseMoveD = p2;
+    mouseMoveET = mouseET;
+
+    SubscribeToEvent(E_MOUSEMOVE, URHO3D_HANDLER(BasicEventHandler, HandleMouseMove));
+}
+
+void BasicEventHandler::registerMouseWheelEventFunction(FrMessageFn2 f, void* p2, uint64_t mouseET)
+{
+    mouseWheelF = f;
+    mouseWheelD = p2;
+    mouseWheelET = mouseET;
+
+    SubscribeToEvent(E_MOUSEWHEEL, URHO3D_HANDLER(BasicEventHandler, HandleMouseWheel));
+}
+
+void BasicEventHandler::registerMouseEventFunction(FrMessageFn2 f, void* p2, uint64_t mouseET)
+{
+    registerMouseClickEventFunction(f, p2, mouseET);
+    registerMouseMoveEventFunction(f, p2, mouseET);
+    registerMouseWheelEventFunction(f, p2, mouseET);
+    SubscribeToEvent(E_MOUSEVISIBLECHANGED, URHO3D_HANDLER(BasicEventHandler, HandleMouseVisibleChanged));
+}
+
+void BasicEventHandler::registerKeyEventFunction(FrMessageFn2 f, void* p2, uint64_t keyET)
+{
+    // register events: depends on default setting
+    keyEventF = f;
+    keyDataP = p2;
+    keyEventType = keyET;
+
+    SubscribeToEvent(E_KEYUP, URHO3D_HANDLER(BasicEventHandler, HandleKeyUp));
+    SubscribeToEvent(E_KEYDOWN, URHO3D_HANDLER(BasicEventHandler, HandleKeyDown));
+}
+
+void BasicEventHandler::registerExitRequestedEventFunction(FrMessageFn2 f, void* p2, uint64_t erET)
+{
+  exitREventF = f;
+  exitRDataP = p2;
+  exitREventType = erET;
+
+  SubscribeToEvent(E_EXITREQUESTED, URHO3D_HANDLER(BasicEventHandler, HandleExitRequestedEvent));
+}
+
+// Click
+void BasicEventHandler::registerUIClickEventFunction(FrMessageFn2 f, void* p2, uint64_t cbet)
+{
+    cbfClick = f;
+    cbdClick = p2;
+    cbetClick = cbet;
+    SubscribeToEvent(E_UIMOUSECLICK, URHO3D_HANDLER(BasicEventHandler, HandleClick));
+    SubscribeToEvent(E_UIMOUSECLICKEND, URHO3D_HANDLER(BasicEventHandler, HandleClick));
+    SubscribeToEvent(E_UIMOUSEDOUBLECLICK, URHO3D_HANDLER(BasicEventHandler, HandleClick));
+}
+
+void BasicEventHandler::HandleClick(StringHash eventType, VariantMap& eventData)
+{
+    std::cout << "Click received\n";
+}
+
+void BasicEventHandler::HandleMouseButtonUp(StringHash eventType, VariantMap& eventData)
+{
+  if (mouseClickF != NULL) {
+    uint8_t buf[64];
+    CborEncoder encoder;
+    cbor_encoder_init(&encoder, buf, sizeof(buf), 0);
+
+    cbd::MouseEvent mevt;
+
+    mevt.selector = cbd::MButtonUpEvent;
+    mevt.data.MButtonUpEvent.value0.button = eventData[MouseButtonUp::P_BUTTON].GetInt();
+    mevt.data.MButtonUpEvent.value0.buttons = eventData[MouseButtonUp::P_BUTTONS].GetInt();
+    mevt.data.MButtonUpEvent.value0.qualifiers = eventData[MouseButtonUp::P_QUALIFIERS].GetInt();
+
+    writeMouseEvent(&encoder, mevt);
+    size_t len = cbor_encoder_get_buffer_size(&encoder, buf);
+    mouseClickF(mouseClickD, mouseClickET, buf, len);
   }
-    
 }
 
-void IEHClass::msgInputEventHandler(FrMsg m, FrMsgLength l)
-{ 
-    CborParser parser; CborValue it;
-    cbor_parser_init(m, l, 0, &parser, &it);
-    InputEventHandler ieh;
-    readInputEventHandler(&it, &ieh);
-
-    // default handler
-    if (ieh.selector == DefaultEventHandler)
-    {
-        bDefaultEvents = true;
-    } else if (ieh.selector == SpecificEventHandler)
-        
-    // non default handler, registered events
-    {
-        bDefaultEvents = false;
-        bMouseButtonUp = false;
-        bMouseButtonDown = false;
-        bMouseMove = false;
-        bMouseWheel = false;
-        bMouseVisibleChanged = false;
-        bKeyUp = false;
-        bKeyDown = false;
-        bExitRequested = false;
-        
-        for(std::vector<InputEventType>::iterator it = ieh.data.SpecificEventHandler.value0.begin(); it != ieh.data.SpecificEventHandler.value0.end(); ++it) {
-            if (it->selector == IEMouseButtonUp) bMouseButtonUp = true;
-            if (it->selector == IEMouseButtonDown) bMouseButtonDown = true;
-            if (it->selector == IEMouseMove) bMouseMove = true;
-            if (it->selector == IEMouseButtonWheel) bMouseWheel = true;
-            if (it->selector == IEMouseVisible) bMouseVisibleChanged = true;
-            if (it->selector == IEKeyUp) bKeyUp = true;
-            if (it->selector == IEKeyDown) bKeyDown = true;
-            if (it->selector == IEExitRequested) bExitRequested = true;
-        }
-    }
-            
-    registerEvents();
-}
-
-void IEHClass::HandleMouseButtonUp(StringHash eventType, VariantMap& eventData)
+void BasicEventHandler::HandleMouseButtonDown(StringHash eventType, VariantMap& eventData)
 {
-	if (mouseEventF != NULL) {
+  if (mouseClickF != NULL) {
     uint8_t buf[64];
     CborEncoder encoder;
     cbor_encoder_init(&encoder, buf, sizeof(buf), 0);
 
     cbd::MouseEvent mevt;
 
-    mevt.selector = cbd::MouseButtonUpEvent;
-    mevt.data.MouseButtonUpEvent.value0.button = eventData[MouseButtonUp::P_BUTTON].GetInt();
-    mevt.data.MouseButtonUpEvent.value0.buttons = eventData[MouseButtonUp::P_BUTTONS].GetInt();
-    mevt.data.MouseButtonUpEvent.value0.qualifiers = eventData[MouseButtonUp::P_QUALIFIERS].GetInt();
+    mevt.selector = cbd::MButtonDownEvent;
+    mevt.data.MButtonUpEvent.value0.button = eventData[MouseButtonUp::P_BUTTON].GetInt();
+    mevt.data.MButtonUpEvent.value0.buttons = eventData[MouseButtonUp::P_BUTTONS].GetInt();
+    mevt.data.MButtonUpEvent.value0.qualifiers = eventData[MouseButtonUp::P_QUALIFIERS].GetInt();
 
     writeMouseEvent(&encoder, mevt);
     size_t len = cbor_encoder_get_buffer_size(&encoder, buf);
-    mouseEventF(mouseDataP, mouseEventType, buf, len);
-	}
+    mouseClickF(mouseClickD, mouseClickET, buf, len);
+  }
 }
 
-void IEHClass::HandleMouseButtonDown(StringHash eventType, VariantMap& eventData)
+void BasicEventHandler::HandleMouseMove(StringHash eventType, VariantMap& eventData)
 {
-	if (mouseEventF != NULL) {
+  if (mouseMoveF != NULL) {
     uint8_t buf[64];
     CborEncoder encoder;
     cbor_encoder_init(&encoder, buf, sizeof(buf), 0);
 
     cbd::MouseEvent mevt;
 
-    mevt.selector = cbd::MouseButtonDownEvent;
-    mevt.data.MouseButtonUpEvent.value0.button = eventData[MouseButtonUp::P_BUTTON].GetInt();
-    mevt.data.MouseButtonUpEvent.value0.buttons = eventData[MouseButtonUp::P_BUTTONS].GetInt();
-    mevt.data.MouseButtonUpEvent.value0.qualifiers = eventData[MouseButtonUp::P_QUALIFIERS].GetInt();
-
-    writeMouseEvent(&encoder, mevt);
-    size_t len = cbor_encoder_get_buffer_size(&encoder, buf);
-    mouseEventF(mouseDataP, mouseEventType, buf, len);
-	}
-}
-
-void IEHClass::HandleMouseMove(StringHash eventType, VariantMap& eventData)
-{
-	if (mouseEventF != NULL) {
-    uint8_t buf[64];
-    CborEncoder encoder;
-    cbor_encoder_init(&encoder, buf, sizeof(buf), 0);
-
-    cbd::MouseEvent mevt;
-
-    mevt.selector = cbd::MouseButtonUpEvent;
+    mevt.selector = cbd::MMoveEvent;
     if (input->IsMouseVisible()) {
-      mevt.data.MouseMoveEvent.value0.x = eventData[MouseMove::P_X].GetInt();
-      mevt.data.MouseMoveEvent.value0.y = eventData[MouseMove::P_Y].GetInt();
+      mevt.data.MMoveEvent.value0.x = eventData[MouseMove::P_X].GetInt();
+      mevt.data.MMoveEvent.value0.y = eventData[MouseMove::P_Y].GetInt();
     } else {
-      mevt.data.MouseMoveEvent.value0.x = 0;
-      mevt.data.MouseMoveEvent.value0.y = 0;
+      mevt.data.MMoveEvent.value0.x = 0;
+      mevt.data.MMoveEvent.value0.y = 0;
     }
-    mevt.data.MouseMoveEvent.value0.dx = eventData[MouseMove::P_DX].GetInt();
-    mevt.data.MouseMoveEvent.value0.dy = eventData[MouseMove::P_DY].GetInt();
-    mevt.data.MouseMoveEvent.value0.buttons = eventData[MouseMove::P_BUTTONS].GetInt();
-    mevt.data.MouseMoveEvent.value0.qualifiers = eventData[MouseMove::P_QUALIFIERS].GetInt();
+    mevt.data.MMoveEvent.value0.dx = eventData[MouseMove::P_DX].GetInt();
+    mevt.data.MMoveEvent.value0.dy = eventData[MouseMove::P_DY].GetInt();
+    mevt.data.MMoveEvent.value0.buttons = eventData[MouseMove::P_BUTTONS].GetInt();
+    mevt.data.MMoveEvent.value0.qualifiers = eventData[MouseMove::P_QUALIFIERS].GetInt();
 
     writeMouseEvent(&encoder, mevt);
     size_t len = cbor_encoder_get_buffer_size(&encoder, buf);
-    mouseEventF(mouseDataP, mouseEventType, buf, len);
-	}
+    mouseMoveF(mouseMoveD, mouseMoveET, buf, len);
+  }
 }
 
-void IEHClass::HandleMouseWheel(StringHash eventType, VariantMap& eventData)
+void BasicEventHandler::HandleMouseWheel(StringHash eventType, VariantMap& eventData)
 {
-	if (mouseEventF != NULL) {
+  if (mouseWheelF != NULL) {
     uint8_t buf[64];
     CborEncoder encoder;
     cbor_encoder_init(&encoder, buf, sizeof(buf), 0);
 
     cbd::MouseEvent mevt;
 
-    mevt.selector = cbd::MouseButtonDownEvent;
-    mevt.data.MouseWheelEvent.value0.wheel = eventData[MouseWheel::P_WHEEL].GetInt();
-    mevt.data.MouseWheelEvent.value0.buttons = eventData[MouseWheel::P_BUTTONS].GetInt();
-    mevt.data.MouseWheelEvent.value0.qualifiers = eventData[MouseWheel::P_QUALIFIERS].GetInt();
+    mevt.selector = cbd::MWheelEvent;
+    mevt.data.MWheelEvent.value0.wheel = eventData[MouseWheel::P_WHEEL].GetInt();
+    mevt.data.MWheelEvent.value0.buttons = eventData[MouseWheel::P_BUTTONS].GetInt();
+    mevt.data.MWheelEvent.value0.qualifiers = eventData[MouseWheel::P_QUALIFIERS].GetInt();
 
     writeMouseEvent(&encoder, mevt);
     size_t len = cbor_encoder_get_buffer_size(&encoder, buf);
-    mouseEventF(mouseDataP, mouseEventType, buf, len);
-	}
+    mouseWheelF(mouseWheelD, mouseWheelET, buf, len);
+  }
 }
 
-void IEHClass::HandleMouseVisibleChanged(StringHash eventType, VariantMap& eventData)
+void BasicEventHandler::HandleMouseVisibleChanged(StringHash eventType, VariantMap& eventData)
 {
-	if (mouseEventF != NULL) {
     // we should connect this to visible flag
-	}
 }
 
-void IEHClass::HandleKeyUp(StringHash eventType, VariantMap& eventData)
+void BasicEventHandler::HandleKeyUp(StringHash eventType, VariantMap& eventData)
 {
-	if (keyEventF != NULL) {
+  if (keyEventF != NULL) {
     uint8_t buf[64];
     CborEncoder encoder;
     cbor_encoder_init(&encoder, buf, sizeof(buf), 0);
@@ -352,10 +322,10 @@ void IEHClass::HandleKeyUp(StringHash eventType, VariantMap& eventData)
     writeKeyEvent(&encoder, kevt);
     size_t len = cbor_encoder_get_buffer_size(&encoder, buf);
     keyEventF(keyDataP, keyEventType, buf, len);
-	}
+  }
 }
 
-void IEHClass::HandleKeyDown(StringHash eventType, VariantMap& eventData)
+void BasicEventHandler::HandleKeyDown(StringHash eventType, VariantMap& eventData)
 {
   if (keyEventF != NULL) {
         if (!eventData[KeyDown::P_REPEAT].GetBool()) {
@@ -378,7 +348,7 @@ void IEHClass::HandleKeyDown(StringHash eventType, VariantMap& eventData)
   }
 }
 
-void IEHClass::HandleExitRequestedEvent(StringHash eventType, VariantMap& eventData)
+void BasicEventHandler::HandleExitRequestedEvent(StringHash eventType, VariantMap& eventData)
 {
   if (exitREventF != NULL) {
     uint8_t buf[64];
@@ -393,32 +363,40 @@ void IEHClass::HandleExitRequestedEvent(StringHash eventType, VariantMap& eventD
   }
 }
 
-void IEHClass::registerMouseEventFunction(FrMessageFn2 f, void* p2, uint64_t mouseET)
+
+
+//
+// InputEventHandler
+//
+
+GIO_METHOD_FUNC(IEHClass, InputEventHandler)
+
+GCO_FACTORY_IMP(IEHClass)
+  GCO_FACTORY_METHOD(IEHClass, ctInputEventHandler, InputEventHandler)
+GCO_FACTORY_IMP_END
+
+IEHClass::IEHClass() 
 {
-    // register events: depends on default setting
-    bMouseEvents = true;
-    registerEvents();
-    mouseEventF = f;
-    mouseDataP = p2;
-    mouseEventType = mouseET;
 }
 
-void IEHClass::registerKeyEventFunction(FrMessageFn2 f, void* p2, uint64_t keyET)
+IEHClass::~IEHClass()
 {
-    // register events: depends on default setting
-    bKeyEvents = true;
-    registerEvents();
-    keyEventF = f;
-    keyDataP = p2;
-    keyEventType = keyET;
 }
 
-void IEHClass::registerExitRequestedEventFunction(FrMessageFn2 f, void* p2, uint64_t erET)
+FrItem IEHClass::msgCreate(FrMsg m, FrMsgLength l)
 {
-  // register events: depends on default setting
-  bExitRequestedEvent = true;
-  registerEvents();
-  exitREventF = f;
-  exitRDataP = p2;
-  exitREventType = erET;
+    return new IEHClass();
 }
+
+void IEHClass::msgDestroy()
+{
+    delete this;
+}
+
+
+void IEHClass::msgInputEventHandler(FrMsg m, FrMsgLength l)
+{ 
+  // this is a compatibility fake for older versions
+  // the handlers, which are there will get events, independent of msgInputEventHandler configuration
+}
+

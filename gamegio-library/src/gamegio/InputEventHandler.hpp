@@ -55,8 +55,9 @@
 
 using namespace Urho3D;
 
-GIO_METHOD_DEC(Mouse, MouseConfig)
-GIO_METHOD_DEC(Mouse, Visible)
+// 
+// Mouse Configuration
+//
 
 GCO_FACTORY_DEC(Mouse)
 
@@ -77,17 +78,34 @@ public:
   void msgDestroy();
 };
 
-GIO_METHOD_DEC(IEHClass, InputEventHandler)
-GCO_FACTORY_DEC(IEHClass)
 
-class IEHClass : public Object {
 
-URHO3D_OBJECT(IEHClass, Object);
+//
+// Basic Event Handler
+//
 
-private:
-  FrMessageFn2 mouseEventF;
-  void* mouseDataP;
-  uint64_t mouseEventType;
+GCO_FACTORY_DEC(BasicEventHandler)
+
+class BasicEventHandler : public Object {
+
+URHO3D_OBJECT(BasicEventHandler, Object);
+
+protected:
+  FrMessageFn2 mouseClickF;
+  void* mouseClickD;
+  uint64_t mouseClickET;
+
+  FrMessageFn2 mouseMoveF;
+  void* mouseMoveD;
+  uint64_t mouseMoveET;
+
+  FrMessageFn2 mouseWheelF;
+  void* mouseWheelD;
+  uint64_t mouseWheelET;
+
+  FrMessageFn2 cbfClick;
+  void* cbdClick;
+  uint64_t cbetClick;
 
   FrMessageFn2 keyEventF;
   void* keyDataP;
@@ -99,22 +117,49 @@ private:
 
   Input *input;
   
-  bool bDefaultEvents;          // events are not specified use properties, to check which to register
-  
-  bool bExitRequestedEvent;
-  bool bKeyEvents;
-  bool bMouseEvents;
-  
-  bool bExitRequested;
-  bool bMouseButtonUp;
-  bool bMouseButtonDown;
-  bool bMouseMove;
-  bool bMouseWheel;
-  bool bMouseVisibleChanged;
-  bool bKeyUp;
-  bool bKeyDown;
-  
-  void registerEvents();
+public:
+  BasicEventHandler();
+  ~BasicEventHandler();
+ 
+   // creation / destruction
+  static FrItem msgCreate(FrMsg m, FrMsgLength l);
+  void virtual msgDestroy();
+
+  void registerMouseClickEventFunction(FrMessageFn2 f, void* p2, uint64_t mouseET);
+  void registerMouseMoveEventFunction(FrMessageFn2 f, void* p2, uint64_t mouseET);
+  void registerMouseWheelEventFunction(FrMessageFn2 f, void* p2, uint64_t mouseET);
+
+  void registerMouseEventFunction(FrMessageFn2 f, void* p2, uint64_t mouseET);
+  void registerKeyEventFunction(FrMessageFn2 f, void* p2, uint64_t keyET);
+  void registerExitRequestedEventFunction(FrMessageFn2 f, void* p2, uint64_t erET);
+
+  // the event handling routines - Mouse
+  void HandleMouseMove(StringHash eventType, VariantMap& eventData);
+  void HandleMouseButtonDown(StringHash eventType, VariantMap& eventData);
+  void HandleMouseButtonUp(StringHash eventType, VariantMap& eventData);
+  void HandleMouseWheel(StringHash eventType, VariantMap& eventData);
+  void HandleMouseVisibleChanged(StringHash eventType, VariantMap& eventData);
+  // Keys
+  void HandleKeyUp(StringHash eventType, VariantMap& eventData);
+  void HandleKeyDown(StringHash eventType, VariantMap& eventData);
+  // Exit
+  void HandleExitRequestedEvent(StringHash eventType, VariantMap& eventData);
+
+  // Click
+  void registerUIClickEventFunction(FrMessageFn2 f, void* p2, uint64_t evt_t);
+  void HandleClick(StringHash eventType, VariantMap& eventData);
+};
+
+
+
+//
+// Input Event Handler
+//
+
+
+GCO_FACTORY_DEC(IEHClass)
+
+class IEHClass : public BasicEventHandler {
 
 public:
   IEHClass();
@@ -125,22 +170,6 @@ public:
   void virtual msgDestroy();
 
   void msgInputEventHandler(FrMsg m, FrMsgLength l);
-
-  void registerMouseEventFunction(FrMessageFn2 f, void* p2, uint64_t mouseET);
-  void registerKeyEventFunction(FrMessageFn2 f, void* p2, uint64_t keyET);
-  void registerExitRequestedEventFunction(FrMessageFn2 f, void* p2, uint64_t erET);
-
-  // the event handling routines
-  void HandleMouseMove(StringHash eventType, VariantMap& eventData);
-  void HandleMouseButtonDown(StringHash eventType, VariantMap& eventData);
-  void HandleMouseButtonUp(StringHash eventType, VariantMap& eventData);
-  void HandleMouseWheel(StringHash eventType, VariantMap& eventData);
-  void HandleMouseVisibleChanged(StringHash eventType, VariantMap& eventData);
-
-  void HandleExitRequestedEvent(StringHash eventType, VariantMap& eventData);
-  
-  void HandleKeyUp(StringHash eventType, VariantMap& eventData);
-  void HandleKeyDown(StringHash eventType, VariantMap& eventData);
 };
 
 #endif

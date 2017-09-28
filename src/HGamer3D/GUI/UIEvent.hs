@@ -10,75 +10,80 @@ import Data.Text
 import Data.Monoid
 import Control.Applicative
 
-import HGamer3D.Input.Mouse
 import HGamer3D.Data.IntVec2
+import HGamer3D.Input.Mouse
 
--- | position and element data, which is relevant during a UI event
-data UIEventPosition = UIEventPosition {
-    -- | position of mouse on the screen
-    uIEventPositionMousePosition::Position2D,
-    -- | position of element involved
-    uIEventPositionElementPosition::Position2D,
-    -- | name of element involved, if available, if not empty string
-    uIEventPositionElementName::Text
-    } deriving (Eq, Read, Show)
 
--- | a UI mouse click event
-data UIClick = Down UIEventPosition MouseButtonData
-    | Up UIEventPosition MouseButtonData
+-- | a UI mouse click event, sent by UI Subsystem, not by a single element
+data UIClickEvent = NoClick
+    | SingleClick Text Position2D MouseButtonData
+    | DoubleClick Text Position2D MouseButtonData
+    | ClickEnd Text Position2D MouseButtonData
     deriving (Eq, Read, Show)
 
-ctUIClick :: ComponentType UIClick
-ctUIClick = ComponentType 0x7669c3c292bf265
+ctUIClickEvent :: ComponentType UIClickEvent
+ctUIClickEvent = ComponentType 0x7669c3c292bf265
 
--- | a UI mouse hover event
-data UIHover = Hover UIEventPosition MouseButtonData
+-- | a UI mouse hover event, sent by a single element
+data UIHoverEvent = NoHover
+    | HoverBegin Text Position2D Position2D
+    | HoverEnd Text
     deriving (Eq, Read, Show)
 
-ctUIHover :: ComponentType UIHover
-ctUIHover = ComponentType 0x7e6f5eb9ae275c30
+ctUIHoverEvent :: ComponentType UIHoverEvent
+ctUIHoverEvent = ComponentType 0x7e6f5eb9ae275c30
 
 -- | ui mouse drag event
-data UIDrag = Begin UIEventPosition MouseButtonData
-    | Move UIEventPosition MouseButtonData
-    | End UIEventPosition MouseButtonData
+data UIDragEvent = NoDrag
+    | DragBegin Text Position2D Position2D
+    | DragMove Text Position2D Position2D Position2D
+    | DragEnd Text Position2D Position2D
+    | DragCancel Text Position2D Position2D
     deriving (Eq, Read, Show)
 
-ctUIDrag :: ComponentType UIDrag
-ctUIDrag = ComponentType 0x239d21291230fb3a
+ctUIDragEvent :: ComponentType UIDragEvent
+ctUIDragEvent = ComponentType 0x239d21291230fb3a
 
-instance Serialise UIEventPosition where
-    encode (UIEventPosition v1 v2 v3) = encodeListLen 3 <> encode v1 <> encode v2 <> encode v3
-    decode = decodeListLenOf 3 >> UIEventPosition <$> decode <*> decode <*> decode
-
-instance Serialise UIClick where
-    encode (Down v1 v2) = encodeListLen 3 <>  encode (0::Int) <> encode v1<> encode v2
-    encode (Up v1 v2) = encodeListLen 3 <>  encode (1::Int) <> encode v1<> encode v2
+instance Serialise UIClickEvent where
+    encode (NoClick) = encodeListLen 1 <>  encode (0::Int) 
+    encode (SingleClick v1 v2 v3) = encodeListLen 4 <>  encode (1::Int) <> encode v1<> encode v2<> encode v3
+    encode (DoubleClick v1 v2 v3) = encodeListLen 4 <>  encode (2::Int) <> encode v1<> encode v2<> encode v3
+    encode (ClickEnd v1 v2 v3) = encodeListLen 4 <>  encode (3::Int) <> encode v1<> encode v2<> encode v3
     decode = do
         decodeListLen
         i <- decode :: Decoder s Int
         case i of
-            0 -> (Down <$> decode <*> decode)
-            1 -> (Up <$> decode <*> decode)
+            0 -> (pure NoClick)
+            1 -> (SingleClick <$> decode <*> decode <*> decode)
+            2 -> (DoubleClick <$> decode <*> decode <*> decode)
+            3 -> (ClickEnd <$> decode <*> decode <*> decode)
 
-instance Serialise UIHover where
-    encode (Hover v1 v2) = encodeListLen 3 <>  encode (0::Int) <> encode v1<> encode v2
+instance Serialise UIHoverEvent where
+    encode (NoHover) = encodeListLen 1 <>  encode (0::Int) 
+    encode (HoverBegin v1 v2 v3) = encodeListLen 4 <>  encode (1::Int) <> encode v1<> encode v2<> encode v3
+    encode (HoverEnd v1) = encodeListLen 2 <>  encode (2::Int) <> encode v1
     decode = do
         decodeListLen
         i <- decode :: Decoder s Int
         case i of
-            0 -> (Hover <$> decode <*> decode)
+            0 -> (pure NoHover)
+            1 -> (HoverBegin <$> decode <*> decode <*> decode)
+            2 -> (HoverEnd <$> decode)
 
-instance Serialise UIDrag where
-    encode (Begin v1 v2) = encodeListLen 3 <>  encode (0::Int) <> encode v1<> encode v2
-    encode (Move v1 v2) = encodeListLen 3 <>  encode (1::Int) <> encode v1<> encode v2
-    encode (End v1 v2) = encodeListLen 3 <>  encode (2::Int) <> encode v1<> encode v2
+instance Serialise UIDragEvent where
+    encode (NoDrag) = encodeListLen 1 <>  encode (0::Int) 
+    encode (DragBegin v1 v2 v3) = encodeListLen 4 <>  encode (1::Int) <> encode v1<> encode v2<> encode v3
+    encode (DragMove v1 v2 v3 v4) = encodeListLen 5 <>  encode (2::Int) <> encode v1<> encode v2<> encode v3<> encode v4
+    encode (DragEnd v1 v2 v3) = encodeListLen 4 <>  encode (3::Int) <> encode v1<> encode v2<> encode v3
+    encode (DragCancel v1 v2 v3) = encodeListLen 4 <>  encode (4::Int) <> encode v1<> encode v2<> encode v3
     decode = do
         decodeListLen
         i <- decode :: Decoder s Int
         case i of
-            0 -> (Begin <$> decode <*> decode)
-            1 -> (Move <$> decode <*> decode)
-            2 -> (End <$> decode <*> decode)
+            0 -> (pure NoDrag)
+            1 -> (DragBegin <$> decode <*> decode <*> decode)
+            2 -> (DragMove <$> decode <*> decode <*> decode <*> decode)
+            3 -> (DragEnd <$> decode <*> decode <*> decode)
+            4 -> (DragCancel <$> decode <*> decode <*> decode)
 
 

@@ -1,16 +1,3 @@
-{-
-	Mouse functionality and settings
-	HGamer3D Library (A project to enable 3D game development in Haskell)
-	Copyright 2015 - 2017 Peter Althainz
-	
-	Distributed under the Apache License, Version 2.0
-	(See attached file LICENSE or copy at 
-	http://www.apache.org/licenses/LICENSE-2.0)
- 
-	file: HGamer3D/Input/Mouse.hs
--}
-
--- | Module providing the Mouse functionality and settings
 module HGamer3D.Input.Mouse
 where
 
@@ -58,14 +45,36 @@ data MouseWheelData = MouseWheelData {
     } deriving (Eq, Read, Show)
 
 data MouseEvent = NoMouseEvent
-    | MouseButtonUpEvent MouseButtonData
-    | MouseButtonDownEvent MouseButtonData
-    | MouseMoveEvent MouseMoveData
-    | MouseWheelEvent MouseWheelData
+    | MButtonUpEvent MouseButtonData
+    | MButtonDownEvent MouseButtonData
+    | MMoveEvent MouseMoveData
+    | MWheelEvent MouseWheelData
     deriving (Eq, Read, Show)
 
 ctMouseEvent :: ComponentType MouseEvent
 ctMouseEvent = ComponentType 0x27eaf3fd46595d08
+
+data MouseClickEvent = NoMouseClick
+    | MouseDownClick MouseButtonData
+    | MouseUpClick MouseButtonData
+    deriving (Eq, Read, Show)
+
+ctMouseClickEvent :: ComponentType MouseClickEvent
+ctMouseClickEvent = ComponentType 0x5bd46a46b4ae5d38
+
+data MouseMoveEvent = NoMouseMove
+    | MouseMove MouseMoveData
+    deriving (Eq, Read, Show)
+
+ctMouseMoveEvent :: ComponentType MouseMoveEvent
+ctMouseMoveEvent = ComponentType 0x7a409f478c6a34f5
+
+data MouseWheelEvent = NoMouseWheel
+    | MouseWheel MouseWheelData
+    deriving (Eq, Read, Show)
+
+ctMouseWheelEvent :: ComponentType MouseWheelEvent
+ctMouseWheelEvent = ComponentType 0xa5d6c1c359e6d8ce
 
 instance Serialise MouseMode where
     encode (Absolute) = encodeListLen 1 <>  encode (0::Int) 
@@ -97,18 +106,50 @@ instance Serialise MouseWheelData where
 
 instance Serialise MouseEvent where
     encode (NoMouseEvent) = encodeListLen 1 <>  encode (0::Int) 
-    encode (MouseButtonUpEvent v1) = encodeListLen 2 <>  encode (1::Int) <> encode v1
-    encode (MouseButtonDownEvent v1) = encodeListLen 2 <>  encode (2::Int) <> encode v1
-    encode (MouseMoveEvent v1) = encodeListLen 2 <>  encode (3::Int) <> encode v1
-    encode (MouseWheelEvent v1) = encodeListLen 2 <>  encode (4::Int) <> encode v1
+    encode (MButtonUpEvent v1) = encodeListLen 2 <>  encode (1::Int) <> encode v1
+    encode (MButtonDownEvent v1) = encodeListLen 2 <>  encode (2::Int) <> encode v1
+    encode (MMoveEvent v1) = encodeListLen 2 <>  encode (3::Int) <> encode v1
+    encode (MWheelEvent v1) = encodeListLen 2 <>  encode (4::Int) <> encode v1
     decode = do
         decodeListLen
         i <- decode :: Decoder s Int
         case i of
             0 -> (pure NoMouseEvent)
-            1 -> (MouseButtonUpEvent <$> decode)
-            2 -> (MouseButtonDownEvent <$> decode)
-            3 -> (MouseMoveEvent <$> decode)
-            4 -> (MouseWheelEvent <$> decode)
+            1 -> (MButtonUpEvent <$> decode)
+            2 -> (MButtonDownEvent <$> decode)
+            3 -> (MMoveEvent <$> decode)
+            4 -> (MWheelEvent <$> decode)
+
+instance Serialise MouseClickEvent where
+    encode (NoMouseClick) = encodeListLen 1 <>  encode (0::Int) 
+    encode (MouseDownClick v1) = encodeListLen 2 <>  encode (1::Int) <> encode v1
+    encode (MouseUpClick v1) = encodeListLen 2 <>  encode (2::Int) <> encode v1
+    decode = do
+        decodeListLen
+        i <- decode :: Decoder s Int
+        case i of
+            0 -> (pure NoMouseClick)
+            1 -> (MouseDownClick <$> decode)
+            2 -> (MouseUpClick <$> decode)
+
+instance Serialise MouseMoveEvent where
+    encode (NoMouseMove) = encodeListLen 1 <>  encode (0::Int) 
+    encode (MouseMove v1) = encodeListLen 2 <>  encode (1::Int) <> encode v1
+    decode = do
+        decodeListLen
+        i <- decode :: Decoder s Int
+        case i of
+            0 -> (pure NoMouseMove)
+            1 -> (MouseMove <$> decode)
+
+instance Serialise MouseWheelEvent where
+    encode (NoMouseWheel) = encodeListLen 1 <>  encode (0::Int) 
+    encode (MouseWheel v1) = encodeListLen 2 <>  encode (1::Int) <> encode v1
+    decode = do
+        decodeListLen
+        i <- decode :: Decoder s Int
+        case i of
+            0 -> (pure NoMouseWheel)
+            1 -> (MouseWheel <$> decode)
 
 

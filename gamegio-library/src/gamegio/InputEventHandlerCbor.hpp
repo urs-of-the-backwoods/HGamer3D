@@ -61,15 +61,20 @@ typedef struct {
 
 typedef struct {} ExitRequestedEvent;
 
-void readInputEventType(CborValue *it0, InputEventType *inputEventType);
-void writeInputEventType(CborEncoder *enc0, InputEventType inputEventType);
-void readInputEventHandler(CborValue *it0, InputEventHandler *inputEventHandler);
-void writeInputEventHandler(CborEncoder *enc0, InputEventHandler inputEventHandler);
+typedef struct {} InputEvents;
+
+void readInputEventType(CborValue *it, InputEventType *inputEventType);
+void writeInputEventType(CborEncoder *enc, InputEventType inputEventType);
+void readInputEventHandler(CborValue *it, InputEventHandler *inputEventHandler);
+void writeInputEventHandler(CborEncoder *enc, InputEventHandler inputEventHandler);
 void readExitRequestedEvent(CborValue *it, ExitRequestedEvent *exitRequestedEvent);
 void writeExitRequestedEvent(CborEncoder *enc, ExitRequestedEvent exitRequestedEvent);
+void readInputEvents(CborValue *it, InputEvents *inputEvents);
+void writeInputEvents(CborEncoder *enc, InputEvents inputEvents);
 
 } // end of namespacd cdb
 
 extern const uint64_t ctInputEventHandler;
 extern const uint64_t ctExitRequestedEvent;
+extern const uint64_t ctInputEvents;
 #endif

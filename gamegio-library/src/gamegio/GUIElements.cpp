@@ -17,6 +17,7 @@
 #include "GUIElements.hpp"
 #include "HasNode.hpp"
 
+
 using namespace std;
 
 // 
@@ -31,6 +32,8 @@ GIO_METHOD_FUNC(HasUIElement, Name)
 GIO_METHOD_FUNC(HasUIElement, Layout)
 GIO_METHOD_FUNC(HasUIElement, MinSize)
 GIO_METHOD_FUNC(HasUIElement, UIStyle)
+GIO_METHOD_FUNC(HasUIElement, Position2D)
+GIO_METHOD_FUNC(HasUIElement, Size2D)
 
 GCO_FACTORY_IMP(HasUIElement)
     GCO_FACTORY_METHOD(HasUIElement, ctScreenRect, ScreenRect)
@@ -41,6 +44,8 @@ GCO_FACTORY_IMP(HasUIElement)
     GCO_FACTORY_METHOD(HasUIElement, ctLayout, Layout)
     GCO_FACTORY_METHOD(HasUIElement, ctMinSize, MinSize)
     GCO_FACTORY_METHOD(HasUIElement, ctUIStyle, UIStyle)
+    GCO_FACTORY_METHOD(HasUIElement, ctPosition2D, Position2D)
+    GCO_FACTORY_METHOD(HasUIElement, ctSize2D, Size2D)
 GCO_FACTORY_IMP_END
 
 HasUIElement::HasUIElement() : Object(Graphics3DSystem::getG3DS()->context)
@@ -50,6 +55,12 @@ HasUIElement::HasUIElement() : Object(Graphics3DSystem::getG3DS()->context)
 
 HasUIElement::~HasUIElement()
 {
+    UnsubscribeFromEvent(uiElement, E_HOVERBEGIN);
+    UnsubscribeFromEvent(uiElement, E_HOVEREND);
+    UnsubscribeFromEvent(uiElement, E_DRAGBEGIN);
+    UnsubscribeFromEvent(uiElement, E_DRAGMOVE);
+    UnsubscribeFromEvent(uiElement, E_DRAGEND);
+    UnsubscribeFromEvent(uiElement, E_DRAGCANCEL);
     uiElement->Remove();
 }
 
@@ -157,6 +168,26 @@ void HasUIElement::msgMinSize(FrMsg m, FrMsgLength l)
   uiElement->SetMinSize(ms.minWidth, ms.minHeight);
 }
 
+void HasUIElement::msgPosition2D(FrMsg m, FrMsgLength l)
+{
+  CborParser parser; CborValue it;
+  cbor_parser_init(m, l, 0, &parser, &it);
+  cbd::Position2D pos;
+  cbd::readPosition2D(&it, &pos);
+
+  uiElement->SetPosition(pos.x, pos.y);
+}
+
+void HasUIElement::msgSize2D(FrMsg m, FrMsgLength l)
+{
+  CborParser parser; CborValue it;
+  cbor_parser_init(m, l, 0, &parser, &it);
+  cbd::Size2D size;
+  cbd::readSize2D(&it, &size);
+
+  uiElement->SetSize(size.x, size.y);
+}
+
 void HasUIElement::msgUIStyle(FrMsg m, FrMsgLength l)
 {
   CborParser parser; CborValue it;
@@ -166,6 +197,154 @@ void HasUIElement::msgUIStyle(FrMsg m, FrMsgLength l)
 
   uiElement->SetStyle(us.c_str());
 }
+
+
+// Hover
+void HasUIElement::registerUIHoverEventFunction(FrMessageFn2 f, void* p2, uint64_t cbet)
+{
+    cbfHover = f;
+    cbdHover = p2;
+    cbetHover = cbet;
+    SubscribeToEvent(uiElement, E_HOVERBEGIN, URHO3D_HANDLER(HasUIElement, HandleHover));
+    SubscribeToEvent(uiElement, E_HOVEREND, URHO3D_HANDLER(HasUIElement, HandleHover));
+}
+
+void HasUIElement::HandleHover(StringHash eventType, VariantMap& eventData)
+{
+   if (cbfHover != NULL) {
+        uint8_t buf[64];
+        CborEncoder encoder;
+        cbor_encoder_init(&encoder, buf, sizeof(buf), 0);
+        cbd::UIHoverEvent he;
+
+        if (eventType == E_HOVERBEGIN)
+        {
+            he.selector = cbd::HoverBegin;
+            // value0 -> element name
+            he.data.HoverBegin.value0 = "";
+            UIElement* clicked = static_cast<UIElement*>(eventData[UIMouseClick::P_ELEMENT].GetPtr()); 
+            if (clicked) {
+                he.data.HoverBegin.value0 = clicked->GetName().CString();
+            } 
+            // value1 -> element position
+            he.data.HoverBegin.value1.x = eventData[HoverBegin::P_ELEMENTX].GetInt();
+            he.data.HoverBegin.value1.y = eventData[HoverBegin::P_ELEMENTY].GetInt();
+            // value2 -> mouse position
+            he.data.HoverBegin.value2.x = eventData[HoverBegin::P_X].GetInt();
+            he.data.HoverBegin.value2.y = eventData[HoverBegin::P_Y].GetInt();
+        }
+
+        if (eventType == E_HOVEREND)
+        {
+            he.selector = cbd::HoverEnd;
+           // value 0 -> element name only 
+            he.data.HoverEnd.value0 = "";
+            UIElement* clicked = static_cast<UIElement*>(eventData[UIMouseClick::P_ELEMENT].GetPtr()); 
+            if (clicked) {
+                he.data.HoverEnd.value0 = clicked->GetName().CString();
+            }
+        }
+           
+        cbd::writeUIHoverEvent(&encoder, he);
+        size_t len = cbor_encoder_get_buffer_size(&encoder, buf);
+        cbfHover(cbdHover, cbetHover, buf, len);
+    }
+}
+
+// Drag
+void HasUIElement::registerUIDragEventFunction(FrMessageFn2 f, void* p2, uint64_t cbet)
+{
+    cbfDrag = f;
+    cbdDrag = p2;
+    cbetDrag = cbet;
+    SubscribeToEvent(uiElement, E_DRAGBEGIN, URHO3D_HANDLER(HasUIElement, HandleDrag));
+    SubscribeToEvent(uiElement, E_DRAGMOVE, URHO3D_HANDLER(HasUIElement, HandleDrag));
+    SubscribeToEvent(uiElement, E_DRAGEND, URHO3D_HANDLER(HasUIElement, HandleDrag));
+    SubscribeToEvent(uiElement, E_DRAGCANCEL, URHO3D_HANDLER(HasUIElement, HandleDrag));
+}
+
+void HasUIElement::HandleDrag(StringHash eventType, VariantMap& eventData)
+{
+    if (cbfDrag != NULL)
+    {
+        uint8_t buf[64];
+        CborEncoder encoder;
+        cbor_encoder_init(&encoder, buf, sizeof(buf), 0);
+        cbd::UIDragEvent evt;
+
+        if (eventType == E_DRAGBEGIN) {
+            evt.selector = cbd::DragBegin;
+            // value0 -> element name
+            evt.data.DragBegin.value0 = "";
+            UIElement* clicked = static_cast<UIElement*>(eventData[DragBegin::P_ELEMENT].GetPtr()); 
+            if (clicked) {
+                evt.data.DragBegin.value0 = clicked->GetName().CString();
+            } 
+            // value1 -> element position
+            evt.data.DragBegin.value1.x = eventData[DragBegin::P_ELEMENTX].GetInt();
+            evt.data.DragBegin.value1.y = eventData[DragBegin::P_ELEMENTY].GetInt();
+            // value2 -> mouse position
+            evt.data.DragBegin.value2.x = eventData[DragBegin::P_X].GetInt();
+            evt.data.DragBegin.value2.y = eventData[DragBegin::P_Y].GetInt();
+        }
+
+        if (eventType == E_DRAGMOVE) {
+            evt.selector = cbd::DragMove;
+            // value0 -> element name
+            evt.data.DragMove.value0 = "";
+            UIElement* clicked = static_cast<UIElement*>(eventData[DragMove::P_ELEMENT].GetPtr()); 
+            if (clicked) {
+                evt.data.DragMove.value0 = clicked->GetName().CString();
+            } 
+            // value1 -> element position
+            evt.data.DragMove.value1.x = eventData[DragMove::P_ELEMENTX].GetInt();
+            evt.data.DragMove.value1.y = eventData[DragMove::P_ELEMENTY].GetInt();
+            // value2 -> delta position
+            evt.data.DragMove.value2.x = eventData[DragMove::P_DX].GetInt();
+            evt.data.DragMove.value2.y = eventData[DragMove::P_DY].GetInt();
+            // value3 -> mouse position
+            evt.data.DragMove.value3.x = eventData[DragMove::P_X].GetInt();
+            evt.data.DragMove.value3.y = eventData[DragMove::P_Y].GetInt();
+        }
+
+        if (eventType == E_DRAGEND) {
+            evt.selector = cbd::DragEnd;
+            // value0 -> element name
+            evt.data.DragEnd.value0 = "";
+            UIElement* clicked = static_cast<UIElement*>(eventData[DragEnd::P_ELEMENT].GetPtr()); 
+            if (clicked) {
+                evt.data.DragEnd.value0 = clicked->GetName().CString();
+            } 
+            // value1 -> element position
+            evt.data.DragEnd.value1.x = eventData[DragEnd::P_ELEMENTX].GetInt();
+            evt.data.DragEnd.value1.y = eventData[DragEnd::P_ELEMENTY].GetInt();
+            // value2 -> mouse position
+            evt.data.DragEnd.value2.x = eventData[DragEnd::P_X].GetInt();
+            evt.data.DragEnd.value2.y = eventData[DragEnd::P_Y].GetInt();
+        }
+
+        if (eventType == E_DRAGCANCEL) {
+            evt.selector = cbd::DragCancel;
+            // value0 -> element name
+            evt.data.DragCancel.value0 = "";
+            UIElement* clicked = static_cast<UIElement*>(eventData[DragCancel::P_ELEMENT].GetPtr()); 
+            if (clicked) {
+                evt.data.DragCancel.value0 = clicked->GetName().CString();
+            } 
+            // value1 -> element position
+            evt.data.DragCancel.value1.x = eventData[DragCancel::P_ELEMENTX].GetInt();
+            evt.data.DragCancel.value1.y = eventData[DragCancel::P_ELEMENTY].GetInt();
+            // value2 -> mouse position
+            evt.data.DragCancel.value2.x = eventData[DragCancel::P_X].GetInt();
+            evt.data.DragCancel.value2.y = eventData[DragCancel::P_Y].GetInt();
+        }
+
+        cbd::writeUIDragEvent(&encoder, evt);
+        size_t len = cbor_encoder_get_buffer_size(&encoder, buf);
+        cbfDrag(cbdDrag, cbetDrag, buf, len);
+    }
+}
+
 
 //
 // ButtonItem
@@ -179,6 +358,8 @@ GIO_METHOD_FUNC(ButtonItem, Name)
 GIO_METHOD_FUNC(ButtonItem, Layout)
 GIO_METHOD_FUNC(ButtonItem, MinSize)
 GIO_METHOD_FUNC(ButtonItem, UIStyle)
+GIO_METHOD_FUNC(ButtonItem, Position2D)
+GIO_METHOD_FUNC(ButtonItem, Size2D)
 
 GCO_FACTORY_IMP(ButtonItem)
     GCO_FACTORY_METHOD(ButtonItem, ctScreenRect, ScreenRect)
@@ -189,6 +370,8 @@ GCO_FACTORY_IMP(ButtonItem)
     GCO_FACTORY_METHOD(ButtonItem, ctLayout, Layout)
     GCO_FACTORY_METHOD(ButtonItem, ctMinSize, MinSize)
     GCO_FACTORY_METHOD(ButtonItem, ctUIStyle, UIStyle)
+    GCO_FACTORY_METHOD(ButtonItem, ctPosition2D, Position2D)
+    GCO_FACTORY_METHOD(ButtonItem, ctSize2D, Size2D)
 GCO_FACTORY_IMP_END
 
 ButtonItem::ButtonItem() : HasUIElement()
@@ -274,6 +457,8 @@ GIO_METHOD_FUNC(EditTextItem, Name)
 GIO_METHOD_FUNC(EditTextItem, Layout)
 GIO_METHOD_FUNC(EditTextItem, MinSize)
 GIO_METHOD_FUNC(EditTextItem, UIStyle)
+GIO_METHOD_FUNC(EditTextItem, Position2D)
+GIO_METHOD_FUNC(EditTextItem, Size2D)
 
 GCO_FACTORY_IMP(EditTextItem)
     GCO_FACTORY_METHOD(EditTextItem, ctScreenRect, ScreenRect)
@@ -285,6 +470,8 @@ GCO_FACTORY_IMP(EditTextItem)
     GCO_FACTORY_METHOD(EditTextItem, ctLayout, Layout)
     GCO_FACTORY_METHOD(EditTextItem, ctMinSize, MinSize)
     GCO_FACTORY_METHOD(EditTextItem, ctUIStyle, UIStyle)
+    GCO_FACTORY_METHOD(EditTextItem, ctPosition2D, Position2D)
+    GCO_FACTORY_METHOD(EditTextItem, ctSize2D, Size2D)
 GCO_FACTORY_IMP_END
 
 EditTextItem::EditTextItem() : HasUIElement()
@@ -371,6 +558,8 @@ GIO_METHOD_FUNC(TextItem, Name)
 GIO_METHOD_FUNC(TextItem, Layout)
 GIO_METHOD_FUNC(TextItem, MinSize)
 GIO_METHOD_FUNC(TextItem, UIStyle)
+GIO_METHOD_FUNC(TextItem, Position2D)
+GIO_METHOD_FUNC(TextItem, Size2D)
 
 GCO_FACTORY_IMP(TextItem)
     GCO_FACTORY_METHOD(TextItem, ctScreenRect, ScreenRect)
@@ -383,6 +572,8 @@ GCO_FACTORY_IMP(TextItem)
     GCO_FACTORY_METHOD(TextItem, ctName, Name)
     GCO_FACTORY_METHOD(TextItem, ctLayout, Layout)
     GCO_FACTORY_METHOD(TextItem, ctMinSize, MinSize)
+    GCO_FACTORY_METHOD(TextItem, ctPosition2D, Position2D)
+    GCO_FACTORY_METHOD(TextItem, ctSize2D, Size2D)
 GCO_FACTORY_IMP_END
 
 TextItem::TextItem() : HasUIElement()
@@ -452,6 +643,8 @@ GIO_METHOD_FUNC(SliderItem, Name)
 GIO_METHOD_FUNC(SliderItem, Layout)
 GIO_METHOD_FUNC(SliderItem, MinSize)
 GIO_METHOD_FUNC(SliderItem, UIStyle)
+GIO_METHOD_FUNC(SliderItem, Position2D)
+GIO_METHOD_FUNC(SliderItem, Size2D)
 
 GCO_FACTORY_IMP(SliderItem)
     GCO_FACTORY_METHOD(SliderItem, ctScreenRect, ScreenRect)
@@ -463,6 +656,8 @@ GCO_FACTORY_IMP(SliderItem)
     GCO_FACTORY_METHOD(SliderItem, ctLayout, Layout)
     GCO_FACTORY_METHOD(SliderItem, ctMinSize, MinSize)
     GCO_FACTORY_METHOD(SliderItem, ctUIStyle, UIStyle)
+    GCO_FACTORY_METHOD(SliderItem, ctPosition2D, Position2D)
+    GCO_FACTORY_METHOD(SliderItem, ctSize2D, Size2D)
 GCO_FACTORY_IMP_END
 
 SliderItem::SliderItem() : HasUIElement()
@@ -547,6 +742,8 @@ GIO_METHOD_FUNC(CheckBoxItem, Name)
 GIO_METHOD_FUNC(CheckBoxItem, Layout)
 GIO_METHOD_FUNC(CheckBoxItem, MinSize)
 GIO_METHOD_FUNC(CheckBoxItem, UIStyle)
+GIO_METHOD_FUNC(CheckBoxItem, Position2D)
+GIO_METHOD_FUNC(CheckBoxItem, Size2D)
 
 GCO_FACTORY_IMP(CheckBoxItem)
     GCO_FACTORY_METHOD(CheckBoxItem, ctScreenRect, ScreenRect)
@@ -558,6 +755,8 @@ GCO_FACTORY_IMP(CheckBoxItem)
     GCO_FACTORY_METHOD(CheckBoxItem, ctLayout, Layout)
     GCO_FACTORY_METHOD(CheckBoxItem, ctMinSize, MinSize)
     GCO_FACTORY_METHOD(CheckBoxItem, ctUIStyle, UIStyle)
+    GCO_FACTORY_METHOD(CheckBoxItem, ctPosition2D, Position2D)
+    GCO_FACTORY_METHOD(CheckBoxItem, ctSize2D, Size2D)
 GCO_FACTORY_IMP_END
 
 CheckBoxItem::CheckBoxItem() : HasUIElement()
@@ -639,6 +838,8 @@ GIO_METHOD_FUNC(WindowGUI, Name)
 GIO_METHOD_FUNC(WindowGUI, Layout)
 GIO_METHOD_FUNC(WindowGUI, MinSize)
 GIO_METHOD_FUNC(WindowGUI, UIStyle)
+GIO_METHOD_FUNC(WindowGUI, Position2D)
+GIO_METHOD_FUNC(WindowGUI, Size2D)
 
 GCO_FACTORY_IMP(WindowGUI)
     GCO_FACTORY_METHOD(WindowGUI, ctScreenRect, ScreenRect)
@@ -649,6 +850,8 @@ GCO_FACTORY_IMP(WindowGUI)
     GCO_FACTORY_METHOD(WindowGUI, ctLayout, Layout)
     GCO_FACTORY_METHOD(WindowGUI, ctMinSize, MinSize)
     GCO_FACTORY_METHOD(WindowGUI, ctUIStyle, UIStyle)
+    GCO_FACTORY_METHOD(WindowGUI, ctPosition2D, Position2D)
+    GCO_FACTORY_METHOD(WindowGUI, ctSize2D, Size2D)
 GCO_FACTORY_IMP_END
 
 WindowGUI::WindowGUI() : HasUIElement()
@@ -690,6 +893,8 @@ GIO_METHOD_FUNC(Tooltip, Layout)
 GIO_METHOD_FUNC(Tooltip, MinSize)
 GIO_METHOD_FUNC(Tooltip, UIStyle)
 GIO_METHOD_FUNC(Tooltip, Tooltip)
+GIO_METHOD_FUNC(Tooltip, Position2D)
+GIO_METHOD_FUNC(Tooltip, Size2D)
 
 GCO_FACTORY_IMP(Tooltip)
     GCO_FACTORY_METHOD(Tooltip, ctScreenRect, ScreenRect)
@@ -699,8 +904,8 @@ GCO_FACTORY_IMP(Tooltip)
     GCO_FACTORY_METHOD(Tooltip, ctName, Name)
     GCO_FACTORY_METHOD(Tooltip, ctLayout, Layout)
     GCO_FACTORY_METHOD(Tooltip, ctMinSize, MinSize)
-    GCO_FACTORY_METHOD(Tooltip, ctTooltip, Tooltip)
-    GCO_FACTORY_METHOD(Tooltip, ctUIStyle, UIStyle)
+    GCO_FACTORY_METHOD(Tooltip, ctPosition2D, Position2D)
+    GCO_FACTORY_METHOD(Tooltip, ctSize2D, Size2D)
 GCO_FACTORY_IMP_END
 
 Tooltip::Tooltip() : HasUIElement()
