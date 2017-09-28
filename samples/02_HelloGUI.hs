@@ -66,6 +66,8 @@ gameLogic hg3d = do
             ])
         ]
 
+    registerCallback hg3d (entities # "events") ctUIClickEvent (\ce -> print (show ce) )
+
     registerCallback hg3d (entities # "window") ctUIDragEvent (\de -> case de of
                                                                     (DragMove _ (IntVec2 dx dy) _ _) -> updateC (entities # "window") ctPosition2D (\(IntVec2 x y) -> (IntVec2 (x + dx) (y + dy))) >> return ()
                                                                     _ -> return ()

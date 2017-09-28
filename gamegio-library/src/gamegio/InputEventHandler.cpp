@@ -24,6 +24,7 @@
 #include "MouseCbor.hpp"
 #include "KeyEventCbor.hpp"
 #include "InputEventHandlerCbor.hpp"
+#include "UIEventCbor.hpp"
 
 using namespace std;
 using namespace cbd;
@@ -208,7 +209,70 @@ void BasicEventHandler::registerUIClickEventFunction(FrMessageFn2 f, void* p2, u
 
 void BasicEventHandler::HandleClick(StringHash eventType, VariantMap& eventData)
 {
-    std::cout << "Click received\n";
+
+
+   if (cbfClick != NULL)
+    {
+        uint8_t buf[64];
+        CborEncoder encoder;
+        cbor_encoder_init(&encoder, buf, sizeof(buf), 0);
+        cbd::UIClickEvent evt;
+
+        if (eventType == E_UIMOUSECLICK) {
+            evt.selector = cbd::SingleClick;
+            // value0 -> element name
+            evt.data.SingleClick.value0 = "";
+            UIElement* clicked = static_cast<UIElement*>(eventData[UIMouseClick::P_ELEMENT].GetPtr()); 
+            if (clicked) {
+                evt.data.SingleClick.value0 = clicked->GetName().CString();
+            } 
+            // value1 -> mouse position
+            evt.data.SingleClick.value1.x = eventData[UIMouseClick::P_X].GetInt();
+            evt.data.SingleClick.value1.y = eventData[UIMouseClick::P_Y].GetInt();
+            // value2 -> mouse button data
+            evt.data.SingleClick.value2.button = eventData[UIMouseClick::P_BUTTON].GetInt();
+            evt.data.SingleClick.value2.buttons = eventData[UIMouseClick::P_BUTTONS].GetInt();
+            evt.data.SingleClick.value2.qualifiers = eventData[UIMouseClick::P_QUALIFIERS].GetInt();
+        }
+
+        if (eventType == E_UIMOUSEDOUBLECLICK) {
+            evt.selector = cbd::DoubleClick;
+            // value0 -> element name
+            evt.data.DoubleClick.value0 = "";
+            UIElement* clicked = static_cast<UIElement*>(eventData[UIMouseDoubleClick::P_ELEMENT].GetPtr()); 
+            if (clicked) {
+                evt.data.DoubleClick.value0 = clicked->GetName().CString();
+            } 
+            // value1 -> mouse position
+            evt.data.DoubleClick.value1.x = eventData[UIMouseDoubleClick::P_X].GetInt();
+            evt.data.DoubleClick.value1.y = eventData[UIMouseDoubleClick::P_Y].GetInt();
+            // value2 -> mouse button data
+            evt.data.DoubleClick.value2.button = eventData[UIMouseDoubleClick::P_BUTTON].GetInt();
+            evt.data.DoubleClick.value2.buttons = eventData[UIMouseDoubleClick::P_BUTTONS].GetInt();
+            evt.data.DoubleClick.value2.qualifiers = eventData[UIMouseDoubleClick::P_QUALIFIERS].GetInt();
+        }
+
+        if (eventType == E_UIMOUSECLICKEND) {
+            evt.selector = cbd::ClickEnd;
+            // value0 -> element name
+            evt.data.ClickEnd.value0 = "";
+            UIElement* clicked = static_cast<UIElement*>(eventData[UIMouseClickEnd::P_ELEMENT].GetPtr()); 
+            if (clicked) {
+                evt.data.ClickEnd.value0 = clicked->GetName().CString();
+            } 
+            // value1 -> mouse position
+            evt.data.ClickEnd.value1.x = eventData[UIMouseClickEnd::P_X].GetInt();
+            evt.data.ClickEnd.value1.y = eventData[UIMouseClickEnd::P_Y].GetInt();
+            // value2 -> mouse button data
+            evt.data.ClickEnd.value2.button = eventData[UIMouseClickEnd::P_BUTTON].GetInt();
+            evt.data.ClickEnd.value2.buttons = eventData[UIMouseClickEnd::P_BUTTONS].GetInt();
+            evt.data.ClickEnd.value2.qualifiers = eventData[UIMouseClickEnd::P_QUALIFIERS].GetInt();
+        }
+
+        cbd::writeUIClickEvent(&encoder, evt);
+        size_t len = cbor_encoder_get_buffer_size(&encoder, buf);
+        cbfClick(cbdClick, cbetClick, buf, len);
+    }
 }
 
 void BasicEventHandler::HandleMouseButtonUp(StringHash eventType, VariantMap& eventData)
