@@ -81,6 +81,7 @@ set(CPP_SRCS
     gamegio/GeometryCbor.cpp
     gamegio/AngleCbor.cpp
     gamegio/ScreenRectCbor.cpp
+    gamegio/IntVec2Cbor.cpp
     gamegio/Graphics3DSystem.cpp
     gamegio/HasNode.cpp
     gamegio/VolumeItem.cpp
@@ -109,6 +110,7 @@ set(CPP_SRCS
     gamegio/LayoutCbor.cpp
     gamegio/MinSizeCbor.cpp
     gamegio/UIStyleCbor.cpp
+    gamegio/UIEventCbor.cpp
 )
 
 set(CBOR_SRCS

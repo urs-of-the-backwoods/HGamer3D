@@ -43,7 +43,7 @@ GCO_FACTORY_IMP(HasUIElement)
     GCO_FACTORY_METHOD(HasUIElement, ctUIStyle, UIStyle)
 GCO_FACTORY_IMP_END
 
-HasUIElement::HasUIElement()
+HasUIElement::HasUIElement() : Object(Graphics3DSystem::getG3DS()->context)
 {
     g = Graphics3DSystem::getG3DS();
 }
@@ -191,7 +191,7 @@ GCO_FACTORY_IMP(ButtonItem)
     GCO_FACTORY_METHOD(ButtonItem, ctUIStyle, UIStyle)
 GCO_FACTORY_IMP_END
 
-ButtonItem::ButtonItem() : HasUIElement(), Object(Graphics3DSystem::getG3DS()->context)
+ButtonItem::ButtonItem() : HasUIElement()
 {
     callbackF = NULL;
 }
@@ -220,14 +220,7 @@ FrItem ButtonItem::msgCreate(FrMsg m, FrMsgLength l)
     item->text->SetVerticalAlignment(VA_CENTER);
     item->text->SetText(label);
  
-    item->registerEvents();
     return (FrItem)item;
-}
-
-void ButtonItem::registerEvents()
-{
-    SubscribeToEvent(uiElement, E_PRESSED, URHO3D_HANDLER(ButtonItem, HandlePressedReleasedChanged));
-    SubscribeToEvent(uiElement, E_RELEASED, URHO3D_HANDLER(ButtonItem, HandlePressedReleasedChanged));
 }
 
 void ButtonItem::msgDestroy()
@@ -246,6 +239,8 @@ void ButtonItem::registerButtonFunction(FrMessageFn2 f, void* p2, uint64_t cbet)
     callbackF = f;
     callbackData = p2;
     cbEventType = cbet;
+    SubscribeToEvent(uiElement, E_PRESSED, URHO3D_HANDLER(ButtonItem, HandlePressedReleasedChanged));
+    SubscribeToEvent(uiElement, E_RELEASED, URHO3D_HANDLER(ButtonItem, HandlePressedReleasedChanged));
 }
 
 void ButtonItem::HandlePressedReleasedChanged(StringHash eventType, VariantMap& eventData)
@@ -292,7 +287,7 @@ GCO_FACTORY_IMP(EditTextItem)
     GCO_FACTORY_METHOD(EditTextItem, ctUIStyle, UIStyle)
 GCO_FACTORY_IMP_END
 
-EditTextItem::EditTextItem() : HasUIElement(), Object(Graphics3DSystem::getG3DS()->context)
+EditTextItem::EditTextItem() : HasUIElement()
 
 {
     callbackF = NULL;
@@ -470,7 +465,7 @@ GCO_FACTORY_IMP(SliderItem)
     GCO_FACTORY_METHOD(SliderItem, ctUIStyle, UIStyle)
 GCO_FACTORY_IMP_END
 
-SliderItem::SliderItem() : HasUIElement(), Object(Graphics3DSystem::getG3DS()->context)
+SliderItem::SliderItem() : HasUIElement()
 {
     callbackF = NULL;
     callbackData = NULL;
@@ -565,7 +560,7 @@ GCO_FACTORY_IMP(CheckBoxItem)
     GCO_FACTORY_METHOD(CheckBoxItem, ctUIStyle, UIStyle)
 GCO_FACTORY_IMP_END
 
-CheckBoxItem::CheckBoxItem() : HasUIElement(), Object(Graphics3DSystem::getG3DS()->context)
+CheckBoxItem::CheckBoxItem() : HasUIElement()
 {
     callbackF = NULL;
     callbackData = NULL;
@@ -708,7 +703,7 @@ GCO_FACTORY_IMP(Tooltip)
     GCO_FACTORY_METHOD(Tooltip, ctUIStyle, UIStyle)
 GCO_FACTORY_IMP_END
 
-Tooltip::Tooltip() : HasUIElement(), Object(Graphics3DSystem::getG3DS()->context)
+Tooltip::Tooltip() : HasUIElement()
 {
 }
 

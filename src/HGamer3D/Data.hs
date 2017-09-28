@@ -34,6 +34,7 @@ module HGamer3D.Data
     -- * Geometry Datatypes
     module HGamer3D.Data.Vector,
     module HGamer3D.Data.ScreenRect,
+    module HGamer3D.Data.IntVec2,
     module HGamer3D.Data.Geometry2D,
     module HGamer3D.Data.Transform3D,
     module HGamer3D.Data.TypeSynonyms,
@@ -55,6 +56,7 @@ import HGamer3D.Data.GameTime
 import HGamer3D.Data.Visible
 import HGamer3D.Data.Name
 import HGamer3D.Data.ScreenRect
+import HGamer3D.Data.IntVec2
 import HGamer3D.Data.Geometry2D
 import HGamer3D.Data.Transform3D
 import HGamer3D.Data.TypeSynonyms

@@ -83,7 +83,9 @@ using namespace Urho3D;
 
 GCO_FACTORY_DEC(HasUIElement)
 
-class HasUIElement {
+class HasUIElement : public Object {
+
+URHO3D_OBJECT(HasUIElement, Object);
 
 protected:
   SharedPtr<UIElement> uiElement;
@@ -110,9 +112,7 @@ public:
 
 GCO_FACTORY_DEC(ButtonItem)
 
-class ButtonItem : public HasUIElement, public Object {
-
-URHO3D_OBJECT(ButtonItem, Object);
+class ButtonItem : public HasUIElement {
 
 protected:
     SharedPtr<Button> button;
@@ -129,16 +129,13 @@ public:
   static FrItem msgCreate(FrMsg m, FrMsgLength l);
   void msgDestroy();
   
-  void registerEvents();
   void registerButtonFunction(FrMessageFn2 f, void* p2, uint64_t evt_t);
   void HandlePressedReleasedChanged(StringHash eventType, VariantMap& eventData);
 };
 
 GCO_FACTORY_DEC(EditTextItem)
 
-class EditTextItem : public HasUIElement, public Object {
-
-URHO3D_OBJECT(EditTextItem, Object);
+class EditTextItem : public HasUIElement {
 
 protected:
     SharedPtr<LineEdit2> edittext;
@@ -183,9 +180,7 @@ public:
 
 GCO_FACTORY_DEC(SliderItem)
 
-class SliderItem : public HasUIElement, public Object  {
-
-URHO3D_OBJECT(SliderItem, Object);
+class SliderItem : public HasUIElement  {
 
 protected:
     SharedPtr<Slider2> slider;
@@ -209,9 +204,7 @@ public:
 
 GCO_FACTORY_DEC(CheckBoxItem)
 
-class CheckBoxItem : public HasUIElement, public Object  {
-
-URHO3D_OBJECT(CheckBoxItem, Object);
+class CheckBoxItem : public HasUIElement  {
 
 protected:
     SharedPtr<CheckBox> checkbox;
@@ -253,9 +246,7 @@ public:
 
 GCO_FACTORY_DEC(Tooltip)
 
-class Tooltip : public HasUIElement, public Object {
-
-URHO3D_OBJECT(Tooltip, Object);
+class Tooltip : public HasUIElement {
 
 protected:
   SharedPtr<ToolTip> toolTip;

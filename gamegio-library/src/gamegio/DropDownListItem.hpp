@@ -68,9 +68,7 @@ GIO_METHOD_DEC(DropDownListItem, EntityId)
 GIO_METHOD_DEC(DropDownListItem, DropDownList)
 GCO_FACTORY_DEC(DropDownListItem)
 
-class DropDownListItem : public HasUIElement, public Object  {
-
-URHO3D_OBJECT(DropDownListItem, Object);
+class DropDownListItem : public HasUIElement  {
 
 protected:
     SharedPtr<DropDownList> dropdownlist;

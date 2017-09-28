@@ -41,7 +41,7 @@ GCO_FACTORY_IMP(DropDownListItem)
     GCO_FACTORY_METHOD(DropDownListItem, ctDropDownList, DropDownList)
 GCO_FACTORY_IMP_END
 
-DropDownListItem::DropDownListItem() : HasUIElement(), Object(Graphics3DSystem::getG3DS()->context)
+DropDownListItem::DropDownListItem() : HasUIElement()
 {
     callbackF = NULL;
     callbackData = NULL;
