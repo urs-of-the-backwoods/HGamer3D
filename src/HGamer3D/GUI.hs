@@ -29,6 +29,8 @@ module HGamer3D.GUI
     , module HGamer3D.GUI.UIElement
     , module HGamer3D.GUI.UIStyle
     , module HGamer3D.GUI.UIEvent
+    , module HGamer3D.GUI.BlendMode
+    , module HGamer3D.GUI.Texture
 )
 
 
@@ -50,5 +52,7 @@ import HGamer3D.GUI.MinSize
 import HGamer3D.GUI.UIElement
 import HGamer3D.GUI.UIStyle
 import HGamer3D.GUI.UIEvent
+import HGamer3D.GUI.BlendMode
+import HGamer3D.GUI.Texture
 
 

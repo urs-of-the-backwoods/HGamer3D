@@ -53,6 +53,8 @@ Library::Library()
     _factories[ctLight] = new LightItemFactory();
     _factories[ctGeometry] = new GeometryItemFactory();
     _factories[ctButton] = new ButtonItemFactory();
+    _factories[ctBasicButton] = new StandardButtonItemFactory();
+    _factories[ctImageButton] = new ImageButtonItemFactory();
     _factories[ctCheckBox] = new CheckBoxItemFactory();
     _factories[ctDropDownList] = new DropDownListItemFactory();
     _factories[ctEditText] = new EditTextItemFactory();
@@ -126,7 +128,11 @@ void gioRegisterMsgReceiver(FrItemType ctItem, FrEventType ctEvent, FrItem item,
 
     GIO_REG_EVENT(EditTextItem, EditText, EditText)
     GIO_REG_EVENT(CheckBoxItem, CheckBox, CheckBox)
+
     GIO_REG_EVENT(ButtonItem, Button, Button)
+    GIO_REG_EVENT(StandardButtonItem, BasicButton, ButtonEvent)
+    GIO_REG_EVENT(StandardButtonItem, ImageButton, ButtonEvent)
+
     GIO_REG_EVENT(SliderItem, Slider, Slider)
     GIO_REG_EVENT(DropDownListItem, DropDownList, DropDownList)
 
@@ -143,6 +149,12 @@ void gioRegisterMsgReceiver(FrItemType ctItem, FrEventType ctEvent, FrItem item,
     GIO_REG_EVENT(HasUIElement, Button, UIHoverEvent)
     GIO_REG_EVENT(HasUIElement, Button, UIDragEvent)
     
+    GIO_REG_EVENT(HasUIElement, BasicButton, UIHoverEvent)
+    GIO_REG_EVENT(HasUIElement, BasicButton, UIDragEvent)
+
+    GIO_REG_EVENT(HasUIElement, ImageButton, UIHoverEvent)
+    GIO_REG_EVENT(HasUIElement, ImageButton, UIDragEvent)
+
     GIO_REG_EVENT(HasUIElement, Slider, UIHoverEvent)
     GIO_REG_EVENT(HasUIElement, Slider, UIDragEvent)
     

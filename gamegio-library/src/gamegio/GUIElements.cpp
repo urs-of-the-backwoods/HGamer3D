@@ -16,6 +16,7 @@
 
 #include "GUIElements.hpp"
 #include "HasNode.hpp"
+#include <Urho3D/Graphics/Texture2D.h>
 
 
 using namespace std;
@@ -444,6 +445,195 @@ void ButtonItem::HandlePressedReleasedChanged(StringHash eventType, VariantMap& 
     }
 }
 
+
+//
+// Standard ButttonItem
+//
+
+GIO_METHOD_FUNC(StandardButtonItem, ScreenRect)
+GIO_METHOD_FUNC(StandardButtonItem, Alignment)
+GIO_METHOD_FUNC(StandardButtonItem, Parent)
+GIO_METHOD_FUNC(StandardButtonItem, EntityId)
+GIO_METHOD_FUNC(StandardButtonItem, Name)
+GIO_METHOD_FUNC(StandardButtonItem, Layout)
+GIO_METHOD_FUNC(StandardButtonItem, MinSize)
+GIO_METHOD_FUNC(StandardButtonItem, UIStyle)
+GIO_METHOD_FUNC(StandardButtonItem, Position2D)
+GIO_METHOD_FUNC(StandardButtonItem, Size2D)
+
+GCO_FACTORY_IMP(StandardButtonItem)
+    GCO_FACTORY_METHOD(StandardButtonItem, ctScreenRect, ScreenRect)
+    GCO_FACTORY_METHOD(StandardButtonItem, ctAlignment, Alignment)
+    GCO_FACTORY_METHOD(StandardButtonItem, ctParent, Parent)
+    GCO_FACTORY_METHOD(StandardButtonItem, ctEntityId, EntityId)
+    GCO_FACTORY_METHOD(StandardButtonItem, ctName, Name)
+    GCO_FACTORY_METHOD(StandardButtonItem, ctLayout, Layout)
+    GCO_FACTORY_METHOD(StandardButtonItem, ctMinSize, MinSize)
+    GCO_FACTORY_METHOD(StandardButtonItem, ctUIStyle, UIStyle)
+    GCO_FACTORY_METHOD(StandardButtonItem, ctPosition2D, Position2D)
+    GCO_FACTORY_METHOD(StandardButtonItem, ctSize2D, Size2D)
+GCO_FACTORY_IMP_END
+
+StandardButtonItem::StandardButtonItem() : ButtonItem()
+{
+    bevtF = NULL;
+}
+
+FrItem StandardButtonItem::msgCreate(FrMsg m, FrMsgLength l)
+{
+    StandardButtonItem *item = new StandardButtonItem();
+    UI* ui = item->g->context->GetSubsystem<UI>();
+    item->button = new Button(item->g->context);
+    item->uiElement.StaticCast(item->button);
+    ui->GetRoot()->AddChild(item->button);
+    item->button->SetStyleAuto();
+
+    CborParser parser; CborValue it;
+    cbor_parser_init(m, l, 0, &parser, &it);
+    cbd::BasicButton bi;
+    cbd::readBasicButton(&it, &bi);
+
+    String label = bi.c_str();
+
+    // add label to button
+    item->text = new Text(item->g->context);
+    item->button->AddChild(item->text);
+    item->text->SetStyle("Text");
+    item->text->SetHorizontalAlignment(HA_CENTER);
+    item->text->SetVerticalAlignment(VA_CENTER);
+    item->text->SetText(label);
+ 
+    return (FrItem)item;
+}
+
+void StandardButtonItem::msgDestroy()
+{
+    delete this;
+}
+
+StandardButtonItem::~StandardButtonItem()
+{
+    UnsubscribeFromEvent(button, E_PRESSED);
+    UnsubscribeFromEvent(button, E_RELEASED);
+}
+
+void StandardButtonItem::registerButtonEventFunction(FrMessageFn2 f, void* p2, uint64_t evt_t)
+{
+    bevtF = f;
+    bevtD = p2;
+    bevtET = evt_t;
+
+    SubscribeToEvent(button, E_PRESSED, URHO3D_HANDLER(StandardButtonItem, HandleButtonEvent));
+    SubscribeToEvent(button, E_RELEASED, URHO3D_HANDLER(StandardButtonItem, HandleButtonEvent));
+}
+
+void StandardButtonItem::HandleButtonEvent(StringHash eventType, VariantMap& eventData)
+{
+    if (bevtF != NULL)
+    {
+        // only two events are registered, both change pressed status
+        uint8_t buf[64];
+        CborEncoder encoder;
+        cbor_encoder_init(&encoder, buf, sizeof(buf), 0);
+
+        cbd::ButtonEvent bevt;
+
+        if (eventType == E_PRESSED)
+        {
+            bevt.selector = cbd::Pressed;
+        } 
+
+        if (eventType == E_RELEASED)
+        {
+            bevt.selector = cbd::Released; 
+        }
+
+        cbd::writeButtonEvent(&encoder, bevt);
+        size_t len = cbor_encoder_get_buffer_size(&encoder, buf);
+        bevtF(bevtD, bevtET, buf, len);
+    }
+}
+
+//
+// Image ButttonItem
+//
+
+GIO_METHOD_FUNC(ImageButtonItem, ScreenRect)
+GIO_METHOD_FUNC(ImageButtonItem, Alignment)
+GIO_METHOD_FUNC(ImageButtonItem, Parent)
+GIO_METHOD_FUNC(ImageButtonItem, EntityId)
+GIO_METHOD_FUNC(ImageButtonItem, Name)
+GIO_METHOD_FUNC(ImageButtonItem, Layout)
+GIO_METHOD_FUNC(ImageButtonItem, MinSize)
+GIO_METHOD_FUNC(ImageButtonItem, UIStyle)
+GIO_METHOD_FUNC(ImageButtonItem, Position2D)
+GIO_METHOD_FUNC(ImageButtonItem, Size2D)
+GIO_METHOD_FUNC(ImageButtonItem, BlendMode)
+
+GCO_FACTORY_IMP(ImageButtonItem)
+    GCO_FACTORY_METHOD(ImageButtonItem, ctScreenRect, ScreenRect)
+    GCO_FACTORY_METHOD(ImageButtonItem, ctAlignment, Alignment)
+    GCO_FACTORY_METHOD(ImageButtonItem, ctParent, Parent)
+    GCO_FACTORY_METHOD(ImageButtonItem, ctEntityId, EntityId)
+    GCO_FACTORY_METHOD(ImageButtonItem, ctName, Name)
+    GCO_FACTORY_METHOD(ImageButtonItem, ctLayout, Layout)
+    GCO_FACTORY_METHOD(ImageButtonItem, ctMinSize, MinSize)
+    GCO_FACTORY_METHOD(ImageButtonItem, ctUIStyle, UIStyle)
+    GCO_FACTORY_METHOD(ImageButtonItem, ctPosition2D, Position2D)
+    GCO_FACTORY_METHOD(ImageButtonItem, ctSize2D, Size2D)
+    GCO_FACTORY_METHOD(ImageButtonItem, ctBlendMode, BlendMode)
+GCO_FACTORY_IMP_END
+
+ImageButtonItem::ImageButtonItem() : StandardButtonItem()
+{
+    bevtF = NULL;
+}
+
+FrItem ImageButtonItem::msgCreate(FrMsg m, FrMsgLength l)
+{
+    ImageButtonItem *item = new ImageButtonItem();
+    UI* ui = item->g->context->GetSubsystem<UI>();
+    item->button = new Button(item->g->context);
+    item->uiElement.StaticCast(item->button);
+    ui->GetRoot()->AddChild(item->button);
+    // do not set style auto, this is the important difference!
+
+    CborParser parser; CborValue it;
+    cbor_parser_init(m, l, 0, &parser, &it);
+    cbd::ImageButton bi;
+    cbd::readImageButton(&it, &bi);
+
+    String resource = bi.c_str();
+
+    ResourceCache* cache = item->g->context->GetSubsystem<ResourceCache>();
+    item->button->SetTexture(cache->GetResource<Texture2D>(resource));
+    item->button->SetBlendMode(BLEND_ADD);
+
+    return (FrItem)item;
+}
+
+void ImageButtonItem::msgDestroy()
+{
+    delete this;
+}
+
+ImageButtonItem::~ImageButtonItem()
+{
+}
+
+void ImageButtonItem::msgBlendMode(FrMsg m, FrMsgLength l)
+{
+    CborParser parser; CborValue it;
+    cbor_parser_init(m, l, 0, &parser, &it);
+    cbd::BlendMode bm;
+    cbd::readBlendMode(&it, &bm);
+
+    button->SetBlendMode((Urho3D::BlendMode)bm.selector);
+}
+
+
+
+
 //
 // EditTextItem
 //
@@ -856,7 +1046,6 @@ GCO_FACTORY_IMP_END
 
 WindowGUI::WindowGUI() : HasUIElement()
 {
-  std::cout << "WindowGUI con\n";
 }
 
 WindowGUI::~WindowGUI()

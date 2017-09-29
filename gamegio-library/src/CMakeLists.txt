@@ -111,6 +111,8 @@ set(CPP_SRCS
     gamegio/MinSizeCbor.cpp
     gamegio/UIStyleCbor.cpp
     gamegio/UIEventCbor.cpp
+    gamegio/BlendModeCbor.cpp
+    gamegio/TextureCbor.cpp
 )
 
 set(CBOR_SRCS

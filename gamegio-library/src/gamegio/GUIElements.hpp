@@ -39,6 +39,7 @@
 #include <Urho3D/Graphics/StaticModel.h>
 #include <Urho3D/UI/Text.h>
 #include <Urho3D/UI/Button.h>
+#include <Urho3D/UI/BorderImage.h>
 #include <Urho3D/UI/LineEdit.h>
 #include <Urho3D/UI/Slider.h>
 #include <Urho3D/UI/CheckBox.h>
@@ -74,6 +75,8 @@
 #include "UIStyleCbor.hpp"
 #include "IntVec2Cbor.hpp"
 #include "UIEventCbor.hpp"
+#include "TextureCbor.hpp"
+#include "BlendModeCbor.hpp"
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -82,6 +85,10 @@
 #include <fstream>
 
 using namespace Urho3D;
+
+//
+// HasUIElement
+//
 
 GCO_FACTORY_DEC(HasUIElement)
 
@@ -130,6 +137,9 @@ public:
   void HandleDrag(StringHash eventType, VariantMap& eventData);
 };
 
+//
+// ButtonItem
+//
 
 GCO_FACTORY_DEC(ButtonItem)
 
@@ -153,6 +163,54 @@ public:
   void registerButtonFunction(FrMessageFn2 f, void* p2, uint64_t evt_t);
   void HandlePressedReleasedChanged(StringHash eventType, VariantMap& eventData);
 };
+
+//
+// Standard ButtonItem
+//
+
+GCO_FACTORY_DEC(StandardButtonItem)
+
+class StandardButtonItem : public ButtonItem {
+
+protected:
+  FrMessageFn2 bevtF;
+  void* bevtD;
+  uint64_t bevtET;
+
+public:
+  StandardButtonItem();
+  ~StandardButtonItem();
+ 
+  static FrItem msgCreate(FrMsg m, FrMsgLength l);
+  void msgDestroy();
+  
+  void registerButtonEventFunction(FrMessageFn2 f, void* p2, uint64_t evt_t);
+  void HandleButtonEvent(StringHash eventType, VariantMap& eventData);
+};
+
+
+//
+// ImageButtonItem
+//
+
+GCO_FACTORY_DEC(ImageButtonItem)
+
+class ImageButtonItem : public StandardButtonItem {
+
+public:
+  ImageButtonItem();
+  ~ImageButtonItem();
+ 
+  void msgBlendMode(FrMsg m, FrMsgLength l);
+  
+  static FrItem msgCreate(FrMsg m, FrMsgLength l);
+  void msgDestroy();
+};
+
+
+//
+// EditText
+//
 
 GCO_FACTORY_DEC(EditTextItem)
 
@@ -178,6 +236,11 @@ public:
   void HandleTextChanged(StringHash eventType, VariantMap& eventData);
 };
 
+
+//
+// TextItem
+//
+
 GCO_FACTORY_DEC(TextItem)
 
 class TextItem : public HasUIElement {
@@ -198,6 +261,10 @@ public:
   void msgColour(FrMsg m, FrMsgLength l);
 };
 
+
+//
+// SliderItem
+//
 
 GCO_FACTORY_DEC(SliderItem)
 
@@ -222,6 +289,10 @@ public:
   void registerSliderFunction(FrMessageFn2 f, void* p2, uint64_t evt_t);
   void HandleSliderChanged(StringHash eventType, VariantMap& eventData);
 };
+
+//
+// CheckBoxItem
+//
 
 GCO_FACTORY_DEC(CheckBoxItem)
 
@@ -248,6 +319,10 @@ public:
 };
 
 
+//
+// WindowGUI
+//
+
 GCO_FACTORY_DEC(WindowGUI)
 
 class WindowGUI : public HasUIElement {
@@ -264,6 +339,9 @@ public:
 };
 
 
+//
+// Tooltip
+//
 
 GCO_FACTORY_DEC(Tooltip)
 
