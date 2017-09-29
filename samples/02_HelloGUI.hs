@@ -81,22 +81,22 @@ gameLogic hg3d = do
 
     let callback idStr evt f = registerCallback hg3d (entities # idStr) evt f
 
-    let changeTitleF es ce = case ce of
-            (SingleClick name _ _) -> setC (es # "titletext") ctStaticText (T.concat ["Hello ", name, "!"])
+    let changeTitleOnClick evt = case evt of
+            (SingleClick name _ _) -> setC (entities # "titletext") ctStaticText (T.concat ["Hello ", name, "!"])
+            _ -> return ()
+
+    let dragFish evt = case evt of
+            (DragMove _ _ (IntVec2 dx dy) _ ) -> updateC (entities # "fish") ctPosition2D (\(IntVec2 x y) -> IntVec2 (x + dx) (y + dy)) 
             _ -> return ()
 
     -- close program on close button
     callback "close" ctButtonEvent (\_ -> exitHG3D hg3d)
 
     -- inform on clicked item in title bar
-    callback "events" ctUIClickEvent (changeTitleF entities) 
+    callback "events" ctUIClickEvent changeTitleOnClick 
 
     -- drag fish
-    callback "fish" ctUIDragEvent (\evt -> case evt of
-                (DragMove _ _ (IntVec2 dx dy) _ ) -> updateC (entities # "fish") ctPosition2D (\(IntVec2 x y) -> IntVec2 (x + dx) (y + dy)) 
-                _ -> return ()
-            )
-
+    callback "fish" ctUIDragEvent dragFish
 
 main = do 
     runGame standardGraphics3DConfig gameLogic (msecT 20)
