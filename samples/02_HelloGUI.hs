@@ -24,7 +24,6 @@ gameLogic hg3d = do
         , "window" <| ([
             ctWindowGUI #: ()
             , ctLayout #: Layout LMVertical 10 (ScreenRect2 6 6 6 6) 
-            , ctPosition2D #: IntVec2 0 0
             , ctAlignment #: Alignment HACenter VACenter
             , ctMinSize #: MinSize 384 0
             , ctName #: "Window"
