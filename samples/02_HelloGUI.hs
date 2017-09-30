@@ -73,8 +73,10 @@ gameLogic hg3d = do
                 , ctName #: "Fish"
                 , ctUIDragEvent #: NoDrag
                 ], [
-
-
+                    "tooltip" <: [
+                        ctTooltip #: "Please drag me!"
+                        , ctPosition2D #: IntVec2 100 100
+                    ]
                 ])
         ]
 

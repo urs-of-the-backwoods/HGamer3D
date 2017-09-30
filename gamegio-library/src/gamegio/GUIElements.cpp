@@ -1120,6 +1120,8 @@ FrItem Tooltip::msgCreate(FrMsg m, FrMsgLength l)
     item->toolTipText = new Text(item->g->context);
     textHolder->AddChild(item->toolTipText);
     item->toolTipText->SetStyle("ToolTipText");
+
+    item->msgTooltip(m, l);
     return (FrItem)item;
 }
 

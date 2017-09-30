@@ -131,7 +131,7 @@ void gioRegisterMsgReceiver(FrItemType ctItem, FrEventType ctEvent, FrItem item,
 
     GIO_REG_EVENT(ButtonItem, Button, Button)
     GIO_REG_EVENT(StandardButtonItem, BasicButton, ButtonEvent)
-    GIO_REG_EVENT(StandardButtonItem, ImageButton, ButtonEvent)
+    GIO_REG_EVENT(ImageButtonItem, ImageButton, ButtonEvent)
 
     GIO_REG_EVENT(SliderItem, Slider, Slider)
     GIO_REG_EVENT(DropDownListItem, DropDownList, DropDownList)
@@ -140,31 +140,31 @@ void gioRegisterMsgReceiver(FrItemType ctItem, FrEventType ctEvent, FrItem item,
     GIO_REG_EVENT(HasUIElement, UIElement, UIHoverEvent)
     GIO_REG_EVENT(HasUIElement, UIElement, UIDragEvent)
     
-    GIO_REG_EVENT(HasUIElement, StaticText, UIHoverEvent)
-    GIO_REG_EVENT(HasUIElement, StaticText, UIDragEvent)
+    GIO_REG_EVENT(TextItem, StaticText, UIHoverEvent)
+    GIO_REG_EVENT(TextItem, StaticText, UIDragEvent)
     
-    GIO_REG_EVENT(HasUIElement, EditText, UIHoverEvent)
-    GIO_REG_EVENT(HasUIElement, EditText, UIDragEvent)
+    GIO_REG_EVENT(EditTextItem, EditText, UIHoverEvent)
+    GIO_REG_EVENT(EditTextItem, EditText, UIDragEvent)
 
-    GIO_REG_EVENT(HasUIElement, Button, UIHoverEvent)
-    GIO_REG_EVENT(HasUIElement, Button, UIDragEvent)
+    GIO_REG_EVENT(ButtonItem, Button, UIHoverEvent)
+    GIO_REG_EVENT(ButtonItem, Button, UIDragEvent)
     
-    GIO_REG_EVENT(HasUIElement, BasicButton, UIHoverEvent)
-    GIO_REG_EVENT(HasUIElement, BasicButton, UIDragEvent)
+    GIO_REG_EVENT(StandardButtonItem, BasicButton, UIHoverEvent)
+    GIO_REG_EVENT(StandardButtonItem, BasicButton, UIDragEvent)
 
-    GIO_REG_EVENT(HasUIElement, ImageButton, UIHoverEvent)
-    GIO_REG_EVENT(HasUIElement, ImageButton, UIDragEvent)
+    GIO_REG_EVENT(ImageButtonItem, ImageButton, UIHoverEvent)
+    GIO_REG_EVENT(ImageButtonItem, ImageButton, UIDragEvent)
 
-    GIO_REG_EVENT(HasUIElement, Slider, UIHoverEvent)
-    GIO_REG_EVENT(HasUIElement, Slider, UIDragEvent)
+    GIO_REG_EVENT(SliderItem, Slider, UIHoverEvent)
+    GIO_REG_EVENT(SliderItem, Slider, UIDragEvent)
     
-    GIO_REG_EVENT(HasUIElement, CheckBox, UIHoverEvent)
-    GIO_REG_EVENT(HasUIElement, CheckBox, UIDragEvent)
+    GIO_REG_EVENT(CheckBoxItem, CheckBox, UIHoverEvent)
+    GIO_REG_EVENT(CheckBoxItem, CheckBox, UIDragEvent)
     
-    GIO_REG_EVENT(HasUIElement, WindowGUI, UIHoverEvent)
-    GIO_REG_EVENT(HasUIElement, WindowGUI, UIDragEvent)
+    GIO_REG_EVENT(WindowGUI, WindowGUI, UIHoverEvent)
+    GIO_REG_EVENT(WindowGUI, WindowGUI, UIDragEvent)
     
-    GIO_REG_EVENT(HasUIElement, DropDownList, UIHoverEvent)
-    GIO_REG_EVENT(HasUIElement, DropDownList, UIDragEvent)
+    GIO_REG_EVENT(DropDownListItem, DropDownList, UIHoverEvent)
+    GIO_REG_EVENT(DropDownListItem, DropDownList, UIDragEvent)
 }
 
