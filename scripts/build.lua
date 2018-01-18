@@ -35,7 +35,7 @@ local function aioString()
 	o, a = getOS()
 	if o == "windows" then
 		return "..\\" .. glue.bin .. "\\win\\aio.exe"	
-	elseif o == "darwin" then
+	elseif o == "osx" then
 		return "../" .. glue.bin .. "/darwin/aio"	
 	elseif o == "linux" then
 		return "../" .. glue.bin .. "/linux/aio"	
@@ -118,7 +118,7 @@ local function buildGameGio()
 		local platdir = "package\\" .. plat 
 		os.execute("copy ..\\gamegio-library\\arriccio.toml package\\arriccio.toml")
 		os.execute("copy Release\\game_gio_lib.dll " .. platdir .. "\\game_engine.gio")
-	elseif o == "darwin" then
+	elseif o == "osx" then
 		local platdir = "package/" .. plat
 		os.execute("cp ../gamegio-library/arriccio.toml package/arriccio.toml")
 		os.execute("cp libgame_gio_lib.dylib " .. platdir .. "/game_engine.gio")
