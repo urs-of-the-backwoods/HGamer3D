@@ -120,8 +120,8 @@ void Joystick::HandleJoystickEvents(StringHash eventType, VariantMap& eventData)
     }
     if (eventType == E_JOYSTICKHATMOVE) {
       jevt.selector = cbd::HatMove;
-      jevt.data.AxisMove.value0 = eventData[Urho3D::JoystickHatMove::P_HAT].GetInt();
-      jevt.data.AxisMove.value1 = eventData[Urho3D::JoystickHatMove::P_POSITION].GetInt();
+      jevt.data.HatMove.value0 = eventData[Urho3D::JoystickHatMove::P_HAT].GetInt();
+      jevt.data.HatMove.value1 = eventData[Urho3D::JoystickHatMove::P_POSITION].GetInt();
     }
 
     writeJoystickEvent(&encoder, jevt);
