@@ -28,6 +28,8 @@
 #include "LightItem.hpp"
 #include "GeometryItem.hpp"
 #include "DropDownListItem.hpp"
+#include "JoystickCbor.hpp"
+#include "Joystick.hpp"
 
 #include "GUIElements.hpp"
 #include "ButtonCbor.hpp"
@@ -59,6 +61,7 @@ Library::Library()
     _factories[ctUIElement] = new HasUIElementFactory();
     _factories[ctMouseConfig] = new MouseFactory();
     _factories[ctGraphicsElement] = new HasNodeFactory();
+    _factories[ctJoystick] = new JoystickFactory();
 }
 
 Library::~Library()
@@ -108,6 +111,8 @@ FrMessageFn gioGetMsgSender(FrComponentType ob, FrComponentType pr)
 
 void gioRegisterMsgReceiver(FrItemType ctItem, FrEventType ctEvent, FrItem item, FrEntity receiver, FrMessageFn2 f)
 {
+  //              Implement     Imlement           Event
+  //              Class         Class CT           Name (ctEvent, registerEventFunction)
     GIO_REG_EVENT(IEHClass, InputEventHandler, MouseEvent)
     GIO_REG_EVENT(IEHClass, InputEventHandler, KeyEvent)
     GIO_REG_EVENT(IEHClass, InputEventHandler, ExitRequestedEvent)
@@ -116,5 +121,6 @@ void gioRegisterMsgReceiver(FrItemType ctItem, FrEventType ctEvent, FrItem item,
     GIO_REG_EVENT(ButtonItem, Button, Button)
     GIO_REG_EVENT(SliderItem, Slider, Slider)
     GIO_REG_EVENT(DropDownListItem, DropDownList, DropDownList)
+    GIO_REG_EVENT(Joystick, Joystick, JoystickEvent)
 }
 
