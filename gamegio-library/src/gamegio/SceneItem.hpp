@@ -6,10 +6,10 @@
 //	(See attached file LICENSE or copy at 
 //	http://www.apache.org/licenses/LICENSE-2.0)
 // 
-//	file: Urho3D-Binding/graphics3d.hpp
+//	file: Urho3D-Binding/SceneItem.hpp
 
-#ifndef __geometry_item_hpp__
-#define __geometry_item_hpp__
+#ifndef __scene_item_hpp__
+#define __scene_item_hpp__
 
 #include <iostream>
 #include <fstream>
@@ -56,25 +56,17 @@
 
 using namespace Urho3D;
 
-GIO_METHOD_DEC(GeometryItem, Geometry)
-GIO_METHOD_DEC(GeometryItem, Material)
-GIO_METHOD_DEC(GeometryItem, Colour)
-GCO_FACTORY_DEC(GeometryItem)
+GCO_FACTORY_DEC(SceneItem)
 
-class GeometryItem : public HasNode
+class SceneItem : public HasNode
 {
 private:
-  String material;
 
 public:
-  GeometryItem();
-  ~GeometryItem();
+  SceneItem();
+  ~SceneItem();
   static FrItem msgCreate(FrMsg m, FrMsgLength l);
   void virtual msgDestroy();
-
-  void msgGeometry(FrMsg m, FrMsgLength l);
-  void msgMaterial(FrMsg m, FrMsgLength l);
-  void msgColour(FrMsg m, FrMsgLength l);
 };
 
 

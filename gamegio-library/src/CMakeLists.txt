@@ -103,6 +103,8 @@ set(CPP_SRCS
     gamegio/UIElementCbor.cpp
     gamegio/Joystick.cpp
     gamegio/JoystickCbor.cpp
+    gamegio/SceneItem.cpp
+    gamegio/SceneItemCbor.cpp
 )
 
 set(CBOR_SRCS

@@ -29,6 +29,7 @@ module HGamer3D.Graphics3D
   module HGamer3D.Graphics3D.Material,
   module HGamer3D.Graphics3D.Graphics3DCommand,
   module HGamer3D.Graphics3D.Graphics3DConfig,
+  module HGamer3D.Graphics3D.Scene,
 )
 
 where
@@ -39,5 +40,6 @@ import HGamer3D.Graphics3D.Light
 import HGamer3D.Graphics3D.Material
 import HGamer3D.Graphics3D.Graphics3DCommand
 import HGamer3D.Graphics3D.Graphics3DConfig
+import HGamer3D.Graphics3D.Scene
 
 

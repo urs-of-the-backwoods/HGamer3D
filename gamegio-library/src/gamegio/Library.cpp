@@ -30,6 +30,8 @@
 #include "DropDownListItem.hpp"
 #include "JoystickCbor.hpp"
 #include "Joystick.hpp"
+#include "SceneItemCbor.hpp"
+#include "SceneItem.hpp"
 
 #include "GUIElements.hpp"
 #include "ButtonCbor.hpp"
@@ -62,6 +64,7 @@ Library::Library()
     _factories[ctMouseConfig] = new MouseFactory();
     _factories[ctGraphicsElement] = new HasNodeFactory();
     _factories[ctJoystick] = new JoystickFactory();
+    _factories[ctScene] = new SceneItemFactory();
 }
 
 Library::~Library()
