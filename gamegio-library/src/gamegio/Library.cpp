@@ -32,6 +32,8 @@
 #include "Joystick.hpp"
 #include "SceneItemCbor.hpp"
 #include "SceneItem.hpp"
+#include "SkyboxItemCbor.hpp"
+#include "SkyboxItem.hpp"
 
 #include "GUIElements.hpp"
 #include "ButtonCbor.hpp"
@@ -65,6 +67,7 @@ Library::Library()
     _factories[ctGraphicsElement] = new HasNodeFactory();
     _factories[ctJoystick] = new JoystickFactory();
     _factories[ctScene] = new SceneItemFactory();
+    _factories[ctSkybox] = new SkyboxItemFactory();
 }
 
 Library::~Library()

@@ -105,6 +105,8 @@ set(CPP_SRCS
     gamegio/JoystickCbor.cpp
     gamegio/SceneItem.cpp
     gamegio/SceneItemCbor.cpp
+    gamegio/SkyboxItem.cpp
+    gamegio/SkyboxItemCbor.cpp
 )
 
 set(CBOR_SRCS
