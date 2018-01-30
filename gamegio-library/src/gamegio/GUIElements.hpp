@@ -39,6 +39,7 @@
 #include <Urho3D/Graphics/StaticModel.h>
 #include <Urho3D/UI/Text.h>
 #include <Urho3D/UI/Button.h>
+#include <Urho3D/UI/Sprite.h>
 #include <Urho3D/UI/LineEdit.h>
 #include <Urho3D/UI/Slider.h>
 #include <Urho3D/UI/CheckBox.h>
@@ -87,6 +88,30 @@ public:
   void msgEntityId(FrMsg m, FrMsgLength l);
 };
 
+//
+// SPRITE
+//
+
+GCO_FACTORY_DEC(SpriteItem)
+
+class SpriteItem : public HasUIElement, public Object {
+
+  URHO3D_OBJECT(SpriteItem, Object);
+
+protected:
+  SharedPtr<Sprite> sprite;
+
+public:
+  SpriteItem();
+  ~SpriteItem();
+
+  static FrItem msgCreate(FrMsg m, FrMsgLength l);
+  void msgDestroy();
+};
+
+//
+// BUTTON
+//
 
 GIO_METHOD_DEC(ButtonItem, ScreenRect)
 GIO_METHOD_DEC(ButtonItem, Parent)

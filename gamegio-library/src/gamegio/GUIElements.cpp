@@ -28,6 +28,7 @@
 #include "SliderCbor.hpp"
 #include "StaticTextCbor.hpp"
 #include "UIElementCbor.hpp"
+#include "SpriteItemCbor.hpp"
 
 using namespace std;
 
@@ -99,6 +100,58 @@ void HasUIElement::msgEntityId(FrMsg m, FrMsgLength l)
 }
 
 //
+// SpriteItem
+//
+
+GIO_METHOD_FUNC(SpriteItem, ScreenRect)
+GIO_METHOD_FUNC(SpriteItem, Parent)
+GIO_METHOD_FUNC(SpriteItem, EntityId)
+
+GCO_FACTORY_IMP(SpriteItem)
+    GCO_FACTORY_METHOD(SpriteItem, ctScreenRect, ScreenRect)
+    GCO_FACTORY_METHOD(SpriteItem, ctParent, Parent)
+    GCO_FACTORY_METHOD(SpriteItem, ctEntityId, EntityId)
+GCO_FACTORY_IMP_END
+
+SpriteItem::SpriteItem() : HasUIElement(), Object(Graphics3DSystem::getG3DS()->context)
+{
+}
+
+FrItem SpriteItem::msgCreate(FrMsg m, FrMsgLength l)
+{
+    SpriteItem *item = new SpriteItem();
+
+    CborParser parser; CborValue it;
+    cbor_parser_init(m, l, 0, &parser, &it);
+    cbd::Sprite sp;
+    cbd::readSprite(&it, &sp);
+
+    ResourceCache* cache = item->g->context->GetSubsystem<ResourceCache>();
+    Texture2D* texture = cache->GetResource<Texture2D>(sp.resource.c_str());
+
+    UI* ui = item->g->context->GetSubsystem<UI>();
+    item->sprite = new Sprite(item->g->context);
+    item->uiElement.StaticCast(item->sprite);
+    ui->GetRoot()->AddChild(item->sprite);
+    item->sprite->SetStyleAuto();
+    item->sprite->SetTexture(texture);
+    item->sprite->SetOpacity(sp.opacity);
+    return (FrItem)item;
+}
+
+void SpriteItem::msgDestroy()
+{
+    delete this;
+}
+
+SpriteItem::~SpriteItem()
+{
+    UI* ui = g->context->GetSubsystem<UI>();
+    ui->GetRoot()->RemoveChild(sprite);
+}
+
+
+//
 // ButtonItem
 //
 
@@ -161,10 +214,8 @@ ButtonItem::~ButtonItem()
     UnsubscribeFromEvent(uiElement, E_PRESSED);
     UnsubscribeFromEvent(uiElement, E_RELEASED);
     UI* ui = g->context->GetSubsystem<UI>();
-    ui->GetRoot()->RemoveChild(button);
     button->RemoveChild(text);
-    delete button;
-    delete text;
+    ui->GetRoot()->RemoveChild(button);
 }
 
 void ButtonItem::registerButtonFunction(FrMessageFn2 f, void* p2, uint64_t cbet)
@@ -244,7 +295,6 @@ EditTextItem::~EditTextItem()
     UnsubscribeFromEvent(uiElement, E_TEXTCHANGED);
     UI* ui = g->context->GetSubsystem<UI>();
     ui->GetRoot()->RemoveChild(edittext);
-    delete edittext;
 }
 
 void EditTextItem::msgEditText(FrMsg m, FrMsgLength l)
@@ -321,7 +371,6 @@ TextItem::~TextItem()
 {
     UI* ui = g->context->GetSubsystem<UI>();
     ui->GetRoot()->RemoveChild(text);
-    delete text;
 }
 
 void TextItem::msgText(FrMsg m, FrMsgLength l)
@@ -382,7 +431,6 @@ SliderItem::~SliderItem()
     UnsubscribeFromEvent(uiElement, E_SLIDERCHANGED);
     UI* ui = g->context->GetSubsystem<UI>();
     ui->GetRoot()->RemoveChild(slider);
-    delete slider;
 }
 
 void SliderItem::msgSlider(FrMsg m, FrMsgLength l)
@@ -470,7 +518,6 @@ CheckBoxItem::~CheckBoxItem()
     UnsubscribeFromEvent(uiElement, E_TOGGLED);
     UI* ui = g->context->GetSubsystem<UI>();
     ui->GetRoot()->RemoveChild(checkbox);
-    delete checkbox;
 }
 
 void CheckBoxItem::msgCheckBox(FrMsg m, FrMsgLength l)

@@ -72,9 +72,9 @@ GCO_FACTORY_DEC(SoundSourceItem)
 class SoundSourceItem : public HasNode, public GioComponentObject {
 
 private:
-  SoundSource* soundSource;
-  Sound* sound;
-  ResourceCache* cache;
+  SharedPtr<SoundSource> soundSource;
+  SharedPtr<Sound> sound;
+  SharedPtr<ResourceCache> cache;
   cbd::SoundType soundType;
 
 public:

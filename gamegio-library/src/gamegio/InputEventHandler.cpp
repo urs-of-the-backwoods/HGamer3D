@@ -133,15 +133,23 @@ IEHClass::IEHClass()
 IEHClass::~IEHClass()
 {
   // deregister all events by following procedure
-  bDefaultEvents = true;
-  bMouseEvents = false;
-  bKeyEvents = false;
-  bExitRequestedEvent = false;
-  registerEvents();
-  
   exitREventF = NULL;
   mouseEventF = NULL;
   keyEventF = NULL;
+
+  bDefaultEvents = false;
+  bMouseEvents = false;
+  bKeyEvents = false;
+  bExitRequestedEvent = false;
+  bMouseButtonUp = false;
+  bMouseButtonDown = false;
+  bMouseMove = false;
+  bMouseWheel = false;
+  bMouseVisibleChanged = false;
+  bKeyUp = false;
+  bKeyDown = false;
+
+  registerEvents();
 }
 
 FrItem IEHClass::msgCreate(FrMsg m, FrMsgLength l)

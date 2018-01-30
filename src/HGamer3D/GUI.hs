@@ -20,6 +20,7 @@ module HGamer3D.GUI
     , module HGamer3D.GUI.Slider
     , module HGamer3D.GUI.DropDownList
     , module HGamer3D.GUI.CheckBox
+    , module HGamer3D.GUI.Sprite
 )
 
 
@@ -32,5 +33,6 @@ import HGamer3D.GUI.Text
 import HGamer3D.GUI.Slider
 import HGamer3D.GUI.DropDownList
 import HGamer3D.GUI.CheckBox
+import HGamer3D.GUI.Sprite
 
 

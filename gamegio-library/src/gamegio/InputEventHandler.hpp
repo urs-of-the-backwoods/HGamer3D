@@ -65,7 +65,7 @@ class Mouse : public Object, GioComponentObject {
 URHO3D_OBJECT(Mouse, Object);
 
 private:
-  Input *input;
+  SharedPtr<Input> input;
 
 public:
   Mouse();
@@ -97,7 +97,7 @@ private:
   void* exitRDataP;
   uint64_t exitREventType;
 
-  Input *input;
+  SharedPtr<Input> input;
   
   bool bDefaultEvents;          // events are not specified use properties, to check which to register
   
