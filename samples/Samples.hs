@@ -48,7 +48,7 @@ gameLogic hg3d = do
             , ("06 GUI", G.sampleRunner hg3d)
             , ("07 Joystick", JS.sampleRunner hg3d)
             , ("08 Loading a Scene", SL.sampleRunner hg3d)
-            , ("09 Skybox", SB.sampleRunner hg3d)
+            , ("09 Skybox", SB.sampleRunner hg3d cam)
             , ("Clear", emptySampleRunner)
             ]
 
