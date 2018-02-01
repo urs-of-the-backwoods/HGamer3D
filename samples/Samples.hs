@@ -12,6 +12,9 @@ import qualified Sample_03_Hierarchy as H
 import qualified Sample_04_Sound as S
 import qualified Sample_05_MouseModes as MM
 import qualified Sample_06_GUI as G
+import qualified Sample_07_Joystick as JS
+import qualified Sample_08_SceneLoad as SL
+import qualified Sample_09_Skybox as SB
 
 import SampleRunner
 
@@ -43,6 +46,9 @@ gameLogic hg3d = do
             , ("04 Sound", S.sampleRunner hg3d)
             , ("05 Mouse Modes", MM.sampleRunner hg3d)
             , ("06 GUI", G.sampleRunner hg3d)
+            , ("07 Joystick", JS.sampleRunner hg3d)
+            , ("08 Loading a Scene", SL.sampleRunner hg3d)
+            , ("09 Skybox", SB.sampleRunner hg3d)
             , ("Clear", emptySampleRunner)
             ]
 

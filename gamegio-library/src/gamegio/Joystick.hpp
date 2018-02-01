@@ -49,7 +49,9 @@ public:
 
   static FrItem msgCreate(FrMsg m, FrMsgLength l);
   void virtual msgDestroy();
+
   void setIdAndState();
+  void sendJoystickChangeEvent();
 
   void registerJoystickEventFunction(FrMessageFn2 f, void* p2, uint64_t joystickET);
   void HandleJoystickConnected(StringHash eventType, VariantMap& eventData);

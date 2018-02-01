@@ -10,6 +10,7 @@ enum JoystickEvent {
   ButtonUp Int32;          // Button Id
   AxisMove Int32 Float32;  // Axis Id, Move Position
   HatMove Int32 Int32;     // Axis Id, Hat Position
+  JoystickChange Int32 Int32; // joystick plugged, unplugged, min, max indicees
 }
 
 id64 JoystickEvent = 0x1cdc5b0a65479346

@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Sample_01_RotatingCube where
+module Sample_08_SceneLoad where
 
 import HGamer3D
 import Control.Concurrent
@@ -9,33 +9,22 @@ import SampleRunner
 
 creator hg3d = do
 
-    eGeo <- newE hg3d [
-        ctGeometry #: ShapeGeometry Cube,
-        ctMaterial #: matBlue,
-        ctScale #: Vec3 10.0 10.0 10.0,
-        ctPosition #: Vec3 0.0 0.0 0.0,
-        ctOrientation #: unitU
+    eScene <- newE hg3d [
+      ctScene #: XmlScene "Scenes/SceneLoadExample.xml",
+      ctScale #: Vec3 4.0 4.0 4.0,
+      ctPosition #: Vec3 (0.0) (-3.0) (0.0)
+
         ]
 
-    quitV <- makeVar False
+    sky <- newE hg3d [
+      ctSkybox #: SkyboxMaterial "Materials/Skybox.xml"
+                    ]
 
-    let rotateCube = do
-                updateC eGeo ctOrientation (\u -> (rotU vec3Z 0.02) .*. u)
-                updateC eGeo ctOrientation (\u -> (rotU vec3X 0.015) .*. u)
-                sleepFor (msecT 12)
-                q <- readVar quitV
-                if not q
-                  then rotateCube
-                  else return ()
+    return (eScene, sky)
 
-    forkIO rotateCube
-
-    return (eGeo, quitV)
-
-destructor (eGeo, quitV) = do
-  writeVar quitV True
-  sleepFor (msecT 500) -- monitor that cube stops before deletion
-  delE eGeo
+destructor (eScene, sky) = do
+  delE eScene
+  delE sky
   return ()
 
 sampleRunner hg3d = SampleRunner (return ()) (do

@@ -1,6 +1,3 @@
-#ifndef __JOYSTICK_CBOR_HPP__
-#define __JOYSTICK_CBOR_HPP__
-
 #include <stdint.h>
 #include <stdbool.h>
 #include <string>
@@ -20,6 +17,7 @@ typedef enum {
     ButtonUp = 2,
     AxisMove = 3,
     HatMove = 4,
+    JoystickChange = 5,
 } EnumJoystickEvent;
 
 typedef struct {
@@ -41,6 +39,10 @@ typedef struct {
             int32_t value0;
             int32_t value1;
         } HatMove;
+        struct {
+            int32_t value0;
+            int32_t value1;
+        } JoystickChange;
     } data;
 } JoystickEvent;
 
@@ -138,5 +140,3 @@ void writeJoystickAxis(CborEncoder *enc, JoystickAxis joystickAxis);
 
 extern const uint64_t ctJoystick;
 extern const uint64_t ctJoystickEvent;
-
-#endif

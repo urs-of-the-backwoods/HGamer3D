@@ -40,6 +40,10 @@ int i; cbor_value_get_int(it, &i); cbor_value_advance_fixed(it);
         { int i; cbor_value_get_int(it, &i); joystickEvent->data.HatMove.value0 = (int32_t)i;} cbor_value_advance_fixed(it);
         { int i; cbor_value_get_int(it, &i); joystickEvent->data.HatMove.value1 = (int32_t)i;} cbor_value_advance_fixed(it);
     };
+    if (joystickEvent->selector == 5) {
+        { int i; cbor_value_get_int(it, &i); joystickEvent->data.JoystickChange.value0 = (int32_t)i;} cbor_value_advance_fixed(it);
+        { int i; cbor_value_get_int(it, &i); joystickEvent->data.JoystickChange.value1 = (int32_t)i;} cbor_value_advance_fixed(it);
+    };
 cbor_value_leave_container(ita, it); }
 }
 
@@ -69,6 +73,12 @@ cbor_encoder_close_container_checked(enca, enc); }
         cbor_encode_uint(enc, (uint64_t)joystickEvent.selector);
         cbor_encode_int(enc, (int64_t)joystickEvent.data.HatMove.value0);
         cbor_encode_int(enc, (int64_t)joystickEvent.data.HatMove.value1);
+cbor_encoder_close_container_checked(enca, enc); }
+    if (joystickEvent.selector == 5) 
+{ CborEncoder encb; CborEncoder *enca = enc; CborEncoder *enc = &encb; cbor_encoder_create_array(enca, enc, 3);
+        cbor_encode_uint(enc, (uint64_t)joystickEvent.selector);
+        cbor_encode_int(enc, (int64_t)joystickEvent.data.JoystickChange.value0);
+        cbor_encode_int(enc, (int64_t)joystickEvent.data.JoystickChange.value1);
 cbor_encoder_close_container_checked(enca, enc); }
 }
 

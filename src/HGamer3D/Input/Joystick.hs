@@ -16,8 +16,6 @@ module HGamer3D.Input.Joystick
 where
 
 import Fresco
-import HGamer3D.Data
-
 import Data.Binary.Serialise.CBOR
 import Data.Binary.Serialise.CBOR.Encoding
 import Data.Binary.Serialise.CBOR.Decoding
@@ -40,6 +38,7 @@ data JoystickEvent = NoJoystickEvent
     | ButtonUp Int -- ^ Button Id 
     | AxisMove Int Float -- ^ Axis Id, Move Position 
     | HatMove Int Int -- ^ Axis Id, Hat Position 
+    | JoystickChange Int Int -- ^ joystick plugged, unplugged, min, max indicees 
     deriving (Eq, Read, Show)
 
 ctJoystickEvent :: ComponentType JoystickEvent
@@ -80,6 +79,7 @@ instance Serialise JoystickEvent where
     encode (ButtonUp v1) = encodeListLen 2 <>  encode (2::Int) <> encode v1
     encode (AxisMove v1 v2) = encodeListLen 3 <>  encode (3::Int) <> encode v1<> encode v2
     encode (HatMove v1 v2) = encodeListLen 3 <>  encode (4::Int) <> encode v1<> encode v2
+    encode (JoystickChange v1 v2) = encodeListLen 3 <>  encode (5::Int) <> encode v1<> encode v2
     decode = do
         decodeListLen
         i <- decode :: Decoder s Int
@@ -89,6 +89,7 @@ instance Serialise JoystickEvent where
             2 -> (ButtonUp <$> decode)
             3 -> (AxisMove <$> decode <*> decode)
             4 -> (HatMove <$> decode <*> decode)
+            5 -> (JoystickChange <$> decode <*> decode)
 
 instance Serialise JoystickButton where
     encode (A) = encodeListLen 1 <>  encode (0::Int) 
@@ -143,4 +144,5 @@ instance Serialise JoystickAxis where
             3 -> (pure RightY)
             4 -> (pure TriggerLeft)
             5 -> (pure TriggerRight)
+
 

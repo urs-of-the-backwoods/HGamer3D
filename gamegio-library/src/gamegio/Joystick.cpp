@@ -91,10 +91,31 @@ void Joystick::registerJoystickEventFunction(FrMessageFn2 f, void* p2, uint64_t 
 
 void Joystick::HandleJoystickConnected(StringHash eventType, VariantMap& eventData) {
   setIdAndState();
+  sendJoystickChangeEvent();
 }
 
 void Joystick::HandleJoystickDisconnected(StringHash eventType, VariantMap& eventData) {
   setIdAndState();
+  sendJoystickChangeEvent();
+}
+
+void Joystick::sendJoystickChangeEvent()
+{
+  if (joystickEventF != NULL) {
+    int j = input->GetNumJoysticks();
+    uint8_t buf[64];
+    CborEncoder encoder;
+    cbor_encoder_init(&encoder, buf, sizeof(buf), 0);
+
+    cbd::JoystickEvent jevt;
+    jevt.selector = cbd::JoystickChange;
+    jevt.data.JoystickChange.value0 = 0;
+    jevt.data.JoystickChange.value1 = 1;
+
+    writeJoystickEvent(&encoder, jevt);
+    size_t len = cbor_encoder_get_buffer_size(&encoder, buf);
+    joystickEventF(joystickDataP, joystickEventType, buf, len);
+  }
 }
 
 void Joystick::HandleJoystickEvents(StringHash eventType, VariantMap& eventData) {

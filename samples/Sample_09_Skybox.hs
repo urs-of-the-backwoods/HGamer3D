@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Sample_01_RotatingCube where
+module Sample_09_Skybox where
 
 import HGamer3D
 import Control.Concurrent
@@ -11,11 +11,15 @@ creator hg3d = do
 
     eGeo <- newE hg3d [
         ctGeometry #: ShapeGeometry Cube,
-        ctMaterial #: matBlue,
-        ctScale #: Vec3 10.0 10.0 10.0,
+        ctMaterial #: matMetalScratch,
+        ctScale #: Vec3 5.0 5.0 5.0,
         ctPosition #: Vec3 0.0 0.0 0.0,
         ctOrientation #: unitU
         ]
+
+    sky <- newE hg3d [
+      ctSkybox #: SkyboxMaterial "Materials/Skybox.xml"
+                    ]
 
     quitV <- makeVar False
 
@@ -30,12 +34,13 @@ creator hg3d = do
 
     forkIO rotateCube
 
-    return (eGeo, quitV)
+    return (eGeo, sky, quitV)
 
-destructor (eGeo, quitV) = do
+destructor (eGeo, sky, quitV) = do
   writeVar quitV True
   sleepFor (msecT 500) -- monitor that cube stops before deletion
   delE eGeo
+  delE sky
   return ()
 
 sampleRunner hg3d = SampleRunner (return ()) (do
