@@ -73,13 +73,13 @@ local function versionGameGio()
 end
 
 
-local function runSample(para)
+local function runSample()
 	o, a = getOS()
 	if o == "windows" then
-		os.execute(aioString() .. " start http://www.hgamer3d.org/tools/Run.0517 " .. para .. ".exe")
+		os.execute(aioString() .. " start http://www.hgamer3d.org/tools/Run.0517 Samples.exe")
 		os.exit(0)
 	else
-		os.execute(aioString() .. " start http://www.hgamer3d.org/tools/Run.0517 ./" .. para)
+		os.execute(aioString() .. " start http://www.hgamer3d.org/tools/Run.0517 ./Samples")
 		os.exit(0)
 	end
 end
@@ -155,7 +155,7 @@ build <command>
 command might be:
   init-build-system
   samples
-  run-sample <sample>
+  run-samples
   HGamer3D
   gamegio
   version-gamegio
@@ -205,9 +205,9 @@ if #arg > 0 then
 		buildSamples()
 		os.exit(0)
 
-	elseif arg[1] == "run-sample" and #arg > 1 then
+	elseif arg[1] == "run-samples" then
 		lfs.chdir("samples")
-		runSample(arg[2])
+		runSample()
 	end
 
 
