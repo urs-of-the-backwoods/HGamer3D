@@ -182,6 +182,7 @@ class TextItem : public HasUIElement {
 
 protected:
     SharedPtr<Text> text;
+    Urho3D::String contents;
 
 public:
   TextItem();

@@ -17,9 +17,8 @@ import SampleRunner
 
 switchRunner var runner = do
   previousRunner <- readVar var
-  let stopper = getStopFunction previousRunner
-  stopper
-  newRunner <- getRunning runner
+  getStopFunction previousRunner -- stops the old
+  newRunner <- getRunning runner -- starts the new
   writeVar var newRunner
   return ()
 

@@ -74,7 +74,7 @@ class SoundSourceItem : public HasNode, public GioComponentObject {
 private:
   SharedPtr<SoundSource> soundSource;
   SharedPtr<Sound> sound;
-  SharedPtr<ResourceCache> cache;
+  ResourceCache* cache;
   cbd::SoundType soundType;
 
 public:

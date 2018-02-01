@@ -19,7 +19,7 @@ createAll hg3d = do
             ]
 
             ,[
-                ctInputEventHandler #: DefaultEventHandler, 
+                ctInputEventHandler #: DefaultEventHandler,
                 ctKeyEvent #: NoKeyEvent,
                 ctMouseEvent #: NoMouseEvent
             ]
@@ -73,8 +73,9 @@ destructor (res, quitV) = do
   writeVar quitV True
   sleepFor (msecT 500)
   let [mode, event, txtIntro, txtMode, txtEvent] = res
-  mapM delE [event]
-  mapM delE [mode, txtIntro, txtMode, txtEvent]
+  delE event
+  delE mode
+  mapM delE [txtIntro, txtMode, txtEvent]
   return ()
 
 sampleRunner hg3d = SampleRunner (return ()) (do

@@ -53,7 +53,6 @@ HasUIElement::HasUIElement()
 
 HasUIElement::~HasUIElement()
 {
-    delete uiElement;
 }
 
 FrItem HasUIElement::msgCreate(FrMsg m, FrMsgLength l)
@@ -354,11 +353,11 @@ FrItem TextItem::msgCreate(FrMsg m, FrMsgLength l)
 {
     TextItem *item = new TextItem();
     UI* ui = item->g->context->GetSubsystem<UI>();
-    item->text = new Text(item->g->context);
+    item->text = item->g->context->CreateObject<Text>();
+    //new Text(item->g->context);
     item->uiElement.StaticCast(item->text);
     ui->GetRoot()->AddChild(item->text);
     item->text->SetStyleAuto();
-//    text->SetTextAlignment(HA_CENTER);
     return (FrItem)item;
 }
 
@@ -379,7 +378,8 @@ void TextItem::msgText(FrMsg m, FrMsgLength l)
     cbor_parser_init(m, l, 0, &parser, &it);
     cbd::StaticText st;
     cbd::readStaticText(&it, &st);
-    text->SetText(st.c_str());
+    contents = st.c_str();
+    text->SetText(contents);
 }
 
 //

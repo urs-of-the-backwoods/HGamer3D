@@ -140,12 +140,15 @@ IEHClass::~IEHClass()
   bDefaultEvents = false;
   bMouseEvents = false;
   bKeyEvents = false;
+
   bExitRequestedEvent = false;
+
   bMouseButtonUp = false;
   bMouseButtonDown = false;
   bMouseMove = false;
   bMouseWheel = false;
   bMouseVisibleChanged = false;
+
   bKeyUp = false;
   bKeyDown = false;
 
@@ -204,11 +207,11 @@ void IEHClass::registerEvents()
     if (bKeyUp) SubscribeToEvent(E_KEYUP, URHO3D_HANDLER(IEHClass, HandleKeyUp));
     if (bKeyDown) SubscribeToEvent(E_KEYDOWN, URHO3D_HANDLER(IEHClass, HandleKeyDown));
   }
-    
+
 }
 
 void IEHClass::msgInputEventHandler(FrMsg m, FrMsgLength l)
-{ 
+{
     CborParser parser; CborValue it;
     cbor_parser_init(m, l, 0, &parser, &it);
     InputEventHandler ieh;
@@ -219,7 +222,7 @@ void IEHClass::msgInputEventHandler(FrMsg m, FrMsgLength l)
     {
         bDefaultEvents = true;
     } else if (ieh.selector == SpecificEventHandler)
-        
+
     // non default handler, registered events
     {
         bDefaultEvents = false;
@@ -231,7 +234,7 @@ void IEHClass::msgInputEventHandler(FrMsg m, FrMsgLength l)
         bKeyUp = false;
         bKeyDown = false;
         bExitRequested = false;
-        
+
         for(std::vector<InputEventType>::iterator it = ieh.data.SpecificEventHandler.value0.begin(); it != ieh.data.SpecificEventHandler.value0.end(); ++it) {
             if (it->selector == IEMouseButtonUp) bMouseButtonUp = true;
             if (it->selector == IEMouseButtonDown) bMouseButtonDown = true;
@@ -243,7 +246,7 @@ void IEHClass::msgInputEventHandler(FrMsg m, FrMsgLength l)
             if (it->selector == IEExitRequested) bExitRequested = true;
         }
     }
-            
+
     registerEvents();
 }
 
@@ -296,7 +299,7 @@ void IEHClass::HandleMouseMove(StringHash eventType, VariantMap& eventData)
 
     cbd::MouseEvent mevt;
 
-    mevt.selector = cbd::MouseButtonUpEvent;
+    mevt.selector = cbd::MouseMoveEvent;
     if (input->IsMouseVisible()) {
       mevt.data.MouseMoveEvent.value0.x = eventData[MouseMove::P_X].GetInt();
       mevt.data.MouseMoveEvent.value0.y = eventData[MouseMove::P_Y].GetInt();
@@ -324,7 +327,7 @@ void IEHClass::HandleMouseWheel(StringHash eventType, VariantMap& eventData)
 
     cbd::MouseEvent mevt;
 
-    mevt.selector = cbd::MouseButtonDownEvent;
+    mevt.selector = cbd::MouseWheelEvent;
     mevt.data.MouseWheelEvent.value0.wheel = eventData[MouseWheel::P_WHEEL].GetInt();
     mevt.data.MouseWheelEvent.value0.buttons = eventData[MouseWheel::P_BUTTONS].GetInt();
     mevt.data.MouseWheelEvent.value0.qualifiers = eventData[MouseWheel::P_QUALIFIERS].GetInt();
@@ -351,7 +354,7 @@ void IEHClass::HandleKeyUp(StringHash eventType, VariantMap& eventData)
 
     KeyEvent kevt;
 
-    kevt.selector = KeyUpEvent;
+    kevt.selector = cbd::KeyUpEvent;
     int scancode = eventData[KeyUp::P_SCANCODE].GetInt();
     kevt.data.KeyUpEvent.value0.key = eventData[KeyUp::P_KEY].GetInt();
     kevt.data.KeyUpEvent.value0.scancode = scancode;
@@ -373,7 +376,7 @@ void IEHClass::HandleKeyDown(StringHash eventType, VariantMap& eventData)
 
           KeyEvent kevt;
 
-          kevt.selector = KeyDownEvent;
+          kevt.selector = cbd::KeyDownEvent;
           int scancode = eventData[KeyDown::P_SCANCODE].GetInt();
           kevt.data.KeyDownEvent.value0.key = eventData[KeyDown::P_KEY].GetInt();
           kevt.data.KeyDownEvent.value0.scancode = scancode;
