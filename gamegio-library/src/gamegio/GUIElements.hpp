@@ -1,4 +1,3 @@
-//	C++ part of bindings for gui
 //	HGamer3D Library (A project to enable 3D game development in Haskell)
 //	Copyright 2015 Peter Althainz
 //	
@@ -47,6 +46,10 @@
 #include <Urho3D/UI/Window.h>
 #include <Urho3D/UI/UI.h>
 #include <Urho3D/UI/UIEvents.h>
+#include <Urho3D/Graphics/Texture.h>
+#include <Urho3D/Graphics/Texture2D.h>
+
+
 
 #include <exception>
 
