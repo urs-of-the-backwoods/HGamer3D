@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Sample_01_RotatingCube where
+module Sample_10_3DText where
 
 import HGamer3D
 import Control.Concurrent
@@ -10,11 +10,14 @@ import SampleRunner
 creator hg3d = do
 
     eGeo <- newE hg3d [
-        ctGeometry #: ShapeGeometry Cube,
-        ctMaterial #: matBlue,
-        ctScale #: Vec3 10.0 10.0 10.0,
+--        ctGeometry #: ShapeGeometry Cube,
+--        ctMaterial #: matBlue,
+--        ctScale #: Vec3 10.0 10.0 10.0,
         ctPosition #: Vec3 0.0 0.0 0.0,
-        ctOrientation #: unitU
+        ctOrientation #: unitU,
+
+        ctText3D #: Text3D "Fonts/BlueHighway.ttf" 24 FCNone True,
+        ctLabel #: "Blauer Kubus"
         ]
 
     quitV <- makeVar False

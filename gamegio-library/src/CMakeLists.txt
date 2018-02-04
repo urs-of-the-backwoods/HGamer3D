@@ -108,6 +108,9 @@ set(CPP_SRCS
     gamegio/SkyboxItem.cpp
     gamegio/SkyboxItemCbor.cpp
     gamegio/SpriteItemCbor.cpp
+    gamegio/Text3DItemCbor.cpp
+    gamegio/Text3DItem.cpp
+    gamegio/LabelCbor.cpp
 )
 
 set(CBOR_SRCS

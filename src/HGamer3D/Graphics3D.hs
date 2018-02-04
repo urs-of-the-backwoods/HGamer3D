@@ -31,6 +31,7 @@ module HGamer3D.Graphics3D
   module HGamer3D.Graphics3D.Graphics3DConfig,
   module HGamer3D.Graphics3D.Scene,
   module HGamer3D.Graphics3D.Skybox,
+  module HGamer3D.Graphics3D.Text3D,
 )
 
 where
@@ -43,5 +44,6 @@ import HGamer3D.Graphics3D.Graphics3DCommand
 import HGamer3D.Graphics3D.Graphics3DConfig
 import HGamer3D.Graphics3D.Scene
 import HGamer3D.Graphics3D.Skybox
+import HGamer3D.Graphics3D.Text3D
 
 

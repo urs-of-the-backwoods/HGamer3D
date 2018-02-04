@@ -1,15 +1,14 @@
 //	C++ part of bindings for graphics
 //	HGamer3D Library (A project to enable 3D game development in Haskell)
-//	Copyright 2015 Peter Althainz
-//	
+//	Copyright 2018 Peter Althainz
 //	Distributed under the Apache License, Version 2.0
-//	(See attached file LICENSE or copy at 
+//	(See attached file LICENSE or copy at
 //	http://www.apache.org/licenses/LICENSE-2.0)
-// 
-//	file: Urho3D-Binding/graphics3d.hpp
+//
+//	file: HGamer3D/gamegio-library/src/gamegio/Text3DItem.hpp
 
-#ifndef __camera_item_hpp__
-#define __camera_item_hpp__
+#ifndef __text3d_item_hpp__
+#define __text3d_item_hpp__
 
 #include <iostream>
 #include <fstream>
@@ -41,6 +40,7 @@
 #include <Urho3D/Scene/Scene.h>
 #include <Urho3D/Graphics/StaticModel.h>
 #include <Urho3D/UI/Text.h>
+#include <Urho3D/UI/Text3D.h>
 #include <Urho3D/UI/UI.h>
 
 #include <exception>
@@ -49,7 +49,6 @@
 
 #include "Fresco.hpp"
 #include "HasNode.hpp"
-#include "Graphics3DSystem.hpp"
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -57,23 +56,23 @@
 
 using namespace Urho3D;
 
-GIO_METHOD_DEC(CameraItem, Frustum)
-GCO_FACTORY_DEC(CameraItem)
+GIO_METHOD_DEC(Text3DItem, Label)
+GIO_METHOD_DEC(Text3DItem, Text3DItem)
+GCO_FACTORY_DEC(Text3DItem)
 
-class CameraItem : public HasNode
+class Text3DItem : public HasNode
 {
 private:
-  SharedPtr<Viewport> viewport;
-  int viewportSlot;
-  void setFrustum(float nc, float fc, float fov);
+  SharedPtr<Text3D> text3d;
 
 public:
-  CameraItem();
-  ~CameraItem();
+  Text3DItem();
+  ~Text3DItem();
   static FrItem msgCreate(FrMsg m, FrMsgLength l);
   void virtual msgDestroy();
 
-  void msgFrustum(FrMsg m, FrMsgLength l);
+  void msgText3DItem(FrMsg m, FrMsgLength l);
+  void msgLabel(FrMsg m, FrMsgLength l);
 };
 
 

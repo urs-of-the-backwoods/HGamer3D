@@ -35,6 +35,8 @@
 #include "SkyboxItemCbor.hpp"
 #include "SkyboxItem.hpp"
 #include "SpriteItemCbor.hpp"
+#include "Text3DItem.hpp"
+#include "Text3DItemCbor.hpp"
 
 #include "GUIElements.hpp"
 #include "ButtonCbor.hpp"
@@ -70,6 +72,7 @@ Library::Library()
     _factories[ctScene] = new SceneItemFactory();
     _factories[ctSkybox] = new SkyboxItemFactory();
     _factories[ctSprite] = new SpriteItemFactory();
+    _factories[ctText3D] = new Text3DItemFactory();
 }
 
 Library::~Library()

@@ -29,6 +29,7 @@ module HGamer3D.Data
     module HGamer3D.Data.LMH,
     module HGamer3D.Data.GameTime,
     module HGamer3D.Data.Visible,
+    module HGamer3D.Data.Label,
 
     -- * Geometry Datatypes
     module HGamer3D.Data.Vector,
@@ -52,6 +53,7 @@ import HGamer3D.Data.Colour
 import HGamer3D.Data.LMH
 import HGamer3D.Data.GameTime
 import HGamer3D.Data.Visible
+import HGamer3D.Data.Label
 import HGamer3D.Data.ScreenRect
 import HGamer3D.Data.Geometry2D
 import HGamer3D.Data.Transform3D
