@@ -23,6 +23,7 @@
 #include "SceneItem.hpp"
 #include "SceneItemCbor.hpp"
 #include "Graphics3DSystem.hpp"
+#include "VisibleCbor.hpp"
 
 #include <Urho3D/Math/Vector3.h>
 #include <Urho3D/Math/Quaternion.h>
@@ -34,6 +35,7 @@ GIO_METHOD_FUNC(SceneItem, Scale)
 GIO_METHOD_FUNC(SceneItem, Ori)
 GIO_METHOD_FUNC(SceneItem, EntityId)
 GIO_METHOD_FUNC(SceneItem, Parent)
+GIO_METHOD_FUNC(SceneItem, Visible)
 
 // Factory Implementation
 GCO_FACTORY_IMP(SceneItem)
@@ -42,6 +44,7 @@ GCO_FACTORY_IMP(SceneItem)
     GCO_FACTORY_METHOD(SceneItem, ctOrientation, Ori)
     GCO_FACTORY_METHOD(SceneItem, ctEntityId, EntityId)
     GCO_FACTORY_METHOD(SceneItem, ctParent, Parent)
+    GCO_FACTORY_METHOD(SceneItem, ctVisible, Visible)
 GCO_FACTORY_IMP_END
 
 SceneItem::SceneItem()

@@ -17,7 +17,8 @@ creator hg3d = do
         ctOrientation #: unitU,
 
         ctText3D #: Text3D "Fonts/BlueHighway.ttf" 24 FCNone True,
-        ctLabel #: "Blauer Kubus"
+        ctLabel #: "Blauer Kubus",
+        ctVisible #: True
         ]
 
     quitV <- makeVar False
@@ -32,6 +33,13 @@ creator hg3d = do
                   else return ()
 
     forkIO rotateCube
+
+    let blinkCube = do
+          updateC eGeo ctVisible (\v -> not v)
+          sleepFor (secT 2)
+          blinkCube
+
+    forkIO blinkCube
 
     return (eGeo, quitV)
 

@@ -23,6 +23,7 @@
 #include "Text3DItem.hpp"
 #include "Text3DItemCbor.hpp"
 #include "LabelCbor.hpp"
+#include "VisibleCbor.hpp"
 #include "Graphics3DSystem.hpp"
 
 #include <Urho3D/Math/Vector3.h>
@@ -37,6 +38,7 @@ GIO_METHOD_FUNC(Text3DItem, Scale)
 GIO_METHOD_FUNC(Text3DItem, Ori)
 GIO_METHOD_FUNC(Text3DItem, EntityId)
 GIO_METHOD_FUNC(Text3DItem, Parent)
+GIO_METHOD_FUNC(Text3DItem, Visible)
 
 // Factory Implementation
 GCO_FACTORY_IMP(Text3DItem)
@@ -47,6 +49,7 @@ GCO_FACTORY_IMP(Text3DItem)
     GCO_FACTORY_METHOD(Text3DItem, ctOrientation, Ori)
     GCO_FACTORY_METHOD(Text3DItem, ctEntityId, EntityId)
     GCO_FACTORY_METHOD(Text3DItem, ctParent, Parent)
+    GCO_FACTORY_METHOD(Text3DItem, ctVisible, Visible)
 GCO_FACTORY_IMP_END
 
 Text3DItem::Text3DItem()

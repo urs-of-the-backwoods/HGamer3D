@@ -24,6 +24,7 @@
 #include "UnitQuaternionCbor.hpp"
 #include "EntityIdCbor.hpp"
 #include "ParentCbor.hpp"
+#include "VisibleCbor.hpp"
 
 using namespace std;
 
@@ -35,6 +36,7 @@ GIO_METHOD_FUNC(GeometryItem, Scale)
 GIO_METHOD_FUNC(GeometryItem, Ori)
 GIO_METHOD_FUNC(GeometryItem, EntityId)
 GIO_METHOD_FUNC(GeometryItem, Parent)
+GIO_METHOD_FUNC(GeometryItem, Visible)
 
 // Factory Implementation
 GCO_FACTORY_IMP(GeometryItem)
@@ -46,6 +48,7 @@ GCO_FACTORY_IMP(GeometryItem)
     GCO_FACTORY_METHOD(GeometryItem, ctOrientation, Ori)
     GCO_FACTORY_METHOD(GeometryItem, ctEntityId, EntityId)
     GCO_FACTORY_METHOD(GeometryItem, ctParent, Parent)
+    GCO_FACTORY_METHOD(GeometryItem, ctVisible, Visible)
 GCO_FACTORY_IMP_END
 
 GeometryItem::GeometryItem()

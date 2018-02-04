@@ -22,6 +22,7 @@
 #include "UnitQuaternionCbor.hpp"
 #include "EntityIdCbor.hpp"
 #include "ParentCbor.hpp"
+#include "VisibleCbor.hpp"
 
 using namespace std;
 using namespace cbd;
@@ -29,6 +30,7 @@ using namespace cbd;
 GIO_METHOD_FUNC(HasNode, Pos)
 GIO_METHOD_FUNC(HasNode, Scale)
 GIO_METHOD_FUNC(HasNode, Ori)
+GIO_METHOD_FUNC(HasNode, Visible)
 GIO_METHOD_FUNC(HasNode, EntityId)
 GIO_METHOD_FUNC(HasNode, Parent)
 
@@ -39,6 +41,7 @@ GCO_FACTORY_IMP(HasNode)
     GCO_FACTORY_METHOD(HasNode, ctOrientation, Ori)
     GCO_FACTORY_METHOD(HasNode, ctEntityId, EntityId)
     GCO_FACTORY_METHOD(HasNode, ctParent, Parent)
+    GCO_FACTORY_METHOD(HasNode, ctVisible, Visible)
 GCO_FACTORY_IMP_END
 
 
@@ -139,5 +142,14 @@ void HasNode::msgEntityId(FrMsg m, FrMsgLength l)
 //  printEID(eid);
 
   Graphics3DSystem::getG3DS()->node_map[eid] = node;
+}
+
+void HasNode::msgVisible(FrMsg m, FrMsgLength l)
+{
+  CborParser parser; CborValue it;
+  cbor_parser_init(m, l, 0, &parser, &it);
+  bool visible;
+  cbd::readVisible(&it, &visible);
+  node->SetEnabled(visible);
 }
 

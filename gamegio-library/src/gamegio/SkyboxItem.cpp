@@ -23,6 +23,7 @@
 #include "SkyboxItem.hpp"
 #include "SkyboxItemCbor.hpp"
 #include "Graphics3DSystem.hpp"
+#include "VisibleCbor.hpp"
 
 #include <Urho3D/Math/Vector3.h>
 #include <Urho3D/Math/Quaternion.h>
@@ -30,8 +31,11 @@
 using namespace std;
 
 
+GIO_METHOD_FUNC(SkyboxItem, Visible)
+
 // Factory Implementation
 GCO_FACTORY_IMP(SkyboxItem)
+    GCO_FACTORY_METHOD(SkyboxItem, ctVisible, Visible)
 GCO_FACTORY_IMP_END
 
 SkyboxItem::SkyboxItem()
