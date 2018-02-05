@@ -37,6 +37,10 @@
 #include "SpriteItemCbor.hpp"
 #include "Text3DItem.hpp"
 #include "Text3DItemCbor.hpp"
+#include "LogMessageItemCbor.hpp"
+#include "LogMessageItem.hpp"
+#include "ParticlesItemCbor.hpp"
+#include "ParticlesItem.hpp"
 
 #include "GUIElements.hpp"
 #include "ButtonCbor.hpp"
@@ -73,6 +77,8 @@ Library::Library()
     _factories[ctSkybox] = new SkyboxItemFactory();
     _factories[ctSprite] = new SpriteItemFactory();
     _factories[ctText3D] = new Text3DItemFactory();
+    _factories[ctLogMessage] = new LogMessageItemFactory();
+    _factories[ctParticles] = new ParticlesItemFactory();
 }
 
 Library::~Library()

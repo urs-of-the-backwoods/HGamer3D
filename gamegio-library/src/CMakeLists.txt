@@ -111,6 +111,10 @@ set(CPP_SRCS
     gamegio/Text3DItemCbor.cpp
     gamegio/Text3DItem.cpp
     gamegio/LabelCbor.cpp
+    gamegio/ParticlesItemCbor.cpp
+    gamegio/ParticlesItem.cpp
+    gamegio/LogMessageItemCbor.cpp
+    gamegio/LogMessageItem.cpp
 )
 
 set(CBOR_SRCS
