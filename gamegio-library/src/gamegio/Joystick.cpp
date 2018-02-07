@@ -11,6 +11,8 @@
 #include "Joystick.hpp"
 #include "JoystickCbor.hpp"
 #include "Graphics3DSystem.hpp"
+#include "Urho3D/IO/Log.h"
+#include <stdio.h>
 
 using namespace Urho3D;
 
@@ -43,12 +45,21 @@ void Joystick::setIdAndState()
 {
   joystickState = NULL; // reset after disconnect or connect
 
-  for ( unsigned i = 0; i < input->GetNumJoysticks(); ++i ) {
+  int n = input->GetNumJoysticks();
+
+  char buf[100];
+  sprintf(buf, "Number of Joysticks connected: %d", n);
+  Log::Write(LOG_INFO, buf);
+
+  for ( unsigned i = 0; i < n; ++i ) {
 
     JoystickState *state = input->GetJoystickByIndex(i);
     if (i == joystickIndex)
-      // joystick->IsController() 
       {
+        char buf[100];
+        sprintf(buf, "Joystick at index: %d, using Joystick %s", i, state->name_.CString());
+        Log::Write(LOG_INFO, buf);
+        
         joystickID = state->joystickID_;
         joystickState = state;
         break;

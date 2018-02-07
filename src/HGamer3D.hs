@@ -44,6 +44,7 @@ module HGamer3D
 --    ctParent,
     EntityTree (..),
     newET,
+    delET,
 
     (<:),
     (<|),
@@ -171,12 +172,15 @@ createET hg3d (ETChild label clist tlist) parent = do
   [(_, e1)] <- createET hg3d (ETNode (Just "label") clist) parent
   let l1 = case label of
             Just l -> [(l, e1)]
-            Nothing -> [] 
+            Nothing -> [("", e1)] 
   l2 <- createET hg3d (ETList tlist) (Just e1)
   return (l1 ++ l2)
 
-newET :: HG3D -> [EntityTree] -> IO (M.Map String Entity)
-newET hg3d et = createET hg3d (ETList et) Nothing >>= \l -> return (M.fromList l)
+newET :: HG3D -> [EntityTree] -> IO ([(String, Entity)])
+newET hg3d et = createET hg3d (ETList et) Nothing 
+
+delET :: [(String, Entity)] -> IO ()
+delET l = mapM (\(s, e) -> delE e) l >> return ()
 
 (<:) :: String -> [(Word64, Component)] -> EntityTree
 label <: clist = ETNode (Just label) clist
@@ -190,5 +194,5 @@ label <| (clist, tlist) = ETChild (Just label) clist tlist
 (-|) :: () -> ([(Word64, Component)], [EntityTree]) -> EntityTree
 () -| (clist, tlist) = ETChild Nothing clist tlist
 
-(#) :: (M.Map String Entity) -> String -> Entity
-m # s = fromJust $ M.lookup s m
+(#) :: [(String, Entity)] -> String -> Entity
+m # s = snd . head $ (filter (\(s', e) -> s == s') m)

@@ -58,7 +58,7 @@ creator hg3d = do
 destructor (es, quitV) = do
   writeVar quitV True
   sleepFor (msecT 500)
-  -- to be done delete all es
+  delET es 
   return ()
 
 sampleRunner hg3d = SampleRunner (return ()) (do
