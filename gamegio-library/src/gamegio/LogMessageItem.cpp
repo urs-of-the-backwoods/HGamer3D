@@ -64,7 +64,13 @@ void LogMessageItem::msgLogMessageItem(FrMsg m, FrMsgLength l) {
   cbd::readLogMessage(&it, &logMessage);
 
   if (strlen(logMessage.message.c_str()) > 0) {
-    Urho3D::Log::Write(logMessage.level.selector, logMessage.message.c_str());
+    int logLevel;
+    switch(logMessage.level.selector) {
+    case cbd::Debug : logLevel = LOG_DEBUG;
+    case cbd::Info : logLevel = LOG_INFO;
+    case cbd::Warning : logLevel = LOG_WARNING;
+    }
+    Urho3D::Log::Write(logLevel, logMessage.message.c_str());
   }
 }
 
