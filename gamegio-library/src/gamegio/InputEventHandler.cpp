@@ -16,6 +16,7 @@
 
 #include "InputEventHandler.hpp"
 #include "Urho3D/Input/InputEvents.h"
+#include "Urho3D/Graphics/GraphicsEvents.h"
 #include "Urho3D/UI/UIEvents.h"
 #include "Fresco.hpp"
 #include "VisibleCbor.hpp"
@@ -108,15 +109,17 @@ IEHClass::IEHClass()
 : Object(Graphics3DSystem::getG3DS()->context)
 {
     input = Graphics3DSystem::getG3DS()->context->GetSubsystem<Input>();
-    
+
+    bDefaultEvents = true;
+
     mouseEventF = NULL;
     mouseDataP = NULL;
     keyEventF = NULL;
     keyDataP = NULL;
     exitREventF = NULL;
     exitRDataP = NULL;
-    
-    bDefaultEvents = true;
+    SMEventF = NULL;
+    SMDataP = NULL;
 
     bMouseEvents = false;
     bKeyEvents = false;
@@ -127,6 +130,8 @@ IEHClass::IEHClass()
     bMouseVisibleChanged = false;
     bKeyUp = false;
     bKeyDown = false;
+    bExitRequested = false;
+    bScreenMode = false;
 
 }
 
@@ -141,7 +146,7 @@ IEHClass::~IEHClass()
   bMouseEvents = false;
   bKeyEvents = false;
 
-  bExitRequestedEvent = false;
+  bExitRequested = false;
 
   bMouseButtonUp = false;
   bMouseButtonDown = false;
@@ -192,8 +197,11 @@ void IEHClass::registerEvents()
           SubscribeToEvent(E_KEYUP, URHO3D_HANDLER(IEHClass, HandleKeyUp));
           SubscribeToEvent(E_KEYDOWN, URHO3D_HANDLER(IEHClass, HandleKeyDown));
       }
-      if (bExitRequestedEvent) {
+      if (bExitRequested) {
           SubscribeToEvent(E_EXITREQUESTED, URHO3D_HANDLER(IEHClass, HandleExitRequestedEvent));
+      }
+      if (bScreenMode) {
+        SubscribeToEvent(E_SCREENMODE, URHO3D_HANDLER(IEHClass, HandleScreenModeEvent));
       }
       
   } else
@@ -206,6 +214,8 @@ void IEHClass::registerEvents()
     if (bMouseVisibleChanged) SubscribeToEvent(E_MOUSEVISIBLECHANGED, URHO3D_HANDLER(IEHClass, HandleMouseVisibleChanged));
     if (bKeyUp) SubscribeToEvent(E_KEYUP, URHO3D_HANDLER(IEHClass, HandleKeyUp));
     if (bKeyDown) SubscribeToEvent(E_KEYDOWN, URHO3D_HANDLER(IEHClass, HandleKeyDown));
+    if (bExitRequested) SubscribeToEvent(E_EXITREQUESTED, URHO3D_HANDLER(IEHClass, HandleExitRequestedEvent));
+    if (bScreenMode) SubscribeToEvent(E_SCREENMODE, URHO3D_HANDLER(IEHClass, HandleScreenModeEvent));
   }
 
 }
@@ -427,9 +437,19 @@ void IEHClass::registerKeyEventFunction(FrMessageFn2 f, void* p2, uint64_t keyET
 void IEHClass::registerExitRequestedEventFunction(FrMessageFn2 f, void* p2, uint64_t erET)
 {
   // register events: depends on default setting
-  bExitRequestedEvent = true;
+  bExitRequested = true;
   registerEvents();
   exitREventF = f;
   exitRDataP = p2;
   exitREventType = erET;
+}
+
+void IEHClass::registerScreenModeEventFunction(FrMessageFn2 f, void* p2, uint64_t erET)
+{
+  // register events: depends on default setting
+  bScreenMode = true;
+  registerEvents();
+  SMEventF = f;
+  SMDataP = p2;
+  SMEventType = erET;
 }

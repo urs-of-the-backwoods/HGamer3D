@@ -15,6 +15,8 @@ src/.stack-work
 samples/.stack-work
 samples/*.exe
 samples/*.log
+samples/Samples
+samples/Samples.exe
 
 samples/Billion
 samples/Cuboid2

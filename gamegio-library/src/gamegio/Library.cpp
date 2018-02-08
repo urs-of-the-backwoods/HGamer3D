@@ -133,6 +133,7 @@ void gioRegisterMsgReceiver(FrItemType ctItem, FrEventType ctEvent, FrItem item,
     GIO_REG_EVENT(IEHClass, InputEventHandler, MouseEvent)
     GIO_REG_EVENT(IEHClass, InputEventHandler, KeyEvent)
     GIO_REG_EVENT(IEHClass, InputEventHandler, ExitRequestedEvent)
+      //    GIO_REG_EVENT(IEHClass, InputEventHandler, ScreenModeEvent)
     GIO_REG_EVENT(EditTextItem, EditText, EditText)
     GIO_REG_EVENT(CheckBoxItem, CheckBox, CheckBox)
     GIO_REG_EVENT(ButtonItem, Button, Button)

@@ -18,7 +18,9 @@ creator hg3d = do
 
         ctText3D #: Text3D "Fonts/BlueHighway.ttf" 24 FCNone True,
         ctLabel #: "Blauer Kubus",
-        ctVisible #: True
+        ctVisible #: True,
+        ctLogMessage #: LogMessage Warning "",
+        ctParticles #: ParticleEffectResource "Particle/Fire.xml"
         ]
 
     quitV <- makeVar False
@@ -36,6 +38,7 @@ creator hg3d = do
 
     let blinkCube = do
           updateC eGeo ctVisible (\v -> not v)
+          setC eGeo ctLogMessage (LogMessage Warning "new log message")
           sleepFor (secT 2)
           blinkCube
 

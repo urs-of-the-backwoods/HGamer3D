@@ -97,15 +97,20 @@ private:
   void* exitRDataP;
   uint64_t exitREventType;
 
+  FrMessageFn2 SMEventF;
+  void* SMDataP;
+  uint64_t SMEventType;
+
   Input* input;
-  
+
   bool bDefaultEvents;          // events are not specified use properties, to check which to register
-  
-  bool bExitRequestedEvent;
+
   bool bKeyEvents;
   bool bMouseEvents;
-  
+
   bool bExitRequested;
+  bool bScreenMode;
+  bool bScreenModeRequested;
   bool bMouseButtonUp;
   bool bMouseButtonDown;
   bool bMouseMove;
@@ -113,13 +118,13 @@ private:
   bool bMouseVisibleChanged;
   bool bKeyUp;
   bool bKeyDown;
-  
+
   void registerEvents();
 
 public:
   IEHClass();
   ~IEHClass();
- 
+
    // creation / destruction
   static FrItem msgCreate(FrMsg m, FrMsgLength l);
   void virtual msgDestroy();
@@ -129,6 +134,7 @@ public:
   void registerMouseEventFunction(FrMessageFn2 f, void* p2, uint64_t mouseET);
   void registerKeyEventFunction(FrMessageFn2 f, void* p2, uint64_t keyET);
   void registerExitRequestedEventFunction(FrMessageFn2 f, void* p2, uint64_t erET);
+  void registerScreenModeEventFunction(FrMessageFn2 f, void* p2, uint64_t erET);
 
   // the event handling routines
   void HandleMouseMove(StringHash eventType, VariantMap& eventData);
@@ -138,6 +144,7 @@ public:
   void HandleMouseVisibleChanged(StringHash eventType, VariantMap& eventData);
 
   void HandleExitRequestedEvent(StringHash eventType, VariantMap& eventData);
+  void HandleScreenModeEvent(StringHash eventType, VariantMap& eventData);
   
   void HandleKeyUp(StringHash eventType, VariantMap& eventData);
   void HandleKeyDown(StringHash eventType, VariantMap& eventData);
