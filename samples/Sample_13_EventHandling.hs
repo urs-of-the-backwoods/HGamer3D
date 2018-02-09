@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Sample_11_Particles where
+module Sample_13_EventHandling where
 
 import HGamer3D
 import Control.Concurrent

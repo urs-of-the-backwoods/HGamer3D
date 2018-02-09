@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Sample_01_RotatingCube where
+module Sample_12_AnimatedModel where
 
 import HGamer3D
 import Control.Concurrent

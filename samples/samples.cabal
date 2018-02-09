@@ -17,7 +17,7 @@ executable Samples
   hs-source-dirs:      .
   main-is:             Samples.hs
   other-modules:       SampleRunner, Sample_01_RotatingCube, Sample_02_Materials, Sample_03_Hierarchy, Sample_04_Sound, Sample_05_MouseModes, Sample_06_GUI,
-                       Sample_07_Joystick, Sample_08_SceneLoad, Sample_09_Skybox, Sample_10_3DText
+                       Sample_07_Joystick, Sample_08_SceneLoad, Sample_09_Skybox, Sample_10_3DText, Sample_11_Particles, Sample_12_AnimatedModel, Sample_13_EventHandling
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base, text, containers, HGamer3D (>= 0.9.0 && < 2.0.0)
   default-language:    Haskell2010

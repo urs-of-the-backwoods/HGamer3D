@@ -16,6 +16,9 @@ import qualified Sample_07_Joystick as JS
 import qualified Sample_08_SceneLoad as SL
 import qualified Sample_09_Skybox as SB
 import qualified Sample_10_3DText as T
+import qualified Sample_11_Particles as P
+import qualified Sample_12_AnimatedModel as AM
+import qualified Sample_13_EventHandling as EH
 
 import SampleRunner
 
@@ -51,6 +54,9 @@ gameLogic hg3d = do
             , ("08 Loading a Scene", SL.sampleRunner hg3d)
             , ("09 Skybox", SB.sampleRunner hg3d cam)
             , ("10 3D Text", T.sampleRunner hg3d)
+            , ("11 Particles", P.sampleRunner hg3d)
+            , ("12 Animated Model", AM.sampleRunner hg3d)
+            , ("13 Event Handling", EH.sampleRunner hg3d)
             , ("Clear", emptySampleRunner)
             ]
 

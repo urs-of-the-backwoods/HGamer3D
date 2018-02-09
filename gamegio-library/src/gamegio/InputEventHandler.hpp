@@ -60,7 +60,7 @@ GIO_METHOD_DEC(Mouse, Visible)
 
 GCO_FACTORY_DEC(Mouse)
 
-class Mouse : public Object, GioComponentObject {
+class Mouse : public Object {
 
 URHO3D_OBJECT(Mouse, Object);
 

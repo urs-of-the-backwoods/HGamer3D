@@ -1,26 +1,16 @@
-//	C++ part of bindings for gui
 //	HGamer3D Library (A project to enable 3D game development in Haskell)
-//	Copyright 2015 Peter Althainz
-//	
+//	Copyright 2015 - 2018 Peter Althainz
+//
 //	Distributed under the Apache License, Version 2.0
-//	(See attached file LICENSE or copy at 
+//	(See attached file LICENSE or copy at
 //	http://www.apache.org/licenses/LICENSE-2.0)
-// 
-//	file: gamegio-library/gamegio/src/GUIElements.cpp
-
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <cmath>
+//
+//	file: HGamer3D/gamegio-library/src/gamegio/DropDownListItem.cpp
 
 #include "ScreenRectCbor.hpp"
 #include "ParentCbor.hpp"
-#include "EntityIdCbor.hpp"
 
-#include "GUIElements.hpp"
 #include "DropDownListItem.hpp"
-#include "DropDownListCbor.hpp"
 
 using namespace std;
 

@@ -1,12 +1,11 @@
-//	C++ part of bindings for graphics
 //	HGamer3D Library (A project to enable 3D game development in Haskell)
-//	Copyright 2015 Peter Althainz
-//	
+//	Copyright 2015 - 2018 Peter Althainz
+//
 //	Distributed under the Apache License, Version 2.0
-//	(See attached file LICENSE or copy at 
+//	(See attached file LICENSE or copy at
 //	http://www.apache.org/licenses/LICENSE-2.0)
-// 
-//	file: Urho3D-Binding/graphics3d.cpp
+//
+//	file: HGamer3D/gamegio-library/src/gamegio/CamerItem.cpp
 
 #include <sstream>
 #include <iostream>

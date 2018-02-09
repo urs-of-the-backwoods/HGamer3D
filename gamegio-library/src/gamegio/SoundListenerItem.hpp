@@ -62,7 +62,7 @@ GIO_METHOD_DEC(SoundListenerItem, Ori)
 
 GCO_FACTORY_DEC(SoundListenerItem)
 
-class SoundListenerItem : public HasNode, public GioComponentObject {
+class SoundListenerItem : public HasNode {
 
 private:
 

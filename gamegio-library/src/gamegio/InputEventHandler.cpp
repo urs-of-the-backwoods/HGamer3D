@@ -49,6 +49,7 @@ Mouse::Mouse()
 
 Mouse::~Mouse()
 {
+  UnsubscribeFromAllEvents();
 }
 
 FrItem Mouse::msgCreate(FrMsg m, FrMsgLength l)
@@ -142,22 +143,7 @@ IEHClass::~IEHClass()
   mouseEventF = NULL;
   keyEventF = NULL;
 
-  bDefaultEvents = false;
-  bMouseEvents = false;
-  bKeyEvents = false;
-
-  bExitRequested = false;
-
-  bMouseButtonUp = false;
-  bMouseButtonDown = false;
-  bMouseMove = false;
-  bMouseWheel = false;
-  bMouseVisibleChanged = false;
-
-  bKeyUp = false;
-  bKeyDown = false;
-
-  registerEvents();
+  UnsubscribeFromAllEvents();
 }
 
 FrItem IEHClass::msgCreate(FrMsg m, FrMsgLength l)
@@ -222,6 +208,7 @@ void IEHClass::registerEvents()
 
 void IEHClass::msgInputEventHandler(FrMsg m, FrMsgLength l)
 {
+
     CborParser parser; CborValue it;
     cbor_parser_init(m, l, 0, &parser, &it);
     InputEventHandler ieh;
@@ -411,6 +398,16 @@ void IEHClass::HandleExitRequestedEvent(StringHash eventType, VariantMap& eventD
     writeExitRequestedEvent(&encoder, er);
     size_t len = cbor_encoder_get_buffer_size(&encoder, buf);
     exitREventF(exitRDataP, exitREventType, buf, len);
+  }
+}
+
+void IEHClass::HandleScreenModeEvent(StringHash eventType, VariantMap& eventData)
+{
+  if (SMEventF != NULL) {
+    uint8_t buf[64];
+    CborEncoder encoder;
+    cbor_encoder_init(&encoder, buf, sizeof(buf), 0);
+
   }
 }
 

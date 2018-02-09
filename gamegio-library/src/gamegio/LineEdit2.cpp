@@ -1,29 +1,13 @@
-//	C++ part of bindings for gui
 //	HGamer3D Library (A project to enable 3D game development in Haskell)
-//	Copyright 2015 Peter Althainz
-//	
+//	Copyright 2015 - 2018 Peter Althainz
+//
 //	Distributed under the Apache License, Version 2.0
-//	(See attached file LICENSE or copy at 
+//	(See attached file LICENSE or copy at
 //	http://www.apache.org/licenses/LICENSE-2.0)
-// 
-//	file: Urho3D-Binding/gui.cpp
-
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <cmath>
+//
+//	file: HGamer3D/gamegio-library/src/gamegio/LineEdit2.cpp
 
 #include "LineEdit2.hpp"
-
-#include "../Core/Context.h"
-#include "../Input/Input.h"
-#include "../UI/LineEdit.h"
-#include "../UI/Text.h"
-#include "../UI/UI.h"
-#include "../UI/UIEvents.h"
-
-
 
 using namespace std;
 

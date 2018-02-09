@@ -41,19 +41,22 @@ createAll hg3d = do
 
         ]
 
-    return res
+    varText <- makeVar ""
+    return (varText, res)
 
 
-showMode mode txtMode quitV = do
+showMode mode txtMode txtEvent varText quitV = do
     q <- readVar quitV
     m <- readC mode ctMouseConfig
+    t <- readVar varText
+    setC txtEvent ctStaticText (T.pack t)
     setC txtMode ctStaticText (T.pack (show m))
     sleepFor (msecT 20)
     if not q
-      then showMode mode txtMode quitV
+      then showMode mode txtMode txtEvent varText quitV
       else return ()
 
-addMouseEventCallback hg3d event txtEvent = registerCallback hg3d event ctMouseEvent (\evt -> setC txtEvent ctStaticText (T.pack (show evt))) 
+addMouseEventCallback hg3d event varText = registerCallback hg3d event ctMouseEvent (\evt ->  writeVar varText (show evt) >> return ()) 
 addKeyEventCallback hg3d event mode = registerCallback hg3d event ctKeyEvent (\evt -> case evt of
                                                                                             KeyUpEvent (KeyData _ _ "A") -> setC mode ctMouseConfig (MouseConfig Absolute)
                                                                                             KeyUpEvent (KeyData _ _ "R") -> setC mode ctMouseConfig (MouseConfig Relative)
@@ -61,17 +64,17 @@ addKeyEventCallback hg3d event mode = registerCallback hg3d event ctKeyEvent (\e
                                                                                             _ -> return ())
 
 creator hg3d = do
-    res <- createAll hg3d
+    (varText, res) <- createAll hg3d
     let [mode, event, txtIntro, txtMode, txtEvent] = res
     quitV <- makeVar False
-    forkIO $ showMode mode txtMode quitV
-    addMouseEventCallback hg3d event txtEvent
+    forkIO $ showMode mode txtMode txtEvent varText quitV
+    addMouseEventCallback hg3d event varText
     addKeyEventCallback hg3d event mode
     return (res, quitV)
 
 destructor (res, quitV) = do
   writeVar quitV True
-  sleepFor (msecT 500)
+  sleepFor (msecT 300)
   let [mode, event, txtIntro, txtMode, txtEvent] = res
   delE event
   delE mode

@@ -1,24 +1,17 @@
-//	C++ part of bindings, general binding class towards Fresco framework
 //	HGamer3D Library (A project to enable 3D game development in Haskell)
-//	Copyright 2017 Peter Althainz
-//	
+//	Copyright 2015 - 2018 Peter Althainz
+//
 //	Distributed under the Apache License, Version 2.0
-//	(See attached file LICENSE or copy at 
+//	(See attached file LICENSE or copy at
 //	http://www.apache.org/licenses/LICENSE-2.0)
-// 
-//	file: gamegio-library/src/Fresco.hpp
+//
+//	file: HGamer3D/gamegio-library/src/gamegio/Fresco.hpp
 
 #ifndef __fresco_hpp
 #define __fresco_hpp
 
-// includes
-
 #include <stdint.h>
 #include <map>
-
-
-
-// some defined types from Fresco
 
 extern "C" {
 
@@ -28,7 +21,7 @@ extern "C" {
 
 // a CBor Message, bytes and length
 
-typedef uint8_t* FrMsg;       
+typedef uint8_t* FrMsg;
 typedef uint32_t FrMsgLength;
 
 /*
@@ -37,7 +30,7 @@ typedef uint32_t FrMsgLength;
     an uint64_t.
 */
 
-typedef uint64_t FrComponentType;   
+typedef uint64_t FrComponentType;
 typedef FrComponentType FrItemType;
 typedef FrComponentType FrPropertyType;
 typedef FrComponentType FrEventType;
@@ -126,17 +119,6 @@ extern "C" void GIO_METHOD_FUNCN(CNAME, MNAME)(void* item, FrMsg m, FrMsgLength 
 #define GIO_METHOD_FUNC(CNAME, MNAME) \
 void GIO_METHOD_FUNCN(CNAME, MNAME)(void* item, FrMsg m, FrMsgLength l) {\
 ((CNAME*)item)->msg ## MNAME(m,l); };
-
-class GioComponentObject {
-
-    public:
-        GioComponentObject();
-        ~GioComponentObject();
-
-        static FrItem msgCreate(FrMsg m, FrMsgLength l);
-        void virtual msgDestroy();
-};
-
 
 #define GIO_REG_EVENT(CNAME, TNAME, EVENT) \
   if (ctItem == ct ## TNAME && ctEvent == ct ## EVENT) {\

@@ -69,7 +69,7 @@ GIO_METHOD_DEC(SoundSourceItem, Ori)
 
 GCO_FACTORY_DEC(SoundSourceItem)
 
-class SoundSourceItem : public HasNode, public GioComponentObject {
+class SoundSourceItem : public HasNode {
 
 private:
   SharedPtr<SoundSource> soundSource;

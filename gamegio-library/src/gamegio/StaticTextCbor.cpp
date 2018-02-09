@@ -1,12 +1,16 @@
 #include "StaticTextCbor.hpp"
+#include <string>
+#include <iostream>
+
+using namespace std;
 
 namespace cbd {
 
 void readStaticText(CborValue *it, StaticText *staticText)
 {
     std::string rval;
-    { size_t l; cbor_value_calculate_string_length(it, &l); rval.resize(l+1);
-        cbor_value_copy_text_string(it, (char *)(rval.c_str()), &l, NULL); cbor_value_advance(it);}
+    { size_t l; cbor_value_calculate_string_length(it, &l); l++; rval.resize(l);
+      cbor_value_copy_text_string(it, (char *)(rval.c_str()), &l, NULL); cbor_value_advance(it);}
     *staticText = rval;
 }
 

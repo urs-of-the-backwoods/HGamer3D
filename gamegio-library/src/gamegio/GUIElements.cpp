@@ -1,26 +1,17 @@
-//	C++ part of bindings for gui
 //	HGamer3D Library (A project to enable 3D game development in Haskell)
-//	Copyright 2015 Peter Althainz
-//	
+//	Copyright 2015 - 2018 Peter Althainz
+//
 //	Distributed under the Apache License, Version 2.0
-//	(See attached file LICENSE or copy at 
+//	(See attached file LICENSE or copy at
 //	http://www.apache.org/licenses/LICENSE-2.0)
-// 
-//	file: gamegio-library/gamegio/src/GUIElements.cpp
-
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <cmath>
+//
+//	file: HGamer3D/gamegio-library/src/gamegio/GUIElements.cpp
 
 #include "GUIElements.hpp"
-#include "Slider2.hpp"
 
 #include "ScreenRectCbor.hpp"
 #include "ParentCbor.hpp"
 #include "EntityIdCbor.hpp"
-
 #include "ButtonCbor.hpp"
 #include "CheckBoxCbor.hpp"
 #include "DropDownListCbor.hpp"
@@ -32,7 +23,7 @@
 
 using namespace std;
 
-// 
+//
 // HasUIElement
 //
 
@@ -374,12 +365,11 @@ TextItem::~TextItem()
 
 void TextItem::msgText(FrMsg m, FrMsgLength l)
 {
-    CborParser parser; CborValue it;
-    cbor_parser_init(m, l, 0, &parser, &it);
-    cbd::StaticText st;
-    cbd::readStaticText(&it, &st);
-    contents = st.c_str();
-    text->SetText(contents);
+  CborParser parser; CborValue it;
+  cbor_parser_init(m, l, 0, &parser, &it);
+  cbd::StaticText st;
+  cbd::readStaticText(&it, &st);
+  text->SetText(st.c_str());
 }
 
 //

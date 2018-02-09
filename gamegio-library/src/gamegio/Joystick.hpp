@@ -29,7 +29,7 @@ using namespace Urho3D;
 
 GCO_FACTORY_DEC(Joystick)
 
-class Joystick : public Object, GioComponentObject {
+class Joystick : public Object {
 
   URHO3D_OBJECT(Joystick, Object);
 
