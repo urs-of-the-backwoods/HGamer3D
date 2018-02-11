@@ -6,36 +6,45 @@ import HGamer3D
 import Control.Concurrent
 import Control.Monad
 import SampleRunner
+import Data.Text as T
 
 creator hg3d = do
+  es <- newET hg3d [
+    "eK" <: [
+        ctKeyEvent #: NoKeyEvent
+        ],
 
-    eGeo <- newE hg3d [
-        ctGeometry #: ShapeGeometry Cube,
-        ctMaterial #: matBlue,
-        ctScale #: Vec3 10.0 10.0 10.0,
-        ctPosition #: Vec3 0.0 0.0 0.0,
-        ctOrientation #: unitU
-        ]
+    "eS" <: [
+        ctScreenModeEvent #: ScreenModeEvent 0 0 False False
+        ],
 
-    quitV <- makeVar False
+     "txt" <: [
+        ctStaticText #: "",
+        ctScreenRect #: ScreenRect 10 100 200 35
+              ],
 
-    let rotateCube = do
-                updateC eGeo ctOrientation (\u -> (rotU vec3Z 0.02) .*. u)
-                updateC eGeo ctOrientation (\u -> (rotU vec3X 0.015) .*. u)
-                sleepFor (msecT 12)
-                q <- readVar quitV
-                if not q
-                  then rotateCube
-                  else return ()
+     "txt2" <: [
+        ctStaticText #: "",
+        ctScreenRect #: ScreenRect 10 150 200 35
+              ]
+     ]
 
-    forkIO rotateCube
+  registerCallback hg3d (es # "eK") ctKeyEvent (\evt -> do
+                                                   setC (es # "txt") ctStaticText ("key event")
+                                                   setC (es # "txt2") ctStaticText (T.pack (show evt))
+                                                   return ()
+                                               )
 
-    return (eGeo, quitV)
+  registerCallback hg3d (es # "eS") ctScreenModeEvent (\evt -> do
+                                                   setC (es # "txt") ctStaticText ("screen mode event")
+                                                   setC (es # "txt2") ctStaticText (T.pack (show evt))
+                                                   return ()
+                                                 )
 
-destructor (eGeo, quitV) = do
-  writeVar quitV True
-  sleepFor (msecT 500) -- monitor that cube stops before deletion
-  delE eGeo
+  return es
+
+destructor es = do
+  delET es
   return ()
 
 sampleRunner hg3d = SampleRunner (return ()) (do

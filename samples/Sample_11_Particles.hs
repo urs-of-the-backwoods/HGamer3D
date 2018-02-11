@@ -9,33 +9,27 @@ import SampleRunner
 
 creator hg3d = do
 
-    eGeo <- newE hg3d [
-        ctGeometry #: ShapeGeometry Cube,
-        ctMaterial #: matBlue,
-        ctScale #: Vec3 10.0 10.0 10.0,
-        ctPosition #: Vec3 0.0 0.0 0.0,
-        ctOrientation #: unitU
+    eP1 <- newE hg3d [
+        ctParticles #: ParticleEffectResource "Particle/Smoke.xml",
+        ctPosition #: Vec3 (-5.0) (-2.0) (-15.0)
         ]
 
-    quitV <- makeVar False
+    eP2 <- newE hg3d [
+        ctParticles #: ParticleEffectResource "Particle/Fire.xml",
+        ctPosition #: Vec3 0.0 (-2.0) (-15.0)
+        ]
 
-    let rotateCube = do
-                updateC eGeo ctOrientation (\u -> (rotU vec3Z 0.02) .*. u)
-                updateC eGeo ctOrientation (\u -> (rotU vec3X 0.015) .*. u)
-                sleepFor (msecT 12)
-                q <- readVar quitV
-                if not q
-                  then rotateCube
-                  else return ()
+    eP3 <- newE hg3d [
+        ctParticles #: ParticleEffectResource "Particle/Disco.xml",
+        ctPosition #: Vec3 5.0 (-2.0) (-15.0)
+        ]
 
-    forkIO rotateCube
+    return (eP1, eP2, eP3)
 
-    return (eGeo, quitV)
-
-destructor (eGeo, quitV) = do
-  writeVar quitV True
-  sleepFor (msecT 500) -- monitor that cube stops before deletion
-  delE eGeo
+destructor (eP1, eP2, eP3) = do
+  delE eP1
+  delE eP2
+  delE eP3
   return ()
 
 sampleRunner hg3d = SampleRunner (return ()) (do
