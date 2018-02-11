@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Sample_12_AnimatedModel where
+module Sample_12_EventHandling where
 
 import HGamer3D
 import Control.Concurrent
