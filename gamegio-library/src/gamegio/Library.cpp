@@ -139,9 +139,7 @@ void gioRegisterMsgReceiver(FrItemType ctItem, FrEventType ctEvent, FrItem item,
 {
   //              Implement     Imlement           Event
   //              Class         Class CT           Name (ctEvent, registerEventFunction)
-    GIO_REG_EVENT(IEHClass, InputEventHandler, MouseEvent090)
-    GIO_REG_EVENT(IEHClass, InputEventHandler, KeyEvent090)
-    GIO_REG_EVENT(IEHClass, InputEventHandler, ExitRequestedEvent090)
+
     GIO_REG_EVENT(MouseItem, Mouse, MouseEvent)
     GIO_REG_EVENT(KeysItem, KeyEvent, KeyEvent)
     GIO_REG_EVENT(ScreenModeItem, ScreenModeEvent, ScreenModeEvent)
@@ -152,5 +150,10 @@ void gioRegisterMsgReceiver(FrItemType ctItem, FrEventType ctEvent, FrItem item,
     GIO_REG_EVENT(DropDownListItem, DropDownList, DropDownList)
     GIO_REG_EVENT(Joystick, Joystick, JoystickEvent)
     GIO_REG_EVENT(ExitRequestedItem, ExitRequestedEvent, ExitRequestedEvent)
+
+    // old input event handler, deprecated, compatibility mode
+    GIO_REG_EVENT(IEHClass, InputEventHandler, MouseEvent090)
+    GIO_REG_EVENT(IEHClass, InputEventHandler, KeyEvent090)
+    GIO_REG_EVENT(IEHClass, InputEventHandler, ExitRequestedEvent090)
 }
 
