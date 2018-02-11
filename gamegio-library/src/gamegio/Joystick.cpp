@@ -1,18 +1,15 @@
-//	C++ part of bindings for joystick 
 //	HGamer3D Library (A project to enable 3D game development in Haskell)
 //	Copyright 2018 Peter Althainz
 //
 //	Distributed under the Apache License, Version 2.0
-//	(See attached file LICENSE or copy at 
+//	(See attached file LICENSE or copy at
 //	http://www.apache.org/licenses/LICENSE-2.0)
 //
-//	file: gamegio-library/src/gamegio/Joystick.cpp
+//	file: HGamer3D/gamegio-library/src/gamegio/Joystick.cpp
 
 #include "Joystick.hpp"
 #include "JoystickCbor.hpp"
 #include "Graphics3DSystem.hpp"
-#include "Urho3D/IO/Log.h"
-#include <stdio.h>
 
 using namespace Urho3D;
 

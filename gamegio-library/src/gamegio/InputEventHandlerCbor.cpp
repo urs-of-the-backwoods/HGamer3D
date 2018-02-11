@@ -1,4 +1,14 @@
+//	HGamer3D Library (A project to enable 3D game development in Haskell)
+//	Copyright 2015 - 2018 Peter Althainz
+//
+//	Distributed under the Apache License, Version 2.0
+//	(See attached file LICENSE or copy at
+//	http://www.apache.org/licenses/LICENSE-2.0)
+//
+//	file: HGamer3D/gamegio-library/src/gamegio/InputEventHandlerCbor.cpp
+
 #include "InputEventHandlerCbor.hpp"
+
 using namespace std;
 
 #include <sstream>
@@ -102,18 +112,6 @@ void writeInputEventHandler(CborEncoder *enc0, InputEventHandler inputEventHandl
     };
 }
 
-void readExitRequestedEvent(CborValue *it, ExitRequestedEvent *exitRequestedEvent)
-{
-    { uint8_t i; cbor_value_get_simple_type(it, &i);} cbor_value_advance_fixed(it);
-}
-
-void writeExitRequestedEvent(CborEncoder *enc, ExitRequestedEvent exitRequestedEvent)
-{
-    cbor_encode_simple_value(enc, NullValue);
-}
-
-
 } // end of namespacd cdb
 
 const uint64_t ctInputEventHandler = 0xfc0edefcebcb5878;
-const uint64_t ctExitRequestedEvent = 0x824517eb48d5c653;

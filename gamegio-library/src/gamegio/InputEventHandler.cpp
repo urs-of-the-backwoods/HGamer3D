@@ -1,30 +1,20 @@
-//	C++ part of bindings for input
 //	HGamer3D Library (A project to enable 3D game development in Haskell)
-//	Copyright 2015 Peter Althainz
-//	
+//	Copyright 2015 - 2018 Peter Althainz
+//
 //	Distributed under the Apache License, Version 2.0
-//	(See attached file LICENSE or copy at 
+//	(See attached file LICENSE or copy at
 //	http://www.apache.org/licenses/LICENSE-2.0)
-// 
-//	file: Urho3D-Binding/input.cpp
-
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <cmath>
+//
+//	file: HGamer3D/gamegio-library/src/gamegio/InputEventHandler.cpp
 
 #include "InputEventHandler.hpp"
-#include "Urho3D/Input/InputEvents.h"
-#include "Urho3D/Graphics/GraphicsEvents.h"
-#include "Urho3D/UI/UIEvents.h"
-#include "Fresco.hpp"
-#include "VisibleCbor.hpp"
-#include "Graphics3DSystem.hpp"
 
+#include "Graphics3DSystem.hpp"
+#include "VisibleCbor.hpp"
 #include "MouseCbor.hpp"
 #include "KeyEventCbor.hpp"
 #include "InputEventHandlerCbor.hpp"
+#include "WindowEventCbor.hpp"
 
 using namespace std;
 using namespace cbd;
@@ -411,7 +401,7 @@ void IEHClass::HandleScreenModeEvent(StringHash eventType, VariantMap& eventData
   }
 }
 
-void IEHClass::registerMouseEventFunction(FrMessageFn2 f, void* p2, uint64_t mouseET)
+void IEHClass::registerMouseEvent090Function(FrMessageFn2 f, void* p2, uint64_t mouseET)
 {
     // register events: depends on default setting
     bMouseEvents = true;
@@ -421,7 +411,7 @@ void IEHClass::registerMouseEventFunction(FrMessageFn2 f, void* p2, uint64_t mou
     mouseEventType = mouseET;
 }
 
-void IEHClass::registerKeyEventFunction(FrMessageFn2 f, void* p2, uint64_t keyET)
+void IEHClass::registerKeyEvent090Function(FrMessageFn2 f, void* p2, uint64_t keyET)
 {
     // register events: depends on default setting
     bKeyEvents = true;
@@ -431,7 +421,7 @@ void IEHClass::registerKeyEventFunction(FrMessageFn2 f, void* p2, uint64_t keyET
     keyEventType = keyET;
 }
 
-void IEHClass::registerExitRequestedEventFunction(FrMessageFn2 f, void* p2, uint64_t erET)
+void IEHClass::registerExitRequestedEvent090Function(FrMessageFn2 f, void* p2, uint64_t erET)
 {
   // register events: depends on default setting
   bExitRequested = true;

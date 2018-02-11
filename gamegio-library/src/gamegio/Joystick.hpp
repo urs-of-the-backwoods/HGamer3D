@@ -1,28 +1,16 @@
-//	C++ part of bindings for joystick
 //	HGamer3D Library (A project to enable 3D game development in Haskell)
 //	Copyright 2018 Peter Althainz
 //
 //	Distributed under the Apache License, Version 2.0
-//	(See attached file LICENSE or copy at 
+//	(See attached file LICENSE or copy at
 //	http://www.apache.org/licenses/LICENSE-2.0)
 //
-//	file: gamegio-library/src/gamegio/Joystick.hpp
+//	file: HGamer3D/gamegio-library/src/gamegio/Joystick.hpp
 
 #ifndef __joystick_hpp__
 #define __joystick_hpp__
 
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-
-#include <stdint.h>
-#include <stdbool.h>
-
-#include "Urho3D/Urho3D.h"
-
-#include <Urho3D/Input/Controls.h>
-#include <Urho3D/Input/Input.h>
+#include "Urho3D/Urho3DAll.h"
 #include "Fresco.hpp"
 
 using namespace Urho3D;

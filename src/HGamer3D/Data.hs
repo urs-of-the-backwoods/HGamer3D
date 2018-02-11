@@ -44,7 +44,8 @@ module HGamer3D.Data
     module HGamer3D.Data.Parent,
 
     -- * Implementation 
-    module HGamer3D.Data.Window
+    module HGamer3D.Data.Window,
+    module HGamer3D.Data.WindowEvent
 )
 
 where
@@ -62,6 +63,7 @@ import HGamer3D.Data.Transform3D
 import HGamer3D.Data.TypeSynonyms
 import HGamer3D.Data.Vector
 import HGamer3D.Data.Window
+import HGamer3D.Data.WindowEvent
 import HGamer3D.Data.PlayCmd
 import HGamer3D.Data.Parent
 

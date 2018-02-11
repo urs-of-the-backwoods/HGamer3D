@@ -15,13 +15,12 @@ createAll hg3d = do
     res <- mapM (newE hg3d) [
 
             [
-                ctMouseConfig #: MouseConfig Absolute
+                ctMouse #: MMAbsolute,
+                ctMouseEvent #: NoMouseEvent
             ]
 
             ,[
-                ctInputEventHandler #: DefaultEventHandler,
-                ctKeyEvent #: NoKeyEvent,
-                ctMouseEvent #: NoMouseEvent
+                ctKeyEvent #: NoKeyEvent
             ]
 
             ,[
@@ -45,40 +44,37 @@ createAll hg3d = do
     return (varText, res)
 
 
-showMode mode txtMode txtEvent varText quitV = do
+showMode mouse txtMode txtEvent varText quitV = do
     q <- readVar quitV
-    m <- readC mode ctMouseConfig
+    m <- readC mouse ctMouse
     t <- readVar varText
     setC txtEvent ctStaticText (T.pack t)
     setC txtMode ctStaticText (T.pack (show m))
     sleepFor (msecT 20)
     if not q
-      then showMode mode txtMode txtEvent varText quitV
+      then showMode mouse txtMode txtEvent varText quitV
       else return ()
 
-addMouseEventCallback hg3d event varText = registerCallback hg3d event ctMouseEvent (\evt ->  writeVar varText (show evt) >> return ()) 
-addKeyEventCallback hg3d event mode = registerCallback hg3d event ctKeyEvent (\evt -> case evt of
-                                                                                            KeyUpEvent (KeyData _ _ "A") -> setC mode ctMouseConfig (MouseConfig Absolute)
-                                                                                            KeyUpEvent (KeyData _ _ "R") -> setC mode ctMouseConfig (MouseConfig Relative)
-                                                                                            KeyUpEvent (KeyData _ _ "W") -> setC mode ctMouseConfig (MouseConfig Wrap) 
+addMouseEventCallback hg3d mouse varText = registerCallback hg3d mouse ctMouseEvent (\evt ->  writeVar varText (show evt) >> return ()) 
+addKeyEventCallback hg3d keys mouse = registerCallback hg3d keys ctKeyEvent (\evt -> case evt of
+                                                                                            KeyUpEvent (KeyData _ _ "A") -> setC mouse ctMouse MMAbsolute
+                                                                                            KeyUpEvent (KeyData _ _ "R") -> setC mouse ctMouse MMRelative
+                                                                                            KeyUpEvent (KeyData _ _ "W") -> setC mouse ctMouse MMWrap 
                                                                                             _ -> return ())
 
 creator hg3d = do
     (varText, res) <- createAll hg3d
-    let [mode, event, txtIntro, txtMode, txtEvent] = res
+    let [mouse, keys, txtIntro, txtMode, txtEvent] = res
     quitV <- makeVar False
-    forkIO $ showMode mode txtMode txtEvent varText quitV
-    addMouseEventCallback hg3d event varText
-    addKeyEventCallback hg3d event mode
+    forkIO $ showMode mouse txtMode txtEvent varText quitV
+    addMouseEventCallback hg3d mouse varText
+    addKeyEventCallback hg3d keys mouse
     return (res, quitV)
 
 destructor (res, quitV) = do
   writeVar quitV True
   sleepFor (msecT 300)
-  let [mode, event, txtIntro, txtMode, txtEvent] = res
-  delE event
-  delE mode
-  mapM delE [txtIntro, txtMode, txtEvent]
+  mapM delE res
   return ()
 
 sampleRunner hg3d = SampleRunner (return ()) (do

@@ -61,4 +61,5 @@ void writeKeyEvent(CborEncoder *enc0, KeyEvent keyEvent)
 
 } // end of namespacd cdb
 
-const uint64_t ctKeyEvent = 0x5ba1617fb50e97e5;
+const uint64_t ctKeyEvent090 = 0x5ba1617fb50e97e5;
+const uint64_t ctKeyEvent = 0x07995a794e698f4b;

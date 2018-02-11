@@ -75,7 +75,7 @@ gameLogic hg3d = do
                   ],
 
             -- create logo
-            () -: [
+            "eLogo" <: [
                   ctSprite #: Sprite "Textures/hg3dlogo.png" 0.8,
                   ctScreenRect #: ScreenRect 669 10 121 121
                   ],
@@ -84,7 +84,12 @@ gameLogic hg3d = do
             "eButton" <: [
                   ctButton #: Button False "Exit",
                   ctScreenRect #: ScreenRect 740 550 50 25
-                  ]
+                  ],
+
+              -- create screen size event handler
+            "eScreen" <: [
+                ctScreenModeEvent #: ScreenModeEvent 0 0 False False
+                         ]
 
             ]
 
@@ -92,6 +97,11 @@ gameLogic hg3d = do
       registerCallback hg3d (es # "eSelector") ctDropDownList (\(DropDownList _ selection) -> case selection of
                                                                   Selection t -> switchRunner currentSampleRunner (snd (sampleData !! t)) 
                                                                   NoSelection -> return () )
+      registerCallback hg3d (es # "eScreen") ctScreenModeEvent (\(ScreenModeEvent w h _ _) -> do
+                                                                   setC (es # "eLogo") ctScreenRect (ScreenRect (w - 131) 10 121 121)
+                                                                   setC (es # "eButton") ctScreenRect (ScreenRect (w - 60) (h - 50) 50 25)
+                                                                   return ()
+                                                                   )
 
       return ()
 

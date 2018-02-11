@@ -95,6 +95,11 @@ void writeMouseEvent(CborEncoder *enc0, MouseEvent mouseEvent);
 
 } // end of namespacd cdb
 
+// compatibility mode for old InputEventHandler
 extern const uint64_t ctMouseConfig;
+extern const uint64_t ctMouseEvent090;
+
+// new mouse idents
+extern const uint64_t ctMouse;
 extern const uint64_t ctMouseEvent;
 #endif

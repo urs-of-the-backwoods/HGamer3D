@@ -10,6 +10,9 @@ struct MouseConfig {
 
 id64 MouseConfig = 0xa532f43b1c1c6bc7
 
+type Mouse = MouseMode
+id64 Mouse = 0x07669c3c292bf265
+
 struct MouseButtonData {
     button : Int32;
     buttons : Int32;
@@ -39,4 +42,5 @@ enum MouseEvent {
     MouseWheelEvent MouseWheelData;
 }
 
-id64 MouseEvent = 0x27eaf3fd46595d08
+id64 MouseEvent090 = 0x27eaf3fd46595d08
+id64 MouseEvent = 0x8a73da7bdfbe4ccc

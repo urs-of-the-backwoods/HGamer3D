@@ -97,14 +97,13 @@ runGame conf glf loopSleepTime = do
             ctGraphics3DCommand #: NoCmd
             ]
 
-        eih <- newE hg3d [
-            ctInputEventHandler #: DefaultEventHandler,
+        ere <- newE hg3d [
             ctExitRequestedEvent #: ()
             ]
 
         -- create callback loop, handle windows exit command
         forkIO $ do
-            registerReceiverCBS cbs eih ctExitRequestedEvent (\_ -> writeVar varExit True >> return ())
+            registerReceiverCBS cbs ere ctExitRequestedEvent (\_ -> writeVar varExit True >> return ())
             forever $ (stepCBS cbs)
 
         -- create game logic loop

@@ -115,6 +115,11 @@ set(CPP_SRCS
     gamegio/ParticlesItem.cpp
     gamegio/LogMessageItemCbor.cpp
     gamegio/LogMessageItem.cpp
+    gamegio/WindowEventCbor.cpp
+    gamegio/ExitRequestedItem.cpp
+    gamegio/MouseItem.cpp
+    gamegio/KeysItem.cpp
+    gamegio/ScreenModeItem.cpp
 )
 
 set(CBOR_SRCS
