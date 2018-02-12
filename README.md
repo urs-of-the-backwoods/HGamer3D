@@ -14,7 +14,7 @@ This will start the sample browswer, without installing the tool stack.
 ## install tools
 
 - First install aio, see [aio installer](http://github.com/urs-of-the-backwoods/aio-installer).
-- Then run the `aio http://www.hgamer3d.org/tools/HGamer3D install` command.
+- Then run the `aio http://www.hgamer3d.org/tools/HGamer3D.0218 install` command.
 
 This will setup Haskell tools and some shortcuts, needed for next steps, see next section.
 
