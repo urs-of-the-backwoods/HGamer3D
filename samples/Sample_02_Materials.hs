@@ -1,12 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Main  where
+module Sample_02_Materials  where
 
 import HGamer3D
 
 import qualified Data.Text as T
 import Control.Concurrent
 import Control.Monad
+import SampleRunner
 
 -- define materials
 
@@ -36,37 +37,15 @@ mats = [
     matWoodTiles,
     matColourTiles,
     matBlackTiles
-  ] 
+  ]
 
 
--- START SYSTEM
----------------
-
-go hg3d = do
-
-  cam <- newE hg3d [
-       ctCamera #: FullViewCamera,
-       ctPosition #: Vec3 1.0 1.0 (-30.0),
-       ctOrientation #: unitU
-       ]
-
-  li <- newE hg3d [
-     ctLight #: Light PointLight 1.0 1000.0 1.0,
-     ctPosition #: Vec3 1.0 1.0 (-30.0)
-     ]
-
-  return (li, cam)
-
--- CONTENT CREATION
-
--- create cube with material, position at n of m
 makeCube hg3d mat n m = do
   eCube <- newE hg3d [
      ctGeometry #: ShapeGeometry Cube,
      ctMaterial #: mat,
      ctScale #: Vec3 10.0 10.0 10.0,
      ctPosition #: rotate3 (2.0 * pi * (fromIntegral n) / (fromIntegral m)) vec3Y (Vec3 0.0 0.0 70.0),
---     ctPosition #: rotate3 (2.0 * pi * (fromIntegral n) / (fromIntegral m)) vec3Y (Vec3 2000.0 0.0 0.0),
      ctOrientation #: unitU
      ]
   return eCube
@@ -80,19 +59,31 @@ camy c d = do
      updateC c ctOrientation (\u -> (rotU vec3Y d) .*. u)
      updateC c ctPosition (\p -> rotate3 d vec3Y p)
 
-rotateWorld c cs d = forever $ do 
+rotateWorld c cs d quitV =  do
                                             camy c 0.005
                                             mapM (\c -> updateC c ctOrientation (\u -> (rotU vec3Y d) .*. u)) cs
                                             sleepFor (msecT 20)
+                                            q <- readVar quitV
+                                            if not q
+                                              then rotateWorld c cs d quitV
+                                              else return ()
 
-
-gameLogic hg3d = do
-     (l1, c) <- go hg3d
+creator hg3d c = do
+     quitV <- makeVar False
      cubes <- allCubes hg3d mats
-     rotateWorld c cubes (-0.05)
-     return ()
+     forkIO $ rotateWorld c cubes (-0.05) quitV
+     return (cubes, quitV, c)
 
-main = do
-    runGame standardGraphics3DConfig gameLogic (msecT 20)
-    return ()
+destructor (cubes, quitV, c) = do
+  writeVar quitV True
+  sleepFor (msecT 500) -- monitor that motion stops before deletion
+  mapM delE cubes
+  setC c ctOrientation unitU
+  setC c ctPosition (Vec3 1.0 1.0 (-30.0))
+  return ()
+
+sampleRunner hg3d c = SampleRunner (return ()) (do
+                                    state <- creator hg3d c
+                                    return (SampleRunner (destructor state) (return emptySampleRunner) ))
+
 

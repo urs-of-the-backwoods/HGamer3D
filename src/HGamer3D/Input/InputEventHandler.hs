@@ -1,13 +1,12 @@
 {-
-	Input Event handler and settings
 	HGamer3D Library (A project to enable 3D game development in Haskell)
-	Copyright 2015 - 2017 Peter Althainz
-	
+	Copyright 2015 - 2018 Peter Althainz
+
 	Distributed under the Apache License, Version 2.0
-	(See attached file LICENSE or copy at 
+	(See attached file LICENSE or copy at
 	http://www.apache.org/licenses/LICENSE-2.0)
- 
-	file: HGamer3D/Input/Mouse.hs
+
+	file: HGamer3D/src/HGamer3D/Input/InputEventHandler.hs
 -}
 
 -- | Module providing settings for all input events (Mouse, Keyboard, Joystick)
@@ -40,11 +39,6 @@ data InputEventHandler = DefaultEventHandler
 
 ctInputEventHandler :: ComponentType InputEventHandler
 ctInputEventHandler = ComponentType 0xfc0edefcebcb5878
-
-type ExitRequestedEvent = ()
-
-ctExitRequestedEvent :: ComponentType ExitRequestedEvent
-ctExitRequestedEvent = ComponentType 0x824517eb48d5c653
 
 instance Serialise InputEventType where
     encode (IEMouseButtonUp) = encodeListLen 1 <>  encode (0::Int) 

@@ -1,65 +1,20 @@
-//	C++ part of bindings for gui
 //	HGamer3D Library (A project to enable 3D game development in Haskell)
-//	Copyright 2015 Peter Althainz
-//	
+//	Copyright 2015 - 2018 Peter Althainz
+//
 //	Distributed under the Apache License, Version 2.0
-//	(See attached file LICENSE or copy at 
+//	(See attached file LICENSE or copy at
 //	http://www.apache.org/licenses/LICENSE-2.0)
-// 
-//	file: gamegio-library/gamegio/src/GUIElements.hpp
+//
+//	file: HGamer3D/gamegio-library/src/gamegio/GUIElements.hpp
 
 #ifndef __gui_elements_hpp__
 #define __gui_elements_hpp__
 
-#include "Urho3D/Urho3D.h"
-
-#include "Urho3D/Core/Context.h"
-#include "Urho3D/Core/Main.h"
-#include "Urho3D/Core/Object.h"
-#include "Urho3D/Container/Str.h"
-
-#include "Urho3D/Engine/Application.h"
-#include "Urho3D/Engine/Engine.h"
-#include "Urho3D/Graphics/Graphics.h"
-#include "Urho3D/Graphics/GraphicsImpl.h"
-#include "Urho3D/IO/IOEvents.h"
-#include "Urho3D/IO/Log.h"
-#include "Urho3D/Core/ProcessUtils.h"
-
-#include <Urho3D/Graphics/Camera.h>
-#include <Urho3D/Core/CoreEvents.h>
-#include <Urho3D/UI/Font.h>
-#include <Urho3D/Input/Input.h>
-#include <Urho3D/Graphics/Material.h>
-#include <Urho3D/Graphics/Model.h>
-#include <Urho3D/Graphics/Octree.h>
-#include <Urho3D/Graphics/Renderer.h>
-#include <Urho3D/Resource/ResourceCache.h>
-#include <Urho3D/Scene/Scene.h>
-#include <Urho3D/Graphics/StaticModel.h>
-#include <Urho3D/UI/Text.h>
-#include <Urho3D/UI/Button.h>
-#include <Urho3D/UI/LineEdit.h>
-#include <Urho3D/UI/Slider.h>
-#include <Urho3D/UI/CheckBox.h>
-#include <Urho3D/UI/DropDownList.h>
-#include <Urho3D/UI/Window.h>
-#include <Urho3D/UI/UI.h>
-#include <Urho3D/UI/UIEvents.h>
-
-#include <exception>
-
+#include "Urho3D/Urho3DAll.h"
 #include "Graphics3DSystem.hpp"
-#include "Urho3D/DebugNew.h"
+#include "Fresco.hpp"
 #include "Slider2.hpp"
-#include "EntityIdCbor.hpp"
 #include "LineEdit2.hpp"
-
-#include <stdint.h>
-#include <stdbool.h>
-#include <string>
-#include <iostream>
-#include <fstream>
 
 using namespace Urho3D;
 
@@ -74,19 +29,43 @@ protected:
   SharedPtr<UIElement> uiElement;
   Graphics3DSystem* g;
   cbd::EntityId myId;
-  
+
 public:
   HasUIElement();
   ~HasUIElement();
 
   static FrItem msgCreate(FrMsg m, FrMsgLength l);
   void msgDestroy();
-  
+
   void msgScreenRect(FrMsg m, FrMsgLength l);
   void msgParent(FrMsg m, FrMsgLength l);
   void msgEntityId(FrMsg m, FrMsgLength l);
 };
 
+//
+// SPRITE
+//
+
+GCO_FACTORY_DEC(SpriteItem)
+
+class SpriteItem : public HasUIElement, public Object {
+
+  URHO3D_OBJECT(SpriteItem, Object);
+
+protected:
+  SharedPtr<Sprite> sprite;
+
+public:
+  SpriteItem();
+  ~SpriteItem();
+
+  static FrItem msgCreate(FrMsg m, FrMsgLength l);
+  void msgDestroy();
+};
+
+//
+// BUTTON
+//
 
 GIO_METHOD_DEC(ButtonItem, ScreenRect)
 GIO_METHOD_DEC(ButtonItem, Parent)
@@ -157,6 +136,7 @@ class TextItem : public HasUIElement {
 
 protected:
     SharedPtr<Text> text;
+    Urho3D::String contents;
 
 public:
   TextItem();

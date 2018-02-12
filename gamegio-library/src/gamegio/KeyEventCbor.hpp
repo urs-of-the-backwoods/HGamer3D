@@ -43,4 +43,5 @@ void writeKeyEvent(CborEncoder *enc0, KeyEvent keyEvent);
 } // end of namespacd cdb
 
 extern const uint64_t ctKeyEvent;
+extern const uint64_t ctKeyEvent090;
 #endif

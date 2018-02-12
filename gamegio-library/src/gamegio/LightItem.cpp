@@ -23,6 +23,7 @@
 #include "ColourCbor.hpp"
 #include "EntityIdCbor.hpp"
 #include "ParentCbor.hpp"
+#include "VisibleCbor.hpp"
 
 
 using namespace std;
@@ -35,6 +36,7 @@ GIO_METHOD_FUNC(LightItem, Scale)
 GIO_METHOD_FUNC(LightItem, Ori)
 GIO_METHOD_FUNC(LightItem, EntityId)
 GIO_METHOD_FUNC(LightItem, Parent)
+GIO_METHOD_FUNC(LightItem, Visible)
 
 // Factory Implementation
 GCO_FACTORY_IMP(LightItem)
@@ -45,6 +47,7 @@ GCO_FACTORY_IMP(LightItem)
     GCO_FACTORY_METHOD(LightItem, ctOrientation, Ori)
     GCO_FACTORY_METHOD(LightItem, ctEntityId, EntityId)
     GCO_FACTORY_METHOD(LightItem, ctParent, Parent)
+    GCO_FACTORY_METHOD(LightItem, ctVisible, Visible)
 GCO_FACTORY_IMP_END
 
 LightItem::LightItem()

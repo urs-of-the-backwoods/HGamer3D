@@ -58,19 +58,16 @@ GCO_FACTORY_IMP_END
 
 SoundSourceItem::SoundSourceItem()
 {
-    soundSource = NULL;
-    sound = NULL;
     Graphics3DSystem* g3ds = Graphics3DSystem::getG3DS();
     cache = g3ds->context->GetSubsystem<ResourceCache>();
 }
 
 SoundSourceItem::~SoundSourceItem()
 {
-    if (sound != NULL) 
+    if (!soundSource.Null())
     {
-        delete sound;
+        soundSource->Stop();
         node->RemoveComponent<SoundSource>();
-        sound = NULL;
     }
 }
 
@@ -109,22 +106,8 @@ void SoundSourceItem::msgSoundSource(FrMsg m, FrMsgLength l)
     soundSource->SetGain(ssrc.volume);
 
     // create or modify sound itself
-    if (sound != NULL && sound->GetName() != ssrc.resource.c_str()) 
-    {
-        delete sound;
-        sound = NULL;
-    }
-    // load resource
-    if (sound == NULL)
-    {
-//        std::cout << ssrc.resource << std::endl;
-        sound = cache->GetResource<Sound>(ssrc.resource.c_str());
-    }
-    // modify loop
-    if (sound != NULL)
-    {
-        sound->SetLooped(ssrc.loop);
-    }
+    sound = cache->GetResource<Sound>(ssrc.resource.c_str());
+    sound->SetLooped(ssrc.loop);
 }
 
 void SoundSourceItem::msgPlayCmd(FrMsg m, FrMsgLength l)
@@ -134,7 +117,7 @@ void SoundSourceItem::msgPlayCmd(FrMsg m, FrMsgLength l)
     cbd::PlayCmd cmd;
     cbd::readPlayCmd(&it, &cmd);
 
-    if (sound != NULL)
+    if (!sound.Null())
     {
         // Play
         if (cmd.selector == cbd::Play) { soundSource->Play(sound); }

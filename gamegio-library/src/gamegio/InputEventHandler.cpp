@@ -1,29 +1,20 @@
-//	C++ part of bindings for input
 //	HGamer3D Library (A project to enable 3D game development in Haskell)
-//	Copyright 2015 Peter Althainz
-//	
+//	Copyright 2015 - 2018 Peter Althainz
+//
 //	Distributed under the Apache License, Version 2.0
-//	(See attached file LICENSE or copy at 
+//	(See attached file LICENSE or copy at
 //	http://www.apache.org/licenses/LICENSE-2.0)
-// 
-//	file: Urho3D-Binding/input.cpp
-
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <cmath>
+//
+//	file: HGamer3D/gamegio-library/src/gamegio/InputEventHandler.cpp
 
 #include "InputEventHandler.hpp"
-#include "Urho3D/Input/InputEvents.h"
-#include "Urho3D/UI/UIEvents.h"
-#include "Fresco.hpp"
-#include "VisibleCbor.hpp"
-#include "Graphics3DSystem.hpp"
 
+#include "Graphics3DSystem.hpp"
+#include "VisibleCbor.hpp"
 #include "MouseCbor.hpp"
 #include "KeyEventCbor.hpp"
 #include "InputEventHandlerCbor.hpp"
+#include "WindowEventCbor.hpp"
 
 using namespace std;
 using namespace cbd;
@@ -48,6 +39,7 @@ Mouse::Mouse()
 
 Mouse::~Mouse()
 {
+  UnsubscribeFromAllEvents();
 }
 
 FrItem Mouse::msgCreate(FrMsg m, FrMsgLength l)
@@ -108,15 +100,17 @@ IEHClass::IEHClass()
 : Object(Graphics3DSystem::getG3DS()->context)
 {
     input = Graphics3DSystem::getG3DS()->context->GetSubsystem<Input>();
-    
+
+    bDefaultEvents = true;
+
     mouseEventF = NULL;
     mouseDataP = NULL;
     keyEventF = NULL;
     keyDataP = NULL;
     exitREventF = NULL;
     exitRDataP = NULL;
-    
-    bDefaultEvents = true;
+    SMEventF = NULL;
+    SMDataP = NULL;
 
     bMouseEvents = false;
     bKeyEvents = false;
@@ -127,21 +121,19 @@ IEHClass::IEHClass()
     bMouseVisibleChanged = false;
     bKeyUp = false;
     bKeyDown = false;
+    bExitRequested = false;
+    bScreenMode = false;
 
 }
 
 IEHClass::~IEHClass()
 {
   // deregister all events by following procedure
-  bDefaultEvents = true;
-  bMouseEvents = false;
-  bKeyEvents = false;
-  bExitRequestedEvent = false;
-  registerEvents();
-  
   exitREventF = NULL;
   mouseEventF = NULL;
   keyEventF = NULL;
+
+  UnsubscribeFromAllEvents();
 }
 
 FrItem IEHClass::msgCreate(FrMsg m, FrMsgLength l)
@@ -181,8 +173,11 @@ void IEHClass::registerEvents()
           SubscribeToEvent(E_KEYUP, URHO3D_HANDLER(IEHClass, HandleKeyUp));
           SubscribeToEvent(E_KEYDOWN, URHO3D_HANDLER(IEHClass, HandleKeyDown));
       }
-      if (bExitRequestedEvent) {
+      if (bExitRequested) {
           SubscribeToEvent(E_EXITREQUESTED, URHO3D_HANDLER(IEHClass, HandleExitRequestedEvent));
+      }
+      if (bScreenMode) {
+        SubscribeToEvent(E_SCREENMODE, URHO3D_HANDLER(IEHClass, HandleScreenModeEvent));
       }
       
   } else
@@ -195,12 +190,15 @@ void IEHClass::registerEvents()
     if (bMouseVisibleChanged) SubscribeToEvent(E_MOUSEVISIBLECHANGED, URHO3D_HANDLER(IEHClass, HandleMouseVisibleChanged));
     if (bKeyUp) SubscribeToEvent(E_KEYUP, URHO3D_HANDLER(IEHClass, HandleKeyUp));
     if (bKeyDown) SubscribeToEvent(E_KEYDOWN, URHO3D_HANDLER(IEHClass, HandleKeyDown));
+    if (bExitRequested) SubscribeToEvent(E_EXITREQUESTED, URHO3D_HANDLER(IEHClass, HandleExitRequestedEvent));
+    if (bScreenMode) SubscribeToEvent(E_SCREENMODE, URHO3D_HANDLER(IEHClass, HandleScreenModeEvent));
   }
-    
+
 }
 
 void IEHClass::msgInputEventHandler(FrMsg m, FrMsgLength l)
-{ 
+{
+
     CborParser parser; CborValue it;
     cbor_parser_init(m, l, 0, &parser, &it);
     InputEventHandler ieh;
@@ -211,7 +209,7 @@ void IEHClass::msgInputEventHandler(FrMsg m, FrMsgLength l)
     {
         bDefaultEvents = true;
     } else if (ieh.selector == SpecificEventHandler)
-        
+
     // non default handler, registered events
     {
         bDefaultEvents = false;
@@ -223,7 +221,7 @@ void IEHClass::msgInputEventHandler(FrMsg m, FrMsgLength l)
         bKeyUp = false;
         bKeyDown = false;
         bExitRequested = false;
-        
+
         for(std::vector<InputEventType>::iterator it = ieh.data.SpecificEventHandler.value0.begin(); it != ieh.data.SpecificEventHandler.value0.end(); ++it) {
             if (it->selector == IEMouseButtonUp) bMouseButtonUp = true;
             if (it->selector == IEMouseButtonDown) bMouseButtonDown = true;
@@ -235,7 +233,7 @@ void IEHClass::msgInputEventHandler(FrMsg m, FrMsgLength l)
             if (it->selector == IEExitRequested) bExitRequested = true;
         }
     }
-            
+
     registerEvents();
 }
 
@@ -288,7 +286,7 @@ void IEHClass::HandleMouseMove(StringHash eventType, VariantMap& eventData)
 
     cbd::MouseEvent mevt;
 
-    mevt.selector = cbd::MouseButtonUpEvent;
+    mevt.selector = cbd::MouseMoveEvent;
     if (input->IsMouseVisible()) {
       mevt.data.MouseMoveEvent.value0.x = eventData[MouseMove::P_X].GetInt();
       mevt.data.MouseMoveEvent.value0.y = eventData[MouseMove::P_Y].GetInt();
@@ -316,7 +314,7 @@ void IEHClass::HandleMouseWheel(StringHash eventType, VariantMap& eventData)
 
     cbd::MouseEvent mevt;
 
-    mevt.selector = cbd::MouseButtonDownEvent;
+    mevt.selector = cbd::MouseWheelEvent;
     mevt.data.MouseWheelEvent.value0.wheel = eventData[MouseWheel::P_WHEEL].GetInt();
     mevt.data.MouseWheelEvent.value0.buttons = eventData[MouseWheel::P_BUTTONS].GetInt();
     mevt.data.MouseWheelEvent.value0.qualifiers = eventData[MouseWheel::P_QUALIFIERS].GetInt();
@@ -343,7 +341,7 @@ void IEHClass::HandleKeyUp(StringHash eventType, VariantMap& eventData)
 
     KeyEvent kevt;
 
-    kevt.selector = KeyUpEvent;
+    kevt.selector = cbd::KeyUpEvent;
     int scancode = eventData[KeyUp::P_SCANCODE].GetInt();
     kevt.data.KeyUpEvent.value0.key = eventData[KeyUp::P_KEY].GetInt();
     kevt.data.KeyUpEvent.value0.scancode = scancode;
@@ -365,7 +363,7 @@ void IEHClass::HandleKeyDown(StringHash eventType, VariantMap& eventData)
 
           KeyEvent kevt;
 
-          kevt.selector = KeyDownEvent;
+          kevt.selector = cbd::KeyDownEvent;
           int scancode = eventData[KeyDown::P_SCANCODE].GetInt();
           kevt.data.KeyDownEvent.value0.key = eventData[KeyDown::P_KEY].GetInt();
           kevt.data.KeyDownEvent.value0.scancode = scancode;
@@ -393,7 +391,17 @@ void IEHClass::HandleExitRequestedEvent(StringHash eventType, VariantMap& eventD
   }
 }
 
-void IEHClass::registerMouseEventFunction(FrMessageFn2 f, void* p2, uint64_t mouseET)
+void IEHClass::HandleScreenModeEvent(StringHash eventType, VariantMap& eventData)
+{
+  if (SMEventF != NULL) {
+    uint8_t buf[64];
+    CborEncoder encoder;
+    cbor_encoder_init(&encoder, buf, sizeof(buf), 0);
+
+  }
+}
+
+void IEHClass::registerMouseEvent090Function(FrMessageFn2 f, void* p2, uint64_t mouseET)
 {
     // register events: depends on default setting
     bMouseEvents = true;
@@ -403,7 +411,7 @@ void IEHClass::registerMouseEventFunction(FrMessageFn2 f, void* p2, uint64_t mou
     mouseEventType = mouseET;
 }
 
-void IEHClass::registerKeyEventFunction(FrMessageFn2 f, void* p2, uint64_t keyET)
+void IEHClass::registerKeyEvent090Function(FrMessageFn2 f, void* p2, uint64_t keyET)
 {
     // register events: depends on default setting
     bKeyEvents = true;
@@ -413,12 +421,22 @@ void IEHClass::registerKeyEventFunction(FrMessageFn2 f, void* p2, uint64_t keyET
     keyEventType = keyET;
 }
 
-void IEHClass::registerExitRequestedEventFunction(FrMessageFn2 f, void* p2, uint64_t erET)
+void IEHClass::registerExitRequestedEvent090Function(FrMessageFn2 f, void* p2, uint64_t erET)
 {
   // register events: depends on default setting
-  bExitRequestedEvent = true;
+  bExitRequested = true;
   registerEvents();
   exitREventF = f;
   exitRDataP = p2;
   exitREventType = erET;
+}
+
+void IEHClass::registerScreenModeEventFunction(FrMessageFn2 f, void* p2, uint64_t erET)
+{
+  // register events: depends on default setting
+  bScreenMode = true;
+  registerEvents();
+  SMEventF = f;
+  SMDataP = p2;
+  SMEventType = erET;
 }

@@ -101,6 +101,25 @@ set(CPP_SRCS
     gamegio/SliderCbor.cpp
     gamegio/StaticTextCbor.cpp
     gamegio/UIElementCbor.cpp
+    gamegio/Joystick.cpp
+    gamegio/JoystickCbor.cpp
+    gamegio/SceneItem.cpp
+    gamegio/SceneItemCbor.cpp
+    gamegio/SkyboxItem.cpp
+    gamegio/SkyboxItemCbor.cpp
+    gamegio/SpriteItemCbor.cpp
+    gamegio/Text3DItemCbor.cpp
+    gamegio/Text3DItem.cpp
+    gamegio/LabelCbor.cpp
+    gamegio/ParticlesItemCbor.cpp
+    gamegio/ParticlesItem.cpp
+    gamegio/LogMessageItemCbor.cpp
+    gamegio/LogMessageItem.cpp
+    gamegio/WindowEventCbor.cpp
+    gamegio/ExitRequestedItem.cpp
+    gamegio/MouseItem.cpp
+    gamegio/KeysItem.cpp
+    gamegio/ScreenModeItem.cpp
 )
 
 set(CBOR_SRCS

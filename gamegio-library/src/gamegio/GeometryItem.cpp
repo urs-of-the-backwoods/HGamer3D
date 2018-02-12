@@ -1,22 +1,14 @@
-//	C++ part of bindings for graphics
 //	HGamer3D Library (A project to enable 3D game development in Haskell)
-//	Copyright 2015 Peter Althainz
-//	
+//	Copyright 2015 - 2018 Peter Althainz
+//
 //	Distributed under the Apache License, Version 2.0
-//	(See attached file LICENSE or copy at 
+//	(See attached file LICENSE or copy at
 //	http://www.apache.org/licenses/LICENSE-2.0)
-// 
-//	file: Urho3D-Binding/graphics3d.cpp
-
-#include <sstream>
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <cmath>
-
-#include "Fresco.hpp"
+//
+//	file: HGamer3D/gamegio-library/src/gamegio/GeometryItem.cpp
 
 #include "GeometryItem.hpp"
+
 #include "GeometryCbor.hpp"
 #include "MaterialCbor.hpp"
 #include "ColourCbor.hpp"
@@ -24,6 +16,7 @@
 #include "UnitQuaternionCbor.hpp"
 #include "EntityIdCbor.hpp"
 #include "ParentCbor.hpp"
+#include "VisibleCbor.hpp"
 
 using namespace std;
 
@@ -35,6 +28,7 @@ GIO_METHOD_FUNC(GeometryItem, Scale)
 GIO_METHOD_FUNC(GeometryItem, Ori)
 GIO_METHOD_FUNC(GeometryItem, EntityId)
 GIO_METHOD_FUNC(GeometryItem, Parent)
+GIO_METHOD_FUNC(GeometryItem, Visible)
 
 // Factory Implementation
 GCO_FACTORY_IMP(GeometryItem)
@@ -46,6 +40,7 @@ GCO_FACTORY_IMP(GeometryItem)
     GCO_FACTORY_METHOD(GeometryItem, ctOrientation, Ori)
     GCO_FACTORY_METHOD(GeometryItem, ctEntityId, EntityId)
     GCO_FACTORY_METHOD(GeometryItem, ctParent, Parent)
+    GCO_FACTORY_METHOD(GeometryItem, ctVisible, Visible)
 GCO_FACTORY_IMP_END
 
 GeometryItem::GeometryItem()

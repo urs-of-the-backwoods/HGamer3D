@@ -28,6 +28,24 @@
 #include "LightItem.hpp"
 #include "GeometryItem.hpp"
 #include "DropDownListItem.hpp"
+#include "JoystickCbor.hpp"
+#include "Joystick.hpp"
+#include "SceneItemCbor.hpp"
+#include "SceneItem.hpp"
+#include "SkyboxItemCbor.hpp"
+#include "SkyboxItem.hpp"
+#include "SpriteItemCbor.hpp"
+#include "Text3DItem.hpp"
+#include "Text3DItemCbor.hpp"
+#include "LogMessageItemCbor.hpp"
+#include "LogMessageItem.hpp"
+#include "ParticlesItemCbor.hpp"
+#include "ParticlesItem.hpp"
+#include "ExitRequestedItem.hpp"
+#include "WindowEventCbor.hpp"
+#include "MouseItem.hpp"
+#include "KeysItem.hpp"
+#include "ScreenModeItem.hpp"
 
 #include "GUIElements.hpp"
 #include "ButtonCbor.hpp"
@@ -59,6 +77,17 @@ Library::Library()
     _factories[ctUIElement] = new HasUIElementFactory();
     _factories[ctMouseConfig] = new MouseFactory();
     _factories[ctGraphicsElement] = new HasNodeFactory();
+    _factories[ctJoystick] = new JoystickFactory();
+    _factories[ctScene] = new SceneItemFactory();
+    _factories[ctSkybox] = new SkyboxItemFactory();
+    _factories[ctSprite] = new SpriteItemFactory();
+    _factories[ctText3D] = new Text3DItemFactory();
+    _factories[ctLogMessage] = new LogMessageItemFactory();
+    _factories[ctParticles] = new ParticlesItemFactory();
+    _factories[ctExitRequestedEvent] = new ExitRequestedItemFactory();
+    _factories[ctMouse] = new MouseItemFactory();
+    _factories[ctKeyEvent] = new KeysItemFactory();
+    _factories[ctScreenModeEvent] = new ScreenModeItemFactory();
 }
 
 Library::~Library()
@@ -108,13 +137,23 @@ FrMessageFn gioGetMsgSender(FrComponentType ob, FrComponentType pr)
 
 void gioRegisterMsgReceiver(FrItemType ctItem, FrEventType ctEvent, FrItem item, FrEntity receiver, FrMessageFn2 f)
 {
-    GIO_REG_EVENT(IEHClass, InputEventHandler, MouseEvent)
-    GIO_REG_EVENT(IEHClass, InputEventHandler, KeyEvent)
-    GIO_REG_EVENT(IEHClass, InputEventHandler, ExitRequestedEvent)
+  //              Implement     Imlement           Event
+  //              Class         Class CT           Name (ctEvent, registerEventFunction)
+
+    GIO_REG_EVENT(MouseItem, Mouse, MouseEvent)
+    GIO_REG_EVENT(KeysItem, KeyEvent, KeyEvent)
+    GIO_REG_EVENT(ScreenModeItem, ScreenModeEvent, ScreenModeEvent)
     GIO_REG_EVENT(EditTextItem, EditText, EditText)
     GIO_REG_EVENT(CheckBoxItem, CheckBox, CheckBox)
     GIO_REG_EVENT(ButtonItem, Button, Button)
     GIO_REG_EVENT(SliderItem, Slider, Slider)
     GIO_REG_EVENT(DropDownListItem, DropDownList, DropDownList)
+    GIO_REG_EVENT(Joystick, Joystick, JoystickEvent)
+    GIO_REG_EVENT(ExitRequestedItem, ExitRequestedEvent, ExitRequestedEvent)
+
+    // old input event handler, deprecated, compatibility mode
+    GIO_REG_EVENT(IEHClass, InputEventHandler, MouseEvent090)
+    GIO_REG_EVENT(IEHClass, InputEventHandler, KeyEvent090)
+    GIO_REG_EVENT(IEHClass, InputEventHandler, ExitRequestedEvent090)
 }
 

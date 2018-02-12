@@ -24,17 +24,13 @@ import Data.Monoid
 import Control.Applicative
 
 
-data MouseMode = Absolute
-    | Relative
-    | Wrap
+data MouseMode = MMAbsolute
+    | MMRelative
+    | MMWrap
     deriving (Eq, Read, Show)
 
-data MouseConfig = MouseConfig {
-    mouseConfigMode::MouseMode
-    } deriving (Eq, Read, Show)
-
-ctMouseConfig :: ComponentType MouseConfig
-ctMouseConfig = ComponentType 0xa532f43b1c1c6bc7
+ctMouse :: ComponentType MouseMode
+ctMouse = ComponentType 0x07669c3c292bf265
 
 data MouseButtonData = MouseButtonData {
     mouseButtonDataButton::Int,
@@ -65,23 +61,19 @@ data MouseEvent = NoMouseEvent
     deriving (Eq, Read, Show)
 
 ctMouseEvent :: ComponentType MouseEvent
-ctMouseEvent = ComponentType 0x27eaf3fd46595d08
+ctMouseEvent = ComponentType 0x8a73da7bdfbe4ccc
 
 instance Serialise MouseMode where
-    encode (Absolute) = encodeListLen 1 <>  encode (0::Int) 
-    encode (Relative) = encodeListLen 1 <>  encode (1::Int) 
-    encode (Wrap) = encodeListLen 1 <>  encode (2::Int) 
+    encode (MMAbsolute) = encodeListLen 1 <>  encode (0::Int) 
+    encode (MMRelative) = encodeListLen 1 <>  encode (1::Int) 
+    encode (MMWrap) = encodeListLen 1 <>  encode (2::Int) 
     decode = do
         decodeListLen
         i <- decode :: Decoder s Int
         case i of
-            0 -> (pure Absolute)
-            1 -> (pure Relative)
-            2 -> (pure Wrap)
-
-instance Serialise MouseConfig where
-    encode (MouseConfig v1) = encodeListLen 1 <> encode v1
-    decode = decodeListLenOf 1 >> MouseConfig <$> decode
+            0 -> (pure MMAbsolute)
+            1 -> (pure MMRelative)
+            2 -> (pure MMWrap)
 
 instance Serialise MouseButtonData where
     encode (MouseButtonData v1 v2 v3) = encodeListLen 3 <> encode v1 <> encode v2 <> encode v3

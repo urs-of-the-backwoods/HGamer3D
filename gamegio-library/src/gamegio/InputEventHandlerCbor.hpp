@@ -1,10 +1,17 @@
+//	HGamer3D Library (A project to enable 3D game development in Haskell)
+//	Copyright 2015 - 2018 Peter Althainz
+//
+//	Distributed under the Apache License, Version 2.0
+//	(See attached file LICENSE or copy at
+//	http://www.apache.org/licenses/LICENSE-2.0)
+//
+//	file: Urho3D/gamegio-library/src/gamegio/InputEventHandlerCbor.hpp
+
 #ifndef __InputEventHandler_cbor__
 #define __InputEventHandler_cbor__
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <string>
 #include <vector>
+
 #include "cbor.h"
 #include "cborconstants_p.h"
 
@@ -59,17 +66,13 @@ typedef struct {
     } data;
 } InputEventHandler;
 
-typedef struct {} ExitRequestedEvent;
-
 void readInputEventType(CborValue *it0, InputEventType *inputEventType);
 void writeInputEventType(CborEncoder *enc0, InputEventType inputEventType);
 void readInputEventHandler(CborValue *it0, InputEventHandler *inputEventHandler);
 void writeInputEventHandler(CborEncoder *enc0, InputEventHandler inputEventHandler);
-void readExitRequestedEvent(CborValue *it, ExitRequestedEvent *exitRequestedEvent);
-void writeExitRequestedEvent(CborEncoder *enc, ExitRequestedEvent exitRequestedEvent);
 
 } // end of namespacd cdb
 
 extern const uint64_t ctInputEventHandler;
-extern const uint64_t ctExitRequestedEvent;
+extern const uint64_t ctExitRequestedEvent090;
 #endif

@@ -37,7 +37,7 @@ data KeyEvent = NoKeyEvent
     deriving (Eq, Read, Show)
 
 ctKeyEvent :: ComponentType KeyEvent
-ctKeyEvent = ComponentType 0x5ba1617fb50e97e5
+ctKeyEvent = ComponentType 0x07995a794e698f4b
 
 instance Serialise KeyData where
     encode (KeyData v1 v2 v3) = encodeListLen 3 <> encode v1 <> encode v2 <> encode v3

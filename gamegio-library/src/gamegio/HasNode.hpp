@@ -55,6 +55,7 @@ using namespace Urho3D;
 GIO_METHOD_DEC(HasNode, Pos)
 GIO_METHOD_DEC(HasNode, Scale)
 GIO_METHOD_DEC(HasNode, Ori)
+GIO_METHOD_DEC(HasNode, Visible)
 GCO_FACTORY_DEC(HasNode)
 
 class HasNode
@@ -74,6 +75,8 @@ public:
   virtual void msgOri(FrMsg m, FrMsgLength l);
   virtual void msgPos(FrMsg m, FrMsgLength l);
   virtual void msgScale(FrMsg m, FrMsgLength l);
+  virtual void msgVisible(FrMsg m, FrMsgLength l);
+
   virtual void msgParent(FrMsg m, FrMsgLength l);
   virtual void msgEntityId(FrMsg m, FrMsgLength l);
 };

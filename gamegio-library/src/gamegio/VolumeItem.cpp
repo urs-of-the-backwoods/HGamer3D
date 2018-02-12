@@ -39,7 +39,7 @@ GCO_FACTORY_IMP_END
 //
 
 VolumeItem::VolumeItem()
-{   
+{
     Graphics3DSystem *g3ds = Graphics3DSystem::getG3DS();
     audio = g3ds->context->GetSubsystem<Audio>();
 }

@@ -63,7 +63,7 @@ using namespace Urho3D;
 GIO_METHOD_DEC(VolumeItem, Volume)
 GCO_FACTORY_DEC(VolumeItem)
 
-class VolumeItem : public HasNode, public GioComponentObject {
+class VolumeItem : public HasNode {
 
 private:
   Audio* audio;

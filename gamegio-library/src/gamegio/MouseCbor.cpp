@@ -167,5 +167,10 @@ void writeMouseEvent(CborEncoder *enc0, MouseEvent mouseEvent)
 
 } // end of namespacd cdb
 
+// compatibility with old InputEventHandler
 const uint64_t ctMouseConfig = 0xa532f43b1c1c6bc7;
-const uint64_t ctMouseEvent = 0x27eaf3fd46595d08;
+const uint64_t ctMouseEvent090 = 0x27eaf3fd46595d08;
+
+// new idents
+const uint64_t ctMouse = 0x07669c3c292bf265;
+const uint64_t ctMouseEvent = 0x8a73da7bdfbe4ccc;

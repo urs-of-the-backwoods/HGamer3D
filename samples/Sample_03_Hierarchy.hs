@@ -1,25 +1,15 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Main where
+module Sample_03_Hierarchy where
 
+import SampleRunner
 import HGamer3D
 import Control.Concurrent
 import Control.Monad
 
-gameLogic hg3d = do
+creator hg3d = do
 
       es <- newET hg3d [
-            -- create camera
-            () -: [
-                  ctCamera #: FullViewCamera,
-                  ctPosition #: Vec3 1 1 (-30.0),
-                  ctLight #: Light PointLight 1.0 1000.0 1.0 
-                  ],
-            -- create text
-            () -: [
-                  ctStaticText #: "Rotating Cube Example",
-                  ctScreenRect #: ScreenRect 10 10 100 25
-                  ],
             -- create geometry, with child geometry items
             "eGeo" <| ([
                   ctGeometry #: ShapeGeometry Cube,
@@ -44,33 +34,34 @@ gameLogic hg3d = do
                                     ctOrientation #: unitU
                                     ]
                               ])
-                  ]),
-
--- HGamer3D website, entities and events, example exit button with callback
-            -- create button
-            "eButton" <: [
-                  ctButton #: Button False "Exit",
-                  ctScreenRect #: ScreenRect 200 10 50 25
-                  ]
+                  ])
 
             ]
 
-      registerCallback hg3d (es # "eButton") ctButton (\(Button flag _) -> if not flag then exitHG3D hg3d else return ())
--- end of website text
+      quitV <- makeVar False
 
       -- rotate the cube
       let rotate = do
-            forever $ do 
                   updateC (es # "eGeo") ctOrientation (\u -> (rotU vec3X 0.0013) .*. u)
                   updateC (es # "eGeo") ctOrientation (\u -> (rotU vec3Y 0.005) .*. u)
                   updateC (es # "eSmall") ctOrientation (\u -> (rotU (Vec3 (-1.0) 1.0 (-1.0)) 0.05) .*. u)
                   sleepFor (msecT 20)
-            return ()
+                  q <- readVar quitV
+                  if not q
+                    then rotate
+                    else return ()
 
       forkIO $ rotate
 
-      return ()
+      return (es, quitV)
 
-main = do 
-      runGame standardGraphics3DConfig gameLogic (msecT 20)
-      return ()
+destructor (es, quitV) = do
+  writeVar quitV True
+  sleepFor (msecT 500)
+  delET es 
+  return ()
+
+sampleRunner hg3d = SampleRunner (return ()) (do
+                                    state <- creator hg3d
+                                    return (SampleRunner (destructor state) (return emptySampleRunner) ))
+

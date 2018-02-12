@@ -1,4 +1,4 @@
-extra-deps: ["HGamer3D-0.9.0", "fresco-binding-0.3.0", "vect-0.4.7"]
+extra-deps: ["HGamer3D-0.9.5", "fresco-binding-0.3.0", "vect-0.4.7"]
 resolver: lts-8.20
 flags:
   binary-serialise-cbor:
