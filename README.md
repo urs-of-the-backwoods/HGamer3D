@@ -7,7 +7,7 @@ You do not need to clone this repo, to use it, instead use instructions below.
 ## start sample browser
 
 - First install aio, see [aio installer](http://github.com/urs-of-the-backwoods/aio-installer).
-- Then run the `aio http://www.hgamer3d.org/tools/HGamer3D sample-browser` command.
+- Then run the `aio http://www.hgamer3d.org/tools/HGamer3D.0218 sample-browser` command.
 
 This will start the sample browswer, without installing the tool stack.
 
